@@ -12,6 +12,10 @@ Change History
 ---------------
 - **1/12/2018 01:34AM** Uploaded opensource version under https://github.com/Accenture/ULAPPH-Cloud-Desktop by Edwin D. Vinas
 
+Auto-generated list of main Golang functions
+--------------------------------------------
+- https://github.com/ulapph/ULAPPH-Cloud-Desktop/blob/master/ULAPPH_Cloud_Desktop_Documentation.slide
+
 Contact Us
 ------------
 - **Edwin D. Vinas** - Main Developer (edwin.d.vinas@gmail.com)
