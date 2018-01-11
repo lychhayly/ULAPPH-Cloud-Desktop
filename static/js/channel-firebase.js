@@ -1,0 +1,151 @@
+'use strict';
+
+initFirebase();
+
+//function initGame(gameKey, me, token, channelId, initialMessage) {
+function initFirebase() {
+	//console.log("initFirebase()");
+
+  // This is our Firebase realtime DB path that we'll listen to for updates
+  // We'll initialize this later in openChannel()
+  var channel = null;
+   var channelB = null;
+
+  /**
+   * This method lets the server know that the user has opened the channel
+   * After this method is called, the server may begin to send updates
+   */
+  function onOpened() {
+	//console.log("onOpened()");
+	onOpen();
+	geoloc();
+  }
+
+  /**
+   * This deletes the data associated with the Firebase path
+   * it is critical that this data be deleted since it costs money
+   */
+  function deleteChannel() {
+	  //console.log("deleteChannel()");
+	  onClose();
+  }
+
+  /**
+   * This method is called every time an event is fired from Firebase
+   * it updates the entire game state and checks for a winner
+   * if a player has won the game, this function calls the server to delete
+   * the data stored in Firebase
+   */
+  function onMessage(newState) {
+	  //console.log("onMessage(): "+newState);
+	  if (isJson(newState) == true) {
+		  var jsonObj = JSON.parse(newState);
+		  if(jsonObj.hasOwnProperty('message')){
+			  procMessage(jsonObj);
+			  //procMessage(newState);  
+		  }
+	  }
+  }
+  
+  /**
+   * This function opens a realtime communication channel with Firebase
+   * It logs in securely using the client token passed from the server
+   * then it sets up a listener on the proper database path (also passed by server)
+   * finally, it calls onOpened() to let the server know it is ready to receive messages
+   */
+  function openChannel() {
+	//open channel only on uwm0
+	var desktop = document.getElementById("desktop");
+	if (desktop.value == "uwm" || desktop.value == "stream" || desktop.value == "uwm-share") {
+		//ok channel
+	} else {
+		console.log("Invalid desktop value");
+		return;
+	}
+	
+    // sign into Firebase with the token passed from the server
+	var jwt = document.getElementById("jwt");
+	var idToken = jwt.value;
+	//save to ls
+	if(typeof(Storage) !== "undefined") {
+		localStorage['idToken'] = idToken;
+	}
+    firebase.auth().signInWithCustomToken(idToken).catch(function(error) {
+      //console.log('Login Failed!', error.code);
+      //console.log('Error message: ', error.message);
+    });
+	//console.log('Login successful!');
+	//get message for the user channel
+	var tok = document.getElementById("tok");
+	var aep = document.getElementById("aep");
+	var sss = document.getElementById("sss");
+	//save to ls
+	if(typeof(Storage) !== "undefined") {
+		localStorage['tok'] = tok.value;
+		localStorage['aep'] = aep.value;
+		localStorage['sss'] = sss.value;
+	}
+	var refChan = aep.value + '/channel/' + tok.value;
+	//console.log("refChan: ", refChan);
+	channel = firebase.database().ref(refChan);
+	//listener
+    channel.limitToLast(1).on('value', function(data) {
+	  //console.log("value");
+      onMessage(data.val());
+    });
+	//listener
+    channel.limitToLast(1).on('child_added', function(data) {
+	  //console.log("child_added");
+      onMessage(data.val());
+    });
+	//listener
+	var pubChan = sss.value + '/channel-public/notifications';
+	//console.log("pubChan: ", pubChan);
+	channelB = firebase.database().ref(pubChan);
+	//listener
+	channelB.limitToLast(1).on('child_added', function(data) {
+	  //console.log("child_added");
+	  onMessage(data.val());
+	});
+    onOpened();
+    // let the server know that the channel is open
+  }
+  
+  /**
+   * Check if message is JSON
+  */
+	function isJson(item) {
+		item = typeof item !== "string"
+			? JSON.stringify(item)
+			: item;
+
+		try {
+			item = JSON.parse(item);
+		} catch (e) {
+			return false;
+		}
+
+		if (typeof item === "object" && item !== null) {
+			return true;
+		}
+
+		return false;
+	}
+
+  /**
+   * This function opens a communication channel with the server
+   * then it adds listeners to all the squares on the board
+   * next it pulls down the initial game state from template values
+   * finally it updates the game state with those values by calling onMessage()
+   */
+  function initialize() {
+	
+	//lets open channel
+    openChannel();
+	
+	//initial message
+    //onMessage({"user":"guest@gmail.com","message":"Hello!"});
+  }
+
+  setTimeout(initialize, 100);
+}

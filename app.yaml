@@ -1,0 +1,380 @@
+application: ulapph-cloud-desktop
+version: 1
+runtime: go
+api_version: go1
+# automatic_scaling:
+  # min_idle_instances: 1
+  # max_idle_instances: 2
+  # min_pending_latency: 10ms
+  # max_pending_latency: 30ms
+  # max_concurrent_requests: 50
+  # idle_timeout: 5m
+#basic_scaling:
+#  max_instances: 3
+#  idle_timeout: 5m
+
+handlers:
+- url: /
+  script: _go_app
+
+- url: /m
+  script: _go_app
+
+- url: /bible
+  script: _go_app
+
+############# OAUTH2 ##################
+- url: /oauth2/google/callback
+  script: _go_app
+
+- url: /oauth2/github/callback
+  script: _go_app
+
+- url: /oauth2/admin/callback
+  script: _go_app
+
+#- url: /oauth2/google/callback/token
+#  script: _go_app
+
+#- url: /auth
+#  script: _go_app
+
+# facebook
+#- url: /auth/facebook/callback
+#  script: _go_app  
+
+# github 
+#- url: /auth/github/callback
+#  script: _go_app
+
+# gplus 
+#- url: /auth/gplus/callback
+#  script: _go_app
+
+# instagram 
+#- url: /auth/instagram/callback
+#  script: _go_app
+
+# linked in 
+#- url: /auth/linkedin/callback
+#  script: _go_app
+
+# onedrive
+#- url: /auth/onedrive/callback
+#  script: _go_app
+############# OAUTH2 END ##################
+- url: /share
+  script: _go_app
+
+- url: /todos
+  script: _go_app
+
+- url: /captcha
+  script: _go_app
+
+- url: /gps
+  script: _go_app
+
+- url: /uwm
+  script: _go_app
+
+- url: /stream
+  script: _go_app
+
+- url: /uloc
+  script: _go_app
+
+- url: /store
+  script: _go_app
+
+- url: /chat
+  script: _go_app
+
+- url: /rag
+  script: _go_app
+
+- url: /rcg
+  script: _go_app
+
+- url: /cache
+  script: _go_app
+
+#- url: /session_purge
+#  script: _go_app
+#  login: admin
+
+- url: /logout
+  script: _go_app
+
+- url: /login
+  script: _go_app
+
+- url: /sysmsg
+  script: _go_app
+  
+- url: /registration
+  script: _go_app
+
+- url: /create-channel
+  script: _go_app
+
+- url: /message-channel
+  script: _go_app
+
+- url: /tools
+  script: _go_app
+
+- url: /commands
+  script: _go_app
+  
+- url: /people
+  script: _go_app
+
+- url: /goplus
+  script: _go_app
+
+- url: /utube
+  script: _go_app
+
+- url: /search
+  script: _go_app
+
+- url: /directory
+  script: _go_app
+
+- url: /gsearch
+  script: _go_app
+
+- url: /wall
+  script: _go_app
+  
+- url: /infodb
+  script: _go_app
+
+- url: /contents
+  script: _go_app
+
+- url: /slides
+  script: _go_app
+
+- url: /articles
+  script: _go_app
+
+- url: /editor
+  script: _go_app
+
+- url: /presenter
+  script: _go_app
+
+- url: /upload-slides 
+  script: _go_app
+
+- url: /serve-slides/
+  script: _go_app
+
+- url: /upload-articles 
+  script: _go_app
+
+- url: /serve-articles/
+  script: _go_app
+
+- url: /media
+  script: _go_app
+
+- url: /things
+  script: _go_app
+
+- url: /upload-media 
+  script: _go_app
+
+- url: /serve-media/
+  script: _go_app
+  
+- url: /compile
+  script: _go_app
+  
+- url: /guestbook
+  script: _go_app
+
+- url: /social
+  script: _go_app
+
+- url: /comments
+  script: _go_app
+  
+- url: /people-edit
+  script: _go_app
+  
+- url: /invitation
+  script: _go_app
+
+- url: /advertisement
+  script: _go_app
+
+- url: /contact-us
+  script: _go_app
+
+- url: /upload
+  script: _go_app
+  
+- url: /serve/
+  script: _go_app
+  
+- url: /upload-ads
+  script: _go_app
+  
+- url: /serve-ads/
+  script: _go_app
+  
+- url: /upload-people
+  script: _go_app
+  
+- url: /serve-people/
+  script: _go_app
+  
+- url: /click-ads/
+  script: _go_app
+
+- url: /click-url/
+  script: _go_app
+
+- url: /click-url-public/
+  script: _go_app
+
+- url: /desktops
+  script: _go_app
+  
+- url: /desktop0
+  script: _go_app
+ 
+- url: /desktop
+  script: _go_app
+  
+- url: /settings
+  script: _go_app
+
+- url: /settings-display-screen
+  script: _go_app
+
+- url: /admin-setup
+  script: _go_app
+
+- url: /admin-icons
+  script: _go_app
+  
+- url: /admin-ads
+  script: _go_app
+  
+- url: /admin-slides
+  script: _go_app
+
+- url: /admin-articles
+  script: _go_app
+
+- url: /ulapph-router
+  script: _go_app
+  login: admin
+
+- url: /go
+  script: _go_app
+
+#- url: /adhoc-web-load-TDSARTL    
+#  script: _go_app
+#  login: admin
+
+#- url: /events    
+#  script: _go_app
+  
+- url: /notifications    
+  script: _go_app
+  
+- url: /_ah/queue/go/delay           
+  script: _go_app
+  login: admin
+
+- url: /(.*\.(appcache|manifest))
+  mime_type: text/cache-manifest
+  static_files: static/\1
+  upload: static/(.*\.(appcache|manifest))
+
+- url: /(.*\.css)
+  mime_type: text/css
+  static_files: static/\1
+  upload: static/(.*\.css)
+
+- url: /(.*\.html)
+  mime_type: text/html
+  static_files: static/\1
+  upload: static/(.*\.html)
+
+- url: /(.*\.htm)
+  mime_type: text/html
+  static_files: static/\1
+  upload: static/(.*\.htm)
+
+- url: /(.*\.js)
+  mime_type: text/javascript
+  static_files: static/\1
+  upload: static/(.*\.js)
+
+- url: /(.*\.txt)
+  mime_type: text/plain
+  static_files: static/\1
+  upload: static/(.*\.txt)
+  
+- url: /(.*\.xml)
+  mime_type: application/xml
+  static_files: static/\1
+  upload: static/(.*\.xml)
+
+- url: /(.*\.swf)
+  mime_type: application/x-shockwave-flash
+  static_files: static/\1
+  upload: static/(.*\.swf)
+  
+# audio files
+- url: /(.*\.(wav))
+  mime_type: audio/x-wav
+  static_files: static/\1
+  upload: static/(.*\.(wav))
+
+- url: /(.*\.(mp3))
+  mime_type: audio/mpeg
+  static_files: static/\1
+  upload: static/(.*\.(mp3))
+
+- url: /(.*\.(ogg))
+  mime_type: audio/ogg
+  static_files: static/\1
+  upload: static/(.*\.(ogg))
+  
+# font files
+- url: /(.*\.(woff|woff2|ttf|eot))
+  mime_type: font/opentype
+  static_files: static/\1
+  upload: static/(.*\.(woff|woff2|ttf|eot))
+  
+# image files
+- url: /(.*\.(bmp|gif|ico|jpeg|jpg|png|pdf|svg))
+  static_files: static/\1
+  upload: static/(.*\.(bmp|gif|ico|jpeg|jpg|png|pdf|svg))
+
+- url: /(.*\.properties)
+  mime_type: text/plain
+  static_files: static/\1
+  upload: static/(.*\.properties)
+
+- url: /(.*\.json)
+  mime_type: text/plain         
+  static_files: static/\1
+  upload: static/(.*\.json)
+
+# index files
+- url: /(.+)/
+  static_files: static/\1/index.html
+  upload: static/(.+)/index.html
+
+# site root
+- url: /
+  static_files: static/index.html
+  upload: static/index.html
