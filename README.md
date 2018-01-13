@@ -19,4 +19,3 @@ Auto-generated list of main Golang functions
 Contact Us
 ------------
 - **Edwin D. Vinas** - Main Developer (edwin.d.vinas@gmail.com)
-
