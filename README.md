@@ -10,7 +10,8 @@ This repo is for source codes only
 
 Change History
 ---------------
-- **1/12/2018 01:34AM** Uploaded opensource version under https://github.com/Accenture/ULAPPH-Cloud-Desktop by Edwin D. Vinas
+- **1/12/2018 01:34AM** EDV - Uploaded opensource version under https://github.com/Accenture/ULAPPH-Cloud-Desktop
+- **1/14/2018 03:32AM** EDV - Added browser fingerprinting
 
 Auto-generated list of main Golang functions
 --------------------------------------------
