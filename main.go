@@ -1,5 +1,5 @@
-//GAE_APP_DOM_ID#sample-project.appspot.com
-//LAST_UPGRADE#12/01/2018 01:06:28
+//GAE_APP_DOM_ID#ulapph-public-1.appspot.com
+//LAST_UPGRADE#21/04/2017 08:50:59
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ULAPPH CLOUD DESKTOP SYSTEM
@@ -14,7 +14,7 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0002
 //REV DATE: 	2014-Oct-08
-//REV DESC:		Started public domain sample-project.appspot.com at GoDaddy.com
+//REV DESC:		Started public domain ulapph-public-1.appspot.com at GoDaddy.com
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0003
@@ -396,7 +396,7 @@ const (
 	///////////////////////////////////////////////////////////////
 	// BUILD PARAMETERS
 	///////////////////////////////////////////////////////////////
-    UCD_BUILD_STR = "BUILD_2018-01-12-01-06-28"
+    UCD_BUILD_STR = "BUILD_2017-04-21-08-51-00"
     ///////////////////////////////////////////////////////////////
 	// ON SITE TOTAL DOWN, REDIRECT TO A DEFAULT PAGE/DOC
 	// !!!CONFIG-STARTS-HERE!!!
@@ -404,13 +404,13 @@ const (
 	//Youtube channel showing how to use the current version
     SYS_TUTORIALS_CHANNEL = "https://www.youtube.com/embed?list=PLHGslGB8z3_kDrebayoNNLc7VnXVfjuRZ&autoplay=0"
 	//uninstaller admin key
-    SYS_UNINSTALL_KEY = `secret-key`
+    SYS_UNINSTALL_KEY = `dleuaoonrfq0nzqx`
 	//default issue page
     SYS_DOWN_ENABLE = false
 	//change url to https
-    SYS_CHG_HTTPS = true
+	SYS_CHG_HTTPS = false
 	//enable https
-    SYS_HTTPS = true
+    SYS_HTTPS = false
 	//default start menu
     SYS_DEFAULT_MENU_GIT = "https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/ULAPPH%20Cloud%20Desktop%20System%20Start%20Menu"
     DEFAULT_DOWN_URL = `/img/overquota.png`
@@ -423,17 +423,17 @@ const (
 	CLOUD_NAME = "ULAPPH"
 	COMPANY_ID = "BSIDEV"
 	//server nick name
-    SYS_SERVER_NAME = `sample-project`
-    APP_DESC = `Sample Project`
-    SITE_SLOGAN = `Your slogan goes here`
+    SYS_SERVER_NAME = ``
+    APP_DESC = ``
+    SITE_SLOGAN = ``
 	//referral id
     //SYS_REFERRAL_ID = ``
 	//app buttons
-    APP_LEFT_BUTTON = `Slides`
-    APP_RIGHT_BUTTON = `Articles`
-    APP_TOP_BUTTON = `Help`
-    APP_BOTTOM_BUTTON = `About`
-    APP_PLAY_BUTTON = `Index`
+    APP_LEFT_BUTTON = ``
+    APP_RIGHT_BUTTON = ``
+    APP_TOP_BUTTON = ``
+    APP_BOTTOM_BUTTON = ``
+    APP_PLAY_BUTTON = ``
 	//current version
 	SYS_VERSION = 1
 	// admin/programmer/superuser email (only this user can access admin-setup)
@@ -447,11 +447,11 @@ const (
 	// customer feedback email
     FDBKMAIL = `edwin.d.vinas@gmail.com`
 	// premium/super user flag to disable/enable certain features
-    SYS_SUPER_USER = true
+	SYS_SUPER_USER = false
 	//domain referer match
-	domRefMatchG   = "http://sample-project.appspot.com/"
-	domRefMatchS   = "https://sample-project.appspot.com/"
-	domRefMatchLO   = "http://sample-project.appspot.com/"
+	domRefMatchG   = "http://ulapph-public-1.appspot.com/"
+	domRefMatchS   = "https://ulapph-public-1.appspot.com/"
+	domRefMatchLO   = "http://ulapph-public-1.appspot.com/"
 	googleRefMatchG   = ".google.com/"
 	googleRefMatchS   = ".google.com/"
 	//playground enabled
@@ -461,9 +461,9 @@ const (
 	// Change them via Ulapph Cloud Desktop Manager VBA tool
 	///////////////////////////////////////////////////////////////
 	//enable/diable expanded UWM on login
-    SYS_UWM_EXPANDED = true
+	SYS_UWM_EXPANDED = false
 	//bypass access to contentsAll by key
-    SYS_BYPASS_PRIV_KEY = `secret-key`
+	SYS_BYPASS_PRIV_KEY = ``
 	//enable/disable search engine
     SYS_SEARCHABLE = true
 	//extended search flag
@@ -474,36 +474,36 @@ const (
 	//allow search engines before this timeslot
     SYS_SEARCH_BEF_TIME = `05:00:00`
 	//enable/disable site private
-    SYS_SITE_PRIVATE = true
+    SYS_SITE_PRIVATE = false
 	//enable display of default slide or article as homepage
     SYS_DISP_HOMEPAGE_CFG = true
 	//enable custom home theme
-    SYS_CUSTOM_HOME_THEME = false
+	SYS_CUSTOM_HOME_THEME = false
 	//enable/disable slide/article templates
     SYS_ENABLE_TEMPLATES = true
 	//enable/disable manual registration of users
-    SYS_REGISTRATION_MANUAL = true
+    SYS_REGISTRATION_MANUAL = false
 	// enable/disable auto-registration
 	// set to false if you want to approve all new users
-    SYS_AUTO_REG_ENABLE = false
+    SYS_AUTO_REG_ENABLE = true
 	//slide color
-    SYS_SLIDE_COLOR = `#3B653D`
+    SYS_SLIDE_COLOR = ``
 	//slide gradient from
-    SYS_SLIDE_FROM = `#f5f5f5`
+    SYS_SLIDE_FROM = ``
 	//slide gradient from
-    SYS_SLIDE_TO = `#f5f5dc`
+    SYS_SLIDE_TO = ``
 	// enable/disable switching from slide to article for mobile devices
-    SYS_CHK_AUTO_SL2ART = true
+    SYS_CHK_AUTO_SL2ART = false
 	//enable/disable display of 1,2,3 slides/article ads
-    SYS_DISP_ADS_CONTENT = false
+    SYS_DISP_ADS_CONTENT = true
 	//advertisement server
     SYS_DISP_ADS_HOST = ``
 	//chat redirect server
     SYS_CHAT_REDIR = ``
 	//chat help text
-    SYS_CHAT_HELP = `https://goo.gl/vX4wdC`
+    SYS_CHAT_HELP = ``
 	//default url for chat support
-    SYS_GUEST_CHAT_URL = `https://goo.gl/lBasrn`
+    SYS_GUEST_CHAT_URL = ``
 	//enable/disable display of alertify contents/ads at the right
     SYS_DISP_ADS_RIGHT = true
 	//enable/disable social sites (contentsAll)
@@ -511,9 +511,9 @@ const (
 	//max allowed comments
     SYS_MAX_SOC_COMMENTS = 100
 	//re-captcha key
-    SYS_RECAPTCHA_KEY = `secret-key`
+    SYS_RECAPTCHA_KEY = ``
 	//re-captcha secret
-    SYS_RECAPTCHA_SECRET = `secret-key`
+    SYS_RECAPTCHA_SECRET = ``
 	//enable/disable search form (contentsAll)
     SYS_DISP_SEARCH = false
 	//enable/disable motd (all)
@@ -521,7 +521,7 @@ const (
 	//enable/disable bible on guest/main desktops
     //SYS_DISP_BELIEF = true
 	//link to bible or belief
-    SYS_DISP_URL_BELIEF = `your-belief-url`
+    SYS_DISP_URL_BELIEF = ``
 	//enable/disable stream on guest/main desktops
     //SYS_DISP_STREAM = true
 	// enable/disable ads view/click emailer
@@ -533,7 +533,7 @@ const (
 	//enable/disable about page
     SYS_DISP_ABOUT = true
 	//enable/disable logo
-    SYS_DISP_LOGO = `http://lh3.googleusercontent.com/lj4uOs3pT_h4R0iZSDUWBuRftqvKrp71rNes8hHeBA0TMaIRnLOQVBf3Azm9ff9JRah6x8YHV_HV-VkImUGdm_OZJcBVOQ`
+    SYS_DISP_LOGO = ``
 	// enable/disable action - want to own private ulapph
     SYS_ACTION_WANT_OWN = false
 	// enable/disable system messages log
@@ -543,7 +543,7 @@ const (
 	// enable/disable admin channels messaging (email only)
     //SYS_MSG_CHRT2_ENABLE = false
 	//enable realtime alertify notifications
-    SYS_REALTIME_NOTIFS = true
+    SYS_REALTIME_NOTIFS = false
 	// enable disable logging of user access/activities
     SYS_LOG_ACTIVITY = true
 	//enable/disable notifications to all users via channels
@@ -577,9 +577,9 @@ const (
 	// enable/disable checking if ok to run cron jobs
     SYS_CHECK_OK_TO_TUN = true
 	//enable/disable earthquake monitoring
-    SYS_EARTHQUAKE_MON = true
+    SYS_EARTHQUAKE_MON = false
 	//if earthquake mon enabled, enable/disable send to Admin
-    SYS_EQ_MON_MSG = true
+    SYS_EQ_MON_MSG = false
 	//enable/disable guest login
     SYS_GUEST_LOGIN = true
 	//enable/disable guest uwm
@@ -593,17 +593,17 @@ const (
 	//allow auto open slides
     SYS_OPEN_AUTO = `Y`
 	//contentsall display headers
-    SYS_CONTENTS_HDR_ON = `N`
+    SYS_CONTENTS_HDR_ON = `Y`
 	//enable ajax loader
     SYS_AJAX_LOAD_ON = `N`
 	//trim content titles
 	//SYS_CON_TRIM_TITLE = 25
 	//firebase channels
-    SYS_CHAT_PUB_ROOM_ID = `secret-key`
-    SYS_CHAT_WORLD_ROOM_ID = `secret-key`
-    SYS_CHAT_COUNTRY_ROOM_ID = `secret-key`
+    SYS_CHAT_PUB_ROOM_ID = ``
+    SYS_CHAT_WORLD_ROOM_ID = ``
+    SYS_CHAT_COUNTRY_ROOM_ID = ``
 	//set uwm colors random
-    SYS_UWM_RAN_COLORS = true
+    SYS_UWM_RAN_COLORS = false
 	//animated toolbar icons
 	//SYS_TOOLBAR_ICONS_ANIM = ``
 	//enable/disable local note after media upload
@@ -620,7 +620,7 @@ const (
     DEFAULT_NEWS_DOC_ID = 17
     DEFAULT_NEWS_ARCHIVE_DOC_ID = 18
 	//content tiles (for both slide and article)
-    DEFAULT_NUM_TILES_TOP = 50
+    DEFAULT_NUM_TILES_TOP = 18
 	//trending & new limit
 	DEFAULT_NUM_TREN_NEW = 10
 	//default slide template
@@ -655,71 +655,71 @@ const (
 	//TDSUSERS login expiration
     LOGIN_HOURS_EXPR = 6
 	//def ringtone
-    DEFAULT_RING_TONE = `/audio/pop.wav`
-    DEFAULT_CHAT_TONE = `/audio/pop.wav`
-    DEFAULT_SLIDE_TONE = `/audio/page-flip-15.wav`
+    DEFAULT_RING_TONE = ``
+    DEFAULT_CHAT_TONE = ``
+    DEFAULT_SLIDE_TONE = ``
 	//set SOUND slides on/off
     SLIDE_SOUND_SET = `ON`
 	//enable/disable custom wallpapers by non-admins
     SYS_WALLP_ADMIN_ONLY = false
 	//force wallpaper image
-    FIXED_WALLPAPER_IMG = ``
+	FIXED_WALLPAPER_IMG = ``
 	//when no wallpaper was set, use default list (indicate list and total)
 	WALLPAPERS_LIST_DEF_LST = ""
 	WALLPAPERS_LIST_DEF_TOT = "20"
 	//Tiles Banners
-    LATEST_ARTICLES_SLIDES_BG = `/img/background19.png`
-    PINNED_ARTICLES_SLIDES_BG = `/img/background12.jpg`
-    TOP_ARTICLES_SLIDES_BG = `/img/background10.jpg`
+    LATEST_ARTICLES_SLIDES_BG = ``
+    PINNED_ARTICLES_SLIDES_BG = ``
+    TOP_ARTICLES_SLIDES_BG = ``
 	//End of slides/aeticles about us info
-    INFO_ABOUT_US = `This is a sample project powered by ULAPPH Cloud Desktop!`
+    INFO_ABOUT_US = ``
 	//max url fetch lines per user
     MAX_URL_FETCH_LINES = 1000
 	//Mime types list
 	MIME_TYPES_LIST_URL = "https://golang.org/misc/nacl/testdata/mime.types?m=text"
 	//Encryption key
-    ENCRYPTION_KEY = `secret-key`
+    ENCRYPTION_KEY = ``
 	//D0028
 	//extended search gen key
-    EXT_SEARCH_GEN_KEY = `secret-key`
+    EXT_SEARCH_GEN_KEY = ``
 	//Things API key
-    THINGS_API_KEY = `secret-key`
+    THINGS_API_KEY = ``
 	//Commands API key
-    CMD_API_KEY = `secret-key`
+    CMD_API_KEY = ``
 	//Generic API Key
-    CMD_GEN_KEY = `secret-key`
+    CMD_GEN_KEY = ``
 	//FIREBASE_URL = ""
 	//paypal	
-    PAYPAL_PREMIUM_COST = `0`
-    PAYPAL_CURRENCY = `PHP`
-    PAYPAL_MERCHANT_ID = `paypal-id`
+    PAYPAL_PREMIUM_COST = ``
+    PAYPAL_CURRENCY = ``
+    PAYPAL_MERCHANT_ID = ``
 	//general autocomplete
-    GITURL_AUTOCOMP_LIST = `https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/AUTOCOMPLETE/general`
+    GITURL_AUTOCOMP_LIST = ``
     GITURL_PUSH_LEFT = ``
     GITURL_PUSH_RIGHT = ``
-    GITURL_PUSH_TOP = `https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/PUSH_MENU/general_top`
-    GITURL_PUSH_BOTTOM = `https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/PUSH_MENU/general_bottom`
+    GITURL_PUSH_TOP = ``
+    GITURL_PUSH_BOTTOM = ``
 	//apps provider
-    GITURL_PROVIDER_MSFT = `https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/PROVIDERS/Microsoft`
-    GITURL_PROVIDER_DB = `https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/PROVIDERS/Dropbox`
-    GITURL_PROVIDER_GOGL = `https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/PROVIDERS/Google`
+    GITURL_PROVIDER_MSFT = ``
+    GITURL_PROVIDER_DB = ``
+    GITURL_PROVIDER_GOGL = ``
 	///////////////////////////////////////////////////////////////
 	// SMS GATEWAY
 	///////////////////////////////////////////////////////////////
-    SEMAPHORE_API_KEY = `secret-key`
-    SMS_CONTACT_NBR = `sms-number`
-    SEMAPHORE_SENDER_NAME = `name-here`
+    SEMAPHORE_API_KEY = ``
+    SMS_CONTACT_NBR = ``
+    SEMAPHORE_SENDER_NAME = ``
 	///////////////////////////////////////////////////////////////
 	///////////////////////////////////////////////////////////////
 	// SOCIAL SITES
 	///////////////////////////////////////////////////////////////
-    SOCIAL_LINK_PLUS = `https://plus.google.com/115284716891040341549/posts/p/pub`
-    SOCIAL_LINK_YOUTUBE = `https://www.youtube.com/channel/UClFiPiqztKTk0Gu3p8R8ewg`
-    SOCIAL_LINK_FB = `https://www.facebook.com/edwin.vinas.18`
-    SOCIAL_LINK_LINKEDIN = `https://ph.linkedin.com/in/edwindvinas`
-    SOCIAL_LINK_TWITTER = `https://twitter.com/edwindvinas`
+    SOCIAL_LINK_PLUS = ``
+    SOCIAL_LINK_YOUTUBE = ``
+    SOCIAL_LINK_FB = ``
+    SOCIAL_LINK_LINKEDIN = ``
+    SOCIAL_LINK_TWITTER = ``
 	//ADD THIS PUB ID
-    SYS_ADD_THIS_PUB_ID = `your-pub-id`
+    SYS_ADD_THIS_PUB_ID = ``
 	////////////////////////////////////////////////////////////////
 	// GOOGLE ADSENSE & OTHER ADS
 	////////////////////////////////////////////////////////////////
@@ -732,34 +732,34 @@ const (
 	// API KEYS
 	///////////////////////////////////////////////////////////////
 	//Youtube Dev Key
-    YOUTUBE_DEVELOPER_KEY = `secret-key`
+	YOUTUBE_DEVELOPER_KEY = "AIzaSyDAcog64LHTqpjgACEXp3k9B7sbD9I9q2I"
 	//Google Plus
 	apiKey = ""
 	plusResMax = 20
 	//URL Shortener Key
-    apiKeyUs = `secret-key`
+    apiKeyUs = ``
 	//Firebase Real-time DB
-    FIREBASE_URL = `firebase-url-here`
+    FIREBASE_URL = ``
 	//Firebase server json
-    FIREBASE_SERVER_JSON = `firebase-json-here`
+    FIREBASE_SERVER_JSON = ``
 	//D0033
 	//MyDrives
 	//Google Drive
-    GOOGLE_OAUTH2_CLIENTID = `secret-id`
-    GOOGLE_OAUTH2_SECRET = `secret-key`
-    GOOGLE_OAUTH2_AUTH = `https://accounts.google.com/o/oauth2/auth`
-    GOOGLE_OAUTH2_TOKEN = `https://accounts.google.com/o/oauth2/token`
-    GOOGLE_OAUTH2_STATE = `secret-key`
+    GOOGLE_OAUTH2_CLIENTID = ``
+    GOOGLE_OAUTH2_SECRET = ``
+    GOOGLE_OAUTH2_AUTH = ``
+    GOOGLE_OAUTH2_TOKEN = ``
+    GOOGLE_OAUTH2_STATE = ``
 	//GAE Admin API
-    ADMIN_OAUTH2_CLIENTID = `client-id-here`
-    ADMIN_OAUTH2_SECRET = `secret-key`
+    ADMIN_OAUTH2_CLIENTID = ``
+    ADMIN_OAUTH2_SECRET = ``
 	//Github
 	//GITHUB_USER_NAME = ``
-    GITHUB_CLIENT_ID = `client-id-here`
-    GITHUB_CLIENT_SECRET = `secret-key`
-    GITHUB_OAUTH2_STATE = `secret-key`
-    GITHUB_AUTH_URL = `https://github.com/login/oauth/authorize`
-    GITHUB_TOKEN_URL = `https://github.com/login/oauth/access_token`
+    GITHUB_CLIENT_ID = ``
+    GITHUB_CLIENT_SECRET = ``
+    GITHUB_OAUTH2_STATE = ``
+    GITHUB_AUTH_URL = ``
+    GITHUB_TOKEN_URL = ``
     ///////////////////////////////////////////////////////////////
 	// CUSTOM PARAMETERS (TABLES)
 	///////////////////////////////////////////////////////////////
@@ -797,42 +797,42 @@ const (
 	///////////////////////////////////////////////////////////
 	// MOTD SAVED MEDIA TEXT FILES
 	///////////////////////////////////////////////////////////
-    MOTD_1_mediaID = 688
+    MOTD_1_mediaID = 272
     MOTD_1_name = `Quotations`
-    MOTD_2_mediaID = 689
+    MOTD_2_mediaID = 273
     MOTD_2_name = `Bible`
-    MOTD_3_mediaID = 690
+    MOTD_3_mediaID = 274
     MOTD_3_name = `Jokes`
-    MOTD_4_mediaID = 691
+    MOTD_4_mediaID = 275
     MOTD_4_name = `Saving`
-    MOTD_5_mediaID = 692
+    MOTD_5_mediaID = 276
     MOTD_5_name = `Blogging`
-    MOTD_6_mediaID = 693
-    MOTD_6_name = `Fitness & Health`
-    MOTD_7_mediaID = 694
-    MOTD_7_name = `Programming`
-    MOTD_8_mediaID = 695
+    MOTD_6_mediaID = 277
+    MOTD_6_name = `Health`
+    MOTD_7_mediaID = 278
+    MOTD_7_name = `Fitness`
+    MOTD_8_mediaID = 279
     MOTD_8_name = `Interview`
-    MOTD_9_mediaID = 696
+    MOTD_9_mediaID = 280
     MOTD_9_name = `Business`
-    MOTD_10_mediaID = 697
+    MOTD_10_mediaID = 281
     MOTD_10_name = `Life`
-    MOTD_11_mediaID = 698
+    MOTD_11_mediaID = 282
     MOTD_11_name = `TableTopics`
 	//people
-    MOTD_12_mediaID = 702
+    MOTD_12_mediaID = 706
     MOTD_12_name = `People`
 	//inventions
-    MOTD_13_mediaID = 701
+    MOTD_13_mediaID = 707
     MOTD_13_name = `Invention`
 	//timeline & history
-    MOTD_14_mediaID = 703
+    MOTD_14_mediaID = 708
     MOTD_14_name = `Timeline`
 	//general knowledge
-    MOTD_15_mediaID = 700
+    MOTD_15_mediaID = 709
     MOTD_15_name = `GeneralInfo`
 	//culture
-    MOTD_16_mediaID = 699
+    MOTD_16_mediaID = 710
     MOTD_16_name = `Culture`
 	///////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////
@@ -951,7 +951,7 @@ type Desktops struct {
 	RLink string `json:"rLink"`
 	SLink string `json:"sLink"`
 }
- 
+
 //icons
 type Icons struct {
 	IconLink string `json:"iconLink"`
@@ -1038,7 +1038,7 @@ type TDSCOMIDX struct {
 	USERS []string
 	NUM_COMMENTS int
 	TAGS []string
-}
+} 
 //D0040			
 type TDSCOMMENT struct {
 	CID int
@@ -1074,7 +1074,7 @@ type resultContainer struct {
 	Message  string    `json:"message"`
 	Comments []Comment `json:"comments,omitempty"`
 }
- 
+
 ///////////////////////////////////////////////////////////////	
 ///////////////////////////////////////////////////////////////
 // RANDOMIZERS
@@ -1315,10 +1315,9 @@ var adsEffs = []string{"flash",
 //List of undeletable accounts - these can't be maintained in web admin-setup
 var isExceptionAccount = map[string]bool{"ulapph@gmail.com":true,}
 //List of allowed search engines (note enable SYS_SEARCHABLE flag as well)
-var isSearchEngineAllowed = map[string]bool{"US.?.?":false,"CN.?.?":false,"RU.?.?":false,"UA.?.?":false,"MX.?.?":false,"TM.?.?":false,}
-
+var isSearchEngineAllowed = map[string]bool{"US.?.?":true,"CN.?.?":true,"RU.?.?":true,"UA.?.?":true,"MX.?.?":true,"TM.?.?":true,}
 //List of allowed countries
-var isCountryAllowed = map[string]bool{"PH":true,}
+var isCountryAllowed = map[string]bool{}
 //List of disallowed countries
 var isCountryNotAllowed = map[string]bool{"RU":false,}
 //List of countries
@@ -1817,7 +1816,7 @@ type TDSLOGS struct {
     ACCESS_MAP_TEXT []byte
 	ACCESS_LOG_CTR int
 }
- 
+
 //TDSCATS datastore
 type TDSCATS struct {
 	CAT_NUM int
@@ -2760,7 +2759,7 @@ func root(w http.ResponseWriter, r *http.Request) {
 	i := strings.Index(query, "token-qr@@@")
 	if i != -1 {
 		SPL := strings.Split(query, "@@@")
-		redURL := fmt.Sprintf("https://sample-project.appspot.com/?q=token-qr&user=%v&tok=%v&isDesktop=%v&targetURL=%v", SPL[1], SPL[2], SPL[3], SPL[4])
+		redURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/?q=token-qr&user=%v&tok=%v&isDesktop=%v&targetURL=%v", SPL[1], SPL[2], SPL[3], SPL[4])
 		http.Redirect(w, r, redURL, http.StatusFound)
 		return		
 	}
@@ -2768,7 +2767,7 @@ func root(w http.ResponseWriter, r *http.Request) {
 	i = strings.Index(query, "login@888@")
 	if i != -1 {
 		query = strings.Replace(query, "@888@", "&", -1)
-		redURL := fmt.Sprintf("https://sample-project.appspot.com/?q=%v", query)
+		redURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/?q=%v", query)
 		http.Redirect(w, r, redURL, http.StatusFound)
 		return
 	}
@@ -2816,11 +2815,11 @@ func root(w http.ResponseWriter, r *http.Request) {
 					if FL_VALID_USER == true {
 						if GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER" {
 							//notify all users of this event via channels
-							msgDtl3 := fmt.Sprintf("UID:%v has returned to ULAPPH https://sample-project.appspot.com %v", uid, viaStr)
+							msgDtl3 := fmt.Sprintf("UID:%v has returned to ULAPPH https://ulapph-public-1.appspot.com %v", uid, viaStr)
 							data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "ULAPPH", msgDtl3)
 							ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")	
 							ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
-							sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid, "https://sample-project.appspot.com",""),"")
+							sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid, "https://ulapph-public-1.appspot.com",""),"")
 							checkHomepageSettings(w,r,"")
 							return						
 						}
@@ -2832,20 +2831,20 @@ func root(w http.ResponseWriter, r *http.Request) {
 						msgDtl3 := ""
 						if u == nil {
 							msg := getGeoString(w,r)
-							msgDtl3 = fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com %v", msg, viaStr)
-							msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com %v", msg, viaStrB)
+							msgDtl3 = fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com %v", msg, viaStr)
+							msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com %v", msg, viaStrB)
 							data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "ULAPPH-VISITOR", msgDtl3b)
 							ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")
 							ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
 						}else{
 							msg = uid
-							msgDtl3 = fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com %v", msg, viaStr)
-							msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com %v", msg, viaStrB)
+							msgDtl3 = fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com %v", msg, viaStr)
+							msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com %v", msg, viaStrB)
 							data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "ULAPPH-VISITOR", msgDtl3b)
 							ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")	
 							ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
 						}
-						sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,msg, "https://sample-project.appspot.com",""),"")
+						sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,msg, "https://ulapph-public-1.appspot.com",""),"")
 						checkHomepageSettings(w,r,"")
 						return						
 					}
@@ -2853,12 +2852,12 @@ func root(w http.ResponseWriter, r *http.Request) {
 				//WHEN USER IS NOT LOGGED IN
 					//notify all users of this event via channels
 					msg := getGeoString(w,r)
-					msgDtl3 := fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com %v", msg, viaStr)
-					msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com %v", msg, viaStrB)
+					msgDtl3 := fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com %v", msg, viaStr)
+					msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com %v", msg, viaStrB)
 					data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "ULAPPH-VISITOR", msgDtl3b)
 					ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")	
 					ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
-					sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,msg, "https://sample-project.appspot.com",""),"")
+					sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,msg, "https://ulapph-public-1.appspot.com",""),"")
 					
 					checkHomepageSettings(w,r,"")
 					return
@@ -2867,12 +2866,12 @@ func root(w http.ResponseWriter, r *http.Request) {
 			//WHEN BROWSER IS INTERNET EXPLORER								
 				//notify all users of this event via channels
 				msg := getGeoString(w,r)
-				msgDtl3 := fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com/?q=home %v", msg, viaStr)
-				msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://sample-project.appspot.com/?q=home %v", msg, viaStrB)
+				msgDtl3 := fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com/?q=home %v", msg, viaStr)
+				msgDtl3b := fmt.Sprintf("UID:%v has visited ULAPPH https://ulapph-public-1.appspot.com/?q=home %v", msg, viaStrB)
 				data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "ULAPPH-VISITOR", msgDtl3b)
 				ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")	
 				ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
-				sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,msg, "https://sample-project.appspot.com/?q=home",""),"")
+				sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,msg, "https://ulapph-public-1.appspot.com/?q=home",""),"")
 				checkHomepageSettings(w,r,"")
 				return
 			}
@@ -2974,7 +2973,7 @@ func root(w http.ResponseWriter, r *http.Request) {
 			
 			_, uid := checkSession(w,r)
 			_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
- 
+
 			currDesktop := "desktop0"
 			
 			//get user privilege
@@ -3450,7 +3449,7 @@ func root(w http.ResponseWriter, r *http.Request) {
 					}
 					renderStaticWithTEMPSTRUCT2(w,r,&TEMPDATA,".htmlHeaderBodyToken")
 					
-					qrUrl := fmt.Sprintf("https://sample-project.appspot.com/?q=token-qr@@@%v@@@%v@@@%v@@@%v", uid, token, isDesktopClient, targetURL)
+					qrUrl := fmt.Sprintf("https://ulapph-public-1.appspot.com/?q=token-qr@@@%v@@@%v@@@%v@@@%v", uid, token, isDesktopClient, targetURL)
 					apiLink := fmt.Sprintf("https://chart.googleapis.com/chart?cht=qr&chs=340x340&chl=%v&choe=UTF-8", qrUrl)
 					
 					thisFrame := fmt.Sprintf("<iframe src='%v' frameborder=0 scrolling=false allowtransparency=true width=350px height=350px align=center></iframe>", apiLink)
@@ -3677,7 +3676,7 @@ func delaySecond(n time.Duration) {
 	 time.Sleep(n * time.Second)
 	 return
 }
- 
+
 //get channel key given the channel ID
 //used by Firebase channel
 func getKeyChannel(c appengine.Context, ChanID string) *datastore.Key {
@@ -5239,7 +5238,7 @@ func registration(w http.ResponseWriter, r *http.Request) {
 					
 				} else {
 					//send message to admin
-					approverLink := fmt.Sprintf("https://sample-project.appspot.com/admin-setup?ADMIN_FUNC=TDSUSERS-APPROVE&USER=%v", uid)
+					approverLink := fmt.Sprintf("https://ulapph-public-1.appspot.com/admin-setup?ADMIN_FUNC=TDSUSERS-APPROVE&USER=%v", uid)
 					contentMsg := fmt.Sprintf("[ULAPPH] Registered new user pending approval by admin. USER: %v >>> APPROVER LINK: %v", uid, approverLink)
 					laterNotifyGB.Call(c, "autoNotifyPeopleGB", ADMMAIL, contentMsg, uid)	
 					//notify all users of this event via channels
@@ -5393,7 +5392,7 @@ func sysmsg(w http.ResponseWriter, r *http.Request) {
 			  panic(err)
 			}
 			return
- 
+
 		case action == "U00189":
 			if err := htmlHeaderModal.Execute(w, getBasicColors(w,r)); err != nil {
 			  panic(err)
@@ -6083,7 +6082,7 @@ func displayOauthIcons(w http.ResponseWriter, r *http.Request, TARGET_URL, lref 
 	
 	return
 }
- 
+
 //D0037
 //Executes content as template
 func ulapphGo(w http.ResponseWriter, r *http.Request) {
@@ -6441,8 +6440,8 @@ func promptLogin(w http.ResponseWriter, r *http.Request, LFUNC string) {
 					
 	}
 }
- 
-//displays eCharts for the different stats
+
+//displays eCharts for the different stats 
 func displayEcharts(w http.ResponseWriter, r *http.Request, TARGET, NAME, div string) {
 	//c := appengine.NewContext(r)
 	
@@ -6478,8 +6477,8 @@ func displayEcharts(w http.ResponseWriter, r *http.Request, TARGET, NAME, div st
 	
 	return
 }
- 
-//displays eCharts Bar charts
+
+//displays eCharts Bar charts 
 func displayEchartsBar(w http.ResponseWriter, r *http.Request, TARGET, NAME, div string) {
 	//OVERALL_HITS_IND_%v
 	data := getBytMemcacheValueByKey(w,r,TARGET)
@@ -6497,8 +6496,8 @@ func displayEchartsBar(w http.ResponseWriter, r *http.Request, TARGET, NAME, div
 	
 	return
 }
- 
-//saves a cache of the ACB data
+
+//saves a cache of the ACB data 
 func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb []byte) {
 	c := appengine.NewContext(r)
 	
@@ -6579,8 +6578,8 @@ func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb [
 	}
 }
  
- 
-//redirects to Google login
+
+//redirects to Google login 
 func loginGoogle(w http.ResponseWriter, r *http.Request, urlStr string) {
 	c := appengine.NewContext(r)
 	
@@ -6593,8 +6592,8 @@ func loginGoogle(w http.ResponseWriter, r *http.Request, urlStr string) {
 	w.WriteHeader(http.StatusFound)
 	return
 }
- 
-//checks if IP address is blocked
+
+//checks if IP address is blocked 
 func isIpAddressBlocked(w http.ResponseWriter, r *http.Request, ip string) (IS_BLOCKED bool) {
 	//c := appengine.NewContext(r)
 	IS_BLOCKED = true
@@ -6617,14 +6616,14 @@ func blockIP(w http.ResponseWriter, r *http.Request,ip, mode string) {
 	putStrToMemcacheWithExp(w,r,cKey,"Y",GEN_CONTENT_EXPIRES4)
  
 }
- 
-//unblocks an IP address
+
+//unblocks an IP address 
 func unBlockIP(w http.ResponseWriter, r *http.Request,ip,mode string) {
 	cKey := fmt.Sprintf("BLOCKED_IP_%v", ip)
 	putStrToMemcacheWithExp(w,r,cKey,"N",GEN_CONTENT_EXPIRES4)
  
 }
- 
+
 //check is user is an Admin
 func isAdmin(w http.ResponseWriter, r *http.Request) bool {
 	_, uid := checkSession(w,r)
@@ -6655,10 +6654,10 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	
 	checkSysIns(w,r)
- 
+
 	_, uid := checkSession(w,r)
 	_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
- 
+
 	FUNC_CODE := "GET_GRP_ID"
 	FL_ADMIN_USER := false
 	FL_VALID_USER, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
@@ -6794,7 +6793,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 								thisNum := str2int(SPL3[0])
 								thisName := fmt.Sprintf("desktop%v", thisNum)
 								thisDesc := SPL3[1]
- 
+
 								//should check if row exists
 								desktopKey := fmt.Sprintf("%v", thisName)
 								q := datastore.NewQuery("TDSCATS").Filter("__key__ =", getKeyDesktop(c,desktopKey))
@@ -6859,7 +6858,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				putStrToMemcacheWithoutExp(w,r,cKey,"")
 				cKey = "DESKTOPS_LIST_JSON"
 				putBytesToMemcacheWithoutExp(w,r,cKey,[]byte(""))
- 
+
 				//redirect
 				redURL := fmt.Sprintf("/tools?FUNC=ALL_DESKTOPS")
 				http.Redirect(w, r, redURL, http.StatusFound)
@@ -6892,7 +6891,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
- 
+
 				for s.Scan() {
 					buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 				}
@@ -6934,7 +6933,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
- 
+
 				for s.Scan() {
 					buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 				}
@@ -7001,7 +7000,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 						CATEGORY = r.FormValue("CATEGORY")
 						ADS_IMG = r.FormValue("IMG_URL")
 						MUSIC_ID := r.FormValue("MUSIC_ID")
-						ADS_URL = fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v&MUSIC_ID=%v", DOC_ID, DOC_ID, MUSIC_ID)
+						ADS_URL = fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v&MUSIC_ID=%v", DOC_ID, DOC_ID, MUSIC_ID)
 					
 					case "SLIDE":
 						ADS_TYPE = "SLIDE"
@@ -7011,7 +7010,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 						CATEGORY = r.FormValue("CATEGORY")
 						ADS_IMG = r.FormValue("IMG_URL")
 						MUSIC_ID := r.FormValue("MUSIC_ID")
-						ADS_URL = fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=&SOUND=ON", DOC_ID, DOC_ID, MUSIC_ID)
+						ADS_URL = fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=&SOUND=ON", DOC_ID, DOC_ID, MUSIC_ID)
 						
 					default:
 						MEDIA_ID2 := r.FormValue("MEDIA_ID")
@@ -7021,9 +7020,9 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 						ADS_TYPE = "HTML"
 						ADS_IMG = r.FormValue("IMG_URL")
 						if TYPE == "text" {
-							ADS_URL = fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v", MEDIA_ID, MEDIA_ID)
+							ADS_URL = fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v", MEDIA_ID, MEDIA_ID)
 						} else {
-							ADS_URL = fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", MEDIA_ID, MEDIA_ID)
+							ADS_URL = fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", MEDIA_ID, MEDIA_ID)
 						}
 						
 					
@@ -7067,7 +7066,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 						//return
 					}
- 
+
 					//clear ads id cache
 					ADS_ID_CACHE_KEY := fmt.Sprintf("ADS_ID_CACHE_%v", p.ADS_ID)
 					putStrToMemcacheWithoutExp(w,r,ADS_ID_CACHE_KEY,"")
@@ -7105,7 +7104,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
- 
+
 				for s.Scan() {
 					buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 				}
@@ -7172,7 +7171,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
- 
+
 				for s.Scan() {
 					buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 				}
@@ -7205,10 +7204,10 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				//update cache
 				BLOB_KEY := ""
 				BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, MEDIA_ID)	
- 
+
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
- 
+
 				PUBLIC_WP_LIST_STR := ""
 				for s.Scan() {
 					if len(s.Text()) > 0 {
@@ -7261,7 +7260,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				//update cache
 				BLOB_KEY := ""
 				BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, MEDIA_ID)	
- 
+
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
@@ -7303,7 +7302,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
- 
+
 				for s.Scan() {
 					buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 				}
@@ -7358,7 +7357,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 					http.Redirect(w, r, sysReq, http.StatusFound)
 					return
 				  }
- 
+
 				  if g.NUM_VAL > 0 {
 						
 					//get config id
@@ -7391,7 +7390,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 					http.Redirect(w, r, sysReq, http.StatusFound)
 					return
 				  }
- 
+
 				  if g.NUM_VAL > 0 {
 					//get config id
 					docID := 0
@@ -7485,7 +7484,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				if err := peopleSettingsTemplateHeader2PEOPLEAdmin.Execute(w, uid); err != nil {
 					 panic(err)
 				}
- 
+
 				q := datastore.NewQuery("TDSUSERS").Order("USER_ACC_OPT")
 				//c.Errorf("[S0040]")
 				recCount,_ := q.Count(c)
@@ -7542,7 +7541,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				if pendCtr > 0 {
 				fmt.Fprintf(w, "<h3><font color=red>Pending Approvals: <b>%d</b></font></h3>", pendCtr)
 				}
- 
+
 				if err := peopleSettingsTemplateTableFooter.Execute(w, ""); err != nil {					
 					 panic(err)
 				}
@@ -7740,7 +7739,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				
 				key := datastore.NewKey(c, "TDSUSERS", USER, 0, nil)
 				datastore.Delete(c, key)	
- 
+
 				key = datastore.NewKey(c, "TDSPROF", USER, 0, nil)
 				datastore.Delete(c, key)
  
@@ -7846,7 +7845,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 					}
 					break
 				}
- 
+
 				TEMPDATA := TEMPSTRUCT{
 					STR_FILLER1: isServer,
 					STR_FILLER2: sHost,
@@ -7930,7 +7929,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
  
  
 				fmt.Fprintf(w, "<h3>SUCCESS: SEARCH HAS BEEN SET. SERVER: %v MEDIA_ID: %v</h3>", searchServerName, mediaID)
- 
+
 			case "SET_TEMPLATES_SAVE":
 				htemp := r.FormValue("HomeTemplate")
 				stemp := r.FormValue("SlidesTemplate")
@@ -7949,7 +7948,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 					fmt.Fprintf(w, "<h3>SUCCESS: TEMPLATES CACHE CLEARED!</h3>")
 					return
 				}
- 
+
 				
 				if htemp != "" && htemp != "0" {
 					MEDIA_ID := str2int(htemp)
@@ -8321,7 +8320,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 							
 						} else {
 							//send message to admin
-							approverLink := fmt.Sprintf("https://sample-project.appspot.com/admin-setup?ADMIN_FUNC=TDSUSERS-APPROVE&USER=%v", uid)
+							approverLink := fmt.Sprintf("https://ulapph-public-1.appspot.com/admin-setup?ADMIN_FUNC=TDSUSERS-APPROVE&USER=%v", uid)
 							contentMsg := fmt.Sprintf("[ULAPPH] Registered new user pending approval by admin. USER: %v >>> APPROVER LINK: %v", uid, approverLink)
 							laterNotifyGB.Call(c, "autoNotifyPeopleGB", ADMMAIL, contentMsg, uid)	
 							//notify all users of this event via channels
@@ -8334,7 +8333,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 							
 						}
 						sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,"/registration",""),"")
- 
+
 						//send welcome message to user
 						contentMsg := fmt.Sprintf("[ULAPPH] Hi %v! Welcome to %v! This is a sample ULAPPH message. You can send/receive messages via messaging feature.", uid, getSchemeUrl(w,r))
 						laterNotifyGB.Call(c, "autoNotifyPeopleGB", uid, contentMsg, ADMMAIL)	
@@ -8755,8 +8754,8 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 					
 	   if (dispType == "DESKTOP")  {
 		    //webtop
-			msgDtl3 := fmt.Sprintf("UID:%v accessed https://sample-project.appspot.com/webtop %v", uid, getAccessString(w,r,""))
-			reqStr := fmt.Sprintf("https://sample-project.appspot.com/webtop") 				
+			msgDtl3 := fmt.Sprintf("UID:%v accessed https://ulapph-public-1.appspot.com/webtop %v", uid, getAccessString(w,r,""))
+			reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/webtop") 				
 			sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,reqStr,""),"")
 			TASK_MEMCACHER_desktopWP_loginWP := ""
 			wpKey := fmt.Sprintf("TASK_MEMCACHER_desktopWP_%v_%s", deskName, "loginWP")
@@ -9010,16 +9009,16 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 	}
  
 }
- 
+
 //main function which handles /uwm url
-//it basically outputs the main desktop UI and the sub-desktops up to 1000
+//it basically outputs the main desktop UI and the sub-desktops up to 1000 
 func uwm(w http.ResponseWriter, r *http.Request) {
         c := appengine.NewContext(r)
 		checkHTTPS2(w,r)
         h := r.Header
 		if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
         var buffer bytes.Buffer
- 
+
 		//if this a shared desktop, no need to login
 		TARGET_UWM := r.FormValue("u")
 		passcode := r.FormValue("passcode")
@@ -9051,7 +9050,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 			recCount,_ := q.Count(c)
 			if recCount > 0 {
 				//exists
- 
+				////c.Infof("shared desktop")
 				cats := make([]TDSCATS, 0, 1)
 				if _, err := q.GetAll(c, &cats); err != nil {
 					//panic(err)
@@ -9067,13 +9066,13 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 		
 		if FL_SHARED_OK == true {
 			//https://edwin-daen-vinas.appspot.com?q=ushare&SID=TDSMEDIA-4406&TITLE=test
- 
+			////c.Infof("FL_SHARED_OK")
 			SID := getUWMSource(w,r,user,TARGET_UWM)
 			if SID == "" {
 				fmt.Fprintf(w, "Invalid shared desktop settings!")
 				return
 			}
- 
+			////c.Infof("redir ushare")
 			sysReq := fmt.Sprintf("/?q=ushare&SID=%v&TITLE=%v", SID, "Shared Desktop")
 			http.Redirect(w, r, sysReq, http.StatusFound)
 			return
@@ -9114,8 +9113,8 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 		   dispType := "DESKTOP"
 		
 		   if (dispType == "DESKTOP")  {
-				msgDtl3 := fmt.Sprintf("UID:%v accessed https://sample-project.appspot.com/uwm %v", uid, getAccessString(w,r,""))
-				reqStr := fmt.Sprintf("https://sample-project.appspot.com/uwm")
+				msgDtl3 := fmt.Sprintf("UID:%v accessed https://ulapph-public-1.appspot.com/uwm %v", uid, getAccessString(w,r,""))
+				reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/uwm")
 				sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,reqStr,""),"")
 				TASK_MEMCACHER_desktopWP_loginWP := ""
 				wpKey := fmt.Sprintf("TASK_MEMCACHER_desktopWP_%v_%s", deskName, "loginWP")
@@ -9123,7 +9122,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 				TASK_MEMCACHER_desktopWP_bigWP := ""
 				wpKey = fmt.Sprintf("TASK_MEMCACHER_desktopWP_%v_%s", deskName, "bigWP")
 				TASK_MEMCACHER_desktopWP_bigWP = getStrMemcacheValueByKey(w,r,wpKey)
- 
+
 				TEMPDATA5 := TEMPSTRUCT{
 					STR_FILLER1: getStartColor(w,r),
 					STR_FILLER2: getActiveColor(w,r),
@@ -9294,7 +9293,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 				} else {
 					aUser = fmt.Sprintf("%v---%v", uid, TARGET_UWM)
 				}
- 
+
 				tokChan := make(chan Token)
 				tokChanDone := make(chan bool)
 				go createTokenChan(w,r,tokChan,tokChanDone,aUser,"")
@@ -9437,7 +9436,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 		return
  		
 }
- 
+
 //list all desktops
 func desktops(w http.ResponseWriter, r *http.Request) {
 	checkHTTPS2(w,r)
@@ -9487,8 +9486,8 @@ func desktop0(w http.ResponseWriter, r *http.Request) {
 				return
 		   }
 		   if (dispType == "DESKTOP")  {
-				msgDtl3 := fmt.Sprintf("UID:%v accessed https://sample-project.appspot.com/desktop0 %v", uid, getAccessString(w,r,""))
-				sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,"https://sample-project.appspot.com/desktop0",""),"")	
+				msgDtl3 := fmt.Sprintf("UID:%v accessed https://ulapph-public-1.appspot.com/desktop0 %v", uid, getAccessString(w,r,""))
+				sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,"https://ulapph-public-1.appspot.com/desktop0",""),"")	
  
 				USERS_ONLINE_CACHE_KEY := "USERS_ONLINE_LIST"
 				putStrToMemcacheWithoutExp(w,r,USERS_ONLINE_CACHE_KEY,"")
@@ -9500,7 +9499,7 @@ func desktop0(w http.ResponseWriter, r *http.Request) {
 				TASK_MEMCACHER_desktopWP_bigWP := ""
 				wpKey = fmt.Sprintf("TASK_MEMCACHER_desktopWP_%v_desktop0_%s", "bigWP", uid)
 				TASK_MEMCACHER_desktopWP_bigWP = getStrMemcacheValueByKey(w,r,wpKey)
- 
+
 				TEMPDATA5 := TEMPSTRUCT{
 					STR_FILLER1: getStartColor(w,r),
 					STR_FILLER2: getActiveColor(w,r),
@@ -9670,7 +9669,7 @@ func desktop0(w http.ResponseWriter, r *http.Request) {
 				if err := dockStartTemplate.Execute(w, uid); err != nil {
 					 panic(err)
 				}
- 
+
 				tokChan := make(chan Token)
 				tokChanDone := make(chan bool)
 				go createTokenChan(w,r,tokChan,tokChanDone,"","")
@@ -9762,7 +9761,7 @@ func desktop0(w http.ResponseWriter, r *http.Request) {
 					//query TDSCNFG			
 					cfgName := fmt.Sprintf("PERSONAL_Local_Notes_Media_ID_%v", uid)
 					_, nMediaID = getTDSCNFG(w,r,1,cfgName)
- 
+
 					TEMPDATA := TEMPSTRUCT2{
 					STR_FILLER1: "",
 					STR_FILLER2: "",
@@ -9796,11 +9795,11 @@ func desktop0(w http.ResponseWriter, r *http.Request) {
         } 		
  
 }
- 
+
 //main function which handles the /desktop url
 //it displays the desktop and sub-desktops
 //note that uwm and desktop are different UIs
-//the desktop is the one that contains animated toolbars below similar to macOS
+//the desktop is the one that contains animated toolbars below similar to macOS 
 func desktop(w http.ResponseWriter, r *http.Request) {
         c := appengine.NewContext(r)
 		checkHTTPS2(w,r)
@@ -9873,8 +9872,8 @@ func desktop(w http.ResponseWriter, r *http.Request) {
 				uwm(w,r)	
 				return
 			}
-			msgDtl3 := fmt.Sprintf("UID:%v accessed https://sample-project.appspot.com/desktop?d=%v %v", uid, dVal, getAccessString(w,r,""))
-			reqStr := fmt.Sprintf("https://sample-project.appspot.com/desktop?d=%v", dVal)
+			msgDtl3 := fmt.Sprintf("UID:%v accessed https://ulapph-public-1.appspot.com/desktop?d=%v %v", uid, dVal, getAccessString(w,r,""))
+			reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/desktop?d=%v", dVal)
 			sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,reqStr,""),"")	
 				
 			if (dispType == "MOBILE")  {
@@ -10079,7 +10078,7 @@ func desktop(w http.ResponseWriter, r *http.Request) {
 				tok := <-tokChan
 				<-tokChanDone
 				token := tok.Token
- 
+
 				jwtChan := make(chan string)
 				jwtChanDone := make(chan bool)
 				go procAuthFirebase(w,r,jwtChan,jwtChanDone,uid,token)
@@ -10163,7 +10162,7 @@ func desktop(w http.ResponseWriter, r *http.Request) {
 					//query TDSCNFG			
 					cfgName := fmt.Sprintf("PERSONAL_Local_Notes_Media_ID_%v", uid)
 					_, nMediaID = getTDSCNFG(w,r,1,cfgName)
- 
+
 					TEMPDATA := TEMPSTRUCT2{
 					
 					STR_FILLER1: "",
@@ -10199,7 +10198,7 @@ func desktop(w http.ResponseWriter, r *http.Request) {
         }
  		
 }
- 
+
 //this is a function for validating user access
 //note that the logic here is old and this is my code when i was starting golang; see how I created the struct using buffer
 //we can improve this code by passing an actual struct populated the modern way
@@ -10259,9 +10258,9 @@ func genProcAccess(w http.ResponseWriter, r *http.Request, uid, deskName string)
  
 	return FL_VALID_USER2, FL_FOUND_RULE, PROC_ERR_MSG, dispType, AdsID, ruleNum, xRegion, xCity, nameb, versionb, DestURL, TrigID
 }
- 
+
 //checks if the system is a new installation
-//if it is, it redirects to an installer page
+//if it is, it redirects to an installer page 
 func checkSysIns(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	q := datastore.NewQuery("TDSUSERS").Limit(1)
@@ -10280,10 +10279,10 @@ func checkSysIns(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 }
- 
+
 //prompts user to register	
 func promptRegister(w http.ResponseWriter, r *http.Request, uid string, xCountry, provider, avatar, email string) {
- 
+
 	if uid == "" {
 		return
 	}
@@ -10303,7 +10302,7 @@ func promptRegister(w http.ResponseWriter, r *http.Request, uid string, xCountry
 		if err := sysmsgErrorTemplate.Execute(w, message); err != nil {
 		  panic(err)
 		}
-		fmt.Fprintf(w, "<div class=\"info\"><a href=\"https://sample-project.appspot.com\">Register</a> for an account at OPO.ULAPPH.COM instead.</div>")
+		fmt.Fprintf(w, "<div class=\"info\"><a href=\"https://ulapph-public-1.appspot.com\">Register</a> for an account at OPO.ULAPPH.COM instead.</div>")
 		fmt.Fprintf(w, "<div class=\"warning\"><a href=\"/admin-setup\">Click here</a> to manage users if you are an administrator.</div>")	
 		fmt.Fprintf(w, "<div class=\"error\"><a href=\"/logout\">Logout</a> from this system.</div>")	
 		
@@ -10314,7 +10313,7 @@ func promptRegister(w http.ResponseWriter, r *http.Request, uid string, xCountry
 		return
 				
 	}
-   fmt.Fprintf(w, "<div class=\"info2\"><img src=\"https://sample-project.appspot.com/img/ulapph-logo.png\" title=\"ULAPPH Logo\" width=200 height=100></img></div>")
+   fmt.Fprintf(w, "<div class=\"info2\"><img src=\"https://ulapph-public-1.appspot.com/img/ulapph-logo.png\" title=\"ULAPPH Logo\" width=200 height=100></img></div>")
    fmt.Fprintf(w, "<div class=\"info2\"><h3>Welcome to %v</h3>", getSchemeUrl(w,r))
    fmt.Fprintf(w, "<p>You are logged in as <b>%v</b>", uid)
    fmt.Fprintf(w, "<br><img src='%v' width=20 height=20 title='%v'></div>", avatar, provider)
@@ -10333,9 +10332,9 @@ func promptRegister(w http.ResponseWriter, r *http.Request, uid string, xCountry
 	
    return
 }
- 
+
 //concatenates the access string composed of platform, browser, ip address, operating system
-//used by logger to know who is accessing the system
+//used by logger to know who is accessing the system 
 func getAccessString(w http.ResponseWriter, r *http.Request, mode string) (viaStr string) {
 	c := appengine.NewContext(r)
 	uag := r.UserAgent()
@@ -10386,9 +10385,9 @@ func getAccessString(w http.ResponseWriter, r *http.Request, mode string) (viaSt
 	viaStr = fmt.Sprintf("[~%v] %v", SYS_SERVER_NAME, viaStr)
 	return viaStr
 }
- 
+
 //gets the country, region and city details of the user accessing the system
-//it uses the default data being passed by GAE for each http request
+//it uses the default data being passed by GAE for each http request 
 func getGeoString(w http.ResponseWriter, r *http.Request) (geoStr string) {
 	h := r.Header
 	xCountry := h.Get("X-AppEngine-Country")
@@ -10398,9 +10397,9 @@ func getGeoString(w http.ResponseWriter, r *http.Request) (geoStr string) {
 	
 	return geoStr
 }
- 
+
 //gets the country for the given http request
-//it uses the default data being passed by GAE for each http request
+//it uses the default data being passed by GAE for each http request 
 func getCountry(w http.ResponseWriter, r *http.Request) (geoCountry string) {
 	h := r.Header
 	xCountry := h.Get("X-AppEngine-Country")
@@ -10408,7 +10407,7 @@ func getCountry(w http.ResponseWriter, r *http.Request) (geoCountry string) {
 	
 	return geoCountry
 }
- 
+
 //gets the SID (TDSMEDIA-nn) where the UWM settings for the given UWM is stored
 //this returns the SID only
 func getUWMSource(w http.ResponseWriter, r *http.Request, uid, unum string) (sid string) {
@@ -10422,13 +10421,13 @@ func getUWMSource(w http.ResponseWriter, r *http.Request, uid, unum string) (sid
 		cfgName := fmt.Sprintf("SYSTEM_UWM_%v_%v", unum, uid)
 		sid, _ = getTDSCNFG(w,r,0,cfgName)		
 	}
- 
+
 	return sid
 					
 }
- 
+
 //gets the SID (TDSMEDIA-nn) where the Topics settings for the given UWM is stored
-//this returns the SID only
+//this returns the SID only 
 func getTopicsSource(w http.ResponseWriter, r *http.Request, uid, unum string) (sid string) {
 	cfgName := fmt.Sprintf("SYSTEM_TOPICS_%v_%v", unum, uid)
 	sid, _ = getTDSCNFG(w,r,0,cfgName)
@@ -10493,7 +10492,7 @@ func getPersonalWindows(w http.ResponseWriter, r *http.Request, uid, alFlag, SID
 					if docID > 0 {
 						BLOB_KEY := ""
 						BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, docID)	
- 
+
 						appText := getBlobTextNoComms(w, r, BLOB_KEY)
 						//fmt.Fprintf(w, "%v", appText)
 						buf2.WriteString(fmt.Sprintf("%v\n", appText))						
@@ -10540,8 +10539,8 @@ func getTDSCNFG(w http.ResponseWriter, r *http.Request, vtype int, cfgName strin
 	}
 	return tval, nval
 }
- 
-//gets the contacts list for the given user
+
+//gets the contacts list for the given user 
 func getContactsList(w http.ResponseWriter, r *http.Request, uid, mode string) (resp string) {
 	c := appengine.NewContext(r)
 	
@@ -10561,7 +10560,7 @@ func getContactsList(w http.ResponseWriter, r *http.Request, uid, mode string) (
 		BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, docID)	
 		reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 		s := bufio.NewScanner(reader)
- 
+
 		for s.Scan() {
 			if len(s.Text()) > 0 {
 				thisStr := fmt.Sprintf("%v", s.Text())
@@ -10609,7 +10608,7 @@ func getContactsList(w http.ResponseWriter, r *http.Request, uid, mode string) (
 //gets the public wallpaper list
 func getPubWpList(w http.ResponseWriter, r *http.Request, uid string) (wpList string) {
 	c := appengine.NewContext(r)
- 
+
 	cKey := fmt.Sprintf("PUBLIC_WP_LIST")
 	cfgName := fmt.Sprintf("SYSTEM_Public_WP_List_Media_ID")
 	PUBLIC_WP_LIST := ""
@@ -10623,7 +10622,7 @@ func getPubWpList(w http.ResponseWriter, r *http.Request, uid string) (wpList st
 		
 		BLOB_KEY := ""
 		BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, docID)	
- 
+
 		reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 		s := bufio.NewScanner(reader)
 		
@@ -10694,10 +10693,10 @@ func getPubUWM(w http.ResponseWriter, r *http.Request) (uwmData string) {
 	}
 	return PUBLIC_UWM_DATA
 }
- 
-//displays the home using a gallery format
+
+//displays the home using a gallery format 
 func showHomeGallery(w http.ResponseWriter, r *http.Request) {
- 
+
 	if SYS_SITE_PRIVATE == true {
 		_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
 	}
@@ -10761,13 +10760,13 @@ func showHomeGallery(w http.ResponseWriter, r *http.Request) {
 		HTM_FILLER3: template.HTML(GITURL_PUSH_TOP_DATA),
 		HTM_FILLER4: template.HTML(GITURL_PUSH_BOTTOM_DATA),
 	}
- 
+
 	if err := htmlWidgetBrowserS2.Execute(w, &TEMPDATA); err != nil {
 	  panic(err)
 	}
 	return
 }
- 
+
 //checks any homepage settings if any custom theme is to be used
 func checkHomepageSettings(w http.ResponseWriter, r *http.Request, redirectURL string) {
 	c := appengine.NewContext(r)
@@ -10782,18 +10781,18 @@ func checkHomepageSettings(w http.ResponseWriter, r *http.Request, redirectURL s
 			//get the media id containing the theme
 			cKey := fmt.Sprintf("CUSTOM_HOMEPAGE_THEME")
 			htemp := getStrMemcacheValueByKey(w,r,cKey)
- 
+			//c.Infof("htemp: %v", htemp)
 			if strings.TrimSpace(htemp) == "" {
 				_, mid := getTDSCNFG(w,r,1,cKey)
- 
+				//c.Infof("mid: %v", mid)
 				
 				if mid > 0 {
- 
+					//c.Infof("mid > 0")
 					_ = renderCustomTemplates(w,r,"gotId",cKey,"",fmt.Sprintf("%v",mid))				
 				}
- 
+
 			} else {
- 
+				//c.Infof("got htemp: %v", htemp)
 				_ = renderCustomTemplates(w,r,"gotId",cKey,"",strings.TrimSpace(htemp))
 			}
 			updateUserActiveData(w, r, c, "", "homepage-custom")
@@ -10824,8 +10823,8 @@ func checkHomepageSettings(w http.ResponseWriter, r *http.Request, redirectURL s
 	return
 	
 }
- 
-//gets hosts available which can be used to wall copy
+
+//gets hosts available which can be used to wall copy 
 func getWallHosts(w http.ResponseWriter, r *http.Request) string {
 	//c := appengine.NewContext(r)
 	
@@ -10890,8 +10889,8 @@ func putSearchIndexA(w http.ResponseWriter, r *http.Request, indexName string, t
 	}
 	return
 }
- 
-//put search index for media
+
+//put search index for media 
 func putSearchIndexM(w http.ResponseWriter, r *http.Request, indexName string, thisIdxKey string, slideIdx *IDX_TDSMEDIA) {
 	c := appengine.NewContext(r)
 	
@@ -10905,8 +10904,8 @@ func putSearchIndexM(w http.ResponseWriter, r *http.Request, indexName string, t
 	}
 	return
 }
- 
-//put search index for icons
+
+//put search index for icons 
 func putSearchIndexI(w http.ResponseWriter, r *http.Request, indexName string, thisIdxKey string, slideIdx *IDX_TDSICONS) {
 	c := appengine.NewContext(r)
 	
@@ -10920,8 +10919,8 @@ func putSearchIndexI(w http.ResponseWriter, r *http.Request, indexName string, t
 	}
 	return
 }
- 
-//put search index for items for sale
+
+//put search index for items for sale 
 func putSearchIndexF(w http.ResponseWriter, r *http.Request, indexName string, thisIdxKey string, slideIdx *IDX_FORSALE) {
 	c := appengine.NewContext(r)
 	
@@ -10935,7 +10934,7 @@ func putSearchIndexF(w http.ResponseWriter, r *http.Request, indexName string, t
 	}
 	return
 }
- 
+
 //put search index for items for wat to buy
 func putSearchIndexB(w http.ResponseWriter, r *http.Request, indexName string, thisIdxKey string, slideIdx *IDX_WTBUY) {
 	c := appengine.NewContext(r)
@@ -10950,8 +10949,8 @@ func putSearchIndexB(w http.ResponseWriter, r *http.Request, indexName string, t
 	}
 	return
 }
- 
-//put search index for items for profiles
+
+//put search index for items for profiles  
 func putSearchIndexP(w http.ResponseWriter, r *http.Request, indexName string, thisIdxKey string, slideIdx *IDX_TDSPROF) {
 	c := appengine.NewContext(r)
 	
@@ -10965,9 +10964,9 @@ func putSearchIndexP(w http.ResponseWriter, r *http.Request, indexName string, t
 	}
 	return
 }
- 
+
 //function which serves the /wall url
-//used for sending messages or copying files via wall
+//used for sending messages or copying files via wall 
 func ulapphWall(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
@@ -11335,7 +11334,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
 					//checkError(w,r,err,"CHK_OQ")
 					 panic(err)
 				  }
- 
+
 				for _, p := range article{
 						
 					TITLE := p.TITLE
@@ -11479,7 +11478,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
 	case WALL_FUNC == "SAVE_SLIDE2" || WALL_FUNC == "SAVE_ARTICLE2" || WALL_FUNC == "SAVE_MEDIA2":
 		fmt.Fprintf(w, "Saving the slide or article or media...<br>")
 		updateUserActiveData(w, r, c, uid, "Wall copy"+WALL_FUNC)
- 
+
 		IMG_URL := r.FormValue("IMG_URL")
 		TITLE := r.FormValue("TITLE")
 		DESC := r.FormValue("DESC")
@@ -11583,7 +11582,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
 						//DATE_ADDED: 		tstamp,
 						DATE_UPDATED: 		tstamp,
 					}
- 
+
 					putSearchIndexS(w,r,"IDX_TDSSLIDE",thisIdxKey,slideIdx)
 						
 					fmt.Fprintf(w, "Success! TDSSLIDE-%v<br>", thisID)
@@ -11705,7 +11704,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
 						//DATE_ADDED: 		tstamp,
 						DATE_UPDATED: 		tstamp,
 					}
- 
+
 					putSearchIndexA(w,r,"IDX_TDSARTL",thisIdxKey,articleIdx)
 					
 					//notify all users of this event via channels
@@ -11777,7 +11776,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
 					if err != nil {
 						 panic(err)
 					}
- 
+
 					thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", thisID)
 					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
 					DESC := strings.Replace(p.DESC, "_", " ", -1)
@@ -11798,7 +11797,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
 							linkedUrl = strings.Replace(linkedUrl, "@888@", "&", -1)
 						}
 					}
- 
+
 					
 					searchIdx := &IDX_TDSMEDIA{
 						DOC_KEY: 			thisIdxKey,
@@ -11827,9 +11826,9 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
 						DATE_ADDED: 		tstamp,
 						DATE_UPDATED: 		tstamp,
 					}
- 
+
 					putSearchIndexM(w,r,"IDX_TDSMEDIA",thisIdxKey,searchIdx)
- 
+
 					fmt.Fprintf(w, "Success! TDSMEDIA-%v<br>", thisID)
 					fmt.Fprintf(w, "<a href=\"/search?f=TDSSLIDE&q=%v\">View</a><br>", thisID)
 					break
@@ -11876,7 +11875,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
  
 		} else {
  
- 
+
 			URL_ADD := ""
 			ICON_NAME := ""
 			IMG_SRC := ""
@@ -12038,7 +12037,7 @@ func ulapphWall(w http.ResponseWriter, r *http.Request) {
  
  
 }
- 
+
 //function to handle the /contents url
 //it automatically handle the display of the website contents	
 func contentsAll(w http.ResponseWriter, r *http.Request) {
@@ -12473,8 +12472,8 @@ func contentsAll(w http.ResponseWriter, r *http.Request) {
 		
 	}
 }
- 
-//a bug workaround to override last message
+
+//a bug workaround to override last message 
 func dummyCmd(w http.ResponseWriter, r *http.Request, uid string) {
 	//override last message
 	//bug!!! looping error
@@ -12482,8 +12481,8 @@ func dummyCmd(w http.ResponseWriter, r *http.Request, uid string) {
 	//bug fix
 	sendChannelMessage(w,r,uid,data)
 }
- 
-//shows personal menu in mobile
+
+//shows personal menu in mobile 
 func showPersonalMenuMobile(w http.ResponseWriter, r *http.Request, uid string) {
 	c := appengine.NewContext(r)
 	
@@ -12523,8 +12522,8 @@ func showPersonalMenuMobile(w http.ResponseWriter, r *http.Request, uid string) 
 	}
 }
  
- 
-//parses the cached ACB entries
+
+//parses the cached ACB entries 
 func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
  
@@ -12573,7 +12572,7 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "	  		}else {\n")
 			fmt.Fprintf(w, "	  			res = str.replace(\"http://\", \"https://\");\n")
 			fmt.Fprintf(w, "	  		}\n")
-			fmt.Fprintf(w, "	        var thehtml = \"<strong><a href='#' onClick=\\\"location.href='\" + res + \"'; return false;\\\">Open Here</a></strong> | <strong><a href='#' onClick=\\\"parent.postMessage('\" + res + \"', 'https://sample-project.appspot.com'); return false;\\\">Child Window</a></strong> | <strong><a href='#' onClick=\\\"window.open('\" + res + \"'); return false;\\\">In New Tab</a></strong> | <strong><a href='#' onClick=\\\"window.open();return false;\\\">Blank Window</a></strong>\";\n")
+			fmt.Fprintf(w, "	        var thehtml = \"<strong><a href='#' onClick=\\\"location.href='\" + res + \"'; return false;\\\">Open Here</a></strong> | <strong><a href='#' onClick=\\\"parent.postMessage('\" + res + \"', 'https://ulapph-public-1.appspot.com'); return false;\\\">Child Window</a></strong> | <strong><a href='#' onClick=\\\"window.open('\" + res + \"'); return false;\\\">In New Tab</a></strong> | <strong><a href='#' onClick=\\\"window.open();return false;\\\">Blank Window</a></strong>\";\n")
 			fmt.Fprintf(w, "	        $('#outputcontent').html(thehtml);\n")
 			fmt.Fprintf(w, "	}\n")
 			fmt.Fprintf(w, "  });\n")
@@ -12633,7 +12632,7 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintf(w, "	  		}else {\n")
 				fmt.Fprintf(w, "	  			res = str.replace(\"http://\", \"https://\");\n")
 				fmt.Fprintf(w, "	  		}\n")
-				fmt.Fprintf(w, "	        var thehtml = \"<strong><a href='#' onClick=\\\"location.href='\" + res + \"'; return false;\\\">Open Here</a></strong> | <strong><a href='#' onClick=\\\"parent.postMessage('\" + res + \"', 'https://sample-project.appspot.com'); return false;\\\">Child Window</a></strong> | <strong><a href='#' onClick=\\\"window.open('\" + res + \"'); return false;\\\">In New Tab</a></strong> | <strong><a href='#' onClick=\\\"window.open();return false;\\\">Blank Window</a></strong>\";\n")
+				fmt.Fprintf(w, "	        var thehtml = \"<strong><a href='#' onClick=\\\"location.href='\" + res + \"'; return false;\\\">Open Here</a></strong> | <strong><a href='#' onClick=\\\"parent.postMessage('\" + res + \"', 'https://ulapph-public-1.appspot.com'); return false;\\\">Child Window</a></strong> | <strong><a href='#' onClick=\\\"window.open('\" + res + \"'); return false;\\\">In New Tab</a></strong> | <strong><a href='#' onClick=\\\"window.open();return false;\\\">Blank Window</a></strong>\";\n")
 				fmt.Fprintf(w, "	        $('#outputcontent').html(thehtml);\n")
 				fmt.Fprintf(w, "	}\n")
 				fmt.Fprintf(w, "  });\n")
@@ -12718,11 +12717,11 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	cKey3 := "PROVIDER_APPS_GOGL"
 	PROVIDER_APPS_GOGL := ""
 	if item, err := memcache.Get(c, cKey3); err == memcache.ErrCacheMiss {
- 
+
 	} else if err != nil {
 		//c.Errorf("error getting item: %v", err)
 	} else {
- 
+
 		PROVIDER_APPS_GOGL = fmt.Sprintf("%s", item.Value)
 		buf0.WriteString(PROVIDER_APPS_GOGL)
 	}
@@ -12730,11 +12729,11 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	cKey4 := "PROVIDER_APPS_MSFT"
 	PROVIDER_APPS_MSFT := ""
 	if item, err := memcache.Get(c, cKey4); err == memcache.ErrCacheMiss {
- 
+
 	} else if err != nil {
 		//c.Errorf("error getting item: %v", err)
 	} else {
- 
+
 		PROVIDER_APPS_MSFT = fmt.Sprintf("%s", item.Value)
 		buf0.WriteString(PROVIDER_APPS_MSFT)
 	}
@@ -12742,11 +12741,11 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	cKey5 := "PROVIDER_APPS_DB"
 	PROVIDER_APPS_DB := ""
 	if item, err := memcache.Get(c, cKey5); err == memcache.ErrCacheMiss {
- 
+
 	} else if err != nil {
 		//c.Errorf("error getting item: %v", err)
 	} else {
- 
+
 		PROVIDER_APPS_DB = fmt.Sprintf("%s", item.Value)
 		buf0.WriteString(PROVIDER_APPS_DB)
 	}
@@ -12989,7 +12988,7 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "	  		}else {\n")
 	fmt.Fprintf(w, "	  			res = str.replace(\"http://\", \"https://\");\n")
 	fmt.Fprintf(w, "	  		}\n")
-	  fmt.Fprintf(w, "	        var thehtml = \"<strong><a href='#' onClick=\\\"location.href='\" + res + \"'; return false;\\\">Open Here</a></strong> | <strong><a href='#' onClick=\\\"parent.postMessage('\" + res + \"', 'https://sample-project.appspot.com'); return false;\\\">Child Window</a></strong> | <strong><a href='#' onClick=\\\"window.open('\" + res + \"'); return false;\\\">In New Tab</a></strong> | <strong><a href='#' onClick=\\\"window.open();return false;\\\">Blank Window</a></strong>\";\n")
+	  fmt.Fprintf(w, "	        var thehtml = \"<strong><a href='#' onClick=\\\"location.href='\" + res + \"'; return false;\\\">Open Here</a></strong> | <strong><a href='#' onClick=\\\"parent.postMessage('\" + res + \"', 'https://ulapph-public-1.appspot.com'); return false;\\\">Child Window</a></strong> | <strong><a href='#' onClick=\\\"window.open('\" + res + \"'); return false;\\\">In New Tab</a></strong> | <strong><a href='#' onClick=\\\"window.open();return false;\\\">Blank Window</a></strong>\";\n")
 	  fmt.Fprintf(w, "	        $('#outputcontent').html(thehtml);\n")
 	fmt.Fprintf(w, "	}\n")
 	fmt.Fprintf(w, "  });\n")
@@ -13000,8 +12999,8 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "</head>\n")
 	return
 }
- 
-//search engine for articles, slides and media files
+
+//search engine for articles, slides and media files 
 func autoSearchIndex(w http.ResponseWriter, r *http.Request, IDX_TARGET string, FL_VALID_USER bool) string {
 	
 	c := appengine.NewContext(r)
@@ -13073,7 +13072,7 @@ func autoSearchIndex(w http.ResponseWriter, r *http.Request, IDX_TARGET string, 
 	
 	return buffer3.String()
 }
- 
+
 //shows the system top list menu based on the entries found in the media file
 func showTopListMenu(w http.ResponseWriter, r *http.Request, mode string) {
 	c := appengine.NewContext(r)
@@ -13192,8 +13191,8 @@ func showTopListMenu(w http.ResponseWriter, r *http.Request, mode string) {
 	return		
 	
 }
- 
-//shows the left menu of the website
+
+//shows the left menu of the website 
 func showLeftMenu(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	_, uid := checkSession(w,r)
@@ -13204,7 +13203,7 @@ func showLeftMenu(w http.ResponseWriter, r *http.Request) {
 	
 	if FL_VALID_USER == true {
 	}
- 
+
 	cKey := "HIDABLE_MENU_CACHE"
 	HIDABLE_MENU_CACHE := ""
 	HIDABLE_MENU_CACHE = getStrMemcacheValueByKey(w,r,cKey)
@@ -13214,11 +13213,11 @@ func showLeftMenu(w http.ResponseWriter, r *http.Request) {
 		docID := 0
 		cfgName := "SYSTEM_Left_Menu_Media_ID"
 		_, docID = getTDSCNFG(w,r,1,cfgName)
- 
+
 		BLOB_KEY := ""
 		BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, docID)	
 		
- 
+
 		var buf bytes.Buffer
 		reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 		s := bufio.NewScanner(reader)
@@ -13242,9 +13241,9 @@ func showLeftMenu(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
+
 //gets the categories list from media file
-//connected to how the all desktops are listed
+//connected to how the all desktops are listed 
 func getCategories(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
@@ -13288,7 +13287,7 @@ func getCategories(w http.ResponseWriter, r *http.Request) {
 }
  
 //handles the /cache url
-//used for caching using app cache
+//used for caching using app cache 
 func ulapphCache(w http.ResponseWriter, r *http.Request) {
 	
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
@@ -13478,8 +13477,8 @@ func ulapphCache(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 }
- 
-//sends a system message via email
+
+//sends a system message via email 
 func SENDSYSMSG(c appengine.Context, SYSMAIL, SYSMSGS, UID string) string {
  
     if (SYS_MSG_ENABLE == true) {
@@ -13496,13 +13495,13 @@ func SENDSYSMSG(c appengine.Context, SYSMAIL, SYSMSGS, UID string) string {
 	}
     return SYSMAIL
 }
- 
-//sends an invite via email
+
+//sends an invite via email 
 func SENDINVITE(c appengine.Context, desktop, uid, inviteEmail string) string {
  
     if (SYS_INV_ENABLE == true) {
 		SUBJECT := fmt.Sprintf("[ULAPPH INVITATION] Invitation to join ULAPPH from %s", uid)
-		BODY := fmt.Sprintf("Hi %s!<br><br>Your friend (%s) has just joined ULAPPH and he would like you to join as well. Just visit https://sample-project.appspot.com in order to join ULAPPH -- the free Cloud Desktop in the Philippines!<br><br>You need to have a valid Google email account. We will be waiting for you.<br><br>Thank you!<br><br> *** ULAPPH *** ", inviteEmail, uid)
+		BODY := fmt.Sprintf("Hi %s!<br><br>Your friend (%s) has just joined ULAPPH and he would like you to join as well. Just visit https://ulapph-public-1.appspot.com in order to join ULAPPH -- the free Cloud Desktop in the Philippines!<br><br>You need to have a valid Google email account. We will be waiting for you.<br><br>Thank you!<br><br> *** ULAPPH *** ", inviteEmail, uid)
 				msg := &mail.Message{
 					Sender: fmt.Sprintf("ULAPPH <anything@%v.appspotmail.com>", SYS_SERVER_NAME),
 					To:      []string{inviteEmail},
@@ -13513,8 +13512,8 @@ func SENDINVITE(c appengine.Context, desktop, uid, inviteEmail string) string {
 	}
     return desktop
 }
- 
-//sends ads event via email
+
+//sends ads event via email 
 func SENDADSEVENT(c appengine.Context, ToEmail, Message, uid string) string {
  
     if (SYS_LOG_ADS_VIEW_MAIL == true) {
@@ -13530,8 +13529,8 @@ func SENDADSEVENT(c appengine.Context, ToEmail, Message, uid string) string {
 	}
     return uid
 }
- 
-//sends a generic email
+
+//sends a generic email 
 func SENDGENEMAIL(c appengine.Context, SUBJECT, TO, FROM, MESSAGE string) string {
  
     if (SYS_GEN_MAIL_ENABLE == true) {
@@ -13547,8 +13546,8 @@ func SENDGENEMAIL(c appengine.Context, SUBJECT, TO, FROM, MESSAGE string) string
 	}
     return TO
 }
- 
-//sends reports via email
+
+//sends reports via email 
 func SENDREPORTS(c appengine.Context, SUBJECT, TO, FROM, MESSAGE string) string {
  
     if (SYS_SEND_REPORTS_ENABLE == true) {
@@ -13563,8 +13562,8 @@ func SENDREPORTS(c appengine.Context, SUBJECT, TO, FROM, MESSAGE string) string 
 	}
     return TO
 }
- 
-//sends email about a shared desktop0
+
+//sends email about a shared desktop0 
 func SENDSHARED0MAIL(c appengine.Context, TO, FROM, MESSAGE string) string {
  
     if (SYS_SHR_MAIL_ENABLE == true) {
@@ -13580,8 +13579,8 @@ func SENDSHARED0MAIL(c appengine.Context, TO, FROM, MESSAGE string) string {
 	}
     return TO
 }
- 
-//sends an inquiry via email
+
+//sends an inquiry via email 
 func SENDINQUIRY(c appengine.Context, desktop, uid, inquireEmail, contactNum, message string) string {
  
     if (SYS_INQ_ENABLE == true) {
@@ -13598,7 +13597,7 @@ func SENDINQUIRY(c appengine.Context, desktop, uid, inquireEmail, contactNum, me
     return uid
 }
  
-//sends an ads inquiry via email
+//sends an ads inquiry via email 
 func SENDADSINQ(c appengine.Context, desktop, uid, inquireEmail, contactNum, message string) string {
  
     if (SYS_INQ_ENABLE == true) {
@@ -13614,8 +13613,8 @@ func SENDADSINQ(c appengine.Context, desktop, uid, inquireEmail, contactNum, mes
 	}
     return uid
 }
- 
-//sends feedback via email
+
+//sends feedback via email 
 func SENDFEEDBACK(c appengine.Context, fbType, desktop, uid, inquireEmail, contactNum, message string) string {
  
 	switch fbType {
@@ -13690,7 +13689,7 @@ func settings(w http.ResponseWriter, r *http.Request) {
 	} else {
 		currDesktop = fmt.Sprintf("desktop%v", thisDeskNum)
 	}
- 
+
 	//get user privilege
 	FUNC_CODE := "GET_GRP_ID"
 	FL_VALID_USER, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
@@ -13788,7 +13787,7 @@ func settings(w http.ResponseWriter, r *http.Request) {
 					serveError(c, w, err)
 					return
 			}
- 
+
 			err = rootTemplate.Execute(w, uploadURL)
 			if err != nil {
 					////c.Errorf("%v", err)
@@ -13808,7 +13807,7 @@ func settings(w http.ResponseWriter, r *http.Request) {
 						serveError(c, w, err)
 						return
 				}
- 
+
 				err = rootTemplateAds.Execute(w, uploadURL2)
 				if err != nil {
 						////c.Errorf("%v", err)
@@ -14034,7 +14033,7 @@ func ranConGen(w http.ResponseWriter, r *http.Request) {
 		putStrToMemcacheWithoutExp(w,r,cKey2,TDSSLIDE_ARRAY)
 		
 	}
- 
+
 	if TDSSLIDE_NUM <= 3 {
 	//get all slides count
 		cKey := fmt.Sprintf("TDSSLIDE_TOTAL")
@@ -14866,13 +14865,13 @@ func ulapphChat(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, redURL, http.StatusFound)
 				return			
 			}
- 
+
 			if uid == "" {
 				uid, token = createToken(w,r,"","")
 			} else {
 				_, token = createToken(w,r,"","")
 			}
- 
+
 			uag := r.UserAgent()
 			ua := user_agent.New(uag)
 			nameb, _ := ua.Browser()
@@ -14943,10 +14942,10 @@ func ulapphChat(w http.ResponseWriter, r *http.Request) {
 			
 	}
 }
- 
-//sends chat messages given the message and target roomID in firebase
+
+//sends chat messages given the message and target roomID in firebase 
 func ulapphChatSender(w http.ResponseWriter, r *http.Request, UC_FUNC string, MSG, roomID string) {
- 
+
 	switch UC_FUNC {
 		case "CH_MSG_NOTIFY_CHAT_ROOM":
 			//private chats
@@ -15223,7 +15222,7 @@ func ulapphLocal(w http.ResponseWriter, r *http.Request) {
 				if err := renderPresentation(w,r,&buf, title2, doc, SL_TMP); err != nil {
 					panic(err)
 				}
- 
+
 				//replace img src here with dataurl
 				var bufc bytes.Buffer
 				s := bufio.NewScanner(&buf)
@@ -15269,7 +15268,7 @@ func ulapphLocal(w http.ResponseWriter, r *http.Request) {
 						bufc.WriteString(fmt.Sprintf("%v\n", s.Text()))
 					}
 				}
- 
+
 				CACHE_ULOC_TDSARTL = bufc.String()
 				//store this to cache
 				putStrToMemcacheWithoutExp(w,r,cKey,CACHE_ULOC_TDSARTL)
@@ -15474,7 +15473,7 @@ func ulapphLocal(w http.ResponseWriter, r *http.Request) {
 			}
 	}
 }
- 
+
 var chatTemplateA1 = template.Must(template.New("chatTemplateA").Parse(chatTemplateDispA1))
  
 const chatTemplateDispA1 = `
@@ -15482,8 +15481,8 @@ const chatTemplateDispA1 = `
 	<html lang="en">
 	<head>
 	  <meta charset="UTF-8">
-	  <title>Chat::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	  <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	  <title>Chat::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	  <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	  <link rel="shortcut icon" href="/img/favicon.ico"/>
 `
 	
@@ -15662,8 +15661,8 @@ const streamTemplateDispA1 = `
 	<html lang="en">
 	<head>
 	  <meta charset="UTF-8">
-	  <title>Stream::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	  <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	  <title>Stream::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	  <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	  <link rel="shortcut icon" href="/img/favicon.ico"/>
 		<link rel="stylesheet" href="/css/chat-style.css">
 	<style>
@@ -15741,9 +15740,9 @@ const ulocTemplateDispA = `
 <html manifest="/cache?q=ulocA&f=" lang="en-US" class="no-js">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>Local Storage:sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+  <title>Local Storage:ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
   <link rel="shortcut icon" href="/img/favicon.ico"/>
-  <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+  <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
   <script type="text/javascript" language="javascript" src="/js/jquery-1.11.1.min.js"></script>
   <link rel="stylesheet" href="/css/localStorage.css" />
   <script src="/js/localStorage.js"></script>
@@ -16032,8 +16031,8 @@ const ulocTemplateDispB = `
 <html manifest="/cache?q=ulocB&f=" lang="en-US" class="no-js">
 <head>
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-  <title>Local Storage::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-  <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+  <title>Local Storage::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+  <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
   <link rel="shortcut icon" href="/img/favicon.ico"/>
   <link rel="stylesheet" href="/css/localStorage.css" />
   <link rel="stylesheet" href="/css/bootstrap.min.css">
@@ -16104,8 +16103,8 @@ func format(enc []byte, mime string) string {
  
 	return fmt.Sprintf("data:image/png;base64,%s", enc)
 }
- 
-//handles the recaptcha processing
+
+//handles the recaptcha processing 
 func ulapphCaptcha(w http.ResponseWriter, r *http.Request) {
 	CC_FUNC := r.FormValue("CC_FUNC")
 	
@@ -16192,8 +16191,8 @@ func ulapphCaptcha(w http.ResponseWriter, r *http.Request) {
 	}
 	return	
 }
- 
-//handles redirection of recaptcha
+
+//handles redirection of recaptcha 
 func RedirCaptcha(w http.ResponseWriter, r *http.Request) {
 	REDIR := r.FormValue("R")
 	
@@ -16231,7 +16230,7 @@ func RedirCaptcha(w http.ResponseWriter, r *http.Request) {
 			SID := r.FormValue("SID")
 			TITLE := r.FormValue("TITLE")
 			CC_KEY := r.FormValue("CC_KEY")	
- 
+
 			redURL := fmt.Sprintf("%vsocial?SO_FUNC=SO_VIEW&SID=%v&TITLE=%v&cc_key=%v", getSchemeUrl(w,r), SID, TITLE, CC_KEY)
 			http.Redirect(w, r, redURL, http.StatusFound)
 			return
@@ -16276,7 +16275,7 @@ func VerifyCaptcha(w http.ResponseWriter, r *http.Request) (valid bool, err erro
 //stream alerts, notifications, events
 func ulapphStream(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
- 
+
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	
 	checkReferrer(w,r)
@@ -16312,7 +16311,7 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 			}
 			//delete old channel here
 			datastore.Delete(c, getKeyChannel(c,UID))
- 
+
 			tokChan := make(chan Token)
 			tokChanDone := make(chan bool)
 			go createTokenChan(w,r,tokChan,tokChanDone,UID,"")
@@ -16329,7 +16328,7 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	if mode == "guest" || uid == "" {
-			redURL := "https://sample-project.appspot.com/rag?f=slides&d=desktop0&n=1"
+			redURL := "https://ulapph-public-1.appspot.com/rag?f=slides&d=desktop0&n=1"
 			http.Redirect(w, r, redURL, http.StatusFound)
 			return
 	}
@@ -16510,7 +16509,7 @@ func readSecret(w http.ResponseWriter, r *http.Request) {
 		Email      string `json:"client_email"`
 		PrivateKey string `json:"private_key"`
 	}{}
- 
+
 	if err := json.NewDecoder(rdr).Decode(sv); err != nil {
 		////c.Errorf("json.NewDecoder() ERROR: %v", err)
 		panic(err)
@@ -16522,8 +16521,8 @@ func readSecret(w http.ResponseWriter, r *http.Request) {
 		PRIVATE_KEY = key
 	}
 }
- 
-//creates a JWT token for firebase
+
+//creates a JWT token for firebase 
 func createFirebaseToken(u *User) *jwt.Token {
 	tok := jwt.New(jwt.SigningMethodRS256)
 	cl := tok.Claims.(jwt.MapClaims)
@@ -16584,7 +16583,7 @@ func ulapphStore(w http.ResponseWriter, r *http.Request) {
 			
 			//D0044
 			//If this for installer purchase
- 
+			//c.Infof("msgDtl: %v", msgDtl)
 			switch {
 				
 				case PRD_ID == "UCWP3-A" &&
@@ -16690,8 +16689,8 @@ func ulapphStore(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "[U00170] ERROR: Invalid transaction code: %v<br>", STO_FUNC)
 	}
 }
- 
-//registers an access code for the given content
+
+//registers an access code for the given content 
 func registerAccessCode(w http.ResponseWriter, r *http.Request, SID, accessCode string) {
 	c := appengine.NewContext(r)
 	
@@ -16834,8 +16833,8 @@ func registerAccessCode(w http.ResponseWriter, r *http.Request, SID, accessCode 
 									
 	}
 }
- 
-//handles directory listing for people, sites etc
+
+//handles directory listing for people, sites etc 
 func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
     if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
@@ -16867,7 +16866,7 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 					panic(err)
 				}
-		
+		 
 				bodyBytes, _ := ioutil.ReadAll(resp.Body)
 				w.Write(bodyBytes)
 				return
@@ -16890,7 +16889,7 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				showOverallSites(w,r,FL_IS_BOT)
 				return
 			}
- 
+
 		case "people":
 			updateUserActiveData(w, r, c, "", "/directory-people")
 			IS_SEARCH_SERVER, SEARCH_SERVER, _ := getSitesServer(w,r)
@@ -16928,7 +16927,7 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 			
 		//D0039
 		case "GOTO_MY_ULAPPH":
- 
+			//c.Infof("GOTO_MY_ULAPPH...")
 			//D0044
 			mode := r.FormValue("m")
 			url := strings.TrimSpace(getMyULAPPH(w,r,mode))
@@ -16937,7 +16936,7 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				redURL := fmt.Sprintf("%v/uwm", url)	
 				http.Redirect(w, r, redURL, http.StatusFound)
 			} else {
- 
+				//c.Infof("Apologies, your account is not yet mapped to an ULAPPH server. Kindly contact ulapph@gmail.com for support.")
 				fmt.Fprintf(w, "Apologies, your account is not yet mapped to an ULAPPH server. <a href=\"https://ulapph-corporation.appspot.com/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=350&SID=TDSMEDIA-350\">Click here</a> to see pricing of ULAPPH Cloud Desktop. If not interested, kindly <a href=\"/logout\">logout</a>.")
 				//D0044
 			}
@@ -16945,17 +16944,17 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 			
 		//D0044
 		case "FL_ULAPPH_EXISTS":
- 
+			//c.Infof("FL_ULAPPH_EXISTS...")
 			mode := r.FormValue("m")
 			url := strings.TrimSpace(getMyULAPPH(w,r,mode))
 			//fmt.Fprintf(w, url)
 			if url == "" {
- 
+				//c.Infof("FL_ULAPPH_EXISTS...NO")
 				w.WriteHeader(400)
 			} else {
 				w.WriteHeader(200)
- 
- 
+				//c.Infof("FL_ULAPPH_EXISTS...YES")
+				//c.Infof("url: %v", url)
 				w.Write([]byte(url))
 			}
 			return
@@ -17027,7 +17026,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							
 							bodyBytes, _ := ioutil.ReadAll(resp.Body)
 							FETCH_URL := string(bodyBytes)
- 
+
 							k := strings.Index(FETCH_URL, "failure")
 							if k != -1 {
 								fmt.Fprintf(w, "<font color=red>%v</font><br>", FETCH_URL)
@@ -17195,12 +17194,12 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			  panic(err)
 			}
 			return
- 
+
 		//edwinxxx
 		case "TIMELINE":
 			SID := r.FormValue("SID")
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
-			srcURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=RAWJSON&SID=%v", SID)
+			srcURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=RAWJSON&SID=%v", SID)
 			if err := textTimelineBody.Execute(w, srcURL); err != nil {
 			  panic(err)
 			}
@@ -17211,10 +17210,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			return
  
 		case "CRYPTO":
- 
+			//c.Infof("CRYPTO")
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
 			if EDIT_MODE == "" {
- 
+				//c.Infof("EDIT_MODE=")
 				//display form to input textarea and select format options
 				if err := textCryptoBody.Execute(w, ""); err != nil {
 				  panic(err)
@@ -17227,7 +17226,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				sid := r.FormValue("sid")
 				cStr := []byte("")
 				fileName := ""
- 
+				//c.Infof("EDIT_MODE=OK")
 				
 				if sid != "" {
 					fileName = sid
@@ -17250,9 +17249,9 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				}
 				
 				if r.FormValue("remote") == "Y" {
- 
+					//c.Infof("remote")
 					url := r.FormValue("url")
- 
+					//c.Infof("url: %v", url)
 					text = fetchURL(w,r,url)
 					fileName = url
 				} else {
@@ -17261,7 +17260,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					file, handler, err := r.FormFile("file")
 					if err != nil {
 						IS_FILE_OK = false
-	
+	 
 					}
 					if IS_FILE_OK == true {
 						defer file.Close()
@@ -17269,7 +17268,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						data, err := ioutil.ReadAll(file)
 						if err != nil {
 							IS_FILE_OK = false
-	
+	 
 						}
 						
 						if string(data) != "" && IS_FILE_OK == true {
@@ -17296,7 +17295,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					return					
 				}
 				
- 
+				//c.Infof("mode: %v", mode)
 				if mode == "v" {
 					cStr = []byte(text)
 					fileName = fileName+"(as-is).txt"
@@ -17305,29 +17304,29 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						//encrypt
 						cStr = encrypter2(w,r,text,key)
 						fileName = fileName+"(encrypted).txt"
-	
+	 
 						
 					} else {
 						//decrypt
 						cStr = decrypter2(w,r,text,key)
 						fileName = fileName+"(decrypted).txt"
-	
+	 
 					}					
 				}
 				
 				if mode == "d" || mode == "v" {
 					switch {
 						case dview == "d":
- 
+							//c.Infof("dview=d")
 							w.Header().Set(`Content-Type`, `text/plain`)
 							disp := fmt.Sprintf("attachment; filename=%v", fileName)
 							w.Header().Set(`Content-Disposition`, disp)
 							w.Write(cStr)
 							return
- 
+
 						case dview == "s" || dview == "a":
 							//fmt.Fprintf(w, "Preparing slide...")
- 
+							//c.Infof("Preparing slide/article...")
 							var lines []string
 							s := bufio.NewScanner(bytes.NewReader(cStr))
 							for s.Scan() {
@@ -17355,7 +17354,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							}		
 							//if redirect
 							if r.FormValue("redirect") == "Y" {
- 
+								//c.Infof("redirect...")
 								_, uid := checkSession(w,r)
 								cKey := fmt.Sprintf("ULAPPH_DROP_OPEN_%s_%v", uid, base64.StdEncoding.EncodeToString([]byte(stripchars(strings.TrimSpace(fileName)," "))))
 								putBytesToMemcacheWithExp(w,r,cKey,buf.Bytes(),GEN_CONTENT_EXPIRES)
@@ -17367,8 +17366,8 @@ func editor(w http.ResponseWriter, r *http.Request) {
 								}
 								data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_OPEN_WINDOW@888@%v", redURL)
 								sendChannelMessage(w,r,uid,data)
- 
- 
+								//c.Infof("redURL: %v", redURL)
+								//c.Infof("sendChannelMessage()")
 								return
 								
 							}
@@ -17378,7 +17377,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							return
 														
 						case dview == "t":
- 
+							//c.Infof("dview=t")
 							//fmt.Fprintf(w, "Preparing text...")
 							s := bufio.NewScanner(bytes.NewReader(cStr))
 							s.Scan()
@@ -17436,7 +17435,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			  panic(err)
 			}
 			return
- 
+
 		case "GET_UP_URL":
 			if EDIT_FUNC2 != "SAVE_TEXT" {
 				SID := r.FormValue("SID")
@@ -17543,12 +17542,12 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			
 		case "SAVE_TEXT":
 			VAL_TEXT := r.FormValue("VAL_TEXT")
- 
+
 			writer, err := blobstore.Create(c, "application/octet-stream")
 			if err != nil {
 				return
 			}
- 
+
 			if _, err := writer.Write([]byte(VAL_TEXT)); err != nil {
 				//log.Fatal(err)
 				panic(err)
@@ -18163,12 +18162,12 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 			return
- 
+
 		case "APPEND":
- 
+			//c.Infof("APPEND...")
 			AP_FUNC := r.FormValue("AP_FUNC")
 			UID := r.FormValue("UID")
- 
+			//c.Infof("UID: %v", UID)
 			if UID == "" {
 				fmt.Fprintf(w, "Invalid operation!")
 				c.Errorf("Invalid user!")
@@ -18177,7 +18176,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			
 			switch AP_FUNC {
 				case "APPEND-UWM":
- 
+					//c.Infof("APPEND-UWM...")
 					UWM := r.FormValue("UWM")
 					SID := getUWMSource(w,r,UID,UWM)
 					if SID == "" {
@@ -18187,7 +18186,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						return					
 					}
 					thisCont := r.FormValue("TEXT")
- 
+					//c.Infof("appendToSid...")
 					err := appendToSid(w,r,UID,AP_FUNC,SID,thisCont)	
 					if err != nil {
 						w.WriteHeader(400)
@@ -18270,8 +18269,8 @@ func editor(w http.ResponseWriter, r *http.Request) {
 	
 	}
 }
- 
-//prints semaphore footer
+
+//prints semaphore footer 
 func printSemaFooter(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<hr><a href=\"/editor?EDIT_FUNC=SEMAPHORE\">Home</a> | <a href=\"/editor?EDIT_FUNC=SEMAPHORE-STAT\">Check Balance</a> | <a href=\"/editor?EDIT_FUNC=SEMAPHORE-MSG\">Messages</a> | <a href=\"http://semaphore.co/payments\">Buy Credits</a> | <a href=\"/people-edit?EditPeopleFunc=EDIT_CONTACTS_LIST&UID=\">Contacts</a>")
 }
@@ -18444,7 +18443,7 @@ func ranAdsGen(w http.ResponseWriter, r *http.Request) {
 							bLine.WriteString(fmt.Sprintf("<a href=\"%v\" target=\"%v\" title=\"%v\">", Url.String(), ADM, ADS_TITLE))
 							bLine.WriteString(fmt.Sprintf("<img src=\"%v\" width=\"100%%\" height=\"100%%\" class=\"animated infinite %v\">", IMG_URL, imgEff))
 							bLine.WriteString(fmt.Sprintf("</a>"))
- 
+
 						case FL_DESKTOP == true || view == "large":
 							bLine.WriteString("<html><head><link rel=\"stylesheet\" href=\"/lib/css/animate/animate.css\">")
 							//billing fix
@@ -18492,7 +18491,7 @@ func ranAdsGen(w http.ResponseWriter, r *http.Request) {
 	return
  
 }
- 
+
 //generates random animations via css
 func getRanAnim() (textEff, imgEff string) {
 	//generate text effects
@@ -18579,11 +18578,11 @@ func commonTools(w http.ResponseWriter, r *http.Request, uid, FORMAT, SID, uRefe
  
 	fmt.Fprintf(w, "<div class=\"success2\">[ <a href=\"/infodb?DB_FUNC=ULAPPH-QUOTATIONS\" target=gc>Quotations</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-BIBLE\" target=gc>Bible</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-JOKES\" target=gc>Jokes</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-SAVING\" target=gc>Saving</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-BLOG\" target=gc>Blog</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-HEALTH\" target=gc>Health</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-FITNESS\" target=gc>Fitness</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-INTERVIEW\" target=gc>Interview</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-BUSINESS\" target=gc>Business</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-LIFE\" target=gc>Life</a> ] [ <a href=\"/infodb?DB_FUNC=ULAPPH-TABLE-TOPICS\" target=gc>Table Topics</a> ]</div>	")
 }
- 
+
 //handles /comands url
-//accepts special API commands
+//accepts special API commands 
 func ulapphCommands(w http.ResponseWriter, r *http.Request) {
- 
+
 	API_KEY_R := r.Header["Authorization"]
 	API_KEY := ""
 	if len(API_KEY_R) <= 0 {
@@ -18645,7 +18644,7 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	
 	_, uid := checkSession(w,r)
- 
+
 	switch CMD_FUNC {
 		
 		case "scrape":
@@ -18691,8 +18690,8 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	//return
 	
 }
- 
-//function which can scrape webpages
+
+//function which can scrape webpages 
 func scraper(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,txt,tlen string) string {
 	
 	SEARCH_KEY := url
@@ -18902,8 +18901,8 @@ func scraper(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,txt,tlen
 	}
 	return redURL
 }
- 
-//handles notifications for scraped websites
+
+//handles notifications for scraped websites 
 func scraperAlertify(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,txt,tlen string) {
 	var pl []*ChanMessage
 	
@@ -18934,7 +18933,7 @@ func scraperAlertify(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,
 									
 		linkTag := item.Find("a")
 		link, _ := linkTag.Attr("href")
- 
+
 		if txt == "Y" || txt == "y"  {
 			s1 := getSentence(title)
 			buffer5.WriteString(fmt.Sprintf("%v<br>", s1))
@@ -18959,7 +18958,7 @@ func scraperAlertify(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,
 					} else {
 						buffer5.WriteString(fmt.Sprintf("<a href=\"%v\" target=\"view\">HTTP Link</a><br>", resolveURL(url,link)))
 					}
-					buffer5.WriteString(fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"share\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", "scrape", rlink))
+					buffer5.WriteString(fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"share\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", "scrape", rlink))
 					if len(link) > 0 { ctr++}
  
 				}
@@ -18971,7 +18970,7 @@ func scraperAlertify(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,
 					} else {
 						buffer5.WriteString(fmt.Sprintf("<a href=\"%v\" target=\"view\">HTTP Link</a><br>", resolveURL(url,link)))
 					}
-					buffer5.WriteString(fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"share\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", "scrape", rlink))
+					buffer5.WriteString(fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"share\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", "scrape", rlink))
 					if len(link) > 0 { ctr++}
 				}
 			}				
@@ -18987,7 +18986,7 @@ func scraperAlertify(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,
 					} else {
 						buffer5.WriteString(fmt.Sprintf("<a href=\"%v\" target=\"view\">HTTP Link</a><br>", resolveURL(url,link)))
 					}
-					buffer5.WriteString(fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"share\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", "scrape", rlink))
+					buffer5.WriteString(fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"share\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", "scrape", rlink))
 					if len(link) > 0 { ctr++}
 				}
 		}
@@ -19019,10 +19018,10 @@ func scraperAlertify(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,
 	
 	return
 }
- 
-//scrapes websites and returns json
+
+//scrapes websites and returns json 
 func scraperJson(w http.ResponseWriter, r *http.Request,uid,url,sel,img,lnk,txt,tlen, itxt string) {
- 
+
 	var pl []*Scraper
 	
 	maxTxtLen := str2int(tlen)
@@ -19143,7 +19142,7 @@ func resolveURL(urlm, link string) string {
 	return fmt.Sprintf("%v", base.ResolveReference(u))
 }
  
-//gets sentences given a string or paragraph
+//gets sentences given a string or paragraph 
 func getSentence(txt string) (s1 string) {
  
     tokenizer, err := english.NewSentenceTokenizer(nil)
@@ -19159,17 +19158,17 @@ func getSentence(txt string) (s1 string) {
     }	
 	return s1
 }
- 
+
 //handles /tools url which handles the different tools
 func ulapphTools(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
- 
+	//c.Infof("checking referrer")
 	checkReferrer(w,r)
 	
 	TARGET := r.FormValue("t")
 	TOOL_FUNC := r.FormValue("FUNC")
 	
- 
+	//c.Infof("checking country")
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	
 	uReferer := r.Referer()
@@ -19192,15 +19191,15 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 			DOC_ID = SPL[1]
 		}
 	}
- 
-	if TOOL_FUNC == "THEMES" {
- 
+
+	if TOOL_FUNC == "THEMES" { 
+		//c.Infof("THEMES")
 		con_url := r.FormValue("con_url")
 		getAvailThemes(w,r,SID,con_url)
 		return
 	}
 	
- 
+	//c.Infof("checking user session")
 	_, uid := checkSession(w,r)
 	if TOOL_FUNC == "random" {
 		
@@ -19343,13 +19342,13 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				  panic(err)
 				}
 				return
- 
+
 			case "RandomMotd":
 				docID := str2int(r.FormValue("MEDIA_ID"))
 				BLOB_KEY := ""
 				BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, docID)	
 				
- 
+
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
@@ -19374,7 +19373,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				renderCountdownPage(w,r,".countdown", TITLE, DATE, getStartColor(w,r), getActiveColor(w,r), getInActiveColor(w,r))
 				//fmt.Fprintf(w, "<a href=\"%v\">Link</a>", r.URL.String())
 				return
- 
+
 			case "ButtonLink":
 				url := r.FormValue("url")
 				title := r.FormValue("title")
@@ -19461,7 +19460,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				if err := textStartBody.Execute(w, template.HTML(string(mens))); err != nil {
 				  panic(err)
 				}
- 
+
 			case "ULAPPHStartExpanded":
 				//get start menu contents
 				showTopListMenu(w,r,"s")
@@ -19530,7 +19529,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 					
 				}
 				return
- 
+
 			case "FAM_TREE":
 				tm := r.FormValue("MEDIA_ID")
 				gen := r.FormValue("gen")
@@ -19650,7 +19649,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0&VIEW=RECENT&LAST=1000\" class=\"button button-pill button-raised button-primary\">1000</a></span>")
 		
 		fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-highlight button-large\">Articles Recent</a>")
- 
+
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=ARTICLES&CATEGORY=desktop0&VIEW=RECENT&LAST=5\" class=\"button button-pill button-raised button-primary\">5</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=ARTICLES&CATEGORY=desktop0&VIEW=RECENT&LAST=10\" class=\"button button-pill button-raised button-primary\">10</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=ARTICLES&CATEGORY=desktop0&VIEW=RECENT&LAST=20\" class=\"button button-pill button-raised button-primary\">20</a></span>")
@@ -19661,7 +19660,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=ARTICLES&CATEGORY=desktop0&VIEW=RECENT&LAST=1000\" class=\"button button-pill button-raised button-primary\">1000</a></span>")
 		
 		fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-action button-large\">Media Recent</a>")
- 
+
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=5\" class=\"button button-pill button-raised button-primary\">5</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=10\" class=\"button button-pill button-raised button-primary\">10</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=20\" class=\"button button-pill button-raised button-primary\">20</a></span>")
@@ -19670,14 +19669,14 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=100\" class=\"button button-pill button-raised button-primary\">100</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=500\" class=\"button button-pill button-raised button-primary\">500</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=1000\" class=\"button button-pill button-raised button-primary\">1000</a></span>")
- 
+
 		fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-caution button-large\">S & A With Music</a>")
- 
+
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0&VIEW=WITH_MUSIC\" class=\"button button-pill button-raised button-primary\">Slides with Music</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=ARTICLES&CATEGORY=desktop0&VIEW=WITH_MUSIC\" class=\"button button-pill button-raised button-primary\">Articles with Music</a></span>")
 		
 		fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-caution button-large\">Others</a>")
- 
+
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/tools?FUNC=ALL_COMMENTS\" class=\"button button-pill button-raised button-primary\">All Comments</a></span>")
 		fmt.Fprintf(w, "<span class=\"button-wrap\"><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_WALLPAPERS\" class=\"button button-pill button-raised button-primary\">All Wallpapers</a></span>")
 		fmt.Fprintf(w, "</center>")
@@ -19704,7 +19703,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 		listAllDesktops(w,r,uid)
 		return
 	}
- 
+
 	if TOOL_FUNC == "ALL_NOTES" {
 		dks := listAllNotes(w,r, uid)
 		if err := htmlNotesJSONtoTable.Execute(w, &dks); err != nil {
@@ -19769,7 +19768,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				d := r.FormValue("d")
 				renderAddUWMPage(w,r,".adduwm", uid, n, d)
 				return
- 
+
 			//save link to icons
 			case "ADDICON":
 				tName := r.FormValue("title")
@@ -19867,13 +19866,13 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
  
 				lines = append(lines, fmt.Sprintf("* Read the ULAPPH Remote Control User Guide"))
 				lines = append(lines, fmt.Sprintf(""))
-				lines = append(lines, fmt.Sprintf(".link https://sample-project.appspot.com/slides?TYPE=SLIDE&DOC_ID=201&SID=TDSSLIDE-201 How to use the ULAPPH Mobile Remote Control?"))
+				lines = append(lines, fmt.Sprintf(".link https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=201&SID=TDSSLIDE-201 How to use the ULAPPH Mobile Remote Control?"))
 				lines = append(lines, fmt.Sprintf(".image https://lh3.googleusercontent.com/RZQzgCQKExx5_c7DGLvt58VY7wzrqnnK5VB8c98dt-RNjQ2VVKr4irV_oJlpTyet5yJyGfH5zEs3ftbTtjxtTUxHn2GB 400 1000"))
 				lines = append(lines, fmt.Sprintf(""))
  
 				lines = append(lines, fmt.Sprintf("* You should use same login for website & remote control..."))
 				lines = append(lines, fmt.Sprintf(""))
-				lines = append(lines, fmt.Sprintf(".link https://sample-project.appspot.com/logout Click here to logout!"))
+				lines = append(lines, fmt.Sprintf(".link https://ulapph-public-1.appspot.com/logout Click here to logout!"))
 				lines = append(lines, fmt.Sprintf(""))
 				
 				//append in auto-slides-------------
@@ -20110,7 +20109,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 					//query TDSCNFG			
 					cfgName = fmt.Sprintf("PERSONAL_Privacy_%v", uid)					
 					userPriv, _ = getTDSCNFG(w,r,0,cfgName)
- 
+
 					//get location
 					userLoc := ""
 					//query TDSCNFG			
@@ -20315,16 +20314,16 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 			case "getURL":
 					reqStr := ""
 					if FORMAT == "SLIDE" {
-						reqStr = fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=TDSSLIDE-%v", DOC_ID, DOC_ID)
+						reqStr = fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=TDSSLIDE-%v", DOC_ID, DOC_ID)
 					} else {
-						reqStr = fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
+						reqStr = fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
 					}
 				    fmt.Fprintf(w, "<a href=\"%v\">%v</a>", reqStr, reqStr)
 					return
 			case "getPURL":
 					reqStr := ""
 					if FORMAT == "SLIDE" {
-						reqStr = fmt.Sprintf("https://sample-project.appspot.com/presenter?TYPE=SLIDE&MODE=PRESENTER&PARM=AUTO&SECS=10&DOC_ID=%v", DOC_ID)
+						reqStr = fmt.Sprintf("https://ulapph-public-1.appspot.com/presenter?TYPE=SLIDE&MODE=PRESENTER&PARM=AUTO&SECS=10&DOC_ID=%v", DOC_ID)
 						data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_OPEN_LINK@888@%v@888@%v@888@%v", reqStr,uid,DOC_ID)
 						sendChannelMessage(w,r,uid,data)
 						dummyCmd(w,r,uid)
@@ -20487,7 +20486,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"https://www.towerhobbies.com/ucc.html\">Currency Converter</a></div>")	
 				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"https://scientific-calculator.appspot.com/\">Calculator</a></div>")
 				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"https://www.magicscroll.net/\">E-Books Reader</a></div>")
-				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"https://sample-project.appspot.com/tools?FUNC=MIRROR\" target=\"mirr\">Show Webcam Mirror</a></div>")
+				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"https://ulapph-public-1.appspot.com/tools?FUNC=MIRROR\" target=\"mirr\">Show Webcam Mirror</a></div>")
 				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"/tools?t=CON_STAT\">Check Internet Connection</a></div>")	
 				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"https://webaudiodemos.appspot.com/AudioRecorder/index.html\">Voice Recorder</a></div>")
 				fmt.Fprintf(w, "<div class=\"success2\"><a href=\"https://html5-demos.appspot.com/static/getusermedia/photobooth.html\">Live Photobooth</a></div>")
@@ -20518,7 +20517,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
+
 //function to handle listing of all desktops using JSON formatand rendering library
 //given the JSON list of all desktops, a tabular view is generated in the browser
 func listAllDesktops(w http.ResponseWriter, r *http.Request, uid string) {
@@ -20531,7 +20530,7 @@ func listAllDesktops(w http.ResponseWriter, r *http.Request, uid string) {
 	}
 	return
 }
- 
+
 //function to handle listing of all icons using JSON formatand rendering library
 //given the JSON list of all icons, a tabular view is generated in the browser
 func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) {
@@ -20544,8 +20543,8 @@ func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) {
 	}
 	return
 }
- 
-//function handle listing of all icons
+
+//function handle listing of all icons 
 /* func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) []byte {
 	c := appengine.NewContext(r)
 	
@@ -20607,7 +20606,7 @@ func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) {
 			}
 			
 			for _, p := range icons{
-				bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://sample-project.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
+				bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://ulapph-public-1.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
 			}
 			bLine.WriteString(fmt.Sprintf("		</div>\n"))
  
@@ -20626,7 +20625,7 @@ func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) {
 		}
 		
 		for _, p := range icons{
-			bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://sample-project.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
+			bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://ulapph-public-1.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
 		}
 		bLine.WriteString(fmt.Sprintf("		</div>\n"))
 		
@@ -20643,7 +20642,7 @@ func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) {
 		}
 		
 		for _, p := range icons{
-			bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://sample-project.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
+			bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://ulapph-public-1.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
 		}
 		bLine.WriteString(fmt.Sprintf("		</div>\n"))
 		
@@ -20661,7 +20660,7 @@ func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) {
 		
 //function generate random colors
 func getRandomColors() (color1, color2, color3 string) {
- 
+
 	myrand := randNum(1, 50)
 	myrand = myrand - 1
 	i := 0
@@ -20703,7 +20702,7 @@ func ulapphSearch(w http.ResponseWriter, r *http.Request) {
 	} else {
 		uid = getGeoString(w,r)
 	}
- 
+
 	SEARCH_FUNC := r.FormValue("f")
 	SEARCH_TARGET := r.FormValue("t")
 	SEARCH_KEY := r.FormValue("s")
@@ -20880,7 +20879,7 @@ func ulapphSearch(w http.ResponseWriter, r *http.Request) {
 			writeHTMLHeader(w, 200)
 			w.Write([]byte(HOST_LIST))
 			return
- 
+
 		case SEARCH_FUNC == "GET_MAP_LIST":
 			if r.FormValue("esk") != EXT_SEARCH_GEN_KEY {
 				fmt.Printf("Unauthorized access")
@@ -21688,8 +21687,8 @@ func ulapphSearch(w http.ResponseWriter, r *http.Request) {
 	}
 			
 }
- 
-//handles bleve search which is capable of searching inside a document line by line
+
+//handles bleve search which is capable of searching inside a document line by line 
 func bleveSearch(w http.ResponseWriter, r *http.Request, uid, IDX_TARGET, SID, SEARCH_KEY string) {
 	c := appengine.NewContext(r)
 	
@@ -21822,8 +21821,8 @@ func bleveSearch(w http.ResponseWriter, r *http.Request, uid, IDX_TARGET, SID, S
 	}
 	
 }
- 
-//handles blevesearch output
+
+//handles blevesearch output 
 func bleveSearchOut(w http.ResponseWriter, r *http.Request, uid, IDX_TARGET, SID, SEARCH_KEY, TITLE, DESC, URL string, searchResults interface{}) {
  
 	const header = `<!DOCTYPE html>
@@ -21854,8 +21853,8 @@ func bleveSearchOut(w http.ResponseWriter, r *http.Request, uid, IDX_TARGET, SID
 		</body>`
 	fmt.Fprintf(w, "%v", footer)
 }
- 
-//determine if the http request is from a bot
+
+//determine if the http request is from a bot 
 func isBot(w http.ResponseWriter, r *http.Request) (FL_IS_BOT bool) {
 	uag := r.UserAgent()
 	ua := user_agent.New(uag)
@@ -21885,7 +21884,7 @@ func checkDesktop(w http.ResponseWriter, r *http.Request) (FL_DESKTOP bool) {
 	}
 	return FL_DESKTOP
 }
- 
+
 //checks http request is from a mobile
 func checkMobile(w http.ResponseWriter, r *http.Request) (FL_MOBILE bool) {
 	uag := r.UserAgent()
@@ -21898,7 +21897,7 @@ func checkMobile(w http.ResponseWriter, r *http.Request) (FL_MOBILE bool) {
 	return FL_MOBILE
 }
  
-//checks if the browser is capable of handling slides format
+//checks if the browser is capable of handling slides format 
 func checkSlidable(w http.ResponseWriter, r *http.Request) (FL_DESKTOP bool) {
 	if SYS_CHK_AUTO_SL2ART == false {
 		FL_DESKTOP = true
@@ -21918,8 +21917,8 @@ func checkSlidable(w http.ResponseWriter, r *http.Request) (FL_DESKTOP bool) {
  
 	return FL_DESKTOP
 }
- 
-//search the slides, articles, media index files
+
+//search the slides, articles, media index files 
 //it uses google appengine search api to index and search documents
 func searchIndex(w http.ResponseWriter, r *http.Request, searchChan chan []byte, SEARCH_FUNC string, IDX_TARGET string, SEARCH_KEY string, recCtr int, ITEM_TYPE, sec string) {
 	c := appengine.NewContext(r)
@@ -22019,13 +22018,13 @@ func searchIndex(w http.ResponseWriter, r *http.Request, searchChan chan []byte,
 				buffer3.WriteString(fmt.Sprintf("	<div class=\"right\">"))
 				buffer3.WriteString(fmt.Sprintf("	  <ul class=\"item_stats\">"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
-				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://sample-project.appspot.com/search?t=InDoc&IDX=%v&SID=%v&q=%v\" target=\"%v\"><img src=\"/img/doc-search.png\" title=\"Search InDoc\" height=\"16\" width=\"16\"></a>", IDX_TARGET, p.DOC_KEY, SEARCH_KEY, p.DOC_KEY))
+				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://ulapph-public-1.appspot.com/search?t=InDoc&IDX=%v&SID=%v&q=%v\" target=\"%v\"><img src=\"/img/doc-search.png\" title=\"Search InDoc\" height=\"16\" width=\"16\"></a>", IDX_TARGET, p.DOC_KEY, SEARCH_KEY, p.DOC_KEY))
 				buffer3.WriteString(fmt.Sprintf("		</li>"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
-				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://sample-project.appspot.com/wall?WALL_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" title=\"Wall Copy\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.DOC_TITLE, CMD_GEN_KEY))
+				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://ulapph-public-1.appspot.com/wall?WALL_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" title=\"Wall Copy\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.DOC_TITLE, CMD_GEN_KEY))
 				buffer3.WriteString(fmt.Sprintf("		</li>"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
-				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://sample-project.appspot.com/uloc?LS_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&IMG_SRC=%v&TITLE=%v\"><img src=\"/img/uloc.png\" title=\"Save to ULOC\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.IMG_URL, p.DOC_TITLE))
+				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://ulapph-public-1.appspot.com/uloc?LS_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&IMG_SRC=%v&TITLE=%v\"><img src=\"/img/uloc.png\" title=\"Save to ULOC\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.IMG_URL, p.DOC_TITLE))
 				buffer3.WriteString(fmt.Sprintf("		</li>"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
 				buffer3.WriteString(fmt.Sprintf("		  <img src=\"/img/comment-icon.png\" width=16 height=16 title=\"Comments\">"))
@@ -22080,13 +22079,13 @@ func searchIndex(w http.ResponseWriter, r *http.Request, searchChan chan []byte,
 				buffer3.WriteString(fmt.Sprintf("	<div class=\"right\">"))
 				buffer3.WriteString(fmt.Sprintf("	  <ul class=\"item_stats\">"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
-				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://sample-project.appspot.com/search?t=InDoc&IDX=%v&SID=%v&q=%v\" target=\"%v\"><img src=\"/img/doc-search.png\" title=\"Search InDoc\" height=\"16\" width=\"16\"></a>", IDX_TARGET, p.DOC_KEY, SEARCH_KEY, p.DOC_KEY))
+				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://ulapph-public-1.appspot.com/search?t=InDoc&IDX=%v&SID=%v&q=%v\" target=\"%v\"><img src=\"/img/doc-search.png\" title=\"Search InDoc\" height=\"16\" width=\"16\"></a>", IDX_TARGET, p.DOC_KEY, SEARCH_KEY, p.DOC_KEY))
 				buffer3.WriteString(fmt.Sprintf("		</li>"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
-				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://sample-project.appspot.com/wall?WALL_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" title=\"Wall Copy\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.DOC_TITLE, CMD_GEN_KEY))
+				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://ulapph-public-1.appspot.com/wall?WALL_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" title=\"Wall Copy\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.DOC_TITLE, CMD_GEN_KEY))
 				buffer3.WriteString(fmt.Sprintf("		</li>"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
-				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://sample-project.appspot.com/uloc?LS_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&IMG_SRC=%v&TITLE=%v\"><img src=\"/img/uloc.png\" title=\"Save to ULOC\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.IMG_URL, p.DOC_TITLE))
+				buffer3.WriteString(fmt.Sprintf("       <a href=\"https://ulapph-public-1.appspot.com/uloc?LS_FUNC=IDX_COPY&SOURCE_TBL=%v&DOC_KEY=%v&SOURCE_TYPE=%v&IMG_SRC=%v&TITLE=%v\"><img src=\"/img/uloc.png\" title=\"Save to ULOC\" height=\"16\" width=\"16\"></a>", p.SOURCE_TBL, p.DOC_KEY, p.SOURCE_TYPE, p.IMG_URL, p.DOC_TITLE))
 				buffer3.WriteString(fmt.Sprintf("		</li>"))
 				buffer3.WriteString(fmt.Sprintf("		<li>"))
 				buffer3.WriteString(fmt.Sprintf("		  <img src=\"/img/comment-icon.png\" width=16 height=16 title=\"Comments\">"))
@@ -22122,10 +22121,10 @@ func searchIndex(w http.ResponseWriter, r *http.Request, searchChan chan []byte,
 	
 	searchChan <- buffer3.Bytes()
 }
- 
-//handles search schemes to determine if http or https
+
+//handles search schemes to determine if http or https 
 func searchSchemeHandler(w http.ResponseWriter, r *http.Request, turl, sec string) string {
- 
+
 	if SYS_CHG_HTTPS == false {
 		return turl
 	}
@@ -22154,8 +22153,8 @@ func searchSchemeHandler(w http.ResponseWriter, r *http.Request, turl, sec strin
 	return turl
 	
 }
- 
-//handles /people url
+
+//handles /people url 
 func people(w http.ResponseWriter, r *http.Request) {
 	checkReferrer(w,r)
 	c := appengine.NewContext(r)
@@ -22244,7 +22243,7 @@ func people(w http.ResponseWriter, r *http.Request) {
 			url := r.FormValue("url")
 			url = resolveURL(domRefMatchS,url)
 			//send shareable link
-			MSG := fmt.Sprintf("<img src=\"/img/jswm.png\" width=50 height=50> New window opened: [%v] %v <a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", title, ShortenUrl(w,r,url), title, url, title)
+			MSG := fmt.Sprintf("<img src=\"/img/jswm.png\" width=50 height=50> New window opened: [%v] %v <a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", title, ShortenUrl(w,r,url), title, url, title)
 			if uid != "" && url != "" && title != "" {
 				//when a UWM window is opened
 				sendChannelMessage(w,r,uid, MSG)
@@ -22881,9 +22880,9 @@ func people(w http.ResponseWriter, r *http.Request) {
 			}
 	}
 }
- 
+
 //handles/infodb handler
-//used for viewing articles, slides or media index
+//used for viewing articles, slides or media index 
 func infodb(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	c := appengine.NewContext(r)
@@ -23089,7 +23088,7 @@ func infodb(w http.ResponseWriter, r *http.Request) {
 						lines = append(lines, fmt.Sprintf(""))
 					}
 				}
- 
+
 				doc, err := Parse4(w, r, &Lines{0, lines}, "SLIDES-ULAPPH", 0)
  
 				if err != nil {
@@ -24555,9 +24554,9 @@ func infodb(w http.ResponseWriter, r *http.Request) {
 							 panic(err)
 						}
 					}
- 
+
 				case CATEGORY == "ALL_WALLPAPERS":
- 
+
 					q := datastore.NewQuery("TDSMEDIA").Filter("PROP =", "big_wp").
 														Filter("AUTHOR =", uid)
 					//c.Errorf("[S0183]")
@@ -24694,8 +24693,8 @@ func infodb(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
-//converts desktop number into desktop name
+
+//converts desktop number into desktop name 
 func deskNum2Name(w http.ResponseWriter, r *http.Request, catName string) (catDesc string) {
 	c := appengine.NewContext(r)
 	
@@ -24728,8 +24727,8 @@ func deskNum2Name(w http.ResponseWriter, r *http.Request, catName string) (catDe
 	}
 	return catDesc
 }
- 
-//list all destktops given the category list
+
+//list all destktops given the category list 
 func listDesktops(w http.ResponseWriter, r *http.Request) string {
 	c := appengine.NewContext(r)
 	cKey2 := "DESKTOPS_LIST"
@@ -24826,8 +24825,8 @@ func listDesktops(w http.ResponseWriter, r *http.Request) string {
 	}
 	return DESKTOPS_LIST
 }
- 
-//lists all sticky notes
+
+//lists all sticky notes 
 //returns results in json
 func listAllNotes(w http.ResponseWriter, r *http.Request, uid string) []Notes {
 	c := appengine.NewContext(r)
@@ -24848,12 +24847,12 @@ func listAllNotes(w http.ResponseWriter, r *http.Request, uid string) []Notes {
 		}		
 	}
 	BLOB_KEY := contentCheckSid(w,r,SID)
- 
- 
+	//c.Infof("SID: %v", SID)
+	//c.Infof("BLOB_KEY: %v", BLOB_KEY)
 	var buf bytes.Buffer
 	reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 	s := bufio.NewScanner(reader)
- 
+
 	for s.Scan() {
 		buf.WriteString(fmt.Sprintf("%v", s.Text()))
 	}
@@ -24861,12 +24860,12 @@ func listAllNotes(w http.ResponseWriter, r *http.Request, uid string) []Notes {
 	for _, p := range aln.AllNotes {
 		dks = append(dks, p)
 	}
- 
+	//c.Infof("DKS: %v", dks)
 	
 	return dks
 	
 }
- 
+
 //list all desktop buttons
 func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desktops {
 	c := appengine.NewContext(r)
@@ -24877,7 +24876,7 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 	DESKTOPS_LIST := getBytMemcacheValueByKey(w,r,cKey2)
 	
 	if DESKTOPS_LIST == nil || string(DESKTOPS_LIST) == "" {
- 
+		//c.Infof("DESKTOPS_LIST = blank")
 		docID := 0
 		cfgName := "SYSTEM_Category_List_Media_ID"
 		_, docID = getTDSCNFG(w,r,1,cfgName)
@@ -24973,11 +24972,11 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 	} else {
 		//convert again to json
 		json.Unmarshal(DESKTOPS_LIST, &dks)
- 
+		//c.Infof("%v", dks)
 	}
 	return dks
 }
- 
+
 //list all desktop icons
 func listDesktopsIcons(w http.ResponseWriter, r *http.Request, uid string) []Icons {
 	c := appengine.NewContext(r)
@@ -24988,7 +24987,7 @@ func listDesktopsIcons(w http.ResponseWriter, r *http.Request, uid string) []Ico
 	ICONS_LIST := getBytMemcacheValueByKey(w,r,cKey2)
 	
 	if ICONS_LIST == nil || string(ICONS_LIST) == "" {
- 
+		//c.Infof("ICONS_LIST = blank")
 		//------------
 		q := datastore.NewQuery("TDSCATS").Limit(1000)
 		recCount, _  := q.Count(c)
@@ -25004,7 +25003,7 @@ func listDesktopsIcons(w http.ResponseWriter, r *http.Request, uid string) []Ico
 			return nil
 		}
 		for _, x := range cats {
- 
+
 			if x.CAT_NUM == 0 {
 				//get icons for this cat
 				q := datastore.NewQuery("TDSICONS").Filter("DESKTOP =", x.CAT_NAME).Limit(100)
@@ -25072,7 +25071,7 @@ func listDesktopsIcons(w http.ResponseWriter, r *http.Request, uid string) []Ico
 			}
 			dks = append(dks, p)
 		}
- 
+
 		q = datastore.NewQuery("TDSICONS").Filter("DESKTOP= ", uid)
 		recCount,_ = q.Count(c)
 		icons = make([]TDSICONS, 0, recCount)
@@ -25095,15 +25094,15 @@ func listDesktopsIcons(w http.ResponseWriter, r *http.Request, uid string) []Ico
 		var buf bytes.Buffer
 		binary.Write(&buf, binary.BigEndian, dks)
 		putBytesToMemcacheWithoutExp(w,r,cKey2,buf.Bytes())
- 
+
 	} else {
 		//convert again to json
 		json.Unmarshal(ICONS_LIST, &dks)
- 
+		//c.Infof("%v", dks)
 	}
 	return dks
 }
- 
+
 //Display humanized form for the timestamp like 2006-01-02 15:04:05.999999999 -0700 MST
 func nowHumanize(date string) (fTime string) {
 	if date != "" {
@@ -25117,8 +25116,8 @@ func nowHumanize(date string) (fTime string) {
 	}
 	return fTime
 }
- 
-//Display humanized form of timestamp like 20150316022627
+
+//Display humanized form of timestamp like 20150316022627 
 func stmpHumanize(tStr string) (fTime string) {
 	if tStr != "" {
 		//tStr := "20150316022627"
@@ -25192,7 +25191,7 @@ func validateAccess(w http.ResponseWriter, r *http.Request, FUNC_CODE, lref stri
 		} else {
 			msgDtl := fmt.Sprintf("[U00167] ERROR: Hi!, You appear to us as a bot! We currently disallow robots from accessing some parts of the website. Thanks!")
 			msgTyp := "error"
-			msgURL := fmt.Sprintf("https://sample-project.appspot.com")
+			msgURL := fmt.Sprintf("https://ulapph-public-1.appspot.com")
 			action := fmt.Sprintf("Apologies for this issue.")
 			sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, msgURL, action)
 			http.Redirect(w, r, sysReq, http.StatusFound)
@@ -25201,8 +25200,8 @@ func validateAccess(w http.ResponseWriter, r *http.Request, FUNC_CODE, lref stri
 	}
 	return FL_PROCEED_OK
 }
- 
-//checks if it is a valid API call
+
+//checks if it is a valid API call 
 func isValidApiCall(w http.ResponseWriter, r *http.Request) (FL_PROCEED_OK bool) {
 	API_KEY_R := r.Header["Authorization"]
 	API_KEY := ""
@@ -25306,7 +25305,7 @@ func validateToken(w http.ResponseWriter, r *http.Request, FUNC_CODE string, Cha
 	return FL_PROCEED_OK
 }
  
-//display memcache for top websites
+//display memcache for top websites 
 func disp_MEMCACHE_TopWebsites(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
  
@@ -25322,16 +25321,16 @@ func disp_MEMCACHE_TopWebsites(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%v", TOP_WEBSITES)
 	}
 }
- 
-//gets guestbook key
+
+//gets guestbook key 
 func getGuestbookKey(uid string) string {
 	rt := time.Now().Local()
 	timestamp := fmt.Sprintf("%v", rt.Format("20060102150405"))
 	dsKey := fmt.Sprintf("%v-%v-%v", uid, timestamp, randSeq2(16))
 	return dsKey
 }
- 
-//puts a string in a memcache
+
+//puts a string in a memcache 
 func putStrToMemcacheWithExp(w http.ResponseWriter, r *http.Request,cKey,sValue string, tExp time.Duration) {
 	c := appengine.NewContext(r)
 	
@@ -25347,8 +25346,8 @@ func putStrToMemcacheWithExp(w http.ResponseWriter, r *http.Request,cKey,sValue 
 	return
 	
 }
- 
-//gets string from a memcache
+
+//gets string from a memcache 
 func getStrMemcacheValueByKey(w http.ResponseWriter, r *http.Request,cKey string) (cVal string) {
 	c := appengine.NewContext(r)
 	
@@ -25362,8 +25361,8 @@ func getStrMemcacheValueByKey(w http.ResponseWriter, r *http.Request,cKey string
 	return cVal
 	
 }
- 
-//gets byte from a memcache
+
+//gets byte from a memcache 
 func getBytMemcacheValueByKey(w http.ResponseWriter, r *http.Request,cKey string) (cVal []byte) {
 	c := appengine.NewContext(r)
 	
@@ -25377,8 +25376,8 @@ func getBytMemcacheValueByKey(w http.ResponseWriter, r *http.Request,cKey string
 	return cVal
 	
 }
- 
-//puts string to memcache w/o expiry
+
+//puts string to memcache w/o expiry 
 func putStrToMemcacheWithoutExp(w http.ResponseWriter, r *http.Request,cKey,sValue string) {
 	//set expiry to 12 hours???
 	c := appengine.NewContext(r)
@@ -25395,8 +25394,8 @@ func putStrToMemcacheWithoutExp(w http.ResponseWriter, r *http.Request,cKey,sVal
 	}
 	return
 }
- 
-//puts bytes to memcache w/ expiry
+
+//puts bytes to memcache w/ expiry 
 func putBytesToMemcacheWithExp(w http.ResponseWriter, r *http.Request,cKey string,sBytes []byte,tExp time.Duration) {
 	c := appengine.NewContext(r)
 	
@@ -25412,8 +25411,8 @@ func putBytesToMemcacheWithExp(w http.ResponseWriter, r *http.Request,cKey strin
 	return
 	
 }
- 
-//puts bytes to memcache w/o expiry
+
+//puts bytes to memcache w/o expiry 
 func putBytesToMemcacheWithoutExp(w http.ResponseWriter, r *http.Request,cKey string,sBytes []byte) {
 	c := appengine.NewContext(r)
 	
@@ -25427,9 +25426,9 @@ func putBytesToMemcacheWithoutExp(w http.ResponseWriter, r *http.Request,cKey st
 	}
 	return
 }
- 
+
 //handles /guestbook processing
-//users can send messages via guestbook
+//users can send messages via guestbook 
 func guestbook(w http.ResponseWriter, r *http.Request) {
 	
 	checkReferrer(w,r)
@@ -25520,7 +25519,7 @@ func guestbook(w http.ResponseWriter, r *http.Request) {
 			go getSoundPrefs(w,r,soundPrefChan,soundPrefChanDone,uid)
 			soundPref := <-soundPrefChan
 			<-soundPrefChanDone
- 
+
 			fmt.Fprintf(w, "<div class=\"success2\"><input type=\"hidden\" id=\"soundStat\" value=\"%v\"><img src=\"%v\" width=50 height=50 title=\"%s\"></img>%v</div>", soundPref, PROFILE_PIC_URLME, uid, GUESTBOOK_CONTL)
 			fmt.Fprintf(w, "[ <a href=\"/\">Home</a> ] [ <a href=\"/people?PEOPLE_FUNC=QUICK-VIEW-ONLINE&o=tiles\">People</a> ] [<a href=\"https://ulapph-sites.appspot.com/directory?DIR_FUNC=people\">All People</a>] [<a href=\"https://ulapph-sites.appspot.com/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-LOG&SID=ULAPPH-NOTIFICATIONS-LOG\">Presence</a>] [<a href=\"https://ulapph-sites.appspot.com/directory?DIR_FUNC=sites\">List Sites</a>] [ <a href=\"/chat\">Chat</a> ] [<a href=\"/tools?FUNC=WIDGET&t=WallMessage\">WallMessage</a>] [<a href=\"/admin-setup?ADMIN_FUNC=SEND_MSG_ALL\">Broadcast Message</a>] [ <a href=\"/logout\">Logout</a> ] [ <a href=\"/guestbook?GB_FUNC=GB_OWNER\">Refresh</a> ]")
 			contHTML := ""
@@ -26056,7 +26055,7 @@ func guestbook(w http.ResponseWriter, r *http.Request) {
 				STR_FILLER1: FDBKMAIL,
 				STR_FILLER2: SID,
 			}
- 
+
 			if err := guestbookTemplateFeedback.Execute(w, &TEMPDATA); err != nil {
 					 panic(err)
 			}
@@ -26184,8 +26183,8 @@ func markMsgRead(w http.ResponseWriter, r *http.Request,mid string) (ctr int) {
 	}
 	return ctr
 }
- 
-//marks guestbook messages as deleted
+
+//marks guestbook messages as deleted 
 func markMsgDelete(w http.ResponseWriter, r *http.Request,uid,mid string) (ok bool) {
 	c := appengine.NewContext(r)
 	
@@ -26198,8 +26197,8 @@ func markMsgDelete(w http.ResponseWriter, r *http.Request,uid,mid string) (ok bo
 	datastore.Delete(c, key)
 	return true
 }
- 
-//handles sharing of contents
+
+//handles sharing of contents 
 func share(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -26232,13 +26231,13 @@ func share(w http.ResponseWriter, r *http.Request) {
 			switch TARGET {
 				case "TDSSLIDE":
 					_, _, _, _, _, TITLE, _, _, MUSIC_ID, GET_NEXT := getTDSSLIDEBlobKey(w, r, docID)
-					reqStr := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, TITLE, MUSIC_ID, GET_NEXT)
-					redir = fmt.Sprintf("https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v", TITLE, ShortenUrl(w,r,reqStr))
+					reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, TITLE, MUSIC_ID, GET_NEXT)
+					redir = fmt.Sprintf("https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v", TITLE, ShortenUrl(w,r,reqStr))
 			
 				case "TDSARTL":
 					_, _, _, _, _, TITLE, _, _, MUSIC_ID := getTDSARTLBlobKey(w, r, docID)
-					reqStr := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=%v&TITLE=%v&MUSIC_ID=%v", DOC_ID, SID, TITLE, MUSIC_ID)
-					redir = fmt.Sprintf("https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v", TITLE, ShortenUrl(w,r,reqStr))
+					reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=%v&TITLE=%v&MUSIC_ID=%v", DOC_ID, SID, TITLE, MUSIC_ID)
+					redir = fmt.Sprintf("https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v", TITLE, ShortenUrl(w,r,reqStr))
 					
 				default:
 					fmt.Fprintf(w, "Sorry, slide & article only shared using this method.<br>")
@@ -26263,11 +26262,11 @@ func share(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
+
 //D0040
 //handles commenting system using commento.js
 func ulapphComments(w http.ResponseWriter, r *http.Request) {
- 
+
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	
 	C_FUNC := r.FormValue("C_FUNC")
@@ -26275,7 +26274,7 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 	//D0040
 	CC_KEY, _ := getCCKey(w,r,r.PostFormValue("url"))
 	if CC_KEY != SYS_RECAPTCHA_KEY && isLoggedIn(w,r) != true {
- 
+		//c.Infof("Error: Access to this page requires captch verification!")
 		fmt.Fprintf(w, "Error: Access to this page requires captch verification!")
 		return			
 	}
@@ -26300,32 +26299,32 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			//lets serve some cache
 			cKeyC := fmt.Sprintf("JSON_COMMENTS_%v", SID)
 			JLIST := getBytMemcacheValueByKey(w,r,cKeyC)
- 
+			//c.Infof("JLIST: %v", string(JLIST))	
 			//if JLIST != nil {
 			if string(JLIST) != "" {
- 
+				//c.Infof("Serve map cached!")
 				if err := json.Unmarshal(JLIST, &comments); err != nil {
 					panic(err)
 				}
- 
+				//c.Infof("comments: %v", comments)
 				result.Comments = comments
 				result.render(w)
 				return
 			}
 	
 			comments, err = getComments(w,r,SID,url)
- 
+			//c.Infof("comments: %v", comments)
 			if err != nil {
- 
+				//c.Infof("getComments() Error: %v", err)
 				//Emit(err)
 			}
 			//cache it first
 			data, err := json.Marshal(comments)
 			if err != nil {
- 
+				//c.Infof("json.Marshal() Error: %v", err)
 			}			
 			putBytesToMemcacheWithoutExp(w,r,cKeyC,data)
- 
+			//c.Infof("comments cached: %v", string(data))
 			result.Comments = comments
 			result.render(w)
 			return
@@ -26334,24 +26333,24 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			
 			result := &resultContainer{}
 			if r.Method != "POST" {
- 
+				//c.Infof("This request must be a POST request: %v", r.Method)
 				result.Status = http.StatusMethodNotAllowed
 				result.Message = "This request must be a POST request."
 				result.render(w)
 				return
 			}
- 
+
 			parent, err := strconv.Atoi(r.PostFormValue("parent"))
- 
+			//c.Infof("parent: %v", parent)
 			if err != nil {
 				//Emit(err)
- 
+				//c.Infof("getComments() Error: %v", err)
 				result.Status = http.StatusBadRequest
 				result.Message = "Invalid parent ID."
 				result.render(w)
 				return
 			}
- 
+
 			name := template.HTMLEscapeString(r.PostFormValue("name"))
 			comment := template.HTMLEscapeString(r.PostFormValue("comment"))
 			latlon := r.PostFormValue("latlon")
@@ -26360,12 +26359,12 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 				result.render(w)
 				return
 			}
- 
+
 			_, uid := checkSession(w,r)
 			if uid == "" {
 				uid = getGeoString(w,r)
 			}
- 
+
 			err = createComment(w,r,r.PostFormValue("url"), name, uid, comment, latlon, parent)
 			if err != nil {
 				//Emit(err)
@@ -26378,29 +26377,29 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			result.Message = "Comment successfully created"
 			result.render(w)
 			return
- 
+
 		case "create2":
 			
 			result := &resultContainer{}
 			if r.Method != "POST" {
- 
+				//c.Infof("This request must be a POST request: %v", r.Method)
 				result.Status = http.StatusMethodNotAllowed
 				result.Message = "This request must be a POST request."
 				result.render(w)
 				return
 			}
- 
+
 			parent, err := strconv.Atoi(r.FormValue("parent"))
- 
+			//c.Infof("parent: %v", parent)
 			if err != nil {
 				//Emit(err)
- 
+				//c.Infof("getComments() Error: %v", err)
 				result.Status = http.StatusBadRequest
 				result.Message = "Invalid parent ID."
 				result.render(w)
 				return
 			}
- 
+
 			name := template.HTMLEscapeString(r.FormValue("name"))
 			comment := template.HTMLEscapeString(r.FormValue("comment"))
 			latlon := r.FormValue("latlon")
@@ -26409,7 +26408,7 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 				result.render(w)
 				return
 			}
- 
+
 			_, uid := checkSession(w,r)
 			if uid == "" {
 				uid = getGeoString(w,r)
@@ -26417,7 +26416,7 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			err = createComment(w,r,r.FormValue("url"), name, uid, comment, latlon, parent)
 			if err != nil {
 				//Emit(err)
- 
+				//c.Infof("getComments() Error: %v", err)
 				result.Status = http.StatusInternalServerError
 				result.Message = "Some internal error occurred."
 				result.render(w)
@@ -26429,13 +26428,13 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			return
 		
 		default:
- 
+			//c.Infof("/comments index!")
 			return
 		
 	}		
 }
- 
-//handles /social handler
+
+//handles /social handler 
 func social(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	c := appengine.NewContext(r)
@@ -26512,7 +26511,7 @@ func social(w http.ResponseWriter, r *http.Request) {
 		case "proc-broadcast-presence":
 			procBroadcastPresence2(w,r)
 			return
- 
+
 		case "proc-broadcast-location":
 			xcus := r.FormValue("custom")
 			xuid := r.FormValue("uid")
@@ -26631,7 +26630,7 @@ func social(w http.ResponseWriter, r *http.Request) {
 			passcode := r.FormValue("passcode")
 			auth := r.FormValue("auth")
 			toURL := r.FormValue("URL")
- 
+
 			SPL := strings.Split(SID,"-")
 			DOC_ID2 := 0
 			TARGET := ""
@@ -26767,7 +26766,7 @@ func social(w http.ResponseWriter, r *http.Request) {
 			return
  
 		case "QUIZ":
- 
+
 			SID := r.FormValue("SID")
 			ANS := r.FormValue("ANS")
 			mode := r.FormValue("mode")
@@ -26781,7 +26780,7 @@ func social(w http.ResponseWriter, r *http.Request) {
 			} else {
 				uid = user
 			}
- 
+
  
  
 			
@@ -26861,11 +26860,11 @@ func social(w http.ResponseWriter, r *http.Request) {
 						content := fmt.Sprintf("%v got a score of %v", uid, res)
 						rh := r.Header
 						oLatLong := rh.Get("X-AppEngine-CityLatLong")
-						comUrl  := fmt.Sprintf("%v/comments?C_FUNC=create2&SID=%v&parent=-1&name=%v&comment=%v&latlon=%v&url=&cc_key=%v", "https://sample-project.appspot.com", SID, uid, content, oLatLong, SYS_RECAPTCHA_KEY)
+						comUrl  := fmt.Sprintf("%v/comments?C_FUNC=create2&SID=%v&parent=-1&name=%v&comment=%v&latlon=%v&url=&cc_key=%v", "https://ulapph-public-1.appspot.com", SID, uid, content, oLatLong, SYS_RECAPTCHA_KEY)
 						//Post data to server
 						//URL := fmt.Sprintf("%v/social?SO_FUNC=proc-broadcast-contents&encMsg=%v", SEARCH_SERVER, encMsg)
 						req, err := http.NewRequest("POST", comUrl, nil)
-				
+				 
 						client := urlfetch.Client(c)
 						_, err = client.Do(req)
 						if err != nil {
@@ -27079,7 +27078,7 @@ func social(w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, sysReq, http.StatusFound)	
 				return
 			}
- 
+
 		//D0040
 		case "SO_VIEW":
 			CC_KEY := r.FormValue("cc_key")
@@ -27093,7 +27092,7 @@ func social(w http.ResponseWriter, r *http.Request) {
 				//http.Redirect(w, r, redURL, http.StatusFound)
 				return			
 			}		
- 
+
 			_ = contentCheckSid(w,r,SID)
  
 			TARGET := ""
@@ -27193,8 +27192,8 @@ func social(w http.ResponseWriter, r *http.Request) {
  
 }
  
- 
-//views user profiles
+
+//views user profiles 
 func viewProfile(w http.ResponseWriter, r *http.Request, UID, uid string) {
 	c := appengine.NewContext(r)
 	
@@ -27490,7 +27489,7 @@ func viewProfile(w http.ResponseWriter, r *http.Request, UID, uid string) {
 		return
 	}
 }
- 
+
 //handles guestbook notifications	
 func notifyGuestbook(w http.ResponseWriter, r *http.Request, NGB_FUNC string, UID string, contentMsg string, FROM string) {
     c := appengine.NewContext(r)
@@ -27589,8 +27588,8 @@ func notifyGuestbook(w http.ResponseWriter, r *http.Request, NGB_FUNC string, UI
 	}
 	return
 }
- 
-//gets message of the day
+
+//gets message of the day 
 //used to display quotations, tips and tricks
 func getMOTD(w http.ResponseWriter, r *http.Request, deskName string) (ranMsgTitle, RAN_MSG, ranMsgSlidesURL string) {
 	motd := ""
@@ -27869,8 +27868,8 @@ func getMOTD(w http.ResponseWriter, r *http.Request, deskName string) (ranMsgTit
  
 	return ranMsgTitle, RAN_MSG, ranMsgSlidesURL
 }
- 
-//gest random text from a cache of contents
+
+//gest random text from a cache of contents 
 func getRanText(w http.ResponseWriter, r *http.Request, CON_CACHE string) (RAN_MSG string) {
 	temp := strings.Split(CON_CACHE, "\n")
 	totCount := len(temp)
@@ -27891,8 +27890,8 @@ func getRanText(w http.ResponseWriter, r *http.Request, CON_CACHE string) (RAN_M
  
 	return RAN_MSG
 }
- 
-//caches a given MOTD media file
+
+//caches a given MOTD media file 
 func cacheMOTDFile(w http.ResponseWriter, r *http.Request, CACHE_TARGET string) (CONCACHE string) {
 	c := appengine.NewContext(r)
 	
@@ -27976,7 +27975,7 @@ func cacheMOTDFile(w http.ResponseWriter, r *http.Request, CACHE_TARGET string) 
  
 	return CONCACHE
 }
- 
+
 //gets profile pic of a user				
 func getProfilePic(w http.ResponseWriter, r *http.Request, UID string) (PROFILE_PIC string) {
 	j := strings.Index(UID, "|")
@@ -28008,8 +28007,8 @@ func getProfilePic(w http.ResponseWriter, r *http.Request, UID string) (PROFILE_
 	}
 	return PROFILE_PIC
 }
- 
-//gets country pic of a user
+
+//gets country pic of a user 
 func getCountryPic(w http.ResponseWriter, r *http.Request, UID string) (COUNTRY_PIC string) {
 	
 	//if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
@@ -28074,7 +28073,7 @@ func getCountryPic(w http.ResponseWriter, r *http.Request, UID string) (COUNTRY_
 	}
 	return COUNTRY_PIC
 }
- 
+
 //gets ringtone for the given user
 func getRingtone(w http.ResponseWriter, r *http.Request, UID string) (RINGTONE_URL string) {
 	cKey := fmt.Sprintf("RINGTONE_URL_%v", UID)
@@ -28114,8 +28113,8 @@ func checkNewMessages(w http.ResponseWriter, r *http.Request, UID string) (GUEST
 				
 	return GUESTBOOK_NEWM
 }
- 
-//checks the number of guestbook messages
+
+//checks the number of guestbook messages 
 func checkNumMessages(w http.ResponseWriter, r *http.Request, UID string) (GUESTBOOK_NUM_MSGS int) {
 	c := appengine.NewContext(r)
 	
@@ -28411,8 +28410,8 @@ func adminIcons(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
-//handles caching of desktop icons
+
+//handles caching of desktop icons 
 func TASK_MEMCACHER_settingsAllIcons(w http.ResponseWriter, r *http.Request) {
  
 	IS_OK_TO_RUN := checkIfOkToRun(w, r)
@@ -28487,8 +28486,8 @@ func TASK_MEMCACHER_settingsAllIcons(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%v", iconsHTML)
 	
 }
- 
-//handles caching of contents and icons
+
+//handles caching of contents and icons 
 func TASK_MEMCACHER_contentsAll_Icons(w http.ResponseWriter, r *http.Request, TARGET string) {
  
     c := appengine.NewContext(r)
@@ -28659,7 +28658,7 @@ func exec_FetchUrlChan(w http.ResponseWriter, r *http.Request , thisChan chan []
 	return
 }
  
-//executes URL Fetch and then returns the results as string
+//executes URL Fetch and then returns the results as string 
 func fetchURL(w http.ResponseWriter, r *http.Request , fURL string) string {
  
 	c := appengine.NewContext(r)
@@ -28679,7 +28678,7 @@ func fetchURL(w http.ResponseWriter, r *http.Request , fURL string) string {
 	return bodyString
 	
 }
- 
+
 //executes URL Fetch and then returns the results as bytes
 func fetchURLB(w http.ResponseWriter, r *http.Request , fURL string) (bodyBytes []byte, err error) {
  
@@ -28699,9 +28698,9 @@ func fetchURLB(w http.ResponseWriter, r *http.Request , fURL string) (bodyBytes 
 	return bodyBytes, err
 	
 }
- 
+
 //executes URL Fetch from ULAPPH Cloud Desktops built-in cron
-//Every defined cron will be executed and perform the actions based on the configuration
+//Every defined cron will be executed and perform the actions based on the configuration 
 func TASK_URL_FETCHER(w http.ResponseWriter, r *http.Request , tURL, UID, FREQ string) {
 	
 	c := appengine.NewContext(r)
@@ -28974,9 +28973,9 @@ func sendBroadcastsUpdSlide(w http.ResponseWriter, r *http.Request, uid, DOC_STA
 	}
  
 }
- 
+
 //broadcast content updates
-//if there are updates on the articles, it will be broadcasted
+//if there are updates on the articles, it will be broadcasted 
 func sendBroadcastsUpdArticle(w http.ResponseWriter, r *http.Request, uid, DOC_STAT, SID, TITLE, DESC, TAGS, CATEGORY string) {
 	
 	msgDtl3 := ""
@@ -29009,8 +29008,8 @@ func sendBroadcastsUpdArticle(w http.ResponseWriter, r *http.Request, uid, DOC_S
 	}
  
 }
- 
-//performs a grep-like operation on a string of text
+
+//performs a grep-like operation on a string of text 
 func grepText(w http.ResponseWriter, r *http.Request, text, keyword string) string {
 	scanner := bufio.NewScanner(strings.NewReader(text))
 	var buf bytes.Buffer
@@ -29027,9 +29026,9 @@ func grepText(w http.ResponseWriter, r *http.Request, text, keyword string) stri
 	}
 	return buf.String()
 }
- 
+
 //handles the /ulapph-router handler which does a lot of routing
-//used usually for routing taskqueues and other special system operations
+//used usually for routing taskqueues and other special system operations 
 func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	RTR_FUNC := r.FormValue("RTR_FUNC")
@@ -29290,7 +29289,7 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 					case "OVERALL_PEOPLE":
 						getPeopleDirectory(w,r)
 						return
-					case "OVERALL_SITES":
+					case "OVERALL_SITES": 
 						getDesktopsDirectory(w,r)
 						return
 					case "OVERALL_WHATS_NEW":
@@ -29599,9 +29598,9 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 			}
 	}
 }
- 
+
 //POSTs a JSON data to dweet.io
-//an integration to dweet.io
+//an integration to dweet.io 
 func TASK_Dweetio (w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	uri := fmt.Sprintf("https://dweet.io/dweet/for/%v", fmt.Sprintf("ULAPPH-%v", SYS_SERVER_NAME))
@@ -29644,7 +29643,7 @@ func TASK_Dweetio (w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 }
- 
+
 //gets system status details	
 //returns a data struct
 func getSystemStats(w http.ResponseWriter, r *http.Request) (p TEMPSTRUCT3, err error) {
@@ -29772,7 +29771,7 @@ func isAnyoneOnline(w http.ResponseWriter, r *http.Request) bool {
 	}
 	return false
 }
- 
+
 //caches a given MOTD file and generates a slide or article
 //user gets redirected to the slide or article link
 func TASK_MEMCACHER_motd(w http.ResponseWriter, r *http.Request, DISP_MODE, TITLE, generalKey, redURL string) {
@@ -29817,7 +29816,7 @@ func TASK_MEMCACHER_motd(w http.ResponseWriter, r *http.Request, DISP_MODE, TITL
 	if err != nil {
 		//eturn err
 	}
- 
+
 	thisCtr := 0
 	//first count total records
 	//also cache a text version of this s/s to memcache
@@ -29889,7 +29888,7 @@ func TASK_MEMCACHER_motd(w http.ResponseWriter, r *http.Request, DISP_MODE, TITL
 	}
 	
 }
- 
+
 //runs a list of topics for a given desktop; each UWM desktop can have lists of particular topics
 //then it opens windows on the main desktop displaying the Google latest results for that topic
 func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request, UID, MODE string) {
@@ -29914,7 +29913,7 @@ func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request,
 	}
 	docID := str2int(SPX[1])
 	BLOB_KEY, _, _, _, _, _, _, _, _, _, _ := getTDSMEDIABlobKey(w, r, docID)
- 
+
 	autoCtr := 0
 	//if text != "" {
 		reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
@@ -29935,9 +29934,9 @@ func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request,
 	//}
 					
 }
- 
+
 //searches Google Plus given the profile needs/wants of a user
-//an integration to Google Plus API
+//an integration to Google Plus API 
 //currently disabled due to high billing costs
 func TASK_MEMCACHER_API_GOOGLE_PLUS_UID(w http.ResponseWriter, r *http.Request, UID, MODE string) {
 	c := appengine.NewContext(r)
@@ -30065,7 +30064,7 @@ func TASK_MEMCACHER_API_GOOGLE_PLUS_UID(w http.ResponseWriter, r *http.Request, 
 		}
 	}			
 }
- 
+
 //for each user online, it will execute urlfetch crons
 //users must be online so their crons will be executed
 func TASK_MEMCACHER_URL_FETCH_NOTIFS(w http.ResponseWriter, r *http.Request, freq string) {
@@ -30096,12 +30095,12 @@ func TASK_MEMCACHER_URL_FETCH_NOTIFS(w http.ResponseWriter, r *http.Request, fre
 	fmt.Fprintf(w, "UrlFetch has been completed: <br>")
 	
 }
- 
+
 //gets the urlfetch list or crons for the user
-//then calls the URL fetcher logic to execute it
+//then calls the URL fetcher logic to execute it 
 func TASK_MEMCACHER_URLFETCH_NOTIFS_IND (w http.ResponseWriter, r *http.Request, UID, FREQ string) {
 	c := appengine.NewContext(r)
- 
+
 	cKey := fmt.Sprintf("URLFETCH_LIST_%v", UID)
 	URL_LIST := ""
 	URL_LIST = getStrMemcacheValueByKey(w,r,cKey)
@@ -30211,7 +30210,7 @@ func TASK_MEMCACHER_URLFETCH_philvolcs_EQ (w http.ResponseWriter, r *http.Reques
 	}
 	
 	UFLink := "http://www.phivolcs.dost.gov.ph/html/update_SOEPD/EQLatest.html"
-	ARLink := "https://sample-project.appspot.com/infodb?DB_FUNC=ULAPPH-EQ-PH&SID=ULAPPH-EQ-PH"
+	ARLink := "https://ulapph-public-1.appspot.com/infodb?DB_FUNC=ULAPPH-EQ-PH&SID=ULAPPH-EQ-PH"
 	cKey := fmt.Sprintf("ULAPPH_EQ_%s", "PH")
 	cKeyP := fmt.Sprintf("ULAPPH_EQ_%s_PREV", "PH")
 	cKeyValue := ""
@@ -30335,8 +30334,8 @@ func TASK_MEMCACHER_URLFETCH_philvolcs_EQ (w http.ResponseWriter, r *http.Reques
 	}
  
 }
- 
-//parses an html
+
+//parses an html 
 func parse_html(w http.ResponseWriter, r *http.Request, y io.Writer, n *html.Node) {
 		
 	if n.Type == html.ElementNode && n.Data == "a" {
@@ -30350,7 +30349,7 @@ func parse_html(w http.ResponseWriter, r *http.Request, y io.Writer, n *html.Nod
 		parse_html(w, r, y, c)
 	}
 }
- 
+
 //gets people directory
 //applicable only for sites server which then calls all connected desktops under this server
 func getPeopleDirectory (w http.ResponseWriter, r *http.Request) {
@@ -30406,7 +30405,7 @@ func getPeopleDirectory (w http.ResponseWriter, r *http.Request) {
 		putBytesToMemcacheWithoutExp(w,r,"OVERALL_PEOPLE",buffer3.Bytes())
 	}
 }	
- 
+
 //update overall cached pages such as people directory
 //applicable only to sites server which calls member desktops under it
 func TASK_MEMCACHER_frequent (w http.ResponseWriter, r *http.Request) {
@@ -30466,7 +30465,7 @@ func TASK_MEMCACHER_frequent (w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
+
 //gets all trending contents from all member desktops under the site server
 //applicable for sites server only
 func getTrendingContents(w http.ResponseWriter, r *http.Request) {
@@ -30523,7 +30522,7 @@ func getTrendingContents(w http.ResponseWriter, r *http.Request) {
 		putBytesToMemcacheWithoutExp(w,r,"OVERALL_TRENDING",buffer3.Bytes())	
 	}
 }
- 
+
 //gets whats new contents from all desktops who are member of a sites server
 //applicable for sites server only
 func getWhatsNewContents(w http.ResponseWriter, r *http.Request) {
@@ -30579,7 +30578,7 @@ func getWhatsNewContents(w http.ResponseWriter, r *http.Request) {
 		putBytesToMemcacheWithoutExp(w,r,"OVERALL_WHATS_NEW",buffer3.Bytes())
 	}	
 }
- 
+
 //D0042
 //gets new comments from all member desktops under a sites server
 //applicable to a sites server only
@@ -30636,7 +30635,7 @@ func getNewDiscussions(w http.ResponseWriter, r *http.Request) {
 		putBytesToMemcacheWithoutExp(w,r,"OVERALL_DISCUSSIONS",buffer3.Bytes())
 	}	
 }
- 
+
 //gets a directory of all desktops
 //applicable only for sites server
 func getDesktopsDirectory(w http.ResponseWriter, r *http.Request) {
@@ -30782,7 +30781,7 @@ func getDesktopsDirectory(w http.ResponseWriter, r *http.Request) {
 		putBytesToMemcacheWithoutExp(w,r,"OVERALL_SITES",buffer3.Bytes())
 	}	
 }
- 
+
 //a taskqueue cacheing logic for getting trending contents, whats new etc
 func TASK_MEMCACHER_general (w http.ResponseWriter, r *http.Request) {
 	
@@ -30796,8 +30795,8 @@ func TASK_MEMCACHER_general (w http.ResponseWriter, r *http.Request) {
 		
 	fmt.Fprintf(w, "Task completed")
 }
- 
-//caches profile pic for a user
+
+//caches profile pic for a user 
 func cacheProfilePic(w http.ResponseWriter, r *http.Request, uid string) string {
  
     c := appengine.NewContext(r)
@@ -30843,8 +30842,8 @@ func cacheProfilePic(w http.ResponseWriter, r *http.Request, uid string) string 
 	}
 	return PROFILE_PIC
 }
- 
-//caches index of contents of all slides
+
+//caches index of contents of all slides 
 //when the website is accessed, it serves the cached pages
 func TASK_MEMCACHER_contentsAll_Slides(w http.ResponseWriter, r *http.Request, TARGET string) {
  
@@ -30967,9 +30966,9 @@ func TASK_MEMCACHER_contentsAll_Slides(w http.ResponseWriter, r *http.Request, T
 	
 		
 }
- 
-//caches index of contents of all articles
-//when the website is accessed, it serves the cached pages
+
+//caches index of contents of all articles 
+//when the website is accessed, it serves the cached pages 
 func TASK_MEMCACHER_contentsAll_Articles(w http.ResponseWriter, r *http.Request, TARGET string) {
  
     c := appengine.NewContext(r)
@@ -31086,8 +31085,8 @@ func TASK_MEMCACHER_contentsAll_Articles(w http.ResponseWriter, r *http.Request,
 			fmt.Fprintf(w, "%v<br>", contentsHTML)
 	}
 }
- 
-//edits user profile and other user specific operations
+
+//edits user profile and other user specific operations 
 func peopleEdit(w http.ResponseWriter, r *http.Request) {
 	
 	checkReferrer(w,r)
@@ -31451,7 +31450,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 		redURL := "/tools?FUNC=WIDGET&t=MyDefaultSlide"
 		http.Redirect(w, r, redURL, http.StatusFound)
 		return
- 
+
 	case "SetMyLocation":
 		LATLON := strings.TrimSpace(r.FormValue("LATLON"))
 		if LATLON == "" {
@@ -31477,7 +31476,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 		cKey := fmt.Sprintf("DEFAULT_GEOLOC_%v", uid)
 		putStrToMemcacheWithoutExp(w,r,cKey,LATLON)
 		fmt.Fprintf(w, "Your current latitude and longitude has been set<br>.")
- 
+
 		//post this to site server
 		procBroadcastCustomLoc(w,r,uid,LATLON)
 		return
@@ -31503,7 +31502,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 		cKey := fmt.Sprintf("DEFAULT_GITHUB_USER_%v", uid)
 		putStrToMemcacheWithoutExp(w,r,cKey,guser)
 		fmt.Fprintf(w, "Github account has been set<br>.")
- 
+
 	case "SET_UWM_SHARE":
 		uwm := r.FormValue("u")
 		shared := r.FormValue("VAL")
@@ -31513,7 +31512,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 		recCount,_ := q.Count(c)
 		if recCount > 0 {
 			//exists
- 
+			////c.Infof("exists")
 			cats := make([]TDSCATS, 0, 1)
 			if _, err := q.GetAll(c, &cats); err != nil {
 				//panic(err)
@@ -31536,7 +31535,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 						panic(err)
 						//return
 				}
- 
+				////c.Infof("updated")
 				break
 			}	
 		}
@@ -31790,7 +31789,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "No topic source has been set for UWM%v. Please check documentation on how to set the topic source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>.", r.FormValue("u"))
 		}
 		return
- 
+
 	case "EDIT_SHARING_SUBUWM":
 		//fmt.Fprintf(w, "Setting UWM sharing settings.")
 		uwm := r.FormValue("u")
@@ -32102,10 +32101,10 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 						FILLER_3: FILLER_3,
 						RINGTONE: RINGTONE,
 					}
-			
+			 
 					dsKey := fmt.Sprintf("%s", uid)
 					key2 := datastore.NewKey(c, "TDSPROF", dsKey, 0, nil)
-			
+			 
 					if _, err := datastore.Put(c, key2, &f); err != nil {
 						 panic(err)
 					}
@@ -32471,7 +32470,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 					
 					//notify all users of this event via channels
 					reqStr := fmt.Sprintf("/people-edit?EditPeopleFunc=EditPeople&UID=%v&SID=%v", UID, UID)
-					msgDtl3 := fmt.Sprintf("UID:%v has updated his/her <a href=\"%v\">profile</a>. https://sample-project.appspot.com/people-edit?EditPeopleFunc=EditPeople&UID=%v&SID=%v", UID, reqStr, UID, UID)
+					msgDtl3 := fmt.Sprintf("UID:%v has updated his/her <a href=\"%v\">profile</a>. https://ulapph-public-1.appspot.com/people-edit?EditPeopleFunc=EditPeople&UID=%v&SID=%v", UID, reqStr, UID, UID)
 					sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,UID,reqStr,""),"")
 					
 					USERS_ONLINE_CACHE_KEY := "USERS_ONLINE_LIST"
@@ -32503,7 +32502,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
+
 //gets the default UWM windows
 //these are the windows that opens by default such as clock, calendar, etc
 func getDefUwms(w http.ResponseWriter, r *http.Request) string {
@@ -32536,12 +32535,12 @@ func getDefUwms(w http.ResponseWriter, r *http.Request) string {
 	buf.WriteString(fmt.Sprintf("<script type=\"text/javascript\">"))
 	buf.WriteString(fmt.Sprintf("	if (document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('allweb777').value + ');'); }"))
 	buf.WriteString(fmt.Sprintf("</script>"))
- 
+
 	buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'/webapp/', 500, 300, 'middle', 'top', {title: 'Mobile Webapp', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"webapp777\" />"))
 	buf.WriteString(fmt.Sprintf("<script type=\"text/javascript\">"))
 	buf.WriteString(fmt.Sprintf("	if (document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('webapp777').value + ');'); }"))
 	buf.WriteString(fmt.Sprintf("</script>"))
- 
+
 	buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'/tools?FUNC=WIDGET&t=TODO', 500, 300, 'middle', 'top', {title: 'TODOs', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"todo777\" />"))
 	buf.WriteString(fmt.Sprintf("<script type=\"text/javascript\">"))
 	buf.WriteString(fmt.Sprintf("	if (document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('todo777').value + ');'); }"))
@@ -32614,7 +32613,7 @@ func getDefUwms(w http.ResponseWriter, r *http.Request) string {
 	buf.WriteString(fmt.Sprintf("<script>"))
 	buf.WriteString(fmt.Sprintf("	if (document.getElementById('rearrange') == null) { uwmArrWin(); uwmArrWin(); }"))
 	buf.WriteString(fmt.Sprintf("</script>"))
- 
+
 	if SYS_UWM_EXPANDED == false {
 		buf.WriteString(fmt.Sprintf("<script>"))
 		buf.WriteString(fmt.Sprintf("	if (document.getElementById('expanded') == null) { uwmOnOff(); uwmOnOff(); }"))
@@ -32623,8 +32622,8 @@ func getDefUwms(w http.ResponseWriter, r *http.Request) string {
 	
 	return buf.String()
 }
- 
-//gets the credit points for the user
+
+//gets the credit points for the user 
 func getCreditPoints(w http.ResponseWriter, r *http.Request, UID string) (credPts int) {
 	c := appengine.NewContext(r)
 	
@@ -32656,9 +32655,9 @@ func getCreditPoints(w http.ResponseWriter, r *http.Request, UID string) (credPt
 	
 	return credPts
 }
- 
+
 //handles ads admininstration
-//ulapph cloud desktop can serve ads
+//ulapph cloud desktop can serve ads 
 func adminAds(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	c := appengine.NewContext(r)
@@ -34340,30 +34339,30 @@ func adminAds(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
+
 //new ads position 1
-//there are 3 possible ads slots/frames for every slide or article
+//there are 3 possible ads slots/frames for every slide or article 
 func newAdsPos1(adsList, ADS_ID string) (newAds string) {
 	SPL := strings.Split(adsList, ",")
 	newAds = fmt.Sprintf("%v,%v,%v", ADS_ID, SPL[1], SPL[2])
 	return
 }
- 
-//new ads position 2
+
+//new ads position 2 
 func newAdsPos2(adsList, ADS_ID string) (newAds string) {
 	SPL := strings.Split(adsList, ",")
 	newAds = fmt.Sprintf("%v,%v,%v", SPL[0], ADS_ID, SPL[2])
 	return
 }
- 
-//new ads position 3
+
+//new ads position 3 
 func newAdsPos3(adsList, ADS_ID string) (newAds string) {
 	SPL := strings.Split(adsList, ",")
 	newAds = fmt.Sprintf("%v,%v,%v", SPL[0], SPL[1], ADS_ID)
 	return
 }
- 
-//validates if a given string is a valid url
+
+//validates if a given string is a valid url 
 func validateURL(w http.ResponseWriter, r *http.Request, tURL string) {
  
 	i := strings.Index(tURL, "http://")
@@ -34378,7 +34377,7 @@ func validateURL(w http.ResponseWriter, r *http.Request, tURL string) {
 		return
 	}
 }
- 
+
 //handles /admin-slides handler
 //does all things related to slides processing especially those specific to owner of slides or admin					
 func adminSlides(w http.ResponseWriter, r *http.Request) {
@@ -34566,7 +34565,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 					blobChan := make(chan string)
 					go getBlobTextChan(w, r,blobChan, blobkey)
 					blobText := <- blobChan
- 
+
 					if SYS_VER == 777 && strings.Index(BLOB_KEY, "GET_WALL:") == -1 {
 						cStr := encrypter2(w,r,blobText,ENCRYPTION_KEY)
 						blobText = string(cStr)
@@ -34601,7 +34600,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 						//DATE_ADDED: 		tstamp,
 						DATE_UPDATED: 		tstamp,
 					}
- 
+
 					putSearchIndexS(w,r,"IDX_TDSSLIDE",thisIdxKey,slideIdx)
 							
 					sysReq := fmt.Sprintf("/admin-slides?FUNC_CODE=VIEW&DOC_ID=%d&TITLE=%v&BLOB_KEY=%v&CATEGORY=%v", DOC_ID, TITLE, blobkey, CATEGORY)	
@@ -34678,7 +34677,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 						//clear slides count for overall
 						cKey = fmt.Sprintf("TDSSLIDE_TOTAL")
 						putStrToMemcacheWithoutExp(w,r,cKey,"")
- 
+
 						tstamp := getTimestamp()
 						thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", thisID)
 						thisIdxURL := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", getSchemeUrl(w,r), thisID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
@@ -34719,7 +34718,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 							//DATE_ADDED: 		tstamp,
 							DATE_UPDATED: 		tstamp,
 						}
- 
+
 						putSearchIndexS(w,r,"IDX_TDSSLIDE",thisIdxKey,slideIdx)
 								
 						sysReq := fmt.Sprintf("/admin-slides?FUNC_CODE=VIEW&DOC_ID=%d&TITLE=%v&BLOB_KEY=%v&CATEGORY=%v", DOC_ID, p.TITLE, blobkey, p.CATEGORY)	
@@ -35056,7 +35055,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 								fmt.Fprintf(w, "<b>Doc ID:</b> %v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>SID:</b> TDSSLIDE-%v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-								URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSSLIDE-%v&TITLE=%v", p.DOC_ID, p.TITLE)
+								URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSSLIDE-%v&TITLE=%v", p.DOC_ID, p.TITLE)
 								fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 								fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 								fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
@@ -35207,7 +35206,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
+
 //on the website homepage, it display Top contents based on views, comments, etc
 func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE, cursor, tbl_src string, thisChan chan string, isChanDone chan bool) {
 	c := appengine.NewContext(r)
@@ -36654,7 +36653,7 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 				
 				//notify all users of this event via channels
 				viaStr := getAccessString(w,r,"")
-				msgDtl3 := fmt.Sprintf("UID:%v accessed all contents for https://sample-project.appspot.com/desktop0 %v.", uid, viaStr)
+				msgDtl3 := fmt.Sprintf("UID:%v accessed all contents for https://ulapph-public-1.appspot.com/desktop0 %v.", uid, viaStr)
 				reqStr := fmt.Sprintf("/desktop0") 			
 				sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,reqStr,""),"")
 			}		
@@ -36669,7 +36668,7 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 			}
 			//notify all users of this event via channels
 			viaStr := getAccessString(w,r,"")
-			msgDtl3 := fmt.Sprintf("UID:%v accessed all contents index https://sample-project.appspot.com/contents?q=home %v.", uid, viaStr)
+			msgDtl3 := fmt.Sprintf("UID:%v accessed all contents index https://ulapph-public-1.appspot.com/contents?q=home %v.", uid, viaStr)
 			reqStr := fmt.Sprintf("/contents?q=home")
 			sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,reqStr,""),"")
 			
@@ -36849,7 +36848,7 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 			
 			//notify all users of this event via channels
 			viaStr := getAccessString(w,r,"")
-			msgDtl3 := fmt.Sprintf("UID:%v accessed all contents for https://sample-project.appspot.com/contents?q=%v %v.", uid, deskName, viaStr)
+			msgDtl3 := fmt.Sprintf("UID:%v accessed all contents for https://ulapph-public-1.appspot.com/contents?q=%v %v.", uid, deskName, viaStr)
 			reqStr := fmt.Sprintf("/contents?q=%v",deskName)
 			sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,reqStr,""),"")
 			
@@ -37017,9 +37016,9 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 	}
 	
 }
- 
+
 //handles /admin-articles handler
-//only accessible to owner or admin which manages the articles and contents
+//only accessible to owner or admin which manages the articles and contents 
 func adminArticles(w http.ResponseWriter, r *http.Request) {
 	checkReferrer(w,r)
 	
@@ -37213,7 +37212,7 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 						//DATE_ADDED: 		tstamp,
 						DATE_UPDATED: 		tstamp,
 					}
- 
+
 					putSearchIndexA(w,r,"IDX_TDSARTL",thisIdxKey,articleIdx)
 						
 					
@@ -37319,7 +37318,7 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 							//DATE_ADDED: 		tstamp,
 							DATE_UPDATED: 		tstamp,
 						}
- 
+
 						putSearchIndexA(w,r,"IDX_TDSARTL",thisIdxKey,articleIdx)
 							
 						//}
@@ -37652,7 +37651,7 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 								fmt.Fprintf(w, "<b>Doc ID:</b> %v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>SID:</b> TDSARTL-%v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-								URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSARTL-%v&TITLE=%v", p.DOC_ID, p.TITLE)
+								URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSARTL-%v&TITLE=%v", p.DOC_ID, p.TITLE)
 								fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 								fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 								fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
@@ -38195,7 +38194,7 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte("0 payload/item found!"))
 			}
 			return
- 
+
 		case "GET_PAYLOAD":
 			recID := fmt.Sprintf("%v-dtc", thingName)
 			showPayloadOnly := r.FormValue("showPayloadOnly")
@@ -38374,24 +38373,24 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 	}
 }
  
-//common error messages for internet of things
+//common error messages for internet of things 
 func thingsError(w http.ResponseWriter, r *http.Request, msg string) {
 	w.WriteHeader(200)
 	w.Write([]byte(msg))
 	return	
 }
- 
-//common error messages for internet of things
+
+//common error messages for internet of things  
 func thingsError2(w http.ResponseWriter, r *http.Request, msg, msg2 string) {
 	w.WriteHeader(200)
 	w.Write([]byte(msg))
 	w.Write([]byte(msg2))
 	return	
 }
- 
+
 //D0041
 //handles /media handler either for public or private operations
-//any calls to /media are handled by this such as display of TDSMEDIA files
+//any calls to /media are handled by this such as display of TDSMEDIA files 
 func media(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	c := appengine.NewContext(r)
@@ -38842,7 +38841,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 		thisWpTitle := ""
 		thisWpDesc := ""
 		//get image based on array and random
-		//https://sample-project.appspot.com/img/Andromeda-Galaxy.jpg|Title|Description@888@
+		//https://ulapph-public-1.appspot.com/img/Andromeda-Galaxy.jpg|Title|Description@888@
 		SPL := strings.Split(WALLPAPERS_LIST_ARRAY,"@888@")
 		
 		if len(SPL) > 0 {
@@ -39431,7 +39430,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if AUTHOR != "" {
 							p.AUTHOR = AUTHOR
 						}
- 
+
 						thisKey := fmt.Sprintf("%d", p.MEDIA_ID)
 						key := datastore.NewKey(c, "TDSMEDIA", thisKey, 0, nil)
 						_, err := datastore.Put(c, key, &p)
@@ -39457,7 +39456,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 						tstamp := getTimestamp()
 						//insert media into search idx
 						thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
-						thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
+						thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
 						TITLE := strings.Replace(p.TITLE, "_", " ", -1)
 						DESC := strings.Replace(p.DESC, "_", " ", -1)
 						thisCont := ""
@@ -39500,7 +39499,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							DATE_ADDED: 		tstamp,
 							DATE_UPDATED: 		tstamp,
 						}
- 
+
 						putSearchIndexM(w,r,"IDX_TDSMEDIA",thisIdxKey,searchIdx)
 						
  
@@ -39696,12 +39695,12 @@ func media(w http.ResponseWriter, r *http.Request) {
 					msgDtl3 := ""
 					if u == nil {
 						msg = getGeoString(w,r)
-						shareMe := fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"MEDIA-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
-						msgDtl3 = fmt.Sprintf("UID:%v has viewed MEDIA (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%v", msg, reqStr, TITLE, IMG_URL, shareMe, mediaID, mediaID)	
+						shareMe := fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"MEDIA-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
+						msgDtl3 = fmt.Sprintf("UID:%v has viewed MEDIA (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%v", msg, reqStr, TITLE, IMG_URL, shareMe, mediaID, mediaID)	
 					}else{
 						msg = uid
-						shareMe := fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"MEDIA-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
-						msgDtl3 = fmt.Sprintf("UID:%v has viewed MEDIA (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%v", msg, reqStr, TITLE, IMG_URL, shareMe, mediaID, mediaID)
+						shareMe := fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"MEDIA-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
+						msgDtl3 = fmt.Sprintf("UID:%v has viewed MEDIA (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%v", msg, reqStr, TITLE, IMG_URL, shareMe, mediaID, mediaID)
 						reqStr = fmt.Sprintf("%vmedia?FUNC_CODE=VIEW&MEDIA_ID=%v", domRefMatchS, mediaID)
 					}
 					updateUserActiveData(w, r, c, msg, SID)
@@ -39802,7 +39801,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-									URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
+									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
 									fmt.Fprintf(w, "<b>Mime Type:</b> %v<br>", p.MIME_TYPE)
@@ -39898,7 +39897,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									if err != nil {
 											////c.Errorf("%v", err)
 									}
- 
+
 								case p.DATA_TYPE == "text":
  
 									fmt.Fprintf(w, "<b>Title:</b> [TDSMEDIA-%v] %v<br>", p.MEDIA_ID, p.TITLE)
@@ -39920,11 +39919,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-									URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
+									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
-									prevLink := fmt.Sprintf("https://sample-project.appspot.com/editor?EDIT_FUNC=READER_PREVIOUS&SID=TDSMEDIA-%v&CATEGORY=%v", p.MEDIA_ID, p.CATEGORY)
-									ranLink := fmt.Sprintf("https://sample-project.appspot.com/editor?EDIT_FUNC=READER_RANDOM&SID=TDSMEDIA-%v&CATEGORY=%v", p.MEDIA_ID, p.CATEGORY)
-									nextLink := fmt.Sprintf("https://sample-project.appspot.com/editor?EDIT_FUNC=READER_NEXT&SID=TDSMEDIA-%v&CATEGORY=%v", p.MEDIA_ID, p.CATEGORY)
+									prevLink := fmt.Sprintf("https://ulapph-public-1.appspot.com/editor?EDIT_FUNC=READER_PREVIOUS&SID=TDSMEDIA-%v&CATEGORY=%v", p.MEDIA_ID, p.CATEGORY)
+									ranLink := fmt.Sprintf("https://ulapph-public-1.appspot.com/editor?EDIT_FUNC=READER_RANDOM&SID=TDSMEDIA-%v&CATEGORY=%v", p.MEDIA_ID, p.CATEGORY)
+									nextLink := fmt.Sprintf("https://ulapph-public-1.appspot.com/editor?EDIT_FUNC=READER_NEXT&SID=TDSMEDIA-%v&CATEGORY=%v", p.MEDIA_ID, p.CATEGORY)
 									fmt.Fprintf(w, "<b>Explore:</b> [<a href=\"%v\" target=explore>Previous</a>] [<a href=\"%v\" target=explore>Random</a>] [<a href=\"%v\" target=explore>Next</a>]<br>", prevLink, ranLink, nextLink)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", DATA_TYPE)
 									fmt.Fprintf(w, "<b>Mime Type:</b> %v<br>", p.MIME_TYPE)
@@ -40007,14 +40006,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 									}
 									
 								case p.DATA_TYPE == "music":
- 
+
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Admin URL:</b> <a href=\"/media?FUNC_CODE=VIEW&MEDIA_ID=%v\">%vmedia?FUNC_CODE=VIEW&MEDIA_ID=%v</a><br>", p.MEDIA_ID, getSchemeUrl(w,r), p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-									URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
+									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
 									fmt.Fprintf(w, "<b>Mime Type:</b> %v<br>", p.MIME_TYPE)
@@ -40070,7 +40069,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									if err != nil {
 											////c.Errorf("%v", err)
 									}
- 
+
 								case p.DATA_TYPE == "video":
 								
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
@@ -40079,7 +40078,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-									URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
+									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
 									fmt.Fprintf(w, "<b>Mime Type:</b> %v<br>", p.MIME_TYPE)
@@ -40144,7 +40143,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-									URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
+									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
 									fmt.Fprintf(w, "<b>Mime Type:</b> %v<br>", p.MIME_TYPE)
@@ -40192,7 +40191,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									if err != nil {
 											////c.Errorf("%v", err)
 									}
- 
+
 								default:
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
@@ -40202,13 +40201,13 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
-									URL_DIS := fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
+									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", DATA_TYPE)
 									fmt.Fprintf(w, "<b>Mime Type:</b> %v<br>", p.MIME_TYPE)
 									fmt.Fprintf(w, "<b>Title:</b> %v<br>", p.TITLE)
 									fmt.Fprintf(w, "<b>Desc:</b> %v<br>", p.DESC)
- 
+
 									fmt.Fprintf(w, "<b>Admin URL:</b> <a href=\"/media?FUNC_CODE=VIEW&MEDIA_ID=%v\">%vmedia?FUNC_CODE=VIEW&MEDIA_ID=%v</a><br>", p.MEDIA_ID, getSchemeUrl(w,r), p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Blob Key:</b> %v<br>", p.BLOB_KEY)
  
@@ -40466,7 +40465,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							
 							cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, YEAR)
 							putBytesToMemcacheWithExp(w,r,cKey,buffer3.Bytes(),GEN_CONTENT_EXPIRES)
- 
+
 							//display tags
 /* 							cKeyT := fmt.Sprintf("PA_CACHE_TAGS_%s_%v", uid, YEAR)
 							PA_CACHE_TAGS := ""
@@ -40484,7 +40483,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							} */
 							
 						}
- 
+
 						if FILTER != "" {
 							//display media
 							q := datastore.NewQuery("TDSMEDIA").Filter("DATA_TYPE =", "image")
@@ -40534,7 +40533,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							
 							cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, FILTER)
 							putBytesToMemcacheWithExp(w,r,cKey,buffer3.Bytes(),GEN_CONTENT_EXPIRES)
- 
+
 							//display tags
 /* 							cKeyT := fmt.Sprintf("PA_CACHE_TAGS_%s_%v", uid, FILTER)
 							PA_CACHE_TAGS := ""
@@ -41046,7 +41045,7 @@ const mediaMusicPlayerUMP1 = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Music Player::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Music Player::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <script src="/js/modernizr.custom.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -41083,7 +41082,7 @@ const mediaMIDIPlayerUMP1 = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MIDI Player::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>MIDI Player::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <script src="/js/modernizr.custom.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -41174,7 +41173,7 @@ const mediaVideoPlayerUVP1 = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Video Player::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Video Player::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <script src="/js/modernizr.custom.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -41225,7 +41224,7 @@ const mediaYoutubePlayerYVP1 = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Youtube Player::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Youtube Player::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <script src="/js/modernizr.custom.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -41343,10 +41342,10 @@ const htmlWidgetBrowserA = `
 <html lang="en-US">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+  <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
   <link rel="shortcut icon" href="/img/favicon.ico"/>
-  <meta name="description"                        content="ULAPPH Cloud Desktop - Sample Project" />
-  <meta name="keywords"                        content="Sample Project - Personal Cloud Desktop" />
+  <meta name="description"                       content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
+  <meta name="keywords"                       content="ULAPPH Cloud Desktop, OPO, Content Server" />
   <link rel="shortcut icon" href="/img/favicon.ico"/>
   <link rel="stylesheet" type="text/css" media="all" href="/css/searchbar-style.css">
   <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
@@ -41369,10 +41368,10 @@ const htmlWidgetBrowserH = `
 <html lang="en-US">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+  <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
   <link rel="shortcut icon" href="/img/favicon.ico"/>
-  <meta name="description"                        content="ULAPPH Cloud Desktop - Sample Project" />
-  <meta name="keywords"                        content="Sample Project - Personal Cloud Desktop" />
+  <meta name="description"                       content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
+  <meta name="keywords"                       content="ULAPPH Cloud Desktop, OPO, Content Server" />
   <link rel="shortcut icon" href="/img/favicon.ico"/>
   <link rel="stylesheet" type="text/css" media="all" href="/css/searchbar-style.css">
   <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
@@ -41395,10 +41394,10 @@ const htmlWidgetBrowserC1 = `
 <html lang="en-US">
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>Loading ULAPPH Cloud Desktop::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+  <title>Loading ULAPPH Cloud Desktop::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
   <link rel="shortcut icon" href="/img/favicon.ico"/>
-  <meta name="description"                        content="ULAPPH Cloud Desktop - Sample Project" />
-  <meta name="keywords"                        content="Sample Project - Personal Cloud Desktop" />
+  <meta name="description"                       content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
+  <meta name="keywords"                       content="ULAPPH Cloud Desktop, OPO, Content Server" />
   <link rel="shortcut icon" href="/img/favicon.ico"/>
   <meta http-equiv="refresh" content="{{.}}" />
   <style type="text/css">
@@ -41425,7 +41424,7 @@ const htmlWidgetBrowserAB = `
   <div id="w">
     <div id="content">
 	{{if eq .STR_FILLER1 "ULAPPH Cloud Desktop" }}
-		<h1><a href="#" onclick="clearLocalIndex();return false;" title="https://sample-project.appspot.com">{{.STR_FILLER1}}</a></h1>
+		<h1><a href="#" onclick="clearLocalIndex();return false;" title="https://ulapph-public-1.appspot.com">{{.STR_FILLER1}}</a></h1>
 	{{else}}
 		<h1><a href="{{.STR_FILLER2}}" title="View JSON Source">{{.STR_FILLER1}}</a></h1>
 	{{end}}
@@ -41478,7 +41477,7 @@ const htmlWidgetBrowserMobileUI = `
     <div class="o-container">
 	  <div id="w">
 		<div id="content">
-		  <h1><a href="#" onclick="clearLocalIndex();return false;" title="https://sample-project.appspot.com">{{.STR_FILLER1}}</a></h1>
+		  <h1><a href="#" onclick="clearLocalIndex();return false;" title="https://ulapph-public-1.appspot.com">{{.STR_FILLER1}}</a></h1>
 	
 		  <div id="searchfield">
 			<form action="/tools?FUNC=WIDGET&t=MiniBrowserPost" method="POST" enctype="multipart/form-data"><input type="text" name="url" class="biginput" id="autocomplete" autofocus="autofocus"></form>
@@ -41651,7 +41650,7 @@ const htmlWidgetBrowserAUF = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>MiniBrowser::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>MiniBrowser::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" type="text/css" media="screen,projection" href="/css/mobiSearch.css" />
 <link rel="stylesheet" media="screen,projection,tv" href="/css/search_glowing.css"/>
@@ -41671,7 +41670,7 @@ const htmlWidgetRanGenTool = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Random Generator::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Random Generator::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 </head>
  
@@ -41682,7 +41681,7 @@ This will generate random string with alphanumeric characters. Can be used to ge
 <input type="submit" name="rangen" value="Generate"/>
 </form>
 `
- 
+
 var htmlWidgetFamTree = template.Must(template.New("htmlWidgetRanGen").Parse(htmlWidgetFamTreeTool))
  
 const htmlWidgetFamTreeTool = `	
@@ -41690,7 +41689,7 @@ const htmlWidgetFamTreeTool = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Family Tree::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Family Tree::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 </head>
  
@@ -41709,7 +41708,7 @@ const htmlUrlFetcherA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>URL Fetcher::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>URL Fetcher::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" type="text/css" media="screen,projection" href="/css/mobiSearch.css" />
 <link rel="stylesheet" media="screen,projection,tv" href="/css/search_glowing.css"/>
@@ -41723,7 +41722,7 @@ const htmlUrlFetcherA = `
 	<input type="submit" name="FUNC" value="Run Monitor Now">
 	</form>
 `
- 
+
 var htmlUwmSharing = template.Must(template.New("htmlURLFetcher").Parse(htmlUwmSharingA))
  
 const htmlUwmSharingA = `	
@@ -41731,7 +41730,7 @@ const htmlUwmSharingA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>UWM Sharing::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>UWM Sharing::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/switch.css">
@@ -41739,7 +41738,7 @@ const htmlUwmSharingA = `
  
 <body>
 <h3>UWM{{.STR_FILLER1}} Sharing Settings</h3>
-You can share a UWM desktop by enabling sharing and informing users of the password.<br>
+You can share a UWM desktop by enabling sharing and informing users of the password.<br> 
 {{if eq .STR_FILLER2 "Y" }}
 <label class="switch">
   <input type="checkbox" checked id="uwmshare">
@@ -41765,7 +41764,7 @@ You can share a UWM desktop by enabling sharing and informing users of the passw
 <script>
 	function switch2() {
 	  var key = document.getElementById("KEY").value;
-	  if (document.getElementById("uwmshare").checked)
+	  if (document.getElementById("uwmshare").checked) 
 	  {
 	    var thisUrl = "/people-edit?EditPeopleFunc=SET_UWM_SHARE&u=" + {{.STR_FILLER1}} + "&VAL=" + "Y" + "&KEY=" + key;
 		window.location.href = thisUrl;
@@ -41787,7 +41786,7 @@ const htmlDrivesA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>My Drives::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>My Drives::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/lib/css/buttons/buttons.css">
 <link rel="stylesheet" href="/lib/css/animate/animate.css">	
@@ -41817,9 +41816,9 @@ const htmlDrivesA = `
 	<h3>Google Drive</h3>
 	<span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_GOOGLE&ACT=A" target="auth-drive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Google Drive@888@/tools?FUNC=DRIVES&t=MYDRIVE_GOOGLE&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Google Drive@888@/tools?FUNC=DRIVES&t=MYDRIVE_GOOGLE&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Google Drive@888@https://drive.google.com', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Open</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Google Drive@888@https://drive.google.com', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Open</a></span>
 	<br>
 	<span class="button-wrap"><a href="https://drive.google.com" target="gd" class="button button-pill">Login</a></span>
  
@@ -41828,7 +41827,7 @@ const htmlDrivesA = `
 	<h3>Microsoft OneDrive</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@MS OneDrive@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@MS OneDrive@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://onedrive.live.com/" target="ms" class="button button-pill">Open</a></span>
 	<!--br>
@@ -41839,7 +41838,7 @@ const htmlDrivesA = `
 	<h3>Amazon Drive</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Amazon@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Amazon@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://www.amazon.com/clouddrive" target="aws" class="button button-pill">Open</a></span>
 	<!--br>
@@ -41850,7 +41849,7 @@ const htmlDrivesA = `
 	<h3>Dropbox</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Dropbox@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Dropbox@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://www.dropbox.com/home" target="db" class="button button-pill">Open</a></span>
 	<!--br>
@@ -41861,7 +41860,7 @@ const htmlDrivesA = `
 	<h3>Hubic</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Hubic@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Hubic@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://hubic.com/home/browser/" class="button button-pill button-raised button-primary">Open</a></span>
 	<!--br>
@@ -41872,7 +41871,7 @@ const htmlDrivesA = `
 	<h3>Yandex</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Yandex@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Yandex@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://disk.yandex.com/client/disk" class="button button-pill button-raised button-primary">Open</a></span>
 	<!--br>
@@ -41883,7 +41882,7 @@ const htmlDrivesA = `
 	<h3>pCloud</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@pCloud@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@pCloud@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://my.pcloud.com/" class="button button-pill button-raised button-primary">Open</a></span>
 	<!--br>
@@ -41894,7 +41893,7 @@ const htmlDrivesA = `
 	<h3>Sync</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Sync@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Sync@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://cp.sync.com/files/" class="button button-pill button-raised button-primary">Open</a></span>
 	<!--br>
@@ -41905,7 +41904,7 @@ const htmlDrivesA = `
 	<h3>Box</h3>
 	<!--span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=A" target="auth-onedrive" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Box@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Box@888@/tools?FUNC=DRIVES&t=MYDRIVE_MICROSOFT&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br-->
 	<span class="button-wrap"><a href="https://app.box.com/folder/0" class="button button-pill button-raised button-primary">Open</a></span>
 	<!--br>
@@ -41926,14 +41925,14 @@ const htmlDrivesA = `
 	</form>
 	<span class="button-wrap"><a href="/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=A" target="auth-github" class="button button-pill">Auth</a></span>
 	<br>
-	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Github@888@/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=S', 'https://sample-project.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
+	<span class="button-wrap"><a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Github@888@/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=S', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-pill button-raised button-primary">Sync</a></span>
 	<br>
 	<span class="button-wrap"><a href="https://github.com/explore" target="github-explore" class="button button-pill">Open</a></span>
 	<br>
 	<span class="button-wrap"><a href="https://github.com/explore" target="github-login" class="button button-pill">Login</a></span>
  
 `
- 
+
 //D0033
 var htmlDriveJSONtoTable = template.Must(template.New("htmlDriveJSONtoTable").Parse(htmlDriveJSONtoTableA))
  
@@ -41942,7 +41941,7 @@ const htmlDriveJSONtoTableA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>JSON to Table::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>JSON to Table::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/lib/css/json2table/classic.css">
 <script src="/js/jquery.min.js"></script>
@@ -41960,23 +41959,23 @@ const htmlDriveJSONtoTableA = `
 	  schema: [
 		  {"header":"Icon", "key":"iconLink", "template":'<img src="{{"{{"}}iconLink{{"}}"}}"/>'},
 		  {"header":"Name", "key":"name"},
-		  {"header":"Link", "key":"webViewLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}webViewLink{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\">{{"{{"}}webViewLink{{"}}"}}</a>'}
+		  {"header":"Link", "key":"webViewLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}webViewLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\">{{"{{"}}webViewLink{{"}}"}}</a>'}
 	  ]
     });
   });
 </script>
 `
- 
+
 //D0033
 var htmlDesktopsJSONtoTable = template.Must(template.New("htmlDesktopsJSONtoTable").Parse(htmlDesktopsJSONtoTableA))
  
 const htmlDesktopsJSONtoTableA = `
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>All Desktops::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>All Desktops::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/lib/css/json2table/classic.css">
 <script src="/js/jquery.min.js"></script>
@@ -41988,7 +41987,7 @@ const htmlDesktopsJSONtoTableA = `
 <div id="desktops"></div>
 <div id="columns"></div>
 <br>
-[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://sample-project.appspot.com'); return false;">Notes</a>]
+[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://ulapph-public-1.appspot.com'); return false;">Notes</a>]
 <script>
   $(document).ready(function() {
     var json = {{.}};
@@ -42001,38 +42000,38 @@ const htmlDesktopsJSONtoTableA = `
 		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' title=\'Click to run topics search\' target=\'TOP-{{"{{"}}name{{"}}"}}\'><img src=\'/img/run.png\' width=32 height=32></a>'},
 		  {"header":"TSet", "key":"tSource", "template":'<img src=\'{{"{{"}}tSource{{"}}"}}\' width=32 height=32>'},
 		  {"header":"IsShared", "key":"isShared", "template":'<img src=\'{{"{{"}}isShared{{"}}"}}\' width=32 height=32>'},
-		  {"header":"Desktop", "key":"dLink", "template":'<a href=\'{{"{{"}}dLink{{"}}"}}\' target=\'D-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dLink{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
-		  {"header":"UWM", "key":"uLink", "template":'<a href=\'{{"{{"}}uLink{{"}}"}}\' target=\'UWM-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}uLink{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
-		  {"header":"Desktop Settings", "key":"dsLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dsLink{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
-		  {"header":"UWM Settings", "key":"usLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}usLink{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
-		  {"header":"Topics Settings", "key":"tLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}tLink{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
-		  {"header":"Share Settings", "key":"sLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}sLink{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'}
+		  {"header":"Desktop", "key":"dLink", "template":'<a href=\'{{"{{"}}dLink{{"}}"}}\' target=\'D-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
+		  {"header":"UWM", "key":"uLink", "template":'<a href=\'{{"{{"}}uLink{{"}}"}}\' target=\'UWM-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}uLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
+		  {"header":"Desktop Settings", "key":"dsLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dsLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"UWM Settings", "key":"usLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}usLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"Topics Settings", "key":"tLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}tLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"Share Settings", "key":"sLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}sLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'}
 	  ]
     });
   });
- 
+
   //populate existing desktops
 	document.getElementById("desktops").innerHTML = "";
 	var utot = 0;
 	if (localStorage['uwm-ctr'] != undefined && localStorage['uwm-ctr'] != "") {
 		utot = parseInt(localStorage['uwm-ctr']);
 	}
-	for (i = 1; i <= utot; i++) {
+	for (i = 1; i <= utot; i++) { 
 		chtm = document.getElementById("desktops").innerHTML;
 		document.getElementById("desktops").innerHTML = chtm + localStorage['uwm-'+i];
 	}
- 
+
   function openDesktop(uLink, name, id) {
-	
+	  
 	  console.log("uLink: "+uLink);
 	  console.log("name: "+name);
 	  console.log("id: "+id);
-	
+	  
 	  //display button
 	  thisDesk = '<span class=\"button-wrap\"><a href=\"' + uLink +'\" class=\"button button-pill button-raised button-primary\" target=\"' + name + '\">' + id + '::' + name + '</a></span>';
 	  chtm = document.getElementById("desktops").innerHTML;
 	  document.getElementById("desktops").innerHTML = chtm + thisDesk;
-	
+	  
 	  //save to ls
 	  if (localStorage['uwm-ctr'] == undefined || localStorage['uwm-ctr'] == "") {
 		  localStorage['uwm-ctr'] = 0;
@@ -42040,23 +42039,23 @@ const htmlDesktopsJSONtoTableA = `
 	  uctr = parseInt(localStorage['uwm-ctr']) + 1;
 	  localStorage['uwm-'+uctr] = thisDesk;
 	  localStorage['uwm-ctr'] = uctr;
-	
+	  
 	  //open new tab
 	  window.open(uLink,name);
   }
 </script>
 `
- 
+
 //Display all the icons
 var htmlIconsJSONtoTable = template.Must(template.New("htmlIconsJSONtoTable").Parse(htmlIconsJSONtoTableA))
  
 const htmlIconsJSONtoTableA = `
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>All Icons::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>All Icons::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/lib/css/json2table/classic.css">
 <script src="/js/jquery.min.js"></script>
@@ -42080,23 +42079,23 @@ const htmlIconsJSONtoTableA = `
 		  {"header":"Logo", "key":"iLogo", "template":'<img src="{{"{{"}}iLogo{{"}}"}}" width=32 height=32/>'},
 		  {"header":"Link", "key":"iUrl", "template":'<a href=\'{{"{{"}}iUrl{{"}}"}}\' target=\'S-{{"{{"}}iUrl{{"}}"}}\' title=\'open tab - {{"{{"}}iUrl{{"}}"}}\'>{{"{{"}}iUrl{{"}}"}}</a>'},
 		  {"header":"Title", "key":"iName", "template":'{{"{{"}}iName{{"}}"}}'},
-		  {"header":"Launch", "key":"iUrl", "template":'<a href=\'{{"{{"}}iUrl{{"}}"}}\' target=\'S-{{"{{"}}name{{"}}"}}\' title=\'open tab - {{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}iUrl{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\" title=\'open window - {{"{{"}}name{{"}}"}}\'><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'}
+		  {"header":"Launch", "key":"iUrl", "template":'<a href=\'{{"{{"}}iUrl{{"}}"}}\' target=\'S-{{"{{"}}name{{"}}"}}\' title=\'open tab - {{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}iUrl{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\" title=\'open window - {{"{{"}}name{{"}}"}}\'><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'}
 	  ]
     });
   });
- 
+
 </script>
 `
- 
+
 var htmlNotesJSONtoTable = template.Must(template.New("htmlNotesJSONtoTable").Parse(htmlNotesJSONtoTableA))
  
 const htmlNotesJSONtoTableA = `
- 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>All Notes::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>All Notes::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/lib/css/json2table/classic.css">
 <script src="/js/jquery.min.js"></script>
@@ -42125,8 +42124,8 @@ const htmlNotesJSONtoTableA = `
   });
 </script>
 `
- 
- 
+
+
 //D0033
 var htmlGithubJSONtoTable = template.Must(template.New("htmlDriveJSONtoTable").Parse(htmlGithubJSONtoTableA))
  
@@ -42135,7 +42134,7 @@ const htmlGithubJSONtoTableA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>JSON to Table::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>JSON to Table::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/lib/css/json2table/classic.css">
 <script src="/js/jquery.min.js"></script>
@@ -42151,7 +42150,7 @@ const htmlGithubJSONtoTableA = `
       data:json,
 	  schema: [
 	      {"header":"Icon", "key":"icon", "template":'<img src="{{"{{"}}icon{{"}}"}}" width=50 height=50/>'},
-		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@https://sample-project.appspot.com/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=B&repo={{"{{"}}name{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><b>{{"{{"}}name{{"}}"}}</b></a>'},
+		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@https://ulapph-public-1.appspot.com/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=B&repo={{"{{"}}name{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><b>{{"{{"}}name{{"}}"}}</b></a>'},
 		  {"header":"Full Name", "key":"full_name"},
 		  {"header":"Description", "key":"description"},
 		  {"header":"Language", "key":"language"},
@@ -42160,7 +42159,7 @@ const htmlGithubJSONtoTableA = `
 		  {"header":"Forks", "key":"forks_count"},
 		  {"header":"Issues", "key":"open_issues_count"},
 		  {"header":"Size", "key":"size"},
-		  {"header":"Link", "key":"html_url", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}html_url{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\">{{"{{"}}html_url{{"}}"}}</a>'}
+		  {"header":"Link", "key":"html_url", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}html_url{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\">{{"{{"}}html_url{{"}}"}}</a>'}
 	  ]
     });
   });
@@ -42176,7 +42175,7 @@ const htmlGithubJSONtoTableAB = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>JSON to Table::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>JSON to Table::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/lib/css/json2table/classic.css">
 <script src="/js/jquery.min.js"></script>
@@ -42192,7 +42191,7 @@ const htmlGithubJSONtoTableAB = `
       data:json,
 	  schema: [
 	      {"header":"Icon", "key":"icon", "template":'<img src="{{"{{"}}icon{{"}}"}}" width=50 height=50/>'},
-		  {"header":"Path", "key":"path", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}path{{"}}"}}@888@https://sample-project.appspot.com/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=C&bra={{"{{"}}branch{{"}}"}}&repo={{"{{"}}repo{{"}}"}}&path={{"{{"}}path{{"}}"}}&sha={{"{{"}}sha{{"}}"}}&sha2={{"{{"}}sha2{{"}}"}}\', \'https://sample-project.appspot.com\'); return false;\"><b>{{"{{"}}path{{"}}"}}</b></a>'},
+		  {"header":"Path", "key":"path", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}path{{"}}"}}@888@https://ulapph-public-1.appspot.com/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=C&bra={{"{{"}}branch{{"}}"}}&repo={{"{{"}}repo{{"}}"}}&path={{"{{"}}path{{"}}"}}&sha={{"{{"}}sha{{"}}"}}&sha2={{"{{"}}sha2{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><b>{{"{{"}}path{{"}}"}}</b></a>'},
 		  {"header":"Size", "key":"size"},
 		  {"header":"Repo", "key":"repo"},
 		  {"header":"Branch", "key":"branch"},
@@ -42212,7 +42211,7 @@ const htmlWidgetMyLocalNotesA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Local Notes::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Local Notes::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" type="text/css" media="screen,projection" href="/css/mobiSearch.css" />
 <link rel="stylesheet" media="screen,projection,tv" href="/css/search_glowing.css"/>	
@@ -42254,7 +42253,7 @@ const htmlWidgetMyLocalNotesA = `
 <script src="/js/cloud-notes-backup.js"></script>
 	
 `
- 
+
 var htmlWidgetDefaultSlide = template.Must(template.New("htmlWidgetDefaultSlide").Parse(htmlWidgetDefaultSlideA))
  
 const htmlWidgetDefaultSlideA = `	
@@ -42262,7 +42261,7 @@ const htmlWidgetDefaultSlideA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Default Slide::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Default Slide::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" type="text/css" media="screen,projection" href="/css/mobiSearch.css" />
 <link rel="stylesheet" media="screen,projection,tv" href="/css/search_glowing.css"/>	
@@ -42695,7 +42694,7 @@ const htmlWidgetMyPreferencesA = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>My Preferences::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>My Preferences::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="/css/spectrum.css">
@@ -42768,11 +42767,11 @@ const htmlWidgetMyPreferencesA = `
 <label class="switch">
   <input type="checkbox" checked onclick="switch3('ytlive');" id="ytlive">
   <div class="slider round"></div>
-</label><label for="ytlive">Youtube Live</label><br>
+</label><label for="ytlive">Youtube Live</label><br> 
 <label class="switch">
   <input type="checkbox" checked onclick="switch3('stream');" id="stream">
   <div class="slider round"></div>
-</label><label for="stream">ULAPPH Stream</label><br>
+</label><label for="stream">ULAPPH Stream</label><br> 
 <hr>
 {{end}}
 <h3>Desktop Themes</h3>
@@ -42826,7 +42825,7 @@ The sound for notifications is <b>ENABLED</b>. <a href="/tools?FUNC=WIDGET&t=MyP
 The sound for notifications is <b>DISABLED</b>. <a href="/tools?FUNC=WIDGET&t=MyPreferences&MP_FUNC=JSWM_SOUND_ON">Click to enable</a>. All notifications will have a sound.
 {{end}}
 <br>
- 
+
 <hr>
 <h3>Auto-load initial windows</h3>
 {{if eq .STR_FILLER1 "Y" }}
@@ -42860,8 +42859,8 @@ Your current source of UWM settings is TDSMEDIA-{{.NUM_FILLER1}}. <a href="/peop
 	</select>
 	<input type="submit" value="Submit">
 </form>
- 
-{{if eq .BOOL_FILLER1 true }}
+
+{{if eq .BOOL_FILLER1 true }} 
 <hr>
 <h3>User Privacy Settings</h3>
 <form action="/people-edit?EditPeopleFunc=SetPrivacy" method="POST" enctype="multipart/form-data">
@@ -42875,12 +42874,12 @@ Your current source of UWM settings is TDSMEDIA-{{.NUM_FILLER1}}. <a href="/peop
 	<input type="submit" value="Submit">
 </form>
 {{end}}
- 
+
 <hr>
 <h3>Set Your Current Location Manually</h3>
 First, you need to get your latitude and longitude from <a href="https://www.google.com.ph/maps" target=gmap>Google Maps</a>. Point your location at the map and you will see on the address bar a valude like "nn.nnnnnnn,mm.mmmmmmm". Copy/paste that to the form below.
 <form action="/people-edit?EditPeopleFunc=SetMyLocation" method="POST" enctype="multipart/form-data">
-<input type="text" name="LATLON" value="{{.STR_FILLER10}}" placeholder="" />
+<input type="text" name="LATLON" value="{{.STR_FILLER10}}" placeholder="" /> 
 <input type="submit" value="Submit">
 <br>
 {{if ne .STR_FILLER10 "" }} [<a href="https://www.google.com.ph/maps/search/{{.STR_FILLER10}}" target=loc>Preview Map</a>]{{end}}
@@ -42929,49 +42928,49 @@ const htmlWidgetMyPreferencesAMOTD = `
 <h3>My MOTDs</h3>
 Press button to get random quotes. You can edit/update your MOTD files.
 <br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER1}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER1}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER1}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER1}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER1}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER1}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER1}}&SID=TDSMEDIA-{{.NUM_FILLER1}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER2}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER2}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER2}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER2}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER2}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER2}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER2}}&SID=TDSMEDIA-{{.NUM_FILLER2}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER3}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER3}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER3}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER3}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER3}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER3}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER3}}&SID=TDSMEDIA-{{.NUM_FILLER3}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER4}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER4}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER4}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER4}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER4}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER4}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER4}}&SID=TDSMEDIA-{{.NUM_FILLER4}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER5}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER5}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER5}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER5}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER5}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER5}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER5}}&SID=TDSMEDIA-{{.NUM_FILLER5}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER6}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER6}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER6}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER6}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER6}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER6}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER6}}&SID=TDSMEDIA-{{.NUM_FILLER6}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER7}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER7}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER7}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER7}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER7}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER7}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER7}}&SID=TDSMEDIA-{{.NUM_FILLER7}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER8}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER8}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER8}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER8}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER8}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER8}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER8}}&SID=TDSMEDIA-{{.NUM_FILLER8}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER9}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER9}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER9}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER9}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER9}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER9}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER9}}&SID=TDSMEDIA-{{.NUM_FILLER9}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER10}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER10}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER10}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER10}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER10}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER10}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER10}}&SID=TDSMEDIA-{{.NUM_FILLER10}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER11}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER11}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER11}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER11}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER11}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER11}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER11}}&SID=TDSMEDIA-{{.NUM_FILLER11}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER12}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER12}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER12}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER12}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER12}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER12}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER12}}&SID=TDSMEDIA-{{.NUM_FILLER12}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER13}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER13}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER13}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER13}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER13}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER13}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER13}}&SID=TDSMEDIA-{{.NUM_FILLER13}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER14}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER14}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER14}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER14}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER14}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER14}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER14}}&SID=TDSMEDIA-{{.NUM_FILLER14}}" class="button button-raised button-pill button-inverse">Edit</a>
 		<br>
-<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER15}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER15}}', 'https://sample-project.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER15}}</a>
+<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@{{.STR_FILLER15}}@888@/tools?FUNC=WIDGET&t=RandomMotd&MEDIA_ID={{.NUM_FILLER15}}', 'https://ulapph-public-1.appspot.com'); return false;" class="button button-raised button-primary button-pill">{{.STR_FILLER15}}</a>
 		<a href="/editor?MEDIA_ID={{.NUM_FILLER15}}&SID=TDSMEDIA-{{.NUM_FILLER15}}" class="button button-raised button-pill button-inverse">Edit</a>
 `
  
@@ -42982,7 +42981,7 @@ const htmlEscSearchACR = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Search::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Search::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" type="text/css" media="screen,projection" href="/css/mobiSearch.css" />
 	
@@ -42998,7 +42997,7 @@ const htmlWidgetBrowserACR = `
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Join Chat::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Join Chat::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" type="text/css" media="screen,projection" href="/css/mobiSearch.css" />
 <link rel="stylesheet" media="screen,projection,tv" href="/css/search_glowing.css"/>
@@ -43032,8 +43031,8 @@ const iconsSettingsTemplateHeaderHTML = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Settings::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Settings::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
     <link rel="stylesheet" media="screen,projection,tv" href="/css/pulldown-tabzilla-min.css" />
@@ -43087,8 +43086,8 @@ const genericTableDispHdr2 = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>{{.STR_FILLER3}}::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>{{.STR_FILLER3}}::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43163,8 +43162,8 @@ const genericTableDispHdrNC2 = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>{{.STR_FILLER3}}::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>{{.STR_FILLER3}}::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43257,8 +43256,8 @@ const infoDBTemplateHeaderHTMLSlidesAdmin = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Slides::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Slides::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43344,8 +43343,8 @@ const infoDBTemplateHeaderHTMLSlidesDirectory = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Directory::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Directory::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43396,8 +43395,8 @@ const showTrendingRecs = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>ULAPPH Trending Contents::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>ULAPPH Trending Contents::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43439,8 +43438,8 @@ const showPeopleDirRecs = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>ULAPPH People Directory::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>ULAPPH People Directory::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43480,8 +43479,8 @@ const showSitesDirRecs = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>ULAPPH Cloud Desktop Directory::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>ULAPPH Cloud Desktop Directory::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43522,8 +43521,8 @@ const showWhatsNewRecs = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>ULAPPH Whats New Contents::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>ULAPPH Whats New Contents::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43555,7 +43554,7 @@ $(document).ready(function() {
 <h3><font color="blue">ULAPPH Overall Whats New</font></h3>
 <hr>
 `
- 
+
 //D0042
 var showDiscussions = template.Must(template.New("showDiscussions").Parse(showDiscussionsRecs))
  
@@ -43566,8 +43565,8 @@ const showDiscussionsRecs = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>ULAPPH Recent Discussions::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>ULAPPH Recent Discussions::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43601,7 +43600,7 @@ const showDiscussionsRecs = `
 <h3><font color="blue">ULAPPH Recent Discussions</font></h3>
 <hr>
 `
- 
+
 //D0042
 var showAllRecents = template.Must(template.New("showDiscussions").Parse(showAllRecentsRecs))
  
@@ -43612,8 +43611,8 @@ const showAllRecentsRecs = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>ULAPPH Recents::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>ULAPPH Recents::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43643,7 +43642,7 @@ const showAllRecentsRecs = `
 <h3><font color="blue">ULAPPH Recent Discussions</font></h3>
 <hr>
 `
- 
+
 var infoDBTemplateHeaderArticlesAdmin = template.Must(template.New("infoDBTemplateHeaderArticlesAdmin").Parse(infoDBTemplateHeaderHTMLArticlesAdmin))
  
 const infoDBTemplateHeaderHTMLArticlesAdmin = `
@@ -43653,8 +43652,8 @@ const infoDBTemplateHeaderHTMLArticlesAdmin = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Articles::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Articles::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43738,8 +43737,8 @@ const iconsSettingsTemplateHeaderHTMLAds = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>AdminAds::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>AdminAds::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43780,8 +43779,8 @@ const iconsSettingsTemplateHeaderHTMLSL = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>AdminSlides::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>AdminSlides::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43825,8 +43824,8 @@ const iconsSettingsTemplateHeaderHTMLAL = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>AdminArticles::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>AdminArticles::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43868,8 +43867,8 @@ const iconsSettingsTemplateHeaderHTMLMD = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Media Gallery::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Media Gallery::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -43984,8 +43983,8 @@ const iconsSettingsTemplateHeaderHTMLMDAdmin = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Media Gallery::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Media Gallery::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -44102,8 +44101,8 @@ const iconsSettingsTemplateHeaderHTMLMDUAdmin = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Media Gallery::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Media Gallery::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -44175,8 +44174,8 @@ const iconsSettingsTemplateHeaderHTMLSLU = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Admin Slides::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Admin Slides::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -44229,8 +44228,8 @@ const iconsSettingsTemplateHeaderHTMLSLA = `
 	<meta http-equiv="Content-type" content="text/html; charset=us-ascii">
 	<meta name="viewport" content="width=device-width,initial-scale=1">
  
-	<title>Admin Articles::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-	<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+	<title>Admin Articles::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<link rel="alternate" type="application/rss+xml" title="RSS 2.0" href="https://www.datatables.net/rss.xml">
 	<link rel="stylesheet" type="text/css" href="/css/table-jquery.dataTables.css">
@@ -44344,9 +44343,9 @@ const mediaSimpleGal1A = `
 		<meta charset="UTF-8"/>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Photo Gallery::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-        <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
-        <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+        <title>Photo Gallery::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+        <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
+        <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
         <meta name="author" content="Codrops"/>
         <link rel="shortcut icon" href="/img/favicon.ico"/>
         <link rel="stylesheet" type="text/css" href="/css/style-gamma.css"/>
@@ -45099,16 +45098,16 @@ const peopleDirectoryListHTML = `
 Online
 </td>
 <td class="cbc">
-<a href="https://sample-project.appspot.com/guestbook?UID={{.UID}}"><img src="/img/guestbook.png" width=40 height=40/></img></a><g:hangout render="createhangout" invites="[{ id : '{{.UID}}', invite_type : 'EMAIL' }]" widget_size="72"></g:hangout>
+<a href="https://ulapph-public-1.appspot.com/guestbook?UID={{.UID}}"><img src="/img/guestbook.png" width=40 height=40/></img></a><g:hangout render="createhangout" invites="[{ id : '{{.UID}}', invite_type : 'EMAIL' }]" widget_size="72"></g:hangout>
 </td>
 <td class="id">
-<a href="https://sample-project.appspot.com/people-edit?EditPeopleFunc=EditPeople&UID={{.UID}}&SID={{.UID}}"></img><img src="{{.PICTURE}}" width=40 height=40></img></a><img src="/img/flags/{{.COUNTRY}}.gif" width=48 height=30>
+<a href="https://ulapph-public-1.appspot.com/people-edit?EditPeopleFunc=EditPeople&UID={{.UID}}&SID={{.UID}}"></img><img src="{{.PICTURE}}" width=40 height=40></img></a><img src="/img/flags/{{.COUNTRY}}.gif" width=48 height=30>
 </td>
 <td data-order="{{.UID}}">
-<a href="https://sample-project.appspot.com/chat?CHAT_FUNC=newChatRoom&INVITE={{.UID}}"><img src="/img/chat.png" title="chat"  width=40 height=40></img></a> {{.UID}}
+<a href="https://ulapph-public-1.appspot.com/chat?CHAT_FUNC=newChatRoom&INVITE={{.UID}}"><img src="/img/chat.png" title="chat"  width=40 height=40></img></a> {{.UID}}
 </td>
-<td data-order="https://sample-project.appspot.com">
-<a href="https://sample-project.appspot.com">https://sample-project.appspot.com</a>
+<td data-order="https://ulapph-public-1.appspot.com">
+<a href="https://ulapph-public-1.appspot.com">https://ulapph-public-1.appspot.com</a>
 </td>
 <td data-order="{{.PROFESSION}}">
 {{.PROFESSION}}
@@ -45601,8 +45600,8 @@ Offline
 <td data-order="{{.UID}}">
 {{.UID}}
 </td>
-<td data-order="https://sample-project.appspot.com">
-<a href="https://sample-project.appspot.com">https://sample-project.appspot.com</a>
+<td data-order="https://ulapph-public-1.appspot.com">
+<a href="https://ulapph-public-1.appspot.com">https://ulapph-public-1.appspot.com</a>
 </td>
 <td data-order="{{.PROFESSION}}">
 {{.PROFESSION}}
@@ -45891,7 +45890,7 @@ const showTrendingFooterSelfRec = `
 </body>
 </html>
 `
- 
+
 var showTrendingFooter = template.Must(template.New("showTrendingFooter").Parse(showTrendingFooterRec))
  
 const showTrendingFooterRec = `
@@ -47098,7 +47097,7 @@ const rootTemplateHTML2Ads = `
     </div>
 </body></html>
 `
- 
+
 //serves TDSMEDIA contents given a SID and mime type
 //before it serves data, it performs security checkings
 func serveMediaContent(w http.ResponseWriter, r *http.Request, SID, MIME_TYPE string) {
@@ -47172,8 +47171,8 @@ func serveMediaContent(w http.ResponseWriter, r *http.Request, SID, MIME_TYPE st
 	return
 	
 }
- 
-//checks if current user has access to a Personal content
+
+//checks if current user has access to a Personal content 
 func checkPersonalAccess(w http.ResponseWriter, r *http.Request, AUTHOR, SHARED_TO, SID string, MEDIA_ID int) (isAllowed bool) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
@@ -47208,8 +47207,8 @@ func checkPersonalAccess(w http.ResponseWriter, r *http.Request, AUTHOR, SHARED_
 	}
 	return isAllowed
 }
- 
-//serves media content via SID and mime type w/o checking security
+
+//serves media content via SID and mime type w/o checking security 
 func serveMediaContentNow(w http.ResponseWriter, r *http.Request, SID, MIME_TYPE string) {
 	SPL := strings.Split(SID,"-")
 	TARGET := SPL[0]
@@ -47237,8 +47236,8 @@ func serveMediaContentNow(w http.ResponseWriter, r *http.Request, SID, MIME_TYPE
 	return
 	
 }
- 
-//handles display settings for desktop UIs
+
+//handles display settings for desktop UIs 
 //handles the macOS-like docks and icons
 func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
@@ -47658,7 +47657,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 		//}
 		
 	case FUNC_SHR_ICO == "Share Icons" && FUNC_UPD_SET == "" && FUNC_DEL_ICO == "":
- 
+
 		//get user privilege
 		FUNC_CODE := "GET_GRP_ID"
 		FL_VALID_USER, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
@@ -47786,7 +47785,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 				
 				//request update of cache
 				laterSettingsIcons.Call(c, "")
- 
+
 				//clear icons cache
 				_ = memcache.Delete(c, "ALL_ICONS")
 		
@@ -47833,14 +47832,14 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 		if FL_VALID_USER == true {
 		
 			if (GROUP_ID == "GRP_USER" || GROUP_ID == "GRP_ADMIN") && currDesktop == "desktop0" {
- 
+
 				q := datastore.NewQuery("TDSCNFG").Filter("USER =", uid).
 												   Filter("NUM_VAL =", 0).
 												   Limit(2)
 				//c.Errorf("[S0390]")
 				recCount,_ := q.Count(c)
 				if recCount <= 2 {
- 
+
 					g := TDSCNFG{
 							SYS_VER: 1,
 							USER: uid,
@@ -47852,14 +47851,14 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 					}
 					
 					thisKey := fmt.Sprintf("%v-%s-%s", 0, uid, desktopIcons)
- 
+
 					key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
 					_, err := datastore.Put(c, key, &g)
 					//c.Errorf("[S0391]")
 					if err != nil {
 						panic(err)
 					}
- 
+
 					t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-cache-desktop0-icons", map[string][]string{"uid": {uid}, "desktop": {currDesktop}})
 					if _, err := taskqueue.Add(c, t, ""); err != nil {
 					}
@@ -47873,7 +47872,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 					return
 					
 				}
- 
+
 				config := make([]TDSCNFG, 0, 2)
 				if _, err := q.GetAll(c, &config); err != nil {
 					 panic(err)
@@ -47904,7 +47903,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 									 panic(err)
 								}
 								//c.Errorf("[S0393]")
- 
+
 								t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-cache-desktop0-icons", map[string][]string{"uid": {uid}, "desktop": {currDesktop}})
 								if _, err := taskqueue.Add(c, t, ""); err != nil {
 								}
@@ -47921,7 +47920,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 									 panic(err)
 								}
 								//c.Errorf("[S0394]")
- 
+
 								t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-cache-desktop0-css", map[string][]string{"uid": {uid}, "desktop": {currDesktop}, "css": {mycss}})
 								if _, err := taskqueue.Add(c, t, ""); err != nil {
 								}
@@ -47931,7 +47930,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						
 				}
 			} else if (GROUP_ID == "GRP_ADMIN" && thisDeskNum > 0) {
- 
+
 				
 				q := datastore.NewQuery("TDSCNFG").Filter("USER =", currDesktop).
 												   Filter("NUM_VAL =", 0).
@@ -47946,7 +47945,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 													   Filter("NUM_VAL =", 0).
 													   Limit(2)
 					//c.Errorf("[S0396]")
- 
+
 					//insert initial cfg records
 					//var g TDSCNFG
 					g := TDSCNFG{
@@ -47960,14 +47959,14 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 					}
 					
 					thisKey := fmt.Sprintf("%s-%s", g.USER, g.CFG_ID)
- 
+
 					key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
 					_, err := datastore.Put(c, key, &g)
 					//c.Errorf("[S0397]")
 					if err != nil {
 						panic(err)
 					}
- 
+
 					g = TDSCNFG{
 							SYS_VER: 1,
 							USER: currDesktop,
@@ -47977,24 +47976,24 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 							TXT_VAL: "/css/style.css",
 							CFG_DESC: "Sample cfg item",
 					}
- 
+
 					thisKey = fmt.Sprintf("%s-%s", g.USER, g.CFG_ID)
- 
+
 					key = datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
 					_, err = datastore.Put(c, key, &g)
 					//c.Errorf("[S0398]")
 					if err != nil {
 						panic(err)
 					}
- 
+
 					q = datastore.NewQuery("TDSCNFG").Filter("USER =", currDesktop).
 													   Filter("NUM_VAL =", 0).
 													   Limit(2)
 					//c.Errorf("[S0399]")
- 
+
 					
 				}
- 
+
 				config := make([]TDSCNFG, 0, 2)
 				if _, err := q.GetAll(c, &config); err != nil {
 					 panic(err)
@@ -48016,7 +48015,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 								}
 								//}
 								//c.Errorf("[S0400]")
- 
+
 								//save new icons
 								p.NUM_VAL = 0
 								p.TXT_VAL = newIcons
@@ -48042,7 +48041,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 							i = strings.Index(p.CFG_ID, "_css")
 							if i != -1 {
 							//if p.CFG_ID == desktopCss {
- 
+
 								p.TXT_VAL = mycss
 								thisKey2 := fmt.Sprintf("%s-%s", currDesktop, desktopCss)
 								//buffer3.WriteString(fmt.Sprintf("Updating P.TXT_VAL: %s\n", p.TXT_VAL))
@@ -48143,7 +48142,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						if _, err := datastore.Put(c, keySaved, &p); err != nil {
 							 panic(err)
 						}
- 
+
 						p.NUM_VAL = 0
 						p.CFG_DESC = CFG_DESC
 						p.TXT_VAL = LOAD_DATA
@@ -48154,7 +48153,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 							 panic(err)
 						}
 						//c.Errorf("[S0405]")
- 
+
 						t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-cache-desktop0-icons", map[string][]string{"uid": {uid}, "desktop": {currDesktop}})
 						//if _, err := taskqueue.Add(c, t, "online-users"); err != nil {
 						if _, err := taskqueue.Add(c, t, ""); err != nil {
@@ -48174,9 +48173,9 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						http.Redirect(w, r, msgURL, http.StatusFound)
 						return
 					}
- 
+
 				}
- 
+
 			} else {
 				msgDtl := "[U00072] ERROR (SetDefault): FOR THIS DESKTOP, CHANGE SETTINGS NOT ALLOWED FOR YOUR ACCOUNT TYPE"
 				msgTyp := "error"
@@ -48190,22 +48189,22 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 		}
 		
 	case FUNC_LOD_ICO == "DeleteSet" && FUNC_UPD_SET == "" && FUNC_DEL_ICO == "" && FUNC_SHR_ICO == "":
- 
+
 		//load icons
 		//get user privilege
 		FUNC_CODE := "GET_GRP_ID"
 		FL_VALID_USER, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
 		
 		if FL_VALID_USER == true {
- 
+
 			if (GROUP_ID == "GRP_USER" || GROUP_ID == "GRP_ADMIN") {
 				
 				if NUM_VAL > 0 {
 					thisKey := fmt.Sprintf("%v-%s-%s_icons", NUM_VAL, uid, currDesktop)
- 
+
 					key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
 					datastore.Delete(c, key)
- 
+
 					//reset DOCK_LIST
 					cKey := ""
 					if deskName != "desktop0" {
@@ -48235,7 +48234,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 		}
- 
+
  
 	case FUNC_LOD_ICO == "UpdateDesc" && FUNC_UPD_SET == "" && FUNC_DEL_ICO == "" && FUNC_SHR_ICO == "":
  
@@ -48253,7 +48252,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 				if err := htmlHeaderModal.Execute(w, getBasicColors(w,r)); err != nil {
 				  panic(err)
 				}
- 
+
 				targetDesktop := ""
 				if thisDeskNum == 0 {
 					targetDesktop = uid
@@ -48266,7 +48265,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 												   Filter("NUM_VAL =", NUM_VAL).
 												   Limit(maxTDSCNFGSaveTB)
 				//c.Errorf("[S0406]")
- 
+
 				  recCount,_ := q.Count(c)
 				config := make([]TDSCNFG, 0, maxTDSCNFGSaveTB)
 				if _, err := q.GetAll(c, &config); err != nil {
@@ -48279,12 +48278,12 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 					
 						if recCount > 1 {
 							thisKey := fmt.Sprintf("%s-%s_icons", uid, currDesktop)
- 
+
 							key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
 							datastore.Delete(c, key)
 							
 							thisKey = fmt.Sprintf("%v-%s-%s_icons", p.NUM_VAL, uid, currDesktop)
- 
+
 							key = datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
 							datastore.Delete(c, key)
 							
@@ -48302,7 +48301,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						_ = getIconsDesktop(w, r, thisDeskNum, p.TXT_VAL)
 						break
 					}
- 
+
 				}
 				if err := htmlFooterModal.Execute(w, ""); err != nil {
 				  panic(err)
@@ -48310,7 +48309,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 			}
 		
 		}
- 
+
  
 	case FUNC_LOD_ICO == "UpdateDesc2" && FUNC_UPD_SET == "" && FUNC_DEL_ICO == "" && FUNC_SHR_ICO == "":
  
@@ -48362,7 +48361,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						if CFG_DESC != "" {
 							p.CFG_DESC = CFG_DESC
 						}
- 
+
 						thisKey := fmt.Sprintf("%s-%s", uid, desktopIcons)
 						//fmt.Fprintf(w, "thisKey: %v", thisKey)
 						key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
@@ -48379,7 +48378,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						http.Redirect(w, r, sysReq, http.StatusFound)
 						return
 					}
- 
+
 				}
 			} else {
 				msgDtl := "[U00077] ERROR (UpdateDesc2): FOR THIS DESKTOP, CHANGE SETTINGS NOT ALLOWED FOR YOUR ACCOUNT TYPE"
@@ -48392,7 +48391,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 				}
 		
 		}
- 
+
 		
  
 	case FUNC_SHR_D0_ICONS == "ShareDesktopIcons" && FUNC_UPD_SET == "" && FUNC_DEL_ICO == "" && FUNC_SHR_ICO == "":
@@ -48410,9 +48409,9 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 			
 			if uid == uid2 {
 				//send email of the link to be shared
-				MESSAGE := fmt.Sprintf("https://sample-project.appspot.com/settings-display-screen?loadIcons=ShareDesktopIcons&desktop-name=desktop0&CFG_DESC=%v&uid=%v&LOAD_DATA=%v", CFG_DESC, uid, TXT_VAL)
+				MESSAGE := fmt.Sprintf("https://ulapph-public-1.appspot.com/settings-display-screen?loadIcons=ShareDesktopIcons&desktop-name=desktop0&CFG_DESC=%v&uid=%v&LOAD_DATA=%v", CFG_DESC, uid, TXT_VAL)
 				SENDSHARED0MAIL(c, uid, ADMMAIL, MESSAGE)
- 
+
 				//notify all users of this event via channels					
 				msgDtl := "[U00078] SUCCESS: Desktop Shared Icons link has been sent to your email. You may forward that email to other ULAPPH users so they can click that link and load to their desktop0."
 				msgTyp := "success"
@@ -48454,7 +48453,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 							 panic(err)
 						}
 						//c.Errorf("[S0411]")
- 
+
 						//clear DOCKS_LIST
 						cKey := fmt.Sprintf("DOCKS_LIST_%s_%s", "desktop0", uid)
 						putStrToMemcacheWithoutExp(w,r,cKey,"")
@@ -48467,7 +48466,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, msgURL, action)
 						http.Redirect(w, r, sysReq, http.StatusFound)
 						return
- 
+
 					}
 				} else {
 					msgDtl := "[U00080] ERROR (ShareDesktopIcons): FOR THIS DESKTOP, CHANGE SETTINGS NOT ALLOWED FOR YOUR ACCOUNT TYPE"
@@ -48504,7 +48503,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 					http.Redirect(w, r, sysReq, http.StatusFound)
 					return
 				}
- 
+
 				q := datastore.NewQuery("TDSCNFG").Filter("NUM_VAL =", 0).
 												   Limit(1)
 				//c.Errorf("[S0412]")
@@ -48531,7 +48530,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					//c.Errorf("[S0413]")
- 
+
 					cKey := fmt.Sprintf("TASK_MEMCACHER_desktopWP_%v_desktop0_%s", targetWP, uid)
 					putStrToMemcacheWithoutExp(w,r,cKey,imageURL)
 					
@@ -48577,7 +48576,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 					http.Redirect(w, r, sysReq, http.StatusFound)
 					return
 				}
- 
+
 				q := datastore.NewQuery("TDSCNFG").Filter("NUM_VAL =", 0).
 												   Limit(1)
 				//c.Errorf("[S0414]")
@@ -48605,7 +48604,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					//c.Errorf("[S0415]")
- 
+
 					cKey := fmt.Sprintf("TASK_MEMCACHER_desktopWP_%v_%v", desktop, targetWP)
 					putStrToMemcacheWithoutExp(w,r,cKey,imageURL)
 					
@@ -48622,7 +48621,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 					http.Redirect(w, r, sysReq, http.StatusFound)
 					//return
 					break
- 
+
 				
 				}
 			}
@@ -48640,8 +48639,8 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
-//gets the ip address from the http request
+
+//gets the ip address from the http request 
 //handles forwarded IPs via proxy
 func getIpAdd(w http.ResponseWriter, r *http.Request) (ipStr string) {
     ipProxy := r.Header.Get("X-FORWARDED-FOR")
@@ -48658,8 +48657,8 @@ func getIpAdd(w http.ResponseWriter, r *http.Request) (ipStr string) {
 	
     return ipStr
 }
- 
-//D0040
+
+//D0040 
 //gets the SID reference from a http request URL
 func getRefDoc(w http.ResponseWriter, r *http.Request, tURL string) (refDoc string, sidOk bool) {
 	//parse page accessed
@@ -48683,9 +48682,9 @@ func getRefDoc(w http.ResponseWriter, r *http.Request, tURL string) (refDoc stri
 	}
 	return document, sidOk
 }
- 
+
 //D0040
-//gets captcha key from the http request url
+//gets captcha key from the http request url 
 func getCCKey(w http.ResponseWriter, r *http.Request, tURL string) (cckey string, ccOk bool) {
 	//parse page accessed
 	if tURL == "" {
@@ -48728,7 +48727,7 @@ func getDeskCat(w http.ResponseWriter, r *http.Request) (desktop string) {
 	return document
 }
  
-//gets the URM reference from the http request url
+//gets the URM reference from the http request url 
 func getRefUwm(w http.ResponseWriter, r *http.Request) (refUwm string) {
 	//parse page accessed
 	uReferer := r.Referer()
@@ -48744,9 +48743,9 @@ func getRefUwm(w http.ResponseWriter, r *http.Request) (refUwm string) {
 	}
 	return refUwm
 }
- 
+
 //updates if the user if current active
-//used to detect the presence of a user
+//used to detect the presence of a user 
 func updateUserActiveData(w http.ResponseWriter, r *http.Request, c appengine.Context, uid, content string) {
 	u := user.Current(c)
 	
@@ -48880,7 +48879,7 @@ func updateUserActiveData(w http.ResponseWriter, r *http.Request, c appengine.Co
 	}
 	
 }
- 
+
 //task queue to increment counter
 func queueCounterIncrement(w http.ResponseWriter, r *http.Request) {
 	//var buffer bytes.Buffer
@@ -50133,7 +50132,7 @@ func procBroadcastAll(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
+
 //posts broadcasts to all given a URL
 func postUrlBroadcast(w http.ResponseWriter, r *http.Request, URL string) {
 	c := appengine.NewContext(r)
@@ -50171,12 +50170,12 @@ func procBroadcastContentsAll(w http.ResponseWriter, r *http.Request) {
 	return	
 	
 }
- 
+
 //broadcast current location
 func procBroadcastCustomLoc(w http.ResponseWriter, r *http.Request, uid, latlon string) {
 	
     c := appengine.NewContext(r)
- 
+
 	IS_SEARCH_SERVER, SEARCH_SERVER, _ := getSitesServer(w,r)
 	
 	//if this server is not sites server
@@ -50409,7 +50408,7 @@ func updateMyULAPPHLoc(w http.ResponseWriter, r *http.Request, uid, latlon strin
 	_, MEDIA_ID = getTDSCNFG(w,r,1,cfgName)
 	if MEDIA_ID <= 0 {
 		c.Errorf("ERROR: SYSTEM_USER_TO_HOST_SETTINGS does not exist.")
-		return
+		return 
 	}
 	BLOB_KEY := ""
 	BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, MEDIA_ID)	
@@ -50446,18 +50445,18 @@ func updateMyULAPPHLoc(w http.ResponseWriter, r *http.Request, uid, latlon strin
 	
 	cKey := fmt.Sprintf("HOST_LIST2")
 	putBytesToMemcacheWithoutExp(w,r,cKey,buf.Bytes())
- 
+	//c.Infof("User to Host List has been updated with user loc.<br><br>.")
 	//fmt.Fprintf(w, "%v", buf.String())
 	//update the actual host list file
 	SID := fmt.Sprintf("TDSMEDIA-%v", MEDIA_ID)
 	err := blobFileSaver(w,r,SID,buf.Bytes())
 	if err != nil {
- 
+		//c.Infof("User to Host List has been updated at TDSMEDIA-%v", MEDIA_ID)
 		return
 	}
 	return		
 }
- 
+
 //for sites server only
 //gets the ulapph cliud desktop owned by the user
 func getMyULAPPH(w http.ResponseWriter, r *http.Request, mode string) (url string) {
@@ -50511,7 +50510,7 @@ func getMyULAPPH(w http.ResponseWriter, r *http.Request, mode string) (url strin
 					//ok found you
 					url = tURL
 					FL_FOUND = true
- 
+					//c.Infof("url: %v", url)
 					//lets store this to memory
 					putStrToMemcacheWithoutExp(w,r,cKey2,url)
 					break
@@ -50618,8 +50617,8 @@ func fetchHostList(w http.ResponseWriter, r *http.Request) (TOT int, HOST_LIST s
 		
 	return TOT, HOST_LIST
 }		
- 
-//broadcasts presence to all
+
+//broadcasts presence to all 
 func procBroadcastPresence(w http.ResponseWriter, r *http.Request) {
 	
     c := appengine.NewContext(r)
@@ -50652,7 +50651,7 @@ func procBroadcastPresence(w http.ResponseWriter, r *http.Request) {
 	return	
 	
 }
- 
+
 //broadcasts user locations via longitude and latitude
 func procBroadcastUserLoc(w http.ResponseWriter, r *http.Request, UID, latLon string) {
 	
@@ -50678,7 +50677,7 @@ func procBroadcastUserLoc(w http.ResponseWriter, r *http.Request, UID, latLon st
 	
 }
  
-//broadcasts messages to the sites server
+//broadcasts messages to the sites server 
 func procBroadcastMessage(w http.ResponseWriter, r *http.Request) {
 	
     c := appengine.NewContext(r)
@@ -50776,7 +50775,7 @@ func getSitesServer(w http.ResponseWriter, r *http.Request) (IS_SEARCH_SERVER, S
 			for _, _ = range users {
 				recCount++
 			}
-		
+		 
 			var g TDSCNFG
 			
 			if recCount > 0 {
@@ -50901,7 +50900,7 @@ func procBroadcastPresence2(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
+
 //process trending contents in this cloud desktop
 func procTrending(w http.ResponseWriter, r *http.Request) {
 	
@@ -50930,8 +50929,8 @@ func procTrending(w http.ResponseWriter, r *http.Request) {
 	}	
 	
 }
- 
-//process whats new contents in this cloud desktop
+
+//process whats new contents in this cloud desktop 
 func procWhatsNew(w http.ResponseWriter, r *http.Request) {
 	
     c := appengine.NewContext(r)
@@ -50959,7 +50958,7 @@ func procWhatsNew(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
+
 //D0042
 //Gets the newly discussed contents
 //it process comments index
@@ -50978,12 +50977,12 @@ func procDiscussions(w http.ResponseWriter, r *http.Request) {
 	timestamp := fmt.Sprintf("%v", rt.Format("20060102150405"))
 	q := datastore.NewQuery("TDSCOMIDX").Filter("DT_UPDATE > ", timestamp)
 	recCount, _  := q.Count(c)
- 
+	//c.Infof("recCount: %v", recCount)
 	cidx := make([]TDSCOMIDX, 0, recCount)
 	if _, err := q.GetAll(c, &cidx); err != nil {
 		 panic(err)
 	}
-	
+	  
 	//For each record populate struct
 	var cx []Discussions
 	
@@ -51004,7 +51003,7 @@ func procDiscussions(w http.ResponseWriter, r *http.Request) {
 		var buf bytes.Buffer
 		comu := p.USERS
 		for i:=0; i < len(comu); i++ {
-			buf.WriteString(fmt.Sprintf("<a href=\"https://sample-project.appspot.com/social?SO_FUNC=ViewPeople&UID=%v\"><img src=\"%v\" class=\"img-circle\" width=50 height=50 title=\"Chat with %v\"> ", comu[i], getProfilePic(w, r, comu[i]), comu[i]))
+			buf.WriteString(fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/social?SO_FUNC=ViewPeople&UID=%v\"><img src=\"%v\" class=\"img-circle\" width=50 height=50 title=\"Chat with %v\"> ", comu[i], getProfilePic(w, r, comu[i]), comu[i]))
 		}
 		USERS := template.HTML(buf.String())
 		ACTIVITY := stmpHumanize(p.DT_UPDATE)
@@ -51019,18 +51018,18 @@ func procDiscussions(w http.ResponseWriter, r *http.Request) {
 		switch TARGET {
 			case "TDSSLIDE":
 				_, DOC_STAT, FL_SHARED, _, _, TITLE, IMAGE, _, MUSIC_ID, GET_NEXT = getTDSSLIDEBlobKey(w, r, docID)
-				URL_DIS = fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=%v", SID, TITLE)
-				URL_CON = fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&FORCE=%v&MODE=%v&PARM=%v&SECS=%v&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, "N", "NORMAL", "LOOP", "8", TITLE, MUSIC_ID, GET_NEXT)
+				URL_DIS = fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=%v", SID, TITLE)
+				URL_CON = fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&FORCE=%v&MODE=%v&PARM=%v&SECS=%v&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, "N", "NORMAL", "LOOP", "8", TITLE, MUSIC_ID, GET_NEXT)
 			
 			case "TDSARTL":
 				_, DOC_STAT, FL_SHARED, _, _, TITLE, _, IMAGE, MUSIC_ID = getTDSARTLBlobKey(w, r, docID)
-				URL_DIS = fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=%v", SID, TITLE)
-				URL_CON = fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=%v&FORCE=%v&TITLE=%v&MUSIC_ID=%v", DOC_ID, SID, "N", TITLE, MUSIC_ID)
+				URL_DIS = fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=%v", SID, TITLE)
+				URL_CON = fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=%v&FORCE=%v&TITLE=%v&MUSIC_ID=%v", DOC_ID, SID, "N", TITLE, MUSIC_ID)
 				
 			case "TDSMEDIA":
 				_, _, TITLE, _, DOC_STAT, FL_SHARED, IMAGE, _, _, _, _ = getTDSMEDIABlobKey(w, r, docID)
-				URL_DIS = fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=%v", SID, TITLE)
-				URL_CON = fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", docID, docID)
+				URL_DIS = fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=%v", SID, TITLE)
+				URL_CON = fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", docID, docID)
 		}
  
 		g := Discussions{
@@ -51053,8 +51052,8 @@ func procDiscussions(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
-//process the people directory for this cloud desktop
+
+//process the people directory for this cloud desktop 
 func procPeopleDir(w http.ResponseWriter, r *http.Request) {
 	
     c := appengine.NewContext(r)
@@ -51091,8 +51090,8 @@ func procPeopleDir(w http.ResponseWriter, r *http.Request) {
 	}	
 	
 }
- 
-//shows the overall sessions
+
+//shows the overall sessions 
 func showOverallSessions(w http.ResponseWriter, r *http.Request, target string, FL_BOT bool) {
 	//billing fix
 	//dont display sessions if not logged in
@@ -51164,14 +51163,14 @@ func showOverallSessions(w http.ResponseWriter, r *http.Request, target string, 
 	return
  
 }
- 
-//shows if access is from a robot or non-humans
+
+//shows if access is from a robot or non-humans 
 func showOverallRobot(w http.ResponseWriter, r *http.Request, target string) {
 	writeHTMLHeader(w, 200)
 	w.Write([]byte(fmt.Sprintf("<html><head><META http-equiv=\"refresh\" content=\"300;URL=/directory?DIR_FUNC=%v\"></head><body><img src=\"/img/cat_sleep.png\" width=150 height=150 title=\"No one online now!\"></body></html>", target)))		
 	return
 }
- 
+
 //shows overall map
 func showOverallMap(w http.ResponseWriter, r *http.Request) {
 	
@@ -51182,10 +51181,10 @@ func showOverallMap(w http.ResponseWriter, r *http.Request) {
 	//lets serve some cache
 	cKeyC := fmt.Sprintf("JSON_PROC_BROADCAST_LOCATION")
 	JLIST := getBytMemcacheValueByKey(w,r,cKeyC)
- 
+	//c.Infof("JLIST: %v", string(JLIST))
 	//if JLIST != nil {
 	if string(JLIST) != "" {
- 
+		//c.Infof("Serve map cached!")
 		json.Unmarshal(JLIST, &dks)
 		data,_ := json.Marshal(dks)
 		w.Write(data)
@@ -51197,7 +51196,7 @@ func showOverallMap(w http.ResponseWriter, r *http.Request) {
 	LIST := getStrMemcacheValueByKey(w,r,cKey)	
 	//DEDUPS := ""
 	ctr := 0
- 
+	//c.Infof("LIST: %v", LIST)
 	if LIST != "" {
 		//scan
 		//var buf bytes.Buffer
@@ -51289,12 +51288,12 @@ func showOverallMap(w http.ResponseWriter, r *http.Request) {
 	
 	//cache it first
 	data,_ := json.Marshal(dks)
-	putBytesToMemcacheWithExp(w,r,cKeyC,data,600)
+	putBytesToMemcacheWithExp(w,r,cKeyC,data,600) 
 	w.Write(data)
 	return
 	
 }
- 
+
 //shows overall people directory	
 func showOverallPeople(w http.ResponseWriter, r *http.Request, FL_BOT bool) {
 	
@@ -51338,8 +51337,8 @@ func showOverallPeople(w http.ResponseWriter, r *http.Request, FL_BOT bool) {
 	}
 	
 }
- 
-//shows overall sites
+
+//shows overall sites 
 func showOverallSites(w http.ResponseWriter, r *http.Request, FL_BOT bool) {
 	
     c := appengine.NewContext(r)
@@ -51382,8 +51381,8 @@ func showOverallSites(w http.ResponseWriter, r *http.Request, FL_BOT bool) {
 	}
 	
 }
- 
-//shows overall trending contents
+
+//shows overall trending contents 
 func showOverallTrending(w http.ResponseWriter, r *http.Request) {
 	
     c := appengine.NewContext(r)
@@ -51420,8 +51419,8 @@ func showOverallTrending(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
-//shows overall whats new
+
+//shows overall whats new 
 func showOverallWhatsNew(w http.ResponseWriter, r *http.Request) {
 	
     c := appengine.NewContext(r)
@@ -51458,7 +51457,7 @@ func showOverallWhatsNew(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
+
 //D0042
 //shows overall discussion and comments
 func showOverallDiscussions(w http.ResponseWriter, r *http.Request) {
@@ -51528,7 +51527,7 @@ func procBroadcastPresence4(w http.ResponseWriter, r *http.Request) {
 	 geo := r.FormValue("geo")
 	 countryPic := ""
 	 IS_SEARCH_SERVER, _, _ := getSitesServer(w,r)
- 
+
 	 if IS_SEARCH_SERVER == "N" {
 		templ := strings.Split(geo,".")
 		countryPic = fmt.Sprintf("%v/img/flags/%v.gif", getSchemeUrl(w,r), templ[0])
@@ -51540,8 +51539,8 @@ func procBroadcastPresence4(w http.ResponseWriter, r *http.Request) {
 	 }
 	
 }
- 
-//process log hits
+
+//process log hits 
 func procLogHits(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
@@ -51574,7 +51573,7 @@ func procLogHits(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(cData))
 	return
 }
- 
+
 //process broad messages by putting them in guestbooks	
 func procBroadcastMessage4(w http.ResponseWriter, r *http.Request) {
  
@@ -51592,8 +51591,8 @@ func procBroadcastMessage4(w http.ResponseWriter, r *http.Request) {
 	 }
 	
 }
- 
-//decrement login counters
+
+//decrement login counters 
 func queueStatsDecLoggedIn(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
     uid := fmt.Sprintf("%v",r.FormValue("uid"))
@@ -51897,7 +51896,7 @@ func queueNotifyCH(w http.ResponseWriter, r *http.Request) {
 		}	
 	}
 	message = strings.Replace(message, "UID:", "", -1)
- 
+
 	message2 := ""
  
 	usersOnline_CACHE_KEY := fmt.Sprintf("USERS_ONLINE_LIST")
@@ -51934,7 +51933,7 @@ func queueNotifyCH(w http.ResponseWriter, r *http.Request) {
  
 	ranID := randSeq(6)
 	message2 = fmt.Sprintf("%v <br>[%v] [M01-%v]", message2, TSTMP, ranID)
- 
+
 	if SYS_MSG_CHRT_NOTIFY_ENABLE == true {
 		//when all later notify
 		sendChannelMessage(w,r,"public",message2)
@@ -51994,7 +51993,7 @@ func queueNotifyCH(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 			panic(err)
 	}
- 
+
 	//update access logs for this content
 	SPL := strings.Split(SID,"-")
 	if len(SPL) > 1 {
@@ -52025,7 +52024,7 @@ func queueNotifyCH(w http.ResponseWriter, r *http.Request) {
 					ACCESS_LOG_CTR: g.ACCESS_LOG_CTR,
 			}
 			if g.ACCESS_LOG_TEXT != nil {
- 
+
 				_, err := datastore.Put(c, getKeyAccess(c,accessLogKey), &g)
 				//c.Errorf("[S0470]")
 				if err != nil {
@@ -52033,7 +52032,7 @@ func queueNotifyCH(w http.ResponseWriter, r *http.Request) {
 						checkError(w,r,err,"CHK_OQ")
 						return
 				}
- 
+
 			}
 		}
 		
@@ -52196,7 +52195,7 @@ func queueAddToSid(w http.ResponseWriter, r *http.Request) {
 	FL_SHARED := ""
 	AUTHOR := ""
 	csn := ""
- 
+
 	switch TARGET {
 		case "TDSSLIDE":
 			BLOB_KEY, DOC_STAT, FL_SHARED, AUTHOR, _, _, _, _, _, _ = getTDSSLIDEBlobKey(w, r, docID)
@@ -52337,7 +52336,7 @@ func queueAddToSid(w http.ResponseWriter, r *http.Request) {
 		}		
 	}
 }
- 
+
 //process appending of data to existing SID
 func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT string) (err error){
 	
@@ -52386,7 +52385,7 @@ func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT st
 			
 			FUNC_CODE := "GET_GRP_ID"
 			FL_VALID_USER, _, _  , _ := usersProcessor(w, r, "au", UID, FUNC_CODE)
- 
+
 			if FL_VALID_USER != true {
 				//dont process
 				return fmt.Errorf("Invalid operation. Invalid user.")
@@ -52416,8 +52415,8 @@ func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT st
 	blobChan := make(chan string)
 	go getBlobTextChan(w, r,blobChan, BLOB_KEY)
 	thisCont := <- blobChan
- 
- 
+	//c.Infof("getBlobTextChan...")
+	//c.Infof("thisCont: %v", thisCont)
 	
 	var buf bytes.Buffer
 	buf.WriteString(fmt.Sprintf("%v", thisCont))
@@ -52426,8 +52425,8 @@ func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT st
 	switch  {
 	
 		case FUNC == "APPEND-UWM" && TEXT != "":
- 
- 
+			//c.Infof("APPEND-UWM APPEND...")
+			//c.Infof("TEXT: %v", TEXT)
 			FL_PROC_OK = true
 			//buf.WriteString(fmt.Sprintf(" %v\n", template.HTML(TEXT)))
 			buf.WriteString(fmt.Sprintf(" %v\n", html.UnescapeString(TEXT)))
@@ -52435,7 +52434,7 @@ func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT st
 	}
 	
 	if FL_PROC_OK == true {
- 
+		//c.Infof("FL_PROC_OK...")
 		
 		//update content
 		// Now you can prepare a form that you will submit to that URL.
@@ -52496,7 +52495,7 @@ func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT st
 	}
 	return err
 }
- 
+
 //saves blob data for a given SID document
 func blobFileSaver(w http.ResponseWriter, r *http.Request, SID string, DATA []byte) error {
 	c := appengine.NewContext(r)
@@ -52637,7 +52636,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 								putStrToMemcacheWithoutExp(w,r,sKey,cData)
  
 								thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", p.DOC_ID)
-								thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, 0)
+								thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, 0)
 								
 								//t := time.Now().Local()
 								//tstamp := t.Format("20060102150405")
@@ -52690,7 +52689,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 							}
 							
 							//notify all users of this event via channels
-							reqStr := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=TDSSLIDE-%v", DOC_ID, DOC_ID)
+							reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=TDSSLIDE-%v", DOC_ID, DOC_ID)
 							msgDtl3 := fmt.Sprintf("UID:%v has liked Slide (%v) %v <a href=\"%v\">%v</a>",  UID, TITLE, DOC_ID, reqStr, reqStr)
 							sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,UID,reqStr,SID),SID)
 				
@@ -52729,7 +52728,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 								//tstamp := t.Format("20060102150405")
 								tstamp := getTimestamp()
 								thisIdxKey := fmt.Sprintf("TDSARTL-%d", p.DOC_ID)
-								thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+								thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
 								blobChan := make(chan string)
 								go getBlobTextChan(w, r,blobChan, p.BLOB_URL)
 								blobText := <- blobChan
@@ -52772,7 +52771,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 							}
 							
 							//notify all users of this event via channels
-							reqStr := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
+							reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
 							msgDtl3 := fmt.Sprintf("UID:%v has liked Article (%v) %v <a href=\"%v\">%v</a>.",  UID, TITLE, DOC_ID, reqStr, reqStr)
 							sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,UID,reqStr,SID),SID)
 					}
@@ -52812,7 +52811,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 								}
 								//update index
 								thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", p.DOC_ID)
-								thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, 0)
+								thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, 0)
 								
 								
 								//update stats
@@ -52868,7 +52867,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 							}
 							
 							//notify all users of this event via channels
-							reqStr := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
+							reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
 							msgDtl3 := fmt.Sprintf("UID:%v has dis-liked Slide %v <a href=\"%v\">%v</a>",  UID, DOC_ID, reqStr, reqStr)
 							sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,UID,reqStr,SID),SID)
 						
@@ -52901,7 +52900,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 								//tstamp := t.Format("20060102150405")
 								tstamp := getTimestamp()
 								thisIdxKey := fmt.Sprintf("TDSARTL-%d", p.DOC_ID)
-								thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+								thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
 								blobChan := make(chan string)
 								go getBlobTextChan(w, r,blobChan, p.BLOB_URL)
 								blobText := <- blobChan
@@ -52944,7 +52943,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 							}
 							
 							//notify all users of this event via channels
-							reqStr := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
+							reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", DOC_ID, DOC_ID)
 							msgDtl3 := fmt.Sprintf("UID:%v has dis-liked Article %v <a href=\"%v\">%v</a>",  UID, DOC_ID, reqStr, reqStr)
 							sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,UID,reqStr,SID),SID)
 					}
@@ -52993,7 +52992,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 								tstamp := getTimestamp()
 								
 								thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
-								thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
+								thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
 								TITLE := strings.Replace(p.TITLE, "_", " ", -1)
 								DESC := strings.Replace(p.DESC, "_", " ", -1)
 								thisCont := ""
@@ -53066,7 +53065,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 								
 								//update index
 								thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", p.DOC_ID)
-								thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, 0)
+								thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, 0)
 								
 								//t := time.Now().Local()
 								//tstamp := t.Format("20060102150405")
@@ -53145,7 +53144,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 								//tstamp := t.Format("20060102150405")
 								tstamp := getTimestamp()
 								thisIdxKey := fmt.Sprintf("TDSARTL-%d", p.DOC_ID)
-								thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+								thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
 								blobChan := make(chan string)
 								go getBlobTextChan(w, r,blobChan, p.BLOB_URL)
 								blobText := <- blobChan
@@ -53192,7 +53191,7 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 			}
 	
 		case SOC_FUNC == "SO_NOTIFY":
-			msgDtl := fmt.Sprintf("[U00087] New comment posted on: %v by %s. LINK: %v", SID, UID, ShortenUrl(w,r,fmt.Sprintf("https://sample-project.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s", SID)))
+			msgDtl := fmt.Sprintf("[U00087] New comment posted on: %v by %s. LINK: %v", SID, UID, ShortenUrl(w,r,fmt.Sprintf("https://ulapph-public-1.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s", SID)))
 			data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "USER-COMMENT", msgDtl)
 			ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
 			SPL := strings.Split(COMMENTS_BY,",")
@@ -53201,14 +53200,14 @@ func queueSocial(w http.ResponseWriter, r *http.Request) {
 				if SPL[i] != "" {
 					
 					//notify all users of this event via channels
-					msgDtl3 := fmt.Sprintf("UID:%v has posted a comment on: %v >>> LINK: <a href=\"https://sample-project.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s\">Click here</a>", UID, SID, SID)
-					reqStr := fmt.Sprintf("https://sample-project.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s", SID)
+					msgDtl3 := fmt.Sprintf("UID:%v has posted a comment on: %v >>> LINK: <a href=\"https://ulapph-public-1.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s\">Click here</a>", UID, SID, SID)
+					reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s", SID)
 					sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,UID,reqStr,SID),SID)
 					laterNotifyGB.Call(c, "autoNotifyPeopleGB", thisEmail, msgDtl, ADMMAIL)
 				}
 			}
 			//also send message to the author
-			msgDtl = fmt.Sprintf("[U00122] Your document %v has new comments by %s >>> LINK: https://sample-project.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s", SID, UID, SID)
+			msgDtl = fmt.Sprintf("[U00122] Your document %v has new comments by %s >>> LINK: https://ulapph-public-1.appspot.com/social?SO_FUNC=SO_VIEW&SID=%s", SID, UID, SID)
 			docID := 0
 			TARGET := ""
 			SPL = strings.Split(SID,"-")
@@ -53471,7 +53470,7 @@ func queueFeedbackEmail(w http.ResponseWriter, r *http.Request) {
  
 }
  
-//stores the most recent users
+//stores the most recent users 
 func queueStatsUpdateMostRecent(w http.ResponseWriter, r *http.Request) {
  
     c := appengine.NewContext(r)
@@ -53634,9 +53633,9 @@ func getKeyAccess(c appengine.Context, accessLogKey string) *datastore.Key {
 func getKeyDesktop(c appengine.Context, desktopKey string) *datastore.Key {
   return datastore.NewKey(c, "TDSCATS", desktopKey, 0, nil)
 }
- 
+
 //used for installation and setup only
-//inserts initial records
+//inserts initial records 
 func adhocWebLoadTDSUSERS(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53680,7 +53679,7 @@ func adhocWebLoadTDSUSERS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records 
 func adhocDeleteTDSUSERS(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53701,7 +53700,7 @@ func adhocDeleteTDSUSERS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSRULES(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53723,7 +53722,7 @@ func adhocDeleteTDSRULES(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSSTATS(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53744,7 +53743,7 @@ func adhocDeleteTDSSTATS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSCNFG(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53766,7 +53765,7 @@ func adhocDeleteTDSCNFG(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSICONS(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53791,7 +53790,7 @@ func adhocDeleteTDSICONS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSADS(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53816,7 +53815,7 @@ func adhocDeleteTDSADS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSADTS(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53838,7 +53837,7 @@ func adhocDeleteTDSADTS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSSLIDE(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53863,7 +53862,7 @@ func adhocDeleteTDSSLIDE(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSARTL(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53888,7 +53887,7 @@ func adhocDeleteTDSARTL(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSMEDIA(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -53913,7 +53912,7 @@ func adhocDeleteTDSMEDIA(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteTDSLOGS(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
  
@@ -53932,7 +53931,7 @@ func adhocDeleteTDSLOGS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteChannel(w http.ResponseWriter, r *http.Request) {
 	
 	c := appengine.NewContext(r)
@@ -53951,7 +53950,7 @@ func adhocDeleteChannel(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteGreeting(w http.ResponseWriter, r *http.Request) {
 	
 	c := appengine.NewContext(r)
@@ -53970,7 +53969,7 @@ func adhocDeleteGreeting(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//deletes initial records
+//deletes initial records  
 func adhocDeleteIndex(w http.ResponseWriter, r *http.Request, IDX_TARGET string) {
 	
 	c := appengine.NewContext(r)  	
@@ -53999,7 +53998,7 @@ func adhocDeleteIndex(w http.ResponseWriter, r *http.Request, IDX_TARGET string)
 }
  
 //used for installation and setup only
-//loads initial records
+//loads initial records  
 func adhocWebLoadTDSSTATS(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54094,7 +54093,7 @@ func adhocWebLoadTDSSTATS(w http.ResponseWriter, r *http.Request) {
 }
  
 //used for installation and setup only
-//loads initial records
+//loads initial records 
 func adhocWebLoadTDSSLIDE(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54137,9 +54136,9 @@ func adhocWebLoadTDSSLIDE(w http.ResponseWriter, r *http.Request) {
 	}	
 	//fmt.Fprintf(w, "LOADED INITIAL TABLE RECORDS.<br>")
 }
- 
+
 //used for installation and setup only
-//loads initial records
+//loads initial records 
 func adhocWebLoadTDSARTL(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54182,9 +54181,9 @@ func adhocWebLoadTDSARTL(w http.ResponseWriter, r *http.Request) {
 	}	
 	//fmt.Fprintf(w, "LOADED INITIAL TABLE RECORDS.<br>")
 }
- 
+
 //used for installation and setup only
-//loads initial records
+//loads initial records 
 func adhocWebLoadTDSMEDIA(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54226,9 +54225,9 @@ func adhocWebLoadTDSMEDIA(w http.ResponseWriter, r *http.Request) {
 	}	
 	//fmt.Fprintf(w, "LOADED INITIAL TABLE RECORDS.<br>")
 }
- 
+
 //used for installation and setup only
-//loads initial records
+//loads initial records 
 func adhocWebLoadTDSCNFG(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54259,9 +54258,9 @@ func adhocWebLoadTDSCNFG(w http.ResponseWriter, r *http.Request) {
 	}	
 	//fmt.Fprintf(w, "LOADED INITIAL TABLE RECORDS.<br>")
 }
- 
+
 //used for installation and setup only
-//loads initial records
+//loads initial records  
 func adhocWebLoadTDSICONS(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54293,9 +54292,9 @@ func adhocWebLoadTDSICONS(w http.ResponseWriter, r *http.Request) {
 	}	
 	//fmt.Fprintf(w, "LOADED INITIAL TABLE RECORDS.<br>")
 }
- 
+
 //used for installation and setup only
-//loads initial records
+//loads initial records 
 func adhocWebLoadTDSRULES(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54351,9 +54350,9 @@ func adhocWebLoadTDSRULES(w http.ResponseWriter, r *http.Request) {
 	}	
 	//fmt.Fprintf(w, "LOADED INITIAL TABLE RECORDS.<br>")
 }
- 
+
 //used for installation and setup only
-//loads initial records
+//loads initial records 
 func adhocWebLoadTDSADS(w http.ResponseWriter, r *http.Request) {
 	
 	
@@ -54394,9 +54393,9 @@ func adhocWebLoadTDSADS(w http.ResponseWriter, r *http.Request) {
 	}	
 	//fmt.Fprintf(w, "LOADED INITIAL TABLE RECORDS.<br>")
 }
- 
+
 //used for installation and setup only
-//loads initial records
+//loads initial records 
 func adhocWebLoadTDSADTS(w http.ResponseWriter, r *http.Request) {
 	
  
@@ -54711,7 +54710,7 @@ const showWhatsNewHdrRec = `
 	</thead>
 	<tbody>
 `
- 
+
 //D0042
 /* 	IMAGE: IMAGE, 	
 	TITLE: TITLE, 	 			
@@ -54723,7 +54722,7 @@ const showWhatsNewHdrRec = `
 	URL_CON: URL_CON,
  */
 var showDiscussionsHdr = template.Must(template.New("showDiscussionsHdr").Parse(showDiscussionsHdrRec))
- 
+
 const showDiscussionsHdrRec = `
 <table id="example" class="display" cellspacing="0" width="100%">
 	<thead>
@@ -54942,16 +54941,16 @@ const slidesTrendingRec = `
 {{if eq .FL_SHARED "Y"}}
 {{if ne .DOC_STAT "Personal"}}
 	<tr>
-	<td><a href="https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
+	<td><a href="https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
 	<img src="{{.TAGS}}" height="100" width="100"></img></a></td>
 	<td data-order="{{.TITLE}}">
-		<a href="https://sample-project.appspot.com/slides?TYPE=SLIDE&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&GET_NEXT={{.GET_NEXT}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
+		<a href="https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&GET_NEXT={{.GET_NEXT}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
 	</td>
 	<td>{{.DESC}} [TDSSLIDE-{{.DOC_ID}}]</td>
 	<td>{{.AUTHOR}}</td>
 	<td class="id">{{.DOC_ID}}</td>
 	<td>{{.NUM_VIEWS}}</td>
-	<td data-order="{{.NUM_COMMENTS}}"><a href="https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSSLIDE-{{.DOC_ID}}&TITLE={{.TITLE}}" target="str">{{.NUM_COMMENTS}}</a></td>
+	<td data-order="{{.NUM_COMMENTS}}"><a href="https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSSLIDE-{{.DOC_ID}}&TITLE={{.TITLE}}" target="str">{{.NUM_COMMENTS}}</a></td>
 	</tr>
 {{end}}
 {{end}}
@@ -54965,29 +54964,29 @@ const slidesWhatsNewRec = `
 {{if eq .FL_SHARED "Y"}}
 {{if ne .DOC_STAT "Personal"}}
 	<tr>
-	<td><a href="https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
+	<td><a href="https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
 	<img src="{{.TAGS}}" height="100" width="100"></img></a></td>
 	<td data-order="{{.TITLE}}">
-		<a href="https://sample-project.appspot.com/slides?TYPE=SLIDE&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&GET_NEXT={{.GET_NEXT}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
+		<a href="https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&SECS=8&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSSLIDE-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&GET_NEXT={{.GET_NEXT}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
 	</td>
 	<td>{{.DESC}} [TDSSLIDE-{{.DOC_ID}}]</td>
 	<td>{{.AUTHOR}}</td>
 	<td data-order="{{.DT_UPLOAD}}">{{.DT_UPLOAD}}</td>
 	<td>{{.NUM_VIEWS}}</td>
-	<td data-order="{{.NUM_COMMENTS}}"><a href="https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSSLIDE-{{.DOC_ID}}&TITLE={{.TITLE}}" target="swn">{{.NUM_COMMENTS}}</a></td>
+	<td data-order="{{.NUM_COMMENTS}}"><a href="https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSSLIDE-{{.DOC_ID}}&TITLE={{.TITLE}}" target="swn">{{.NUM_COMMENTS}}</a></td>
 	</tr>
 {{end}}
 {{end}}
 {{end}}
 `
- 
+
 /* 	<th scope="col">IMAGE</th>
 	<th scope="col">TITLE/DESC</th>
 	<th scope="col">USERS</th>
 	<th scope="col">COMMENTS</th>
 	<th scope="col">ACTIVITY</th>
 	<th scope="col">LAST_UPDATE</th> */
- 
+
 //D0042
 var recentDiscussions = template.Must(template.New("recentDiscussions").Parse(recentDiscussionsRec))
  
@@ -55126,16 +55125,16 @@ const articlesTrendingRec = `
 {{if eq .FL_SHARED "Y"}}
 {{if ne .DOC_STAT "Personal"}}
 	<tr>
-	<td><a href="https://sample-project.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
+	<td><a href="https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
 	<img src="{{.TAGS}}" height="100" width="100"></img></a></td>
 	<td data-order="{{.TITLE}}">
-		<a href="https://sample-project.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
+		<a href="https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
 	</td>
 	<td>{{.DESC}} [TDSARTL-{{.DOC_ID}}]</td>
 	<td>{{.AUTHOR}}</td>
 	<td class="id">{{.DOC_ID}}</td>
 	<td>{{.NUM_VIEWS}}</td>
-	<td data-order="{{.NUM_COMMENTS}}"><a href="https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSARTL-{{.DOC_ID}}&TITLE={{.TITLE}}" target="atr">{{.NUM_COMMENTS}}</a></td>
+	<td data-order="{{.NUM_COMMENTS}}"><a href="https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSARTL-{{.DOC_ID}}&TITLE={{.TITLE}}" target="atr">{{.NUM_COMMENTS}}</a></td>
 	</tr>
 {{end}}
 {{end}}
@@ -55149,16 +55148,16 @@ const articlesWhatsNewRec = `
 {{if eq .FL_SHARED "Y"}}
 {{if ne .DOC_STAT "Personal"}}
 	<tr>
-	<td><a href="https://sample-project.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
+	<td><a href="https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">
 	<img src="{{.TAGS}}" height="100" width="100"></img></a></td>
 	<td data-order="{{.TITLE}}">
-		<a href="https://sample-project.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
+		<a href="https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&TITLE={{.TITLE}}&DOC_ID={{.DOC_ID}}&BLOB_KEY={{.BLOB_URL}}&SID=TDSARTL-{{.DOC_ID}}&CATEGORY={{.CATEGORY}}&MUSIC_ID={{.MUSIC_ID}}&FL_COUNTRY_SPECIFIC={{.FL_COUNTRY_SPECIFIC}}">{{.TITLE}}</a><br>
 	</td>
 	<td>{{.DESC}}</td>
 	<td>{{.AUTHOR}}</td>
 	<td data-order="{{.DT_UPLOAD}}">{{.DT_UPLOAD}}</td>
 	<td>{{.NUM_VIEWS}}</td>
-	<td data-order="{{.NUM_COMMENTS}}"><a href="https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSARTL-{{.DOC_ID}}&TITLE={{.TITLE}}" target="awn" >{{.NUM_COMMENTS}}</a></td>
+	<td data-order="{{.NUM_COMMENTS}}"><a href="https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSARTL-{{.DOC_ID}}&TITLE={{.TITLE}}" target="awn" >{{.NUM_COMMENTS}}</a></td>
 	</tr>
 {{end}}
 {{end}}
@@ -56410,7 +56409,7 @@ func handleClickAds(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 	path := z.Path
- 
+
 	//rt := time.Now().Local()
 	//timestamp := fmt.Sprintf("%v", rt.Format("20060102150405"))
 	timestamp := getTimestamp()
@@ -56446,9 +56445,9 @@ func handleClickAds(w http.ResponseWriter, r *http.Request) {
 		SENDADSEVENT(c, ADSMAIL, SYSMSGS, uid)
 		
 		//convert @888@ to &
- 
+
 		URL_ADD_D := strings.Replace(URL_ADD, "@888@", "&", -1)
- 
+
 		if URL_ADD_D == "" {
 			URL_ADD_D = URL_ADD
 		}
@@ -56502,7 +56501,7 @@ func handleClickUrl(w http.ResponseWriter, r *http.Request) {
 	URL_TYP := r.FormValue("URL_TYP")
 	DISP_TYP := r.FormValue("DISP_TYP")
 	//REC_TYPE := "NEW"
- 
+
 	if iconID == "" ||  URL_ADD == "" {
 		return
 	}
@@ -56521,7 +56520,7 @@ func handleClickUrl(w http.ResponseWriter, r *http.Request) {
 			REC_TYPE: "NEW",
 			UID: uid,
 		}
- 
+
 		//ukey := fmt.Sprintf("%d.%s.%d", ICON_ID, p.REC_TYPE, currTimestamp)
 		urlKey := fmt.Sprintf("%s.%s.%d.%s", p.UID, p.REC_TYPE, p.ICON_ID, timestamp)
 		key := datastore.NewKey(c, "TDSURLC", urlKey, 0, nil)
@@ -56529,16 +56528,16 @@ func handleClickUrl(w http.ResponseWriter, r *http.Request) {
 			 panic(err)
 		}
 		//c.Errorf("[S0538]")
- 
+
 		//notify all users of this event via channels
 		//msgDtl3 := fmt.Sprintf("UID:%v has visited website. LINK: %v", uid, URL_ADD)
-		shareMe := fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", ICON_NAME, ShortenUrl(w,r,URL_ADD), ICON_NAME)
+		shareMe := fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", ICON_NAME, ShortenUrl(w,r,URL_ADD), ICON_NAME)
 		msgDtl3 := fmt.Sprintf("UID:%v has visited <a href=\"%v\">%v</a> %v LINK: %v from %v", uid, URL_ADD, ICON_NAME, shareMe, URL_ADD, uReferer)
 		msgDtl3b := fmt.Sprintf("UID:%v has visited [%v] [%v] LINK: [%v]", uid, URL_ADD, ICON_NAME, URL_ADD)
 		data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "WEBSITE", msgDtl3b)
 		ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")
 		sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,"/click-url",""),"")
- 
+
 		
 		http.Redirect(w, r, URL_ADD, http.StatusFound)
 		return
@@ -57414,7 +57413,7 @@ func getTimestamp() string {
 	timestamp := fmt.Sprintf("%v", rt.Format("20060102150405"))
 	return timestamp
 }
- 
+
 //gets current year w/ format 2006
 func getYear() string {
 	rt := time.Now().Local()
@@ -57517,12 +57516,12 @@ func TASK_MEMCACHER_adslotsProcessor(w http.ResponseWriter, r *http.Request) {
 	//run only if there is someone online
 	fmt.Fprintf(w, "<iframe src=\"https://freesecure.timeanddate.com/clock/i5jccu94/fs48/tcf90/pc9f0/ftbi/th2\" width=\"200\" height=\"100\" scrolling=\"no\"></iframe>")
 	fmt.Fprintf(w, "<iframe src=\"https://oras.pagasa.dost.gov.ph/widget.shtml\" width=300 height=100 scrolling=no></iframe></div>")
- 
+
 	var buffer bytes.Buffer
 	//deskName := fmt.Sprintf("desktop%d", i)
 	cKey := fmt.Sprintf("TASK_MEMCACHER_adslotsProcessor_AdsID")
 	fmt.Fprintf(w, "<h1>***************************************</h1>")
- 
+
 	rt := time.Now().Local()
 	//current time
 	//timestamp := fmt.Sprintf("%v", rt.Format("20060102150405"))
@@ -57549,7 +57548,7 @@ func TASK_MEMCACHER_adslotsProcessor(w http.ResponseWriter, r *http.Request) {
 		checkError(w,r,err,"CHK_OQ")
 		 //panic(err)
 	  }
- 
+
 	//update overquota flag
 	//--------------------
 	cKey2 := "IS_OVER_QUOTA"
@@ -57560,7 +57559,7 @@ func TASK_MEMCACHER_adslotsProcessor(w http.ResponseWriter, r *http.Request) {
 	}
 	//FL_FOUND_SLOT := false
 	for _, p := range adts{
- 
+
 		//if p.ADS_TIME_SLOT != "" && p.CATEGORY == deskName {
 		if p.ADS_TIME_SLOT != "" {
 			//FL_FOUND_SLOT = true
@@ -57576,7 +57575,7 @@ func TASK_MEMCACHER_adslotsProcessor(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	for _, p := range adts{
- 
+
 		//if p.ADS_TIME_SLOT != "" && p.CATEGORY == deskName {
 		if p.ADS_TIME_SLOT != "" {			
 			//FL_FOUND_SLOT = true
@@ -57646,20 +57645,20 @@ func TASK_MEMCACHER_adslotsProcessor(w http.ResponseWriter, r *http.Request) {
 		}
 			
 	}
- 
+
 }
  
 var userAccessTemplateMobileRootSearch = template.Must(template.New("userAccessTemplateMobileRootSearch").Parse(`
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Search::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Search::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
     <!--[if lte IE 8]>
@@ -57724,13 +57723,13 @@ var userAccessTemplateMobileRootAll = template.Must(template.New("userAccessTemp
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />   	
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
     <!--[if lte IE 8]>
@@ -57800,13 +57799,13 @@ var userAccessTemplateMobileDesktop0 = template.Must(template.New("userAccessTem
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Desktop0::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Desktop0::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." /> 	
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
     <!--[if lte IE 8]>
@@ -57866,12 +57865,12 @@ var userAccessTemplateDesktop0Head1 = template.Must(template.New("userAccessTemp
 <!DOCTYPE HTML>
 <html manifest="/cache?q=desktop0&uid={{.}}" lang="en-US" class="no-js" >
   <head>
-    <title>Desktop0::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Desktop0::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
     <meta name="author" content="ULAPPH Cloud Desktop" />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/> 	
 `))
@@ -57881,11 +57880,11 @@ var userAccessTemplateDesktopNHead1 = template.Must(template.New("userAccessTemp
 <!DOCTYPE HTML>
 <html manifest="/cache?q=desktopN&d={{.}}" lang="en-US" class="no-js" >
   <head>
-    <title>Desktop0::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Desktop0::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/> 	
@@ -57991,11 +57990,11 @@ var userAccessTemplateDesktop0Part1 = template.Must(template.New("userAccessTemp
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Desktop0::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Desktop0::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -58006,11 +58005,11 @@ var userAccessTemplateDesktop0Part1a = template.Must(template.New("userAccessTem
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Desktop0::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Desktop0::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -58309,11 +58308,11 @@ var htmlHeaderModal = template.Must(template.New("htmlHeaderModal").Parse(`
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -58341,11 +58340,11 @@ var htmlWidgetWeather = template.Must(template.New("htmlWidgetWeather").Parse(`
 var mobileControl = template.Must(template.New("mobileControl").Parse(`
 <html>
 <head>
-    <title>MC::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>MC::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -58474,11 +58473,11 @@ var htmlHeaderModalProfile = template.Must(template.New("htmlHeaderModalProfile"
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Profile::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Profile::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -58533,11 +58532,11 @@ var htmlEditorHeader = template.Must(template.New("htmlEditorHeader").Parse(`
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Editor::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Editor::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -59020,11 +59019,11 @@ var htmlEditorHeaderReader = template.Must(template.New("htmlEditorHeaderReader"
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Editor::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Editor::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -59394,11 +59393,11 @@ var htmlHeaderModalAds = template.Must(template.New("htmlHeaderModalAds").Parse(
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Ads::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Ads::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -59417,11 +59416,11 @@ var htmlHeaderAdmin = template.Must(template.New("htmlHeaderAdmin").Parse(`
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Admin::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Admin::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -59446,11 +59445,11 @@ var htmlHeaderSearchGlow = template.Must(template.New("htmlHeaderSearchGlow").Pa
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Search::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Search::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -59467,11 +59466,11 @@ var htmlHeaderFB = template.Must(template.New("htmlHeaderFB").Parse(`
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
   </head>
@@ -59492,7 +59491,7 @@ var htmlQuickSearchTool = template.Must(template.New("htmlQuickSearchTool").Pars
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quick Launch::- sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+<title>Quick Launch::- ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" type="text/css" media="screen,projection" href="/css/mobiSearch.css" />
 <link rel="stylesheet" media="screen,projection,tv" href="/css/search_glowing.css"/>
@@ -59634,7 +59633,7 @@ var htmlBodySearchGlowSelf = template.Must(template.New("htmlBodySearchGlowSelf"
 		</form>	
 	</section>
 `))
- 
+
 //D0042
 var htmlBodySearchGlowExt = template.Must(template.New("htmlBodySearchGlowExt").Parse(`
 	<section class="webdesigntuts-workshop">
@@ -59753,7 +59752,7 @@ var htmlBodySearchGoogle = template.Must(template.New("htmlBodySearchGoogle").Pa
 		<input type="submit" name="submit" value="Search Google"/>
 	</form>
 `))
- 
+
 var htmlBodySearchWikipedia = template.Must(template.New("htmlBodySearchGoogle").Parse(`
 	<form action="/search" method="GET" target="qv3">
 		<input type="hidden" name="f" value="EXT-WIKIPEDIA"/>
@@ -59833,11 +59832,11 @@ var htmlHeaderGB = template.Must(template.New("htmlHeaderGB").Parse(`
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Guestbook::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Guestbook::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -59878,11 +59877,11 @@ var htmlHeaderGB = template.Must(template.New("htmlHeaderGB").Parse(`
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Social::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Social::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -59923,11 +59922,11 @@ var htmlHeaderGBSocial = template.Must(template.New("htmlHeaderGBSocial").Parse(
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Discussion::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Discussion::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
 	<script src="/lib/js/commento/commento.js"></script>
@@ -59938,15 +59937,15 @@ var htmlHeaderGBSocial = template.Must(template.New("htmlHeaderGBSocial").Parse(
         display: flex;
         justify-content: center;
     }
- 
+
     .content {
         width: 65%;
     }
- 
+
     h3 {
         text-align: center;
     }
- 
+
     @media screen and (max-width: 1024px) {
         .content {
             width: 90%;
@@ -59996,12 +59995,12 @@ var htmlHeaderGBSocial = template.Must(template.New("htmlHeaderGBSocial").Parse(
 		console.log(document.getElementById("latlon").value);
 		return;
 	};
- 
+
 	function error(msg) {
 		console.log("Geo location not granted by user!");
 		return;
 	};
- 
+
 	</script>
 </html>
 `))
@@ -60010,11 +60009,11 @@ var htmlHeaderGBChannel = template.Must(template.New("htmlHeaderGBChannel").Pars
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Guestbook::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Guestbook::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -60073,11 +60072,11 @@ var htmlHeaderModalRefresh = template.Must(template.New("htmlHeaderModalRefresh"
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
 	<meta http-equiv="refresh" content="{{.}}" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
@@ -60097,11 +60096,11 @@ var htmlHeaderModalRefreshNo = template.Must(template.New("htmlHeaderModalRefres
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -60119,11 +60118,11 @@ var htmlHeaderModalRefreshNoHome = template.Must(template.New("htmlHeaderModalRe
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -60148,11 +60147,11 @@ var htmlHeaderModalBlink = template.Must(template.New("htmlHeaderModalBlink").Pa
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
 	<meta http-equiv="refresh" content="{{.}}" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
@@ -60205,11 +60204,11 @@ var htmlHeaderModalBlinkColor = template.Must(template.New("htmlHeaderModalBlink
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
 	<meta http-equiv="refresh" content="{{.}}" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
@@ -60266,11 +60265,11 @@ const htmlHeaderGoogleMapsC = `
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Google Maps::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Google Maps::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
 	<meta http-equiv="refresh" content="{{.}}" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
@@ -60338,11 +60337,11 @@ var htmlHeaderModalBlinkColorLinkify = template.Must(template.New("htmlHeaderMod
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
 	<meta http-equiv="refresh" content="{{.}}" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
@@ -60472,7 +60471,7 @@ var textCSSBody = template.Must(template.New("textCSSBody").Parse(`
 <!doctype html>
 <html>
 	<head>
-		<title>Text Formatter::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+		<title>Text Formatter::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 		<link rel="shortcut icon" href="/img/favicon.ico"/>
 	</head>
 	<body>
@@ -60519,7 +60518,7 @@ var textCountdownGet = template.Must(template.New("textCountdownGet").Parse(`
 <!doctype html>
 <html>
 	<head>
-		<title>Countdown Timer::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+		<title>Countdown Timer::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 		<link rel="shortcut icon" href="/img/favicon.ico"/>
 	</head>
 	<body onload="addMinutes(0);">
@@ -60552,7 +60551,7 @@ var textCryptoBody = template.Must(template.New("textCryptoBody").Parse(`
 <!doctype html>
 <html>
 	<head>
-		<title>ULAPPH Encryption::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+		<title>ULAPPH Encryption::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 		<link rel="shortcut icon" href="/img/favicon.ico"/>
 	</head>
 	<body>
@@ -60579,14 +60578,14 @@ var textCryptoBody = template.Must(template.New("textCryptoBody").Parse(`
 	</body>
 </html>
 `))
- 
+
 var textTimelineBody = template.Must(template.New("textDrawBody").Parse(`
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>ULAPPH Timeline::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>ULAPPH Timeline::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta charset="utf-8">
-    <meta name="description"  content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description" content="TimelineJS Embed">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -60603,14 +60602,14 @@ var textTimelineBody = template.Must(template.New("textDrawBody").Parse(`
       	margin: 0px;
       }
       .tl-timeline {
- 
+      
       }
- 
+      
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML elements-->
     <!--if lt IE 9
     script(src='https://html5shim.googlecode.com/svn/trunk/html5.js')
- 
+    
     -->
   </head>
   <body>
@@ -60624,12 +60623,12 @@ var textTimelineBody = template.Must(template.New("textDrawBody").Parse(`
   </body>
 </html>
 `))
- 
+
 var textDrawBody = template.Must(template.New("textDrawBody").Parse(`
 <!doctype html>
 <html>
 	<head>
-	<title>ULAPPH Drawing::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+	<title>ULAPPH Drawing::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
     <link rel="stylesheet" href="/draw/better.css" type="text/css" />
     <link rel="stylesheet" href="/draw/pygments.css" type="text/css" />
@@ -60692,11 +60691,11 @@ var textToSpeechBody = template.Must(template.New("textToSpeechBody").Parse(`
 <!doctype html>
 <html>
 	<head>
-		<title>Text To Speech::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+		<title>Text To Speech::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<meta charset="UTF-8">
-		<meta name="description"                             content="ULAPPH Cloud Desktop - Sample Project" />
-		<meta name="keywords"                             content="Sample Project - Personal Cloud Desktop" />
+		<meta name="description"                            content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
+		<meta name="keywords"                            content="ULAPPH Cloud Desktop, OPO, Content Server" />
 		<meta name="author" content="Mike Melamed">
 		<meta name="copyright" content="eDeliverables Inc">
 		<link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -60796,7 +60795,7 @@ var textSemaphoreBody = template.Must(template.New("textSemaphoreBody").Parse(`
 <!doctype html>
 <html>
 	<head>
-		<title>SemaphoreSMS::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+		<title>SemaphoreSMS::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 		<link rel="shortcut icon" href="/img/favicon.ico"/>
 		<link rel="stylesheet" href="/css/chat-style.css">
 		<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
@@ -60830,7 +60829,7 @@ var textStartBody = template.Must(template.New("textStartBody").Parse(`
 <!doctype html>
 <html>
 	<head>
-		<title>Start Menu::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+		<title>Start Menu::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 		<link rel="shortcut icon" href="/img/favicon.ico"/>
 		<link rel="stylesheet" href="/css/chat-style.css">
 		<script type="text/javascript" src="/js/jquery-2.1.1.js"></script>
@@ -60882,7 +60881,7 @@ var playGoBody = template.Must(template.New("playGoBody").Parse(`
 <!doctype html>
 <html>
 	<head>
-		<title>ULAPPH Go Playground::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+		<title>ULAPPH Go Playground::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 		<link rel="shortcut icon" href="/img/favicon.ico"/>
 		<link rel="stylesheet" href="/css/style-play.css">
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -61004,8 +61003,8 @@ var htmlToolsConnection = template.Must(template.New("htmlToolsConnection").Pars
 <head>
 <meta charset=utf-8>
 <meta name="viewport" content="width=620">
-<title>Monitor::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+<title>Monitor::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <link rel="stylesheet" href="/css/html5demos.css">
 <script src="/js/h5utils.js"></script></head>
@@ -61040,7 +61039,7 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>WebcamJS Test Page - Sample Project - ULAPPH Cloud Desktop</title>
+	<title>WebcamJS Test Page - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<style type="text/css">
 		body { font-family: Helvetica, sans-serif; }
@@ -61104,7 +61103,7 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>WebcamJS Test Page - Sample Project - ULAPPH Cloud Desktop</title>
+	<title>WebcamJS Test Page - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
 	<style type="text/css">
 		body { font-family: Helvetica, sans-serif; }
@@ -61181,11 +61180,11 @@ var userAccessTemplateDesktopNPart1 = template.Must(template.New("userAccessTemp
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Desktop0::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Desktop0::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -61197,11 +61196,11 @@ var userAccessTemplateDesktopNPart1a = template.Must(template.New("userAccessTem
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>Desktop0::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>Desktop0::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -61211,11 +61210,11 @@ var userAccessTemplateUWMPart1 = template.Must(template.New("userAccessTemplateU
 <!DOCTYPE HTML>
 <html lang="en-US" class="no-js">
   <head>
-    <title>UWM::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
+    <title>UWM::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+    <meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
     <meta name="copyright" content="Copyright 2014-2017 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords"                                       content="Sample Project - Personal Cloud Desktop" />
+    <meta name="keywords"                                      content="ULAPPH Cloud Desktop, OPO, Content Server" />
     <meta name="author" content="ULAPPH Cloud Desktop" />
     <link rel="os-touch-icon" href="images/custom_icon.ico"/>
     <link rel="shortcut icon" href="/img/favicon.ico"/>
@@ -61289,6 +61288,7 @@ var userAccessTemplateDesktopNPart3jswm = template.Must(template.New("userAccess
 	<script type="text/javascript" src="/js/jswm-config.js"></script>
 	<script src="/js/h5utils.js"></script>
 	<script src="/js/ping.min.js"></script>
+	<script src="/lib/js/fingerprintjs2/fingerprint2.js"></script>
 	<script type="text/javascript" charset="utf-8">
 		window.onbeforeunload = function (e) {
 			e = e || window.event;
@@ -61691,7 +61691,7 @@ var mobileBodyTemplateContentB = template.Must(template.New("mobileBodyTemplateC
 	<input type="hidden" id="ringtone" value="{{.STR_FILLER3}}">
  
     <div class="hero-cta">
-      <pre class="code code-wrap" data-language="html"><a href="/"><code>&quot;https://sample-project.appspot.com&quot;</code></a></pre>
+      <pre class="code code-wrap" data-language="html"><a href="/"><code>&quot;https://ulapph-public-1.appspot.com&quot;</code></a></pre>
  
         <p>
             <a class="button-cta pure-button" href="#invite">Invite your friend!</a>
@@ -62006,7 +62006,7 @@ var mobileBodyTemplateContent0b = template.Must(template.New("mobileBodyTemplate
     </div>
  
     <div class="hero-cta">
-      <pre class="code code-wrap" data-language="html"><a href="/"><code>&quot;https://sample-project.appspot.com&quot;</code></a></pre>
+      <pre class="code code-wrap" data-language="html"><a href="/"><code>&quot;https://ulapph-public-1.appspot.com&quot;</code></a></pre>
  
         <p>
             <a class="button-cta pure-button" href="#invite">Invite your friend!</a>
@@ -62091,7 +62091,7 @@ var mobileBodyTemplateContent120b = template.Must(template.New("mobileBodyTempla
     </div>
  
     <div class="hero-cta">
-      <pre class="code code-wrap" data-language="html"><a href="/"><code>&quot;https://sample-project.appspot.com&quot;</code></a></pre>
+      <pre class="code code-wrap" data-language="html"><a href="/"><code>&quot;https://ulapph-public-1.appspot.com&quot;</code></a></pre>
  
         <p>
             <a class="button-cta pure-button" href="#invite">Invite your friend!</a>
@@ -62808,8 +62808,8 @@ var desktopXBody2TemplateNoSticky = template.Must(template.New("desktopXBody2Tem
 var desktopBodyUnameTemplate = template.Must(template.New("desktopBodyUnameTemplate").Parse(`
          <b>{{.}}</b></li>
 `))
- 
-//D0053
+
+//D0053 
 //
 var desktopBodyTooltipTemplate = template.Must(template.New("desktopBodyTooltipTemplate").Parse(`
 <input type="hidden" value="'/tools?FUNC=WIDGET&t=ADDUWM&n={{.STR_FILLER5}}&d={{.STR_FILLER4}}({{.STR_FILLER5}})', 500, 300, 'left', 'top', {title: 'UWM Settings', icon: '/img/jswm-web.png'}" size="60" id="editUwm" />
@@ -63021,7 +63021,7 @@ var desktopBody3TemplateRootAd3Mobile = template.Must(template.New("desktopBody3
  
  
 //firebase
- 
+
 var desktopBodyPTemplate = template.Must(template.New("desktopBodyPTemplate").Parse(`
         <li id="Desktop">
 		 <input type="hidden" id="desktop" value="{{.STR_FILLER1}}">
@@ -63938,7 +63938,7 @@ var profileEditTemplate = template.Must(template.New("profileEditTemplate").Pars
 <div class="toggle8">
 		<h3>Ringtone:</h3>
  
-		<div class="info2">Ringtone: <textarea rows="4" cols="50" name="RINGTONE" maxlength="500">{{.RINGTONE}}</textarea>Sample: https://sample-project.appspot.com/audio/newmsg.ogg<br></div>
+		<div class="info2">Ringtone: <textarea rows="4" cols="50" name="RINGTONE" maxlength="500">{{.RINGTONE}}</textarea>Sample: https://ulapph-public-1.appspot.com/audio/newmsg.ogg<br></div>
 		<div class="info2">Play Ringtone: <audio controls>
 									<source src="{{.RINGTONE}}" type="audio/wav">
 									<source src="{{.RINGTONE}}" type="audio/mp3">
@@ -64038,7 +64038,7 @@ var profileEditTemplateNew2 = template.Must(template.New("profileEditTemplateNew
 <div class="toggle8">
 		<h3>Ringtone:</h3>
  
-		<div class="info2">Ringtone: <input type="text" name="RINGTONE" value="" maxlength="500"/>Sample: https://sample-project.appspot.com/audio/newmsg.ogg <br></div>
+		<div class="info2">Ringtone: <input type="text" name="RINGTONE" value="" maxlength="500"/>Sample: https://ulapph-public-1.appspot.com/audio/newmsg.ogg <br></div>
 </div>
 </div>
 		<input type="hidden" name="EditPeopleFunc" value="SaveProfile"/>
@@ -64153,6 +64153,7 @@ var desktopBodyTabzillaTemplatejswm = template.Must(template.New("desktopBodyTab
 	var windowManager = new JSWM();
 </script>
 <script src="/js/mouse-clock.js"></script>
+<script src="/js/get-fingerprint.js"></script>
 `))
  
  
@@ -64431,8 +64432,8 @@ var multiUploaderImagesHdr = template.Must(template.New("multiUploaderImagesHdr"
  
 <meta charset="utf-8">
  
-<title>Dropzone::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+<title>Dropzone::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <script src="/js/dropzone.js"></script>
 <link rel="stylesheet" href="/css/dropzone.css">
@@ -64476,8 +64477,8 @@ var multiUploaderImagesHdr2 = template.Must(template.New("multiUploaderImagesHdr
  
 <meta charset="utf-8">
  
-<title>Dropzone::sample-project.appspot.com - Sample Project - ULAPPH Cloud Desktop</title>
-<meta name="description"                                       content="ULAPPH Cloud Desktop - Sample Project" />
+<title>Dropzone::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+<meta name="description"                                      content="This is the OPO Server of the ULAPPH Cloud Desktop System." />
 <link rel="shortcut icon" href="/img/favicon.ico"/>
 <script src="/js/dropzone.js"></script>
 <link rel="stylesheet" href="/css/dropzone.css">
@@ -64981,8 +64982,8 @@ func taskCleanupInactiveUsers(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "TDSLOGS TABLE CLEAN-UP ok...<br>")	
 	
 }
- 
-//checks system quota
+
+//checks system quota 
 func checkQuotaSystem(w http.ResponseWriter, r *http.Request) (FL_PROC_OK bool) {
 	//c := appengine.NewContext(r)
 	
@@ -65000,8 +65001,8 @@ func checkQuotaSystem(w http.ResponseWriter, r *http.Request) (FL_PROC_OK bool) 
 	}
 	return FL_PROC_OK
 }
- 
-//checks slides quota
+
+//checks slides quota 
 func checkQuotaSlides(w http.ResponseWriter, r *http.Request, uid string) {
 	//c := appengine.NewContext(r)
 		
@@ -65046,8 +65047,8 @@ func checkQuotaSlides(w http.ResponseWriter, r *http.Request, uid string) {
 	}
 	
 }
- 
-//check articles quota
+
+//check articles quota 
 func checkQuotaArticles(w http.ResponseWriter, r *http.Request, uid string) {
 	//c := appengine.NewContext(r)
 		
@@ -65090,8 +65091,8 @@ func checkQuotaArticles(w http.ResponseWriter, r *http.Request, uid string) {
 	}
 	
 }
- 
-//checks media quota
+
+//checks media quota 
 func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
 	//c := appengine.NewContext(r)
 		
@@ -65135,8 +65136,8 @@ func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
 	}
 	
 }
- 
-//counts data for slides, articles or media
+
+//counts data for slides, articles or media 
 func countData(w http.ResponseWriter, r *http.Request, TARGET, UID string) (CURR_COUNT int) {
  
 	c := appengine.NewContext(r)
@@ -65163,8 +65164,8 @@ func countData(w http.ResponseWriter, r *http.Request, TARGET, UID string) (CURR
 	}
 	return CURR_COUNT
 }
- 
-//checks country which originated the http request
+
+//checks country which originated the http request 
 //this is not accurate as some browsers can appear to come from different country
 func countryChecker(w http.ResponseWriter, r *http.Request) (FL_PROC_OK bool){
 	c := appengine.NewContext(r)
@@ -65298,7 +65299,7 @@ func countryChecker(w http.ResponseWriter, r *http.Request) (FL_PROC_OK bool){
 	
 	return FL_PROC_OK
 }
- 
+
 //checks if inbound IP address is allowed
 //it calls the sites server
 /* func isInBoundAppidAllowed(w http.ResponseWriter, r *http.Request, appId string) (res string) {
@@ -65316,13 +65317,13 @@ func countryChecker(w http.ResponseWriter, r *http.Request) (FL_PROC_OK bool){
 	return res
 	
 } */
- 
+
 //checks if inbound request is vald
 func checkInBoundAppidAllowed(w http.ResponseWriter, r *http.Request) bool {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
 	h := r.Header
- 
+
 	if u != nil {
 		//uid = uid
 		_, uid := checkSession(w,r)
@@ -65334,7 +65335,7 @@ func checkInBoundAppidAllowed(w http.ResponseWriter, r *http.Request) bool {
 	//if this is a call from another appengine-id
 	FL_PROC_OK := true
 	xInAppid := h.Get("X-Appengine-Inbound-Appid")
- 
+
 	//if isInBoundAppidAllowed(w,r,xInAppid) != "Y" || xInAppid == "" {
 	//bug!
 	if xInAppid == "" {
@@ -65364,7 +65365,7 @@ func checkInBoundAppidAllowed(w http.ResponseWriter, r *http.Request) bool {
 	
 }
 	
-//gets map link of the access
+//gets map link of the access 
 func getMapLink(w http.ResponseWriter, r *http.Request, USER_TYPE, TARGET_URL, SID string) (mapURL string) {
 	//c := appengine.NewContext(r)
 	
@@ -65380,11 +65381,11 @@ func getMapLink(w http.ResponseWriter, r *http.Request, USER_TYPE, TARGET_URL, S
 	}
 	return mapURL
 }
- 
-//checks the referrer of the request
+
+//checks the referrer of the request 
 func checkReferrer(w http.ResponseWriter, r *http.Request) {
 	uReferer := r.Referer()
- 
+
 	if SYS_CHECK_REFERER == true {
 	
 		myRefGenG  := strings.HasPrefix(uReferer, domRefMatchG)
@@ -65395,7 +65396,7 @@ func checkReferrer(w http.ResponseWriter, r *http.Request) {
 		
 		if (myRefGenG == false && myRefGenS == false && myRefGoogleG == false && myRefGoogleS == false && myRefOauth == false)  {
 			
-			msgDtl := fmt.Sprintf("[U00098] ERROR: Apologies, this URL/page cannot be accessed directly. It has to be referred/accessed from sample-project.appspot.com. Referer: %v", uReferer)
+			msgDtl := fmt.Sprintf("[U00098] ERROR: Apologies, this URL/page cannot be accessed directly. It has to be referred/accessed from ulapph-public-1.appspot.com. Referer: %v", uReferer)
 			msgTyp := "error"
 			msgURL := "/?q=home"
 			action := "U00098"
@@ -65407,8 +65408,8 @@ func checkReferrer(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
-//checks if okay to run or not
+
+//checks if okay to run or not 
 //checks if user is online
 func checkIfOkToRun(w http.ResponseWriter, r *http.Request) (IS_OK_TO_RUN bool) {
 	c := appengine.NewContext(r)
@@ -65759,7 +65760,7 @@ func handleServe(w http.ResponseWriter, r *http.Request) {
 			
 			//clear icons cache
 			_ = memcache.Delete(c, "ALL_ICONS")
- 
+
 			//clear all icons cache
 			_ = memcache.Delete(c, "ICONS_LIST_JSON")
 			
@@ -65779,7 +65780,7 @@ func handleServe(w http.ResponseWriter, r *http.Request) {
 		laterSettingsIcons.Call(c, "")
 		return
 }
- 
+
 //edwinxxx
 //saves links to icons db
 func addLinkToIcons(w http.ResponseWriter, r *http.Request, tName, tUrl, tDesk string) {
@@ -65824,7 +65825,7 @@ func addLinkToIcons(w http.ResponseWriter, r *http.Request, tName, tUrl, tDesk s
 	
 	q := datastore.NewQuery("TDSICONS").Order("-ICON_ID").Limit(1)
 	//c.Errorf("[S0582]")
- 
+
 	icons := make([]TDSICONS, 0, 1)
 	if _, err := q.GetAll(c, &icons); err != nil {
 		 panic(err)
@@ -65847,10 +65848,10 @@ func addLinkToIcons(w http.ResponseWriter, r *http.Request, tName, tUrl, tDesk s
 			 panic(err)
 		}
 		//c.Errorf("[S0583]")
- 
+
 		thisIdxKey := fmt.Sprintf("TDSICONS-%d", thisID)
 		tstamp := getTimestamp()
- 
+
 		slideIdx := &IDX_TDSICONS{
 			DOC_KEY: 			thisIdxKey,
 			SEARCH_TYPE: 		"ICONS",
@@ -65875,15 +65876,15 @@ func addLinkToIcons(w http.ResponseWriter, r *http.Request, tName, tUrl, tDesk s
 			DATE_ADDED: 		tstamp,
 			DATE_UPDATED: 		tstamp,
 		}
- 
+
 		putSearchIndexI(w,r,"IDX_TDSICONS",thisIdxKey,slideIdx)
 		
 		//clear icons cache
 		_ = memcache.Delete(c, "ALL_ICONS")
- 
+
 		//clear all icons cache
 		_ = memcache.Delete(c, "ICONS_LIST_JSON")
- 
+
 		break
 	}
 	
@@ -65896,7 +65897,7 @@ func addLinkToIcons(w http.ResponseWriter, r *http.Request, tName, tUrl, tDesk s
 	laterSettingsIcons.Call(c, "")
 	return
 }
- 
+
 //handles newly uploaded blobstore-profile pic
 func handleServePeople(w http.ResponseWriter, r *http.Request) {
 	
@@ -66020,10 +66021,10 @@ func handleServePeople(w http.ResponseWriter, r *http.Request) {
 				return
 		}
 }
- 
-//handles newly uploaded blobs
+
+//handles newly uploaded blobs 
 func handleUpload(w http.ResponseWriter, r *http.Request) {
- 
+
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
 	
         c := appengine.NewContext(r)
@@ -66050,8 +66051,8 @@ func handleUpload(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, reqStr, http.StatusFound)
 		return
 }
- 
-//handles newly uploaded people pics
+
+//handles newly uploaded people pics 
 func handleUploadPeople(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
 	
@@ -66118,7 +66119,7 @@ func handleServeAds(w http.ResponseWriter, r *http.Request) {
 	if DESKTOP == "" {
 		DESKTOP = "desktop0"
 	}
- 
+
 	tstamp := getTimestamp()
 	
 	q := datastore.NewQuery("TDSADS").Order("-ADS_ID").Limit(1)
@@ -66165,8 +66166,8 @@ func handleServeAds(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, redURL, http.StatusFound)
 	return
 }
- 
-//handles newly uploaded slides
+
+//handles newly uploaded slides 
 func handleServeSlides(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
@@ -66212,7 +66213,7 @@ func handleServeSlides(w http.ResponseWriter, r *http.Request) {
 		if FL_SHARED == "" {
 			FL_SHARED = "N"
 		}
- 
+
 		tstamp := getTimestamp()
         //tyear := t.Format("2006")	
 		tyear := getYear()
@@ -66322,11 +66323,11 @@ func handleServeSlides(w http.ResponseWriter, r *http.Request) {
 			putBytesToMemcacheWithExp(w,r,SLIDES_CACHE_KEY,buf.Bytes(),MC_ADS_EXPIRES_30_MIN)
  
 		}
- 
+
 		//insert slide into search idx
 		thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", thisID)
-		thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, CATEGORY, 0)
- 
+		thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, CATEGORY, 0)
+
 		blobChan := make(chan string)
 		go getBlobTextChan(w, r,blobChan, blobkey)
 		blobText := <- blobChan
@@ -66374,8 +66375,8 @@ func handleServeSlides(w http.ResponseWriter, r *http.Request) {
 		}
  
 }
- 
-//handles newly uploaded articles
+
+//handles newly uploaded articles 
 func handleServeArticles(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
@@ -66517,7 +66518,7 @@ func handleServeArticles(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, sysReq, http.StatusFound)
 			return
 		}
- 
+
 		ARTICLES_CACHE_KEY := ""
 		ARTICLES_CACHE_KEY = fmt.Sprintf("ARTICLES_CACHE_%v", blobkey)
 		if st != "r" {
@@ -66527,7 +66528,7 @@ func handleServeArticles(w http.ResponseWriter, r *http.Request) {
 		
 		//insert article into search idx
 		thisIdxKey := fmt.Sprintf("TDSARTL-%d", thisID)
-		thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, CATEGORY, 0)
+		thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, CATEGORY, 0)
 		//blobText := getBlobText(w, r, blobkey)
 		blobChan := make(chan string)
 		go getBlobTextChan(w, r,blobChan, blobkey)
@@ -66564,7 +66565,7 @@ func handleServeArticles(w http.ResponseWriter, r *http.Request) {
 			DATE_ADDED: 		tstamp,
 			DATE_UPDATED: 		tstamp,
 		}
- 
+
 		putSearchIndexA(w,r,"IDX_TDSARTL",thisIdxKey,articleIdx)
 		
 		if GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER" {
@@ -66574,8 +66575,8 @@ func handleServeArticles(w http.ResponseWriter, r *http.Request) {
 		}
  
 }
- 
-//handles new uploaded media files
+
+//handles new uploaded media files 
 func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 	
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
@@ -66771,7 +66772,7 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 				PROP = "unknown"
 				DATA_TYPE = "unknown"
 		}
- 
+
 		DESC_R := r.FormValue("DESC")
 	    DESC_R2 := strings.Replace(DESC_R, "[", "", -1)
 		DESC := strings.Replace(DESC_R2, "]", "", -1)
@@ -66803,7 +66804,7 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		if DOC_STAT == "" {
 			DOC_STAT = "Personal"
 		}
- 
+
 		tstamp := getTimestamp()
 		tyear := getYear()
 		
@@ -66880,10 +66881,10 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
  
 			break
 		}
- 
+
 		//insert media into search idx
 		thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", thisID)
-		thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", thisID, thisURL)
+		thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", thisID, thisURL)
 		TITLE = strings.Replace(TITLE, "_", " ", -1)
 		DESC = strings.Replace(DESC, "_", " ", -1)
 		thisCont := ""
@@ -66994,8 +66995,8 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		}
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT")
- 
- 
+
+		//c.Infof("OPT: %v", OPT)
 		if OPT == "OpenScreenshots" {
 			w.WriteHeader(200)
 			w.Write([]byte(thisURL))
@@ -67006,8 +67007,8 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		return
  
 }
- 
-//gets the mimetype given a file extension
+
+//gets the mimetype given a file extension 
 func getMimeType(w http.ResponseWriter, r *http.Request, ext string) (F_MIME_TYPE, F_MIME_EXT string) {
 	c := appengine.NewContext(r)
 	extF := strings.Replace(ext, ".", "", -1)
@@ -67093,7 +67094,7 @@ func getMimeType(w http.ResponseWriter, r *http.Request, ext string) (F_MIME_TYP
 	
 }
  
-//handles ads uploads
+//handles ads uploads 
 func handleUploadAds(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
 	
@@ -67120,8 +67121,8 @@ func handleUploadAds(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, reqStr, http.StatusFound)
 		return
 }
- 
-//handles slides uploads
+
+//handles slides uploads 
 func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 	
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
@@ -67258,7 +67259,7 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
  
 					//update slide in existing search idx
 					thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", thisID)
-					thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
 					
 					//use go routine
 					//blobText = getBlobText(w, r, blobkey)
@@ -67393,7 +67394,7 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 					//t := time.Now().Local()
 					//tstamp := t.Format("20060102150405")
 					thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", thisID)
-					thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
 					//blobText := ""
 					//blobText = getBlobText(w, r, blobkey)
 					blobChan := make(chan string)
@@ -67600,13 +67601,13 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 			//update slide in existing search idx
 			tstamp := getTimestamp()
 			thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", thisID)
-			thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, CATEGORY, MUSIC_ID)
+			thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", thisID, thisIdxKey, CATEGORY, MUSIC_ID)
 			//blobText := ""
 			//blobText = getBlobText(w, r, blobkey)
 			blobChan := make(chan string)
 			go getBlobTextChan(w, r,blobChan, blobkey)
 			blobText := <- blobChan
- 
+
 			if SYS_VER == 777 {
 				cStr := encrypter2(w,r,blobText,ENCRYPTION_KEY)
 				blobText = string(cStr)
@@ -67640,7 +67641,7 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 				//DATE_ADDED: 		tstamp,
 				DATE_UPDATED: 		tstamp,
 			}
- 
+
 			putSearchIndexS(w,r,"IDX_TDSSLIDE",thisIdxKey,slideIdx)					
 			sysReq := fmt.Sprintf("/admin-slides?FUNC_CODE=VIEW&DOC_ID=%d&TITLE=%v&BLOB_KEY=%v&CATEGORY=%v", DOC_ID, TITLE, blobkey, CATEGORY)	
 			http.Redirect(w, r, sysReq, http.StatusFound)
@@ -67669,8 +67670,8 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 }
- 
-//handles upload of articles
+
+//handles upload of articles 
 func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 	
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
@@ -67810,7 +67811,7 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 					
 					//update article in existing search idx
 					thisIdxKey := fmt.Sprintf("TDSARTL-%d", p.DOC_ID)
-					thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
 					//blobText := ""
 					//blobText = getBlobText(w, r, blobkey)
 					blobChan := make(chan string)
@@ -67942,7 +67943,7 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 					//t := time.Now().Local()
 					//tstamp := t.Format("20060102150405")
 					thisIdxKey := fmt.Sprintf("TDSARTL-%d", p.DOC_ID)
-					thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
 					blobChan := make(chan string)
 					go getBlobTextChan(w, r,blobChan, blobkey)
 					blobText := <- blobChan
@@ -68121,7 +68122,7 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 			//update article in existing search idx
 			tstamp := getTimestamp()
 			thisIdxKey := fmt.Sprintf("TDSARTL-%d", DOC_ID)
-			thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", DOC_ID, thisIdxKey, CATEGORY, MUSIC_ID)
+			thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", DOC_ID, thisIdxKey, CATEGORY, MUSIC_ID)
 			//blobText := ""
 			//blobText = getBlobText(w, r, blobkey)
 			blobChan := make(chan string)
@@ -68161,7 +68162,7 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 				//DATE_ADDED: 		tstamp,
 				DATE_UPDATED: 		tstamp,
 			}
- 
+
 			putSearchIndexA(w,r,"IDX_TDSARTL",thisIdxKey,articleIdx)			
 			sysReq := fmt.Sprintf("/admin-articles?FUNC_CODE=VIEW&DOC_ID=%d&TITLE=%v&BLOB_KEY=%v&CATEGORY=%v", DOC_ID, TITLE, blobkey, CATEGORY)	
 			http.Redirect(w, r, sysReq, http.StatusFound)
@@ -68184,8 +68185,8 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 }
- 
-//handles uploads of media
+
+//handles uploads of media 
 func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 	
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
@@ -68399,7 +68400,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					//tstamp := t.Format("20060102150405")
 					//insert media into search idx
 					thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
-					thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
+					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
 					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
 					DESC := strings.Replace(p.DESC, "_", " ", -1)
 					//thisCont := fmt.Sprintf("%v - %v", TITLE, DESC)
@@ -68609,7 +68610,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
  
 					putStrToMemcacheWithoutExp(w,r,cKey,"")
 					thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
-					thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
+					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
 					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
 					DESC := strings.Replace(p.DESC, "_", " ", -1)
 					//thisCont := fmt.Sprintf("%v - %v", TITLE, DESC)
@@ -68771,10 +68772,10 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 				
 				//delete old blob
 				blobstore.Delete(c, appengine.BlobKey(oldBlob))
- 
+
 				//insert media into search idx
 				thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
-				thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, thisURL)
+				thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, thisURL)
 				TITLE := strings.Replace(p.TITLE, "_", " ", -1)
 				DESC := strings.Replace(p.DESC, "_", " ", -1)
 				//thisCont := fmt.Sprintf("%v - %v", TITLE, DESC)
@@ -68820,7 +68821,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					DATE_ADDED: 		tstamp,
 					DATE_UPDATED: 		tstamp,
 				}
- 
+
 				putSearchIndexM(w,r,"IDX_TDSMEDIA",thisIdxKey,searchIdx)
 			}
  
@@ -68890,11 +68891,11 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 				
 				//delete old blob
 				blobstore.Delete(c, appengine.BlobKey(oldBlob))
- 
+
 				tstamp := getTimestamp()
 				//insert media into search idx
 				thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
-				thisIdxURL := fmt.Sprintf("https://sample-project.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, thisURL)
+				thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, thisURL)
 				thisCont := ""
 				if DATA_TYPE == "text" {
 					//thisCont = getBlobText(w, r, p.BLOB_KEY)
@@ -68924,7 +68925,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					DATE_ADDED: 		tstamp,
 					DATE_UPDATED: 		tstamp,
 				}
- 
+
 				putSearchIndexM(w,r,"IDX_TDSMEDIA",thisIdxKey,searchIdx)
 				
 				break
@@ -68950,7 +68951,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			FL_ADD_WP := pVals["FL_ADD_WP"]
 			DOC_STAT := pVals["DOC_STAT"]
 			EMBED := pVals["EMBED"]
- 
+
 			OPT := pVals["OPT"]
 			//DESKTOP := pVals["DESKTOP"]
 			bKey := string(file[0].BlobKey)
@@ -68959,8 +68960,8 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 	
 	}
 }
- 
-//common for serving errors
+
+//common for serving errors 
 func serveError(c appengine.Context, w http.ResponseWriter, err error) {
         w.WriteHeader(http.StatusInternalServerError)
         w.Header().Set("Content-Type", "text/plain")
@@ -68973,18 +68974,18 @@ func serveError(c appengine.Context, w http.ResponseWriter, err error) {
 func playable(c Code) bool {
 	return PlayEnabled && c.Play
 }
- 
+
 //gets available themes
 func getAvailThemes(w http.ResponseWriter, r *http.Request, SID, con_url string) {
 	c := appengine.NewContext(r)
- 
+	//c.Infof("getAvailThemes()")
 	cKey := "SYSTEM_AVAIL_THEMES"
 	cKey2 := fmt.Sprintf("SYSTEM_AVAIL_THEMES_CACHE_%v", SID)
 	cKey3 := "SYSTEM_AVAIL_THEMES_CACHE_GEN"
 	
 	FL_WIDGET := false
 	if SID == "" && con_url == "" {
- 
+		//c.Infof("getBytMemcacheValueByKey(cKey3)")
 		tc := getBytMemcacheValueByKey(w,r,cKey3)
 		if tc != nil {
 			w.Write(tc)
@@ -68994,17 +68995,17 @@ func getAvailThemes(w http.ResponseWriter, r *http.Request, SID, con_url string)
 		FL_WIDGET = true
 		//return
 	}
- 
+	//c.Infof("getBytMemcacheValueByKey(cKey3)")
 	tc := getBytMemcacheValueByKey(w,r,cKey3)
 	if tc != nil && FL_WIDGET == false {
 		w.Write(tc)
 		return
 	}
- 
+	//c.Infof("getBytMemcacheValueByKey(cKey)")
 	tlist := getStrMemcacheValueByKey(w,r,cKey)
 	
 	if tlist == "" {
- 
+		//c.Infof("datastore.NewKey(tlist)")
 		key := datastore.NewKey(c, "TDSCNFG", cKey, 0, nil)
 		//get current config
 		q := datastore.NewQuery("TDSCNFG").Filter("__key__ =", key)
@@ -69015,7 +69016,7 @@ func getAvailThemes(w http.ResponseWriter, r *http.Request, SID, con_url string)
 		}
 		for _, x := range config {
 			tlist = x.TXT_VAL
- 
+			//c.Infof("putStrToMemcacheWithoutExp(tlist)")
 			putStrToMemcacheWithoutExp(w,r,cKey,tlist)
 			break
 		}
@@ -69024,7 +69025,7 @@ func getAvailThemes(w http.ResponseWriter, r *http.Request, SID, con_url string)
 	//display simple list of themes
 	SPL := strings.Split(tlist, ",")
 	if len(SPL) > 0 {
- 
+		//c.Infof("display simple list of themes")
 		var buf bytes.Buffer
 		if FL_WIDGET == false {
 			buf.WriteString("<h1>Select your theme...<h1>")
@@ -69058,8 +69059,8 @@ func getAvailThemes(w http.ResponseWriter, r *http.Request, SID, con_url string)
 	}
 	
 }
- 
-//gets slides template
+
+//gets slides template 
 func getSlidesTemplate(w http.ResponseWriter, r *http.Request) string {
 	c := appengine.NewContext(r)
  
@@ -69111,8 +69112,8 @@ func getSlidesTemplate(w http.ResponseWriter, r *http.Request) string {
  
 	return templ
 }
- 
-//gets article template
+
+//gets article template 
 func getArticlesTemplate(w http.ResponseWriter, r *http.Request) string {
 	c := appengine.NewContext(r)
  
@@ -69164,8 +69165,8 @@ func getArticlesTemplate(w http.ResponseWriter, r *http.Request) string {
  
 	return templ
 }
- 
-//parses a template
+
+//parses a template 
 func parsePresentTemplate(name string) *template.Template {
 	t := Template()
 	t = t.Funcs(template.FuncMap{"playable": playable})
@@ -69178,7 +69179,7 @@ func parsePresentTemplate(name string) *template.Template {
 	}
 	return t
 }
- 
+
 //parses a custom template
 func parseCustomTemplatePres(tempt string) *template.Template {
 	t := Template()
@@ -69192,19 +69193,19 @@ func parseCustomTemplatePres(tempt string) *template.Template {
 	}
 	return t
 }
- 
+
 //renders a custom template
 func renderCustomTemplates(w http.ResponseWriter, r *http.Request, mode, cKey, text, mid string) error {
 	c := appengine.NewContext(r)
 	
- 
+	//c.Infof("renderCustomTemplates")
 	tempt := ""
 	switch {
 		case mode == "gotId" && mid != "":
- 
+			//c.Infof("gotId...")
 			sid := "TDSMEDIA-"+mid
 			BLOB_KEY := contentCheckSid(w,r,sid)
- 
+			//c.Infof("BLOB_KEY: %v", BLOB_KEY)
 			tempt = getBlobText(w, r, BLOB_KEY)
 			
 		default:
@@ -69218,7 +69219,7 @@ func renderCustomTemplates(w http.ResponseWriter, r *http.Request, mode, cKey, t
 	}
 	
 	t := Template()
- 
+	//c.Infof("parseCustomTemplateReg...")
 	t = parseCustomTemplateReg(tempt)
 	
 	if t == nil {
@@ -69237,7 +69238,7 @@ func renderCustomTemplates(w http.ResponseWriter, r *http.Request, mode, cKey, t
 		t,
 		true,
 	}
- 
+	//c.Infof("data: %v", data)
 	buf := &bytes.Buffer{}
 	err := t.Execute(buf, &data)
 	if err != nil {
@@ -69255,8 +69256,8 @@ func renderCustomTemplates(w http.ResponseWriter, r *http.Request, mode, cKey, t
 	return err
 	
 }
- 
-//parses regular templates
+
+//parses regular templates 
 func parseCustomTemplateReg(tempt string) *template.Template {
 	t := Template()
 	//t = t.Funcs(template.FuncMap{"playable": playable})
@@ -69270,15 +69271,15 @@ func parseCustomTemplateReg(tempt string) *template.Template {
 	}
 	return t
 }
- 
+
 //renders slides or articles
 //in ulapph cloud desktop, content is separated from templates
-//it automatically renders data given the slide/article templates
+//it automatically renders data given the slide/article templates 
 func renderPresentation(w http.ResponseWriter, r *http.Request, y io.Writer, fname string, doc *Doc, sl_tmp string) error {
 	c := appengine.NewContext(r)
 	
 	t := Template()
- 
+	//c.Infof("sl_tmp: %v", sl_tmp)
 	if sl_tmp != "" && SYS_ENABLE_TEMPLATES == true {
 		tempt := ""
 		switch sl_tmp {
@@ -69287,7 +69288,7 @@ func renderPresentation(w http.ResponseWriter, r *http.Request, y io.Writer, fna
 			case "A":
 				tempt = getArticlesTemplate(w,r)
 		}
- 
+		//c.Infof("tempt: %v", tempt)
 		t = parseCustomTemplatePres(tempt)
 	} else {
 		t = presentTemplates[path.Ext(fname)]
@@ -69325,8 +69326,8 @@ func renderPresentation(w http.ResponseWriter, r *http.Request, y io.Writer, fna
 	}
 	return err
 }
- 
-//renders custom css style templates
+
+//renders custom css style templates 
 func renderStyleCssTemplates(w http.ResponseWriter, r *http.Request, extName, TASK_MEMCACHER_desktopWP_loginWP, TASK_MEMCACHER_desktopWP_bigWP string) {
 	//fmt.Fprintf(w, "renderPresentation: %v<br>", doc)
 	//fmt.Fprintf(w, "fname: %v<br>", fname)
@@ -69367,8 +69368,8 @@ func renderStyleCssTemplates(w http.ResponseWriter, r *http.Request, extName, TA
 	}
 	
 }
- 
-//gets basic random colors
+
+//gets basic random colors 
 func getBasicColors(w http.ResponseWriter, r *http.Request) *TEMPSTRUCT {
 	col := new(TEMPSTRUCT)
 	col.STR_FILLER1 = getStartColor(w,r)
@@ -69376,8 +69377,8 @@ func getBasicColors(w http.ResponseWriter, r *http.Request) *TEMPSTRUCT {
 	col.STR_FILLER3 = getActiveColor(w,r)
 	return col
 }
- 
-//checks if user specified to randomized colors
+
+//checks if user specified to randomized colors 
 func isRandomColors(w http.ResponseWriter, r *http.Request, uid string) string {
 	
 	if SYS_UWM_RAN_COLORS == true {
@@ -69396,12 +69397,12 @@ func isRandomColors(w http.ResponseWriter, r *http.Request, uid string) string {
 	}
 	return sysConf
 }
- 
-//gets the start color
+
+//gets the start color 
 func getStartColor(w http.ResponseWriter, r *http.Request) string {
 	//getStartMenu color
 	_, uid := checkSession(w,r)
- 
+
 	if isRandomColors(w,r,uid) == "Y" {
 		color1, _, _ := getRandomColors()
 		return color1	
@@ -69424,8 +69425,8 @@ func getStartColor(w http.ResponseWriter, r *http.Request) string {
 	
 	return color
 }
- 
-//renders custom style css template
+
+//renders custom style css template 
 func renderStyleCssTemplates2(w http.ResponseWriter, r *http.Request) {
  
 	color := getStartColor(w,r)
@@ -69433,7 +69434,7 @@ func renderStyleCssTemplates2(w http.ResponseWriter, r *http.Request) {
 	if t == nil {
 		panic(t)
 	}
- 
+
 	doc := new(TEMPSTRUCT)
 	doc.STR_FILLER1	= color
 	doc.STR_FILLER2	= color
@@ -69464,14 +69465,14 @@ func renderStyleCssTemplates2(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
-//render style css with random colors
+
+//render style css with random colors 
 func renderStyleCssColored(w http.ResponseWriter, r *http.Request, name string) {
 	t := presentTemplates[path.Ext(name)]
 	if t == nil {
 		panic(t)
 	}
- 
+
 	doc := new(TEMPSTRUCT)
 	doc.STR_FILLER1	= getStartColor(w,r)
 	doc.STR_FILLER2	= getActiveColor(w,r)
@@ -69503,8 +69504,8 @@ func renderStyleCssColored(w http.ResponseWriter, r *http.Request, name string) 
 	}
 	
 }
- 
-//renders countdown timer page
+
+//renders countdown timer page 
 func renderCountdownPage(w http.ResponseWriter, r *http.Request, name, title, date, color1, color2, color3 string) {
  
 	t := presentTemplates[path.Ext(name)]
@@ -69544,7 +69545,7 @@ func renderCountdownPage(w http.ResponseWriter, r *http.Request, name, title, da
 	}
 	
 }
- 
+
 //renders a button link for uwm
 func renderButtonLink(w http.ResponseWriter, r *http.Request, name, turl, title string) {
  
@@ -69582,9 +69583,9 @@ func renderButtonLink(w http.ResponseWriter, r *http.Request, name, turl, title 
 	}
 	
 }
- 
+
 //renders add to uwm page
-//this template handles how we add new windows in a uwm desktop
+//this template handles how we add new windows in a uwm desktop 
 func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d string) {
 	//c := appengine.NewContext(r)
 	
@@ -69592,7 +69593,7 @@ func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d st
 	if t == nil {
 		panic(t)
 	}
- 
+
 	doc := new(TEMPSTRUCT)
 	doc.STR_FILLER1	= d
 	doc.STR_FILLER2	= n
@@ -69633,7 +69634,7 @@ func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d st
 	}
 	
 }
- 
+
 //D0044
 //renders installer page
 func renderInstallerPage(w http.ResponseWriter, r *http.Request, name, uid string) {
@@ -69675,12 +69676,12 @@ func renderInstallerPage(w http.ResponseWriter, r *http.Request, name, uid strin
 	}
 	
 }
- 
-//gets active color
+
+//gets active color 
 func getActiveColor(w http.ResponseWriter, r *http.Request) string {
 	//c := appengine.NewContext(r)
 	_, uid := checkSession(w,r)
- 
+
 	if isRandomColors(w,r,uid) == "Y" {
 		_, color2, _ := getRandomColors()
 		return color2	
@@ -69704,13 +69705,13 @@ func getActiveColor(w http.ResponseWriter, r *http.Request) string {
 	
 	return actColor
 }
- 
-//gets inactive color
+
+//gets inactive color 
 func getInActiveColor(w http.ResponseWriter, r *http.Request) string {
 	//c := appengine.NewContext(r)
 	_, uid := checkSession(w,r)
 	
- 
+
 	if isRandomColors(w,r,uid) == "Y" {
 		_, _, color3 := getRandomColors()
 		return color3
@@ -69734,9 +69735,9 @@ func getInActiveColor(w http.ResponseWriter, r *http.Request) string {
 	
 	return inActColor
 }
- 
+
 //gets the preferred service provider
-//either Google or Microsoft
+//either Google or Microsoft 
 func getAppsProvider(w http.ResponseWriter, r *http.Request) string {
 	//c := appengine.NewContext(r)
 	
@@ -69792,9 +69793,9 @@ func getAppsProvider(w http.ResponseWriter, r *http.Request) string {
 	return appsProvText
 	
 }
- 
+
 //gets user privacy settings
-//user can become incognito in ulapph cloud desktop
+//user can become incognito in ulapph cloud desktop 
 func userPrivacy(w http.ResponseWriter, r *http.Request) string {
 	//c := appengine.NewContext(r)
 	
@@ -69815,8 +69816,8 @@ func userPrivacy(w http.ResponseWriter, r *http.Request) string {
 	return userPriv
 	
 }
- 
-//renders JSWM css templates
+
+//renders JSWM css templates 
 func renderJSWMStyleCssTemplates(w http.ResponseWriter, r *http.Request) {
  
 	actColor := getActiveColor(w,r)	
@@ -69858,8 +69859,8 @@ func renderJSWMStyleCssTemplates(w http.ResponseWriter, r *http.Request) {
 	}
 	
 }
- 
-//renders social sharing template
+
+//renders social sharing template 
 func renderSocialSharing(w http.ResponseWriter, r *http.Request, title, turl string) {
  
 	t := presentTemplates[path.Ext(".social-sharing")]
@@ -69896,7 +69897,7 @@ func renderSocialSharing(w http.ResponseWriter, r *http.Request, title, turl str
 		buf.WriteTo(w)
 	}
 }
- 
+
 //render 3d message
 func renderMessage3D(w http.ResponseWriter, r *http.Request, message string) {
  
@@ -69934,14 +69935,14 @@ func renderMessage3D(w http.ResponseWriter, r *http.Request, message string) {
 		buf.WriteTo(w)
 	}
 }
- 
-//renders static templates
+
+//renders static templates 
 func renderStaticTemplates(w http.ResponseWriter, r *http.Request, extName string) {
 	t := presentTemplates[path.Ext(extName)]
 	if t == nil {
 		panic(t)
 	}
- 
+
 	doc := new(TEMPSTRUCT)	
 	data := struct {
 		//*TEMPSTRUCT2
@@ -69968,8 +69969,8 @@ func renderStaticTemplates(w http.ResponseWriter, r *http.Request, extName strin
 	}
 	
 }
- 
-//renders static templates
+
+//renders static templates 
 func renderStaticWithTEMPSTRUCT2(w http.ResponseWriter, r *http.Request, doc *TEMPSTRUCT2, extName string) {
 	t := presentTemplates[path.Ext(extName)]
 	if t == nil {
@@ -70041,8 +70042,8 @@ func renderOverQuotaErrorTemplates(w http.ResponseWriter, r *http.Request) {
  
  
 type presFileNotFoundError string
- 
-//returns profile not found
+
+//returns profile not found 
 func (s presFileNotFoundError) Error() string { return fmt.Sprintf("File %s not found.", string(s)) }
  
 //writes a usual 200 HTML header
@@ -70050,8 +70051,8 @@ func writeHTMLHeader(w http.ResponseWriter, status int) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(status)
 }
- 
-//writes a text plain html header
+
+//writes a text plain html header 
 func writeTextHeader(w http.ResponseWriter, status int) {
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.WriteHeader(status)
@@ -70061,8 +70062,8 @@ type transport2 struct {
 	rt http.RoundTripper
 	ua string
 }
- 
-//return roundtrip
+
+//return roundtrip 
 func (t transport2) RoundTrip(r *http.Request) (*http.Response, error) {
 	r.Header.Set("User-Agent", t.ua)
 	if r.URL.Host == "api.github.com" && gitHubCredentials != "" {
@@ -70074,7 +70075,7 @@ func (t transport2) RoundTrip(r *http.Request) (*http.Response, error) {
 	}
 	return t.rt.RoundTrip(r)
 }
- 
+
 //returns an http client
 func httpClient(r *http.Request) *http.Client {
 	c := appengine.NewContext(r)
@@ -70085,7 +70086,7 @@ func httpClient(r *http.Request) *http.Client {
 		},
 	}
 }
- 
+
 //returns media details given a media id
 func getTDSMEDIABlobKey(w http.ResponseWriter, r *http.Request, MEDIA_ID int) (BLOB_KEY, PROP, TITLE, AUTHOR, DOC_STAT, FL_SHARED, IMG_URL, DATA_TYPE, MIME_TYPE, DESC, SHARED_TO string) {
 	
@@ -70270,8 +70271,8 @@ func getTDSSLIDEBlobKey(w http.ResponseWriter, r *http.Request, DOC_ID int) (BLO
 	return BLOB_KEY, PUB_STAT, FL_SHARED, AUTHOR, FL_COUNTRY_SPECIFIC, TITLE, IMG_URL, SHARED_TO, MUSIC_ID, GET_NEXT
  
 }
- 
-//returns articles details given a doc id
+
+//returns articles details given a doc id 
 func getTDSARTLBlobKey(w http.ResponseWriter, r *http.Request, DOC_ID int) (BLOB_KEY, PUB_STAT, FL_SHARED, AUTHOR, FL_COUNTRY_SPECIFIC, TITLE, SHARED_TO, IMG_URL, MUSIC_ID string) {
 	
 	//billing fix
@@ -70353,7 +70354,7 @@ func getTDSARTLBlobKey(w http.ResponseWriter, r *http.Request, DOC_ID int) (BLOB
 	return BLOB_KEY, PUB_STAT, FL_SHARED, AUTHOR, FL_COUNTRY_SPECIFIC, TITLE, SHARED_TO, IMG_URL, MUSIC_ID
  
 }
- 
+
 //returns slide details given a blob key
 func getTDSSLIDEDocID(w http.ResponseWriter, r *http.Request, BLOB_KEY string) (DOC_ID int, PUB_STAT, FL_SHARED, AUTHOR, FL_COUNTRY_SPECIFIC, TITLE, SHARED_TO, MUSIC_ID, GET_NEXT string) {
 	c := appengine.NewContext(r)
@@ -70438,8 +70439,8 @@ func getTDSSLIDEDocID(w http.ResponseWriter, r *http.Request, BLOB_KEY string) (
 	return DOC_ID, PUB_STAT, FL_SHARED, AUTHOR, FL_COUNTRY_SPECIFIC, TITLE, SHARED_TO, MUSIC_ID, GET_NEXT
  
 }
- 
-//returns article details given a doc id
+
+//returns article details given a doc id 
 func getTDSARTLDocID(w http.ResponseWriter, r *http.Request, BLOB_KEY string) (DOC_ID int, PUB_STAT, FL_SHARED, AUTHOR, FL_COUNTRY_SPECIFIC, TITLE, SHARED_TO, IMG_URL, MUSIC_ID string) {
 	c := appengine.NewContext(r)
 	
@@ -70521,7 +70522,7 @@ func getTDSARTLDocID(w http.ResponseWriter, r *http.Request, BLOB_KEY string) (D
 	return DOC_ID, PUB_STAT, FL_SHARED, AUTHOR, FL_COUNTRY_SPECIFIC, TITLE, SHARED_TO, IMG_URL, MUSIC_ID
  
 }
- 
+
 //checks special options
 //used FL_COUNTRY_SPECIFIC but it handles more than coutry specific checks
 func checkSpecialOptions(w http.ResponseWriter, r *http.Request, mode, FL_COUNTRY_SPECIFIC string) (res string) {
@@ -70574,7 +70575,7 @@ func checkSpecialOptions(w http.ResponseWriter, r *http.Request, mode, FL_COUNTR
 	return res
  
 }
- 
+
 //handles /slides handler
 //displays slides from http requests
 //it serves owner and public requests to automatically render slides
@@ -70718,14 +70719,14 @@ func slides(w http.ResponseWriter, r *http.Request) {
 	_, uid := checkSession(w,r)
 	if uid == "" {
 		msg = getGeoString(w,r)
-		reqStr = fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&FORCE=%v&MODE=%v&PARM=%v&SECS=%v&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, FORCE, MODE, PARM, SECS, TITLE, MUSIC_ID, GET_NEXT)
-		shareMe := fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"SLIDE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
+		reqStr = fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&FORCE=%v&MODE=%v&PARM=%v&SECS=%v&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, FORCE, MODE, PARM, SECS, TITLE, MUSIC_ID, GET_NEXT)
+		shareMe := fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"SLIDE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
 		msgDtl3 = fmt.Sprintf("UID:%v has viewed SLIDE (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v [%v]", msg, reqStr, TITLE, IMG_URL, shareMe, SID, viaStr)
 		msgDtl3b = fmt.Sprintf("UID:%v has viewed SLIDE %v entitled \"%v\" [%v] LINK: %v", msg, SID, TITLE, viaStr, ShortenUrl(w,r,reqStr))
 	}else{
 		msg = uid
-		reqStr = fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&FORCE=%v&MODE=%v&PARM=%v&SECS=%v&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, FORCE, MODE, PARM, SECS, TITLE, MUSIC_ID, GET_NEXT)
-		shareMe := fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"SLIDE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
+		reqStr = fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&FORCE=%v&MODE=%v&PARM=%v&SECS=%v&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, FORCE, MODE, PARM, SECS, TITLE, MUSIC_ID, GET_NEXT)
+		shareMe := fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"SLIDE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
 		msgDtl3 = fmt.Sprintf("UID:%v has viewed SLIDE (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v [%v]", msg, reqStr, TITLE, IMG_URL, shareMe, SID, viaStr)
 		msgDtl3b = fmt.Sprintf("UID:%v has viewed SLIDE %v entitled \"%v\" [%v] LINK: %v", msg, SID, TITLE, viaStr, ShortenUrl(w,r,reqStr))
 	}
@@ -70934,14 +70935,14 @@ func articles(w http.ResponseWriter, r *http.Request) {
 	_, uid := checkSession(w,r)
 	if uid == "" {
 		msg := getGeoString(w,r)
-		reqStr = fmt.Sprintf("https://sample-project.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=%v&FORCE=%v&TITLE=%v&MUSIC_ID=%v", DOC_ID, SID, FORCE, TITLE, MUSIC_ID)
-		shareMe := fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"ARTICLE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
+		reqStr = fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=%v&FORCE=%v&TITLE=%v&MUSIC_ID=%v", DOC_ID, SID, FORCE, TITLE, MUSIC_ID)
+		shareMe := fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"ARTICLE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
 		msgDtl3 = fmt.Sprintf("UID:%v has viewed ARTICLE (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v [%v]", msg, reqStr, TITLE, IMG_URL, shareMe, SID, viaStr)
 		msgDtl3b = fmt.Sprintf("UID:%v has viewed ARTICLE %v entitled \"%v\" [%v] LINK: %v", msg, SID, TITLE, viaStr, ShortenUrl(w,r,reqStr))
 	}else{
 		msg = uid
-		reqStr = fmt.Sprintf("https://sample-project.appspot.com/slides?TYPE=ARTICLE&DOC_ID=%v&SID=%v&FORCE=%v&TITLE=%v", DOC_ID, SID, FORCE, TITLE)
-		shareMe := fmt.Sprintf("<a href=\"https://sample-project.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"ARTICLE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
+		reqStr = fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=ARTICLE&DOC_ID=%v&SID=%v&FORCE=%v&TITLE=%v", DOC_ID, SID, FORCE, TITLE)
+		shareMe := fmt.Sprintf("<a href=\"https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v\" target=\"ARTICLE-%v\" title=\"Share to social networks!\"><img src=\"/img/sharethis.png\" width=40 height=40></a>", TITLE, ShortenUrl(w,r,reqStr), TITLE)
 		msgDtl3 = fmt.Sprintf("UID:%v has viewed ARTICLE (<a href=\"%v\" target=\"preview\">%v <img src=\"%v\" width=100 height=70></a>) %v %v [%v]", msg, reqStr, TITLE, IMG_URL, shareMe, SID, viaStr)
 		msgDtl3b = fmt.Sprintf("UID:%v has viewed ARTICLE %v entitled \"%v\" [%v] LINK: %v", msg, SID, TITLE, viaStr, ShortenUrl(w,r,reqStr))
 	 }
@@ -71048,7 +71049,7 @@ func articles(w http.ResponseWriter, r *http.Request) {
 		servePresentation(w, r, TYPE, MODE,  PARM, SECS, TITLE, BLOB_KEY, SL_TMP, SID, FORCE, FL_COUNTRY_SPECIFIC, DESKTOP, "", DOC_ID, IMG_URL, GOTO, PRESENTER_SESSION_KEY, "", "", AUTHOR, PUB_STAT, FL_SHARED)
 	}
 }
- 
+
 //handles rendering of slides if presenter mode
 func presenter(w http.ResponseWriter, r *http.Request) {
 	checkHTTPS(w,r)
@@ -71167,7 +71168,7 @@ func presenter(w http.ResponseWriter, r *http.Request) {
 		SESSION_FUNC = "VIEW"
 	}
 	
- 
+	//c.Infof("PRESENTER_SESSION_KEY: %v", PRESENTER_SESSION_KEY)
 	if PRESENTER_SESSION_KEY == "undefined" {
 		msgDtl := fmt.Sprintf("[U00109a] ERROR: Error in presenter module. %v", SID)
 		msgTyp := "error"
@@ -71457,8 +71458,8 @@ func presenter(w http.ResponseWriter, r *http.Request) {
 		
 	}
 }
- 
-//serves presentation of a slide or article
+
+//serves presentation of a slide or article 
 //it can handle auto switching between slides and articles depending on device type
 func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE string, PARM string, SECS string, TITLE string, blobkey string, SL_TMP string, SID string, FORCE, FL_COUNTRY_SPECIFIC, DESKTOP, SOUND, DOC_ID, IMG_URL, GOTO, PRESENTER_SESSION_KEY, MUSIC_ID, GET_NEXT, AUTHOR, PUB_STAT, FL_SHARED string) error {
 	//h := r.Header
@@ -71637,33 +71638,33 @@ func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE
 	_, err := w.Write(TARGET_CACHE_CONTENT)
 	return err
 }			
- 
-//D0044
+
+//D0044 
 //Handles installer logic
 //Aims to automatically ulapph cloud desktop by calling the admin APIs
 //THIS DOESNT WORK YET!
 func serveCompile(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
- 
+	//c.Infof("serveCompile()...")
 	COM_FUN := r.FormValue("COM_FUN")
- 
+	//c.Infof("COM_FUN: %v", COM_FUN)
 	
 	//D0051
 	switch COM_FUN {
 		case "INSTALL-NOW":
- 
+			////c.Infof("INSTALL-NOW")
 			_, uid := checkSession(w,r)
 			tok := r.FormValue("tok")
 			UID := html.UnescapeString(r.FormValue("uid"))
 			if uid != UID {
- 
+				//c.Infof("uid: %v", uid)
 				c.Errorf("uid != UID")
 				fmt.Fprintf(w, "Unauthorized operation")
 				return
 			}
 			c.Infof("uid: %v", uid)
 			c.Infof("tok: %v", tok)
- 
+			//c.Infof("referrer: %v", referrer)
 			//Createthe project ID
 			pid := r.FormValue("pid")
 			c.Infof("pid: %v", pid)
@@ -71695,7 +71696,7 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 			
 			
 			//delay first
- 
+			//c.Infof("delaySecond...")
 			//delaySecond(30)
 			
 			//install the source codes
@@ -71716,13 +71717,13 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 			delaySecond(30)
 			
 			//render installer page
- 
+			////c.Infof("display installer page")
 			renderInstallerPage(w,r,".install", uid)
 			
 		case "INSTALL":
- 
+			////c.Infof("INSTALL")
 			_, uid := checkSession(w,r)
- 
+			////c.Infof("uid: %v", uid)
 			//BROADCAST
 			//broadcast event in chat world
 			msgDtl := fmt.Sprintf("New ULAPPH Cloud Desktop installed by %v", uid)
@@ -71731,22 +71732,22 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 			
 			//Get user
 			FL_PAID := r.FormValue("FL_PAID")
- 
+			////c.Infof("FL_PAID: %v", FL_PAID)
 			//Check first if user is not yet existing in the users list
 			//ask user to login
 			//then redirect to INSTALL with FL_VERIFIED=true
 			//https://ulapph-installer.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL
 			if isLoggedIn(w,r) != true {
- 
+					//c.Infof("Redirect user to login!")
 					redURL := fmt.Sprintf("https://ulapph-installer.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL")
 					http.Redirect(w, r, redURL, http.StatusFound)
 					return					
 			}
 			//verify if user is registered
 			//https://ulapph-cloud-desktop.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-sites.appspot.com/directory?DIR_FUNC=GOTO_MY_ULAPPH
- 
+			//c.Infof("Check if ulapph exists for this user!")
 			urlStr := fmt.Sprintf("https://ulapph-sites.appspot.com/directory?DIR_FUNC=FL_ULAPPH_EXISTS&m=auto")
- 
+			////c.Infof("urlStr: %v", urlStr)
 			client := urlfetch.Client(c)
 			if err := r.ParseForm(); err != nil {
 				panic(err)
@@ -71757,36 +71758,36 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 				panic(err)
 			}
 			//bodyBytes, _ := ioutil.ReadAll(resp.Body)
- 
- 
+			//c.Infof("bodyBytes: %v", string(bodyBytes))
+			//c.Infof("resp.StatusCode: %v", resp.StatusCode)
 			//if bodyBytes == nil || resp.StatusCode != 200 {
 			if resp.StatusCode != 200 {
 				//meaning user not esists
- 
- 
- 
+				//c.Infof("uid: %v", uid)
+				//c.Infof("User has no ulapph yet!")
+				//c.Infof("Lets install ULAPPH Cloud Desktop!")
 				//How about the payment?
 				if FL_PAID == "Y" {
- 
+					////c.Infof("User is paid!")
 					oauth2GaeAdminCall(w,r,"auth")
 				} else {
 					//ask for payment
 					//D0044
- 
- 
+					////c.Infof("uid: %v", uid)
+ 					////c.Infof("Redirect user to paypal!")
 					//redURL := fmt.Sprintf("https://ulapph-corporation.appspot.com/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=66&SID=TDSMEDIA-66")
 					//http.Redirect(w, r, redURL, http.StatusFound)
 					//return
 					//D0040-temp
- 
+					////c.Infof("Dummy - Redirect installer page!")
 					redURL := fmt.Sprintf("https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL&FL_PAID=Y")
 					http.Redirect(w, r, redURL, http.StatusFound)
 					return
 				}
 			} else {
- 
- 
- 
+				//c.Infof("uid: %v", uid)
+				//c.Infof("bodyBytes: %v", string(bodyBytes))
+				//c.Infof("It seems you already have an ulapph!")
 				fmt.Fprintf(w, "Something is not right... it seems you already have an ULAPPH! Contact admin for more info.")
 			}
 			
@@ -71807,7 +71808,7 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 			}
 	}
 }
- 
+
 //create google appengine project id
 func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid string) error {
 	c := appengine.NewContext(r)
@@ -71838,7 +71839,7 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", "Bearer "+tok)
 	client := urlfetch.Client(c)
- 
+
 	c.Infof("req: %v", req)
 	res, err := client.Do(req)
 	if err != nil {
@@ -71882,7 +71883,7 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 	c.Infof("b: %v", b)
 	return err
 }
- 
+
 //D0051
 //install ulapph cloud desktop in google appengine project id
 /* func installProject(w http.ResponseWriter, r *http.Request, pid, tok string) error {
@@ -71898,7 +71899,7 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 		return err
  
 	}	
- 
+
 	destUrl := fmt.Sprintf("https://appengine.googleapis.com/v1/apps/%v/services/default/versions", pid)
 	c.Infof("destUrl: %v", destUrl)
 	req, _ := http.NewRequest("POST", destUrl, bytes.NewBuffer(urlRespBytes))
@@ -71910,7 +71911,7 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", "Bearer "+tok)
 	client := urlfetch.Client(c)
- 
+
 	c.Infof("req: %v", req)
 	res, err := client.Do(req)
 	if err != nil {
@@ -71935,12 +71936,12 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 	c.Infof("b: %v", b)
 	return err
 } */
- 
+
 //D0051
 //create google appengine project id
 func initializeProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid string) error {
 	c := appengine.NewContext(r)
- 
+
 	var encbuf bytes.Buffer
 	enc := json.NewEncoder(&encbuf)
 	err := enc.Encode(map[string]string{
@@ -71960,7 +71961,7 @@ func initializeProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid s
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", "Bearer "+tok)
 	client := urlfetch.Client(c)
- 
+
 	c.Infof("req: %v", req)
 	res, err := client.Do(req)
 	if err != nil {
@@ -72001,8 +72002,8 @@ func initializeProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid s
 	c.Infof("b: %v", b)
 	return err
 }
- 
-//serves page to a bot
+
+//serves page to a bot 
 func serveBot(w http.ResponseWriter, r *http.Request) error {
 	c := appengine.NewContext(r)
 	writeTextHeader(w, 200)
@@ -72012,8 +72013,8 @@ func serveBot(w http.ResponseWriter, r *http.Request) error {
 	}
 	return err
 }
- 
-//validates passcode for a shared content
+
+//validates passcode for a shared content 
 func validatePasscode(w http.ResponseWriter, r *http.Request, refs, sharedList, passCode string) (isValid bool) {
 	isValid = false
 	s := bufio.NewScanner(strings.NewReader(sharedList))
@@ -72230,9 +72231,9 @@ type Lines struct {
 	line int // 0 indexed, so has 1-indexed number of last line returned
 	text []string
 }
- 
+
 //reads the given SID content and parse them line by line
-//used for rending slides or articles
+//used for rending slides or articles 
 func readLines3(w http.ResponseWriter, r *http.Request, blobkey, DESKTOP, SID string, OnOffLine, AUTHOR string) (string, *Lines, error) {
 	c := appengine.NewContext(r)
 	var bLine bytes.Buffer
@@ -72248,7 +72249,7 @@ func readLines3(w http.ResponseWriter, r *http.Request, blobkey, DESKTOP, SID st
 	
 	secCtr := 0
 	for s.Scan() {
- 
+
 		if strings.HasPrefix(s.Text(), "#NOCOMMENTS") {
 			FL_SHOW_CMTS = false
 		}
@@ -72375,9 +72376,9 @@ func readLines3(w http.ResponseWriter, r *http.Request, blobkey, DESKTOP, SID st
 	}
 	return "", &Lines{0, lines}, nil
 }
- 
+
 //reads te content of a given blobKey
-//used for rendering slides or articles
+//used for rendering slides or articles 
 func readLines4(w http.ResponseWriter, r *http.Request, blobkey string) (string, *Lines, error) {
 	c := appengine.NewContext(r)
 	
@@ -72431,8 +72432,8 @@ func readLines4(w http.ResponseWriter, r *http.Request, blobkey string) (string,
 	}
 	return ct, &Lines{0, lines}, nil
 }
- 
-//gets the contents of a given blobkey
+
+//gets the contents of a given blobkey 
 //#GET_REMOTE_DATA
 //#APPEND_URL_DATA
 //#APPEND_LOCAL_DATA
@@ -72509,7 +72510,7 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 	}
 	
 	blobText = bSrc.String()
- 
+	//c.Infof("blobText: %v", blobText)
 	
 	if err := s.Err(); err != nil {
 		//!!! panic is required here
@@ -72518,7 +72519,7 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 	}
 	return blobText
 }
- 
+
 //gets the contents of a given blobkey
 //no checks of special keywords
 func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) (blobText string) {
@@ -72545,7 +72546,7 @@ func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) 
 	}
 	
 	blobText = bSrc.String()
- 
+	//c.Infof("blobText: %v", blobText)
 	
 	if err := s.Err(); err != nil {
 		//!!! panic is required here
@@ -72579,8 +72580,8 @@ func getBlobTextChan(w http.ResponseWriter, r *http.Request, blobChan chan strin
 	//return blobText
 	blobChan <- blobText
 }
- 
-//gets contents of a blobkey and parse to get the premium cost custom for the content
+
+//gets contents of a blobkey and parse to get the premium cost custom for the content 
 func getBlobTextPremiumCost(w http.ResponseWriter, r *http.Request, BLOB_KEY string) (premCost string) {
 	c := appengine.NewContext(r)
 	reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
@@ -72654,8 +72655,8 @@ func getBlobTextQuiz(w http.ResponseWriter, r *http.Request, SID, DATA string) (
 	}
 	return res, pass, TITLE, nil
 }
- 
-//gets the contents of blobkey as preview
+
+//gets the contents of blobkey as preview 
 func getBlobTextPremiumPreview(w http.ResponseWriter, r *http.Request, BLOB_KEY string) (preview string) {
 	c := appengine.NewContext(r)
 	reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
@@ -72674,8 +72675,8 @@ func getBlobTextPremiumPreview(w http.ResponseWriter, r *http.Request, BLOB_KEY 
 	}
 	return preview
 }
- 
-//gets the bytes contents of a blobkey
+
+//gets the bytes contents of a blobkey 
 func getBlobByte(w http.ResponseWriter, r *http.Request, blobkey string) (blobByte []byte) {
 	c := appengine.NewContext(r)
  
@@ -72700,7 +72701,7 @@ func getBlobByteChan(w http.ResponseWriter, r *http.Request, blobChan chan []byt
 	blobChan <- blobByte
 }
  
- 
+
  //reads next line
 func (l *Lines) next() (text string, ok bool) {
 	for {
@@ -72718,7 +72719,7 @@ func (l *Lines) next() (text string, ok bool) {
 	}
 	return
 }
- 
+
 //go back to previous line
 func (l *Lines) back() {
 	l.line--
@@ -72744,9 +72745,9 @@ const (
 	// If set, parse only the title and subtitle.
 	TitlesOnly ParseMode = 1
 )
- 
+
 //parses the given SID and returns the parsed document
-//used for rendering slides and articles
+//used for rendering slides and articles 
 func Parse3(w http.ResponseWriter, r *http.Request, blobkey string, name string, mode ParseMode, DESKTOP, SID string, OnOffLine, AUTHOR, PUB_STAT, FL_SHARED string) (string, *Doc, error) {
 	//c := appengine.NewContext(r)
 	doc := new(Doc)
@@ -72807,8 +72808,8 @@ func Parse3(w http.ResponseWriter, r *http.Request, blobkey string, name string,
 	}
 	return st, doc, nil
 }
- 
-//parses the given lines of text and returns the document
+
+//parses the given lines of text and returns the document 
 func Parse4(w http.ResponseWriter, r *http.Request, lines *Lines, name string, mode ParseMode) (*Doc, error) {
  
 	doc := new(Doc)
@@ -73004,7 +73005,7 @@ func parseHeader(w http.ResponseWriter, r *http.Request, doc *Doc, lines *Lines,
 	doc.ShowAuthors = FL_SHOW_AUTH
 	doc.ShowAbout = FL_SHOW_ABOUT
 	doc.ShowSocialMedia = FL_SHOW_SOCIAL
- 
+
 	doc.SocialFBCommentOn = SOCIAL_FB_COMMENT_ON
 	doc.PageAccessDispOn = PAGE_ACCESS_DISP_ON
 	doc.DispLastPageOn = LAST_PAGE_DISP_ON
@@ -73108,7 +73109,7 @@ func getSocStats(w http.ResponseWriter, r *http.Request, thisChan chan string, t
 	thisChan <- stats
 	thisChanDone <- true
 }
- 
+
 //D0040
 //gets social comments status
 func getSocComStat(w http.ResponseWriter, r *http.Request, thisChan chan string, thisChanDone chan bool, SID string) {
@@ -73124,7 +73125,7 @@ func getSocComStat(w http.ResponseWriter, r *http.Request, thisChan chan string,
 	thisChan <- gsc
 	thisChanDone <- true
 }
- 
+
 //parses author lines of a slide or article
 func parseAuthors(lines *Lines) (authors []Author, err error) {
 	// This grammar demarcates authors with blanks.
@@ -73196,7 +73197,7 @@ func parseURL(text string) Elem {
 	}
 	return Link{URL: u}
 }
- 
+
 //parses time from a given text
 func parseTime(text string) (t time.Time, ok bool) {
 	t, err := time.Parse("15:04 2 Jan 2006", text)
@@ -73211,12 +73212,12 @@ func parseTime(text string) (t time.Time, ok bool) {
 	}
 	return time.Time{}, false
 }
- 
+
 type Link struct {
 	URL   *url.URL
 	Label string
 }
- 
+
 //a link template
 func (l Link) TemplateName() string { return "link" }
  
@@ -73256,11 +73257,11 @@ type Checkbox struct {
 	Name   string
 	Label string
 }
- 
+
 //check box template
 func (b Checkbox) TemplateName() string { return "checkbox" }
- 
-//parses a given checkbox and return the html element
+
+//parses a given checkbox and return the html element 
 func parseCheckbox(w http.ResponseWriter, r *http.Request, fileName string, lineno int, text string) (Elem, error) {
 	//c := appengine.NewContext(r)
 	args := strings.Fields(text)
@@ -73295,11 +73296,11 @@ type Radio struct {
 	Name   string
 	Label string
 }
- 
-//a radio template
+
+//a radio template 
 func (b Radio) TemplateName() string { return "radio" }
- 
-//parses a given radio and return the html element
+
+//parses a given radio and return the html element 
 func parseRadio(w http.ResponseWriter, r *http.Request, fileName string, lineno int, text string) (Elem, error) {
 	//c := appengine.NewContext(r)
 	args := strings.Fields(text)
@@ -73364,7 +73365,7 @@ type Submit struct {
 	Mode   string
 	Caption string
 }
- 
+
 //a submit button template
 func (b Submit) TemplateName() string { return "submit" }
  
@@ -73393,7 +73394,7 @@ func parseSubmit(w http.ResponseWriter, r *http.Request, fileName string, lineno
 	
 	return b, nil
 }
- 
+
 //redners a link html tags
 func renderLink(href, text string) string {
 	text = font(text)
@@ -73411,7 +73412,7 @@ func renderLink(href, text string) string {
 	if strings.Index(href, "#anchor-") != -1 {
 		anc := strings.Replace(href, "#", "", -1)
 		return fmt.Sprintf(`<a href="#" onclick="gotoAnchor('%s')" target="%s">%s</a>`, anc, target, text)
-	}
+	} 
 	return fmt.Sprintf(`<a href="%s" target="%s">%s</a>`, href, target, text)
 }
  
@@ -73464,10 +73465,10 @@ type Iframe struct {
 	Width  int
 	Height int
 }
- 
+
 //handles iframe template
 func (i Iframe) TemplateName() string { return "iframe" }
- 
+
 //parses a given iframe and return html element
 func parseIframe(w http.ResponseWriter, r *http.Request, fileName string, lineno int, text string) (Elem, error) {
 	args := strings.Fields(text)
@@ -73513,7 +73514,7 @@ func parseCaption(w http.ResponseWriter, r *http.Request, _ string, _ int, text 
 type Blockquote struct {
 	Text string
 }
- 
+
 //blockquote template
 func (c Blockquote) TemplateName() string { return "blockquote" }
  
@@ -73522,13 +73523,13 @@ func parseBlockquote(w http.ResponseWriter, r *http.Request, _ string, _ int, te
 	text = strings.TrimSpace(strings.TrimPrefix(text, ".blockquote"))
 	return Blockquote{text}, nil
 }
- 
+
 //ANCHOR
 type Anchor struct {
 	Name string
 }
- 
-//anchor template
+
+//anchor template 
 func (c Anchor) TemplateName() string { return "anchor" }
  
 //parses a given anchor and return html element
@@ -73536,16 +73537,16 @@ func parseAnchor(w http.ResponseWriter, r *http.Request, _ string, _ int, text s
 	text = strings.TrimSpace(strings.TrimPrefix(text, ".anchor"))
 	return Anchor{text}, nil
 }
- 
+
 //D0052
 //OPEN
 type OpenLink struct {
 	URL string
 }
 //D0052
-//open url template
+//open url template 
 func (c OpenLink) TemplateName() string { return "open" }
-//D0052
+//D0052 
 //parses a given url to open as new window
 func parseOpen(w http.ResponseWriter, r *http.Request, _ string, _ int, text string) (Elem, error) {
 	text = strings.TrimSpace(strings.TrimPrefix(text, ".open"))
@@ -73705,8 +73706,8 @@ func parseCode(w http.ResponseWriter, r *http.Request, sourceFile string, source
 		Raw:      rawCode(lines),
 	}, nil
 }
- 
-//reads a content of a given media ID
+
+//reads a content of a given media ID 
 //return the bytes of that content
 func readBlobText(w http.ResponseWriter, r *http.Request, mediaID int) (bText []byte, err2 error) {
 	c := appengine.NewContext(r)
@@ -74820,11 +74821,11 @@ func API_utube(w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Fprintf(w, "<ul class=\"able-playlist\" data-player=\"video1\" data-embedded>")
 			for id, title := range videos {
-					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/watch?v=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/%v?autoplay=1', 'https://sample-project.appspot.com'); return false;\"><br>%v (VID)</a></li>", id, "Video", id, title)
+					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/watch?v=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/%v?autoplay=1', 'https://ulapph-public-1.appspot.com'); return false;\"><br>%v (VID)</a></li>", id, "Video", id, title)
 					
 			}
 			for id, title := range playlists {
-					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/embed/videoseries?list=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/videoseries?list=%v&autoplay=1', 'https://sample-project.appspot.com'); return false;\"><br>%v (PL)</a></li>", id, "Playlist", id, title)
+					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/embed/videoseries?list=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/videoseries?list=%v&autoplay=1', 'https://ulapph-public-1.appspot.com'); return false;\"><br>%v (PL)</a></li>", id, "Playlist", id, title)
 			}
  
 	}
@@ -74972,7 +74973,7 @@ func httpDo(r *http.Request, ctx context.Context, req *http.Request, f func(*htt
 		return err
 	}
 }
- 
+
 //D0044
 //handles automated installer of ulapph cloud desktop
 //handles callbacks and displays installer page
@@ -75002,7 +75003,7 @@ func handlerOuath2GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		 "client_id": {GOOGLE_OAUTH2_CLIENTID},
 		 //"client_id": {"ulapph@gmail.com"},
 		 "client_secret": {GOOGLE_OAUTH2_SECRET},
-		 "redirect_uri": {"https://sample-project.appspot.com/oauth2/google/callback"},
+		 "redirect_uri": {"https://ulapph-public-1.appspot.com/oauth2/google/callback"},
 		 "grant_type": {"authorization_code"},
 		}
 		
@@ -75075,7 +75076,7 @@ func handlerOuath2GithubCallback(w http.ResponseWriter, r *http.Request) {
 		 "state": {state},
 		 "client_id": {GITHUB_CLIENT_ID},
 		 "client_secret": {GITHUB_CLIENT_SECRET},
-		 "redirect_uri": {"https://sample-project.appspot.com/oauth2/github/callback"},
+		 "redirect_uri": {"https://ulapph-public-1.appspot.com/oauth2/github/callback"},
 		}
 		
 		req, _ := http.NewRequest("POST", turl, strings.NewReader(values.Encode()))
@@ -75209,14 +75210,14 @@ func ulapphGPS(w http.ResponseWriter, r *http.Request) {
 	switch GPS_FUNC {
  
 		case "GET_DP":
- 
+
 		case "USE_IP":
 			rh := r.Header
 			oLatLong := rh.Get("X-AppEngine-CityLatLong")
 			xLatLong :=strings.Replace(oLatLong, ",", "+", -1)
 			xURL := fmt.Sprintf("https://www.google.com.ph/maps/@%v", oLatLong)
 			viaStr := getAccessString(w,r,"")
- 
+
 			currenttime := time.Now().Local()
 			TSTMP := currenttime.Format("2006-01-02 15:04:05 +0800")
 			tviaStr := fmt.Sprintf("%v on %v", viaStr, TSTMP)
@@ -75824,7 +75825,7 @@ func getUpUrlString(w http.ResponseWriter, r *http.Request, tpath string) (ustr 
 	csn2 := fmt.Sprintf("%v%v", csn, tpath)
 	return csn2	
 }
- 
+
 //gets the current scheme if http or https					
 func getScheme(w http.ResponseWriter, r *http.Request) (scheme string) {
 	if r.TLS == nil {
@@ -75843,14 +75844,14 @@ func getSchemeUrl(w http.ResponseWriter, r *http.Request) (scheme string) {
 	}
 	return scheme
 }
- 
+
 //gets the new scheme url
 func getSchemeNewUrl(w http.ResponseWriter, r *http.Request, turl string) (url string) {
 	turl = strings.Replace(turl, "http://", "https://", -1)	
 	
 	return turl
 }
- 
+
 //checks if the request is https or not
 func checkHTTPS(w http.ResponseWriter, r *http.Request) {
 	
@@ -75932,7 +75933,7 @@ func checkHTTPS(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
+
 //checks the request if https or not
 func checkHTTPS2(w http.ResponseWriter, r *http.Request) {
  
@@ -76105,7 +76106,7 @@ func contentCheckSid(w http.ResponseWriter, r *http.Request, sid string) (blobKe
 				msgDtl := fmt.Sprintf("[U00167] ERROR: This document ID (%s) is accessible only by the author (%v) or by admin.", sid, AUTHOR)
 				//sendEvent(w,r, FDBKMAIL, msgDtl)
 				msgTyp := "error"
-				msgURL := fmt.Sprintf("https://sample-project.appspot.com/infodb?DB_FUNC=MEDIA&CATEGORY=")
+				msgURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/infodb?DB_FUNC=MEDIA&CATEGORY=")
 				action := fmt.Sprintf("Apologies for this issue! <a href=\"%v\">Click here</a> to proceed to view other media.", msgURL)
 				sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, msgURL, action)
 				http.Redirect(w, r, sysReq, http.StatusFound)
@@ -76130,7 +76131,7 @@ func contentCheckSid(w http.ResponseWriter, r *http.Request, sid string) (blobKe
 	}
 	return BLOB_KEY
 }
- 
+
 //downloads an article
 //used for local storage where it saves local contents in browser
 func downloadArticle(w http.ResponseWriter, r *http.Request, sid string) string {
@@ -76219,7 +76220,7 @@ func downloadArticle(w http.ResponseWriter, r *http.Request, sid string) string 
 	}
 	return bufc.String()	
 }
- 
+
 //downloads a slide
 //used for local storage where it saves local contents in browser
 func downloadSlide(w http.ResponseWriter, r *http.Request, sid string) string {
@@ -76316,7 +76317,7 @@ func downloadSlide(w http.ResponseWriter, r *http.Request, sid string) string {
 	}
 	return bufc.String()
 }
- 
+
 //creates a http client with timeouts
 func createClient(context appengine.Context, t time.Duration) *http.Client {
     return &http.Client{
@@ -76553,14 +76554,14 @@ var eChartsHits = template.Must(template.New("htmlHeaderModal").Parse(`
  
     </script>
 `))
- 
+
 //D0042
 //remove duplicates from an array of string
 func removeDuplicates(elements []string) []string {
     // Use map to record duplicates as we find them.
     encountered := map[string]bool{}
     result := []string{}
- 
+
     for v := range elements {
         if encountered[elements[v]] == true {
             // Do not add duplicate.
@@ -76580,7 +76581,7 @@ func get_words_from(text string) []string{
     words:= regexp.MustCompile("\\w+")
     return words.FindAllString(text, -1)
 }
- 
+
 //sort and count words in a given array of strings
 func count_words (words []string) map[string]int{
     word_counts := make(map[string]int)
@@ -76589,7 +76590,7 @@ func count_words (words []string) map[string]int{
     }
     return word_counts;
 }
- 
+
 //sort and display music tages given a list of keywords
 func display_music_tags (w http.ResponseWriter, r *http.Request, uid string, word_counts map[string]int){
 	var buf bytes.Buffer	
@@ -76615,7 +76616,7 @@ func display_music_tags (w http.ResponseWriter, r *http.Request, uid string, wor
 	fmt.Fprintf(w, "%v", buf.String())
 	putStrToMemcacheWithExp(w,r,cKey,buf.String(), GEN_CONTENT_EXPIRES4)
 }
- 
+
 //sort and display music tages given a list of keywords
 /* func display_photo_tags (w http.ResponseWriter, r *http.Request, uid string, opt string, word_counts map[string]int){
 	var buf bytes.Buffer	
@@ -77129,7 +77130,7 @@ func getGithubBranches(w http.ResponseWriter, r *http.Request, repo string) {
 				fmt.Fprintf(w, "<h3>github.com/%v/%v</h3>", GITHUB_USER_NAME, repo)
 				fmt.Fprintf(w, "<h4>Select Branch:</h4>")
 				for _, br := range repos {
-					fmt.Fprintf(w, "<h4><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=R&bra=%v&repo=%v&sha=%v', 'https://sample-project.appspot.com'); return false;\">%v (SHA=%v)</a></h4>", repo, *br.Name, repo, *br.Commit.SHA, *br.Name, *br.Commit.SHA)
+					fmt.Fprintf(w, "<h4><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@/tools?FUNC=DRIVES&t=MYDRIVE_GITHUB&ACT=R&bra=%v&repo=%v&sha=%v', 'https://ulapph-public-1.appspot.com'); return false;\">%v (SHA=%v)</a></h4>", repo, *br.Name, repo, *br.Commit.SHA, *br.Name, *br.Commit.SHA)
 				}	
 			} else {
 				//redirect to content
@@ -77291,20 +77292,20 @@ func syncGithubDrive(w http.ResponseWriter, r *http.Request, uid string) {
 	}
  
 }
- 
+
 //D0044
 //google admin callback
 func oauth2GaeAdminCall(w http.ResponseWriter, r *http.Request, target string) {
 	//c := appengine.NewContext(r)
- 
+	//c.Infof("oauth2GaeAdminCall()...")
 	switch target {
 		case "auth":
-			redURL := fmt.Sprintf("https://accounts.google.com/o/oauth2/v2/auth?response_type=token&client_id=176777409325-vj412ou1mgrjcn9175aaspjusbufeacc.apps.googleusercontent.com&redirect_uri=https://sample-project.appspot.com/oauth2/admin/callback&scope=https://www.googleapis.com/auth/cloud-platform")
- 
+			redURL := fmt.Sprintf("https://accounts.google.com/o/oauth2/v2/auth?response_type=token&client_id=176777409325-vj412ou1mgrjcn9175aaspjusbufeacc.apps.googleusercontent.com&redirect_uri=https://ulapph-public-1.appspot.com/oauth2/admin/callback&scope=https://www.googleapis.com/auth/cloud-platform")
+			//c.Infof("redURL: %v", redURL)
 			http.Redirect(w, r, redURL, http.StatusFound)
 	}
 }
- 
+
  
 //D0033
 //gogole oauth2 callback
@@ -77312,7 +77313,7 @@ func oauth2GoogleCall(w http.ResponseWriter, r *http.Request, uid, target string
 	//c := appengine.NewContext(r)
 	switch target {
 		case "drive":
-			redURL := fmt.Sprintf("%v?client_id=%v&redirect_uri=https://sample-project.appspot.com/oauth2/google/callback&response_type=code&scope=https://www.googleapis.com/auth/drive&access_type=offline&state=%v&login_hint=%v", GOOGLE_OAUTH2_AUTH, GOOGLE_OAUTH2_CLIENTID, GOOGLE_OAUTH2_STATE, uid)
+			redURL := fmt.Sprintf("%v?client_id=%v&redirect_uri=https://ulapph-public-1.appspot.com/oauth2/google/callback&response_type=code&scope=https://www.googleapis.com/auth/drive&access_type=offline&state=%v&login_hint=%v", GOOGLE_OAUTH2_AUTH, GOOGLE_OAUTH2_CLIENTID, GOOGLE_OAUTH2_STATE, uid)
 			http.Redirect(w, r, redURL, http.StatusFound)
 	}
 }
@@ -77323,7 +77324,7 @@ func oauth2GithubCall(w http.ResponseWriter, r *http.Request, uid, target string
 	//c := appengine.NewContext(r)
 	switch target {
 		case "github":
-			redURL := fmt.Sprintf("%v?client_id=%v&redirect_uri=https://sample-project.appspot.com/oauth2/github/callback&scope=user repo&state=%v&allow_signup=true", GITHUB_AUTH_URL, GITHUB_CLIENT_ID, GITHUB_OAUTH2_STATE)	
+			redURL := fmt.Sprintf("%v?client_id=%v&redirect_uri=https://ulapph-public-1.appspot.com/oauth2/github/callback&scope=user repo&state=%v&allow_signup=true", GITHUB_AUTH_URL, GITHUB_CLIENT_ID, GITHUB_OAUTH2_STATE)	
 			http.Redirect(w, r, redURL, http.StatusFound)
 	}
 }
@@ -77333,7 +77334,7 @@ func str2int(a string) (i int) {
 	i, _ = strconv.Atoi(a)	
 	return i
 }
- 
+
 //D0040
 //creates a new comment entry
 func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comment, latlon string, parent int) error {
@@ -77346,14 +77347,14 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 	
 	SID, sidOk := getRefDoc(w,r,url)
 	if sidOk == false {
- 
+		//c.Infof("No SID found!")
 		return fmt.Errorf("No SID found!")
 		
-	}
+	} 
 	if SID == "" {
 		SID = r.FormValue("SID")
 		if SID == "" {
- 
+			//c.Infof("No SID found2!")
 			return fmt.Errorf("No SID found!")
 		}
 	}
@@ -77386,7 +77387,7 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 				 panic(err)
 			}
 			//broadcast event in chat world
-			msgDtl := fmt.Sprintf("New comment posted on: %v at %v by %v. LINK: %v", SID, SYS_SERVER_NAME, uid, ShortenUrl(w,r,fmt.Sprintf("https://sample-project.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=", SID, "")))
+			msgDtl := fmt.Sprintf("New comment posted on: %v at %v by %v. LINK: %v", SID, SYS_SERVER_NAME, uid, ShortenUrl(w,r,fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=", SID, "")))
 			data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "USER-COMMENT", msgDtl)
 			ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
 			//signal sites server to refresh the recent discussions page
@@ -77406,10 +77407,10 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 			
 		}
 	}
- 
+
 	q := datastore.NewQuery("TDSCOMMENT").Filter("CID =", parent)
 	recCount,_ := q.Count(c)
- 
+	//c.Infof("recCount: %v", recCount)
 	cmts := make([]TDSCOMMENT, 0, recCount)
 	if _, err := q.GetAll(c, &cmts); err != nil {
 		 panic(err)
@@ -77420,7 +77421,7 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 		for _, p := range cmts{
 			if p.DEPTH+1 > 5 {
 				parent = p.PARENT
- 
+				//c.Infof("parent: %v", parent)
 			}
 			
 			thisCID := 0
@@ -77446,10 +77447,10 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 				LATLON: latlon,
 				PARENT: parent,
 			}
- 
+			//c.Infof("TDSCOMMENT: %v", g)
 			
 			thisKey := fmt.Sprintf("%d", g.CID)
- 
+			//c.Infof("thisKey: %v", thisKey)
 			
 			key := datastore.NewKey(c, "TDSCOMMENT", thisKey, 0, nil)
 			_, err := datastore.Put(c, key, &g)
@@ -77488,10 +77489,10 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 			LATLON: latlon,
 			PARENT: parent,
 		}
- 
+		//c.Infof("TDSCOMMENT: %v", g)
 		
 		thisKey := fmt.Sprintf("%d", g.CID)
- 
+		//c.Infof("thisKey: %v", thisKey)
 		
 		key := datastore.NewKey(c, "TDSCOMMENT", thisKey, 0, nil)
 		_, err := datastore.Put(c, key, &g)
@@ -77507,7 +77508,7 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 	}			
 	//D0042
 	//for query of latest TDS contents discussions
- 
+	//c.Infof("FL_INITIAL: %v", FL_INITIAL)
 	if FL_INITIAL == true {
 	//cidx not exist
 		cTags := removeDuplicates(get_words_from(comment))
@@ -77523,10 +77524,10 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 			NUM_COMMENTS: 1,
 			TAGS: cTags,
 		}
- 
+		//c.Infof("TDSCOMIDX: %v", h)
 		
 		thisKey := fmt.Sprintf("%v", h.SID)
- 
+		//c.Infof("thisKey: %v", thisKey)
 		
 		key := datastore.NewKey(c, "TDSCOMIDX", thisKey, 0, nil)
 		_, err := datastore.Put(c, key, &h)
@@ -77566,7 +77567,7 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 				NUM_COMMENTS: p.NUM_COMMENTS+1,
 				TAGS: cTags,
 			}
- 
+			//c.Infof("TDSCOMIDX: %v", h)
 			_, err := datastore.Put(c, key, &h)
 			if err != nil {
 					 panic(err)
@@ -77601,7 +77602,7 @@ func getComments(w http.ResponseWriter, r *http.Request, SID, url string) ([]Com
 	//q := datastore.NewQuery("TDSCOMMENT").Filter("URL =", url)
 	q := datastore.NewQuery("TDSCOMMENT").Filter("SID =", SID)
 	recCount,_ := q.Count(c)
- 
+	//c.Infof("recCount: %v", recCount)
 	
 	cmts := make([]TDSCOMMENT, 0, recCount)
 	if _, err := q.GetAll(c, &cmts); err != nil {
@@ -77629,15 +77630,15 @@ func getComments(w http.ResponseWriter, r *http.Request, SID, url string) ([]Com
 				Latlon: p.LATLON,
 				Parent: p.PARENT,
 			}
- 
+			//c.Infof("Comment: %v", g)
 			pl = append(pl, g)
 		}
 	}
 	
- 
+	//c.Infof("pl: %v", pl)
 	return pl, nil
 }
- 
+
 //D0040
 //render comments in a container
 func (res *resultContainer) render(w http.ResponseWriter) {
@@ -77654,17 +77655,17 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 		res.Status = 200
 	}
 	w.WriteHeader(res.Status)
- 
+
 	json, err := json.Marshal(res)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{"Success":false,"Message":"Internal Server Error"}`))
 		return
 	}
- 
+	//c.Infof("json: %v", json)
 	w.Write(json)
 }
- 
+
 ////////////////////////////////////////////////////////////////////////////////////
 //TO GOD BE THE GLORY
 //IN GOD WE TRUST
