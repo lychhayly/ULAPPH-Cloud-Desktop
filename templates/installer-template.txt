@@ -98,7 +98,7 @@ if (status != undefined && status != "" && cfun != "INSTALL") {
 }
 
 //ask user to create ID
-installNow();
+//installNow();
 
 </script>
 	
@@ -154,7 +154,7 @@ installNow();
     if ((projectID != "my-ulapph-server") && (projectID == null || projectID == "")) {
         //txt = "User cancelled the prompt.";
 		alert("Invalid server name!");
-		installNow();
+		//installNow();
 		return;
     } else {
         //txt = "Hello " + projectID + "! How are you today?";
