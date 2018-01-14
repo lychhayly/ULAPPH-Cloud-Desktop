@@ -1418,3 +1418,23 @@ function clearls(sid) {
 	alert("cleared local copy: "+sid);
 	return;
 };
+
+//edv - 1/14/2018 - get domain of url
+function getDomain(url) {
+    var hostName = getHostName(url);
+    var domain = hostName;
+    
+    if (hostName != null) {
+        var parts = hostName.split('.').reverse();
+        
+        if (parts != null && parts.length > 1) {
+            domain = parts[1] + '.' + parts[0];
+                
+            if (hostName.toLowerCase().indexOf('.co.uk') != -1 && parts.length > 2) {
+              domain = parts[2] + '.' + domain;
+            }
+        }
+    }
+    
+    return domain;
+}
