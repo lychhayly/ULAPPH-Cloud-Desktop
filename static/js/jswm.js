@@ -480,7 +480,7 @@ JSWM.prototype.openURI = function(uri, w, h, l, t, options)
 	//if browser is edge and diff domains; open in new tab
 	var siteDom = getDomain(location.protocol + '//' + location.host);
 	var uriDom = getDomain(uri);
-	if (siteDom == uriDom) {
+	if ((isEdge == true || isIE == true || isSafari == true) && (siteDom != uriDom)) {
 		window.open(uri,'_blank')
 		return;		
 	}
