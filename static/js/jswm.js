@@ -476,6 +476,15 @@ JSWM.prototype.openURI = function(uri, w, h, l, t, options)
 		localStorage[root+d.value] = localStorage[root+d.value] + thisHTML;
 	}
 	
+	//edv 1/14/2018
+	//if browser is edge and diff domains; open in new tab
+	var siteDom = getDomain(location.protocol + '//' + location.host);
+	var uriDom = getDomain(uri);
+	if (siteDom == uriDom) {
+		window.open(uri,'_blank')
+		return;		
+	}
+	
 	var isMobile = document.getElementById("isMobile").value;
 	var isSmallScreen = localStorage[root+'isScreenSmall'];
 	if (isMobile == "true" || isMobile == true || isSmallScreen == "Y") {
