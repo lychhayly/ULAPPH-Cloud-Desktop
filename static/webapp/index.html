@@ -196,21 +196,25 @@
         document.getElementById("mySite").value = thisServer;
         document.getElementById("ds").innerHTML = thisServer;
     </script>
-	
-    <button onclick=openInNewTab("/");>Home</button>
+	<!--Categories-->
+	<br>
+	<a href="#home">Home</a> | <a href="#portal">Portal</a> | <a href="#tools">Tools</a> | <a href="#content">Content</a> | <a href="#messaging">Messaging</a> | <a href="#players">Players</a> | <a href="#photos">Photos</a> | <a href="#productivity">Productivity</a> | <a href="#bible">Bible</a> |  <a href="#recorders">Recorders</a> |  <a href="#editors">Editors</a> |  <a href="#security">Security</a> |  <a href="#developers">Developers</a> |  <a href="#settings">Settings</a> |  <a href="#admin">Admin</a>
+    <button onclick=openInNewTab("/");><a name="home"></a>Home</button>
 	<button onclick=openInNewTab("/uwm");>Main Desktop</button>
 	<button onclick=openInNewTab("/tools?FUNC=WIDGET&t=ULAPPHStart");>ULAPPH Start Menu</button>
 	<!--button onclick=openInNewTab("/tools?t=QUICK_SEARCH");>Quick Search</button-->
 	<button onclick=openInNewTab("/tools?FUNC=WIDGET&t=MiniBrowserGet");>Quick Launch</button>
     <button onclick=openInNewTab("/contents?q=home");>Website</button>
     <button onclick=openInNewTab("/search");>Multi-Search</button>
-	<h1>Portal</h1>
+	
+	<h1><a name="portal"></a>Portal</h1>
 	<button onclick=openInNewTabNow("http://www.ulapph.com/go?m=14");>Geolocation Map</button>
 	<button onclick=openInNewTab("/directory?DIR_FUNC=sessions");>Who's online?</button>
 	<button onclick=openInNewTab("/chat?pubchan=worldwide");>Chat Bot</button>
 	<button onclick=openInNewTabNow("https://ulapph-cloud-desktop.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-cloud-desktop.appspot.com/login?continue=/?q=login@888@LFUNC=ULAPPH");>Servers Directory</button>
 	<button onclick=openInNewTabNow("https://ulapph-cloud-desktop.appspot.com/directory?DIR_FUNC=sites");>Cloud Monitoring</button>
-	<h1>Tools</h1>
+	
+	<h1><a name="tools"></a>Tools</h1>
 	<button onclick=openInNewTab("/tools?FUNC=WIDGET&t=ADDUWM&d=Main Desktop()");>Main Desktop Settings</button>
 	<button onclick=openInNewTab("/tools?FUNC=ALL_DESKTOPS");>All Desktops</button>
 	<button onclick=openInNewTab("/tools?FUNC=ALL_ICONS");>All Websites</button>
@@ -218,7 +222,8 @@
 	<button onclick=openInNewTab("/media?FUNC_CODE=SET_MULTI_IMAGE_UPLOAD");>Multiple Uploader</button>
     <button onclick=openInNewTab("/uloc");>Local Storage</button>
     <button onclick=openInNewTab("/presenter?MODE=CONTROL@888@PRESENTER_SESSION_KEY=dummy");>Remote Controller</button>
-	<h1>Content</h1>
+	
+	<h1><a name="content"></a>Content</h1>
 	<button onclick=openInNewTabNow("https://ulapph-cloud-desktop.appspot.com/social?SO_FUNC=show-discussions");>Discussions</button>
 	<button onclick=openInNewTab("/social?SO_FUNC=show-trending");>Trending</button>
 	<button onclick=openInNewTab("/social?SO_FUNC=show-whats-new");>Whats New!</button>
@@ -238,7 +243,8 @@
 	<button onclick=openInNewTab("/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=20");>Recent Media(20)</button>
 	<button onclick=openInNewTab("/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=50");>Recent Media(50)</button>
 	<button onclick=openInNewTab("/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=100");>Recent Media(100)</button>
-    <h1>Messaging</h1>
+    
+	<h1><a name="messaging"></a>Messaging</h1>
     <button onclick=openInNewTab("/people-edit?EditPeopleFunc=EDIT_CONTACTS_LIST&UID=");>My Contacts</button>
     <button onclick=openInNewTab("/guestbook?GB_FUNC=GB_OWNER");>Guestbook</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=WallMessage");>Wall Message</button>
@@ -248,30 +254,36 @@
 	<button onclick=openInNewTab("/chat?pubchan=country");>Country Chat</button>
 	<button onclick=openInNewTab("/chat?pubchan=public");>Site Chat</button>
 	<button onclick=openInNewTab("/chat?CHAT_FUNC=newChatRoom");>Private Chat</button>
-    <h1>Players</h1>
+    
+	<h1><a name="players"></a>Players</h1>
     <button onclick=openInNewTab("/media?FUNC_CODE=VIEW_THUMBS");>Photo Album</button>
     <button onclick=openInNewTab("/media?FUNC_CODE=UMP");>Music Player</button>
     <button onclick=openInNewTab("/media?FUNC_CODE=MDP");>MIDI Player</button>
     <button onclick=openInNewTab("/media?FUNC_CODE=UVP");>Video Player</button>
     <button onclick=openInNewTab("/media?FUNC_CODE=YVP");>Youtube Player</button>
     <button onclick=openInNewTab("/editor?EDIT_FUNC=TEXT-TO-SPEECH");>Text to Speech</button>
-    <h1>Photos</h1>
+    
+	<h1><a name="photos"></a>Photos</h1>
     <button onclick=openInNewTab("/tools?FUNC=MIRROR2");>Small Mirror</button>
     <button onclick=openInNewTab("/tools?FUNC=MIRROR");>Big Mirror</button>
     <button onclick=openInNewTab("/media?FUNC_CODE=SET_MULTI_IMAGE_UPLOAD");>Upload Photos</button>
-    <h1>Productivity</h1>
+    
+	<h1><a name="productivity"></a>Productivity</h1>
     <button onclick=openInNewTab("/stream");>Stream</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=TODO");>TODOs</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=CountDownGet");>Countdown</button>
-    <h1>Bible</h1>
+    
+	<h1><a name="bible"></a>Bible</h1>
     <button onclick=openInNewTab("/bible?BIB_FUNC=biblegateway");>Bible Audio</button>
-    <h1>Recorders</h1>
+    
+	<h1><a name="recorders"></a>Recorders</h1>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=GIF-REC");>GIF Recorder</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=RECORD");>WebRTC Recorder</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=BROADCAST-AV");>A/V Broadcast</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=BROADCAST-A");>Audio Broadcast</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=BROADCAST-A");>Audio Broadcast</button>
-    <h1>Editors</h1>
+    
+	<h1><a name="editors"></a>Editors</h1>
     <button onclick=openInNewTab("/editor?EDIT_FUNC=TEXT-CSS");>Text Formatter</button>
     <button onclick=openInNewTab("/editor?EDIT_FUNC=READER");>Ace Editor</button>
     <button onclick=openInNewTab("/editor?EDIT_FUNC=TINY");>Tiny Editor</button>
@@ -279,13 +291,16 @@
     <button onclick=openInNewTab("/editor?DOC_ID=0&SID=NEWSLIDE");>New Slide</button>
     <button onclick=openInNewTab("/editor?MEDIA_ID=0&SID=NEWTEXT");>New Text</button>
     <button onclick=openInNewTab("/editor?EDIT_FUNC=DRAW");>Drawing</button>
-    <h1>Security</h1>
+    
+	<h1><a name="security"></a>Security</h1>
     <button onclick=openInNewTab("/editor?EDIT_FUNC=CRYPTO");>Encryption</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=RandomGenerator");>Password Generator</button>
-    <h1>Developers</h1>
+    
+	<h1><a name="developers"></a>Developers</h1>
     <button onclick=openInNewTab("/api-doc/");>API</button>
 	<button onclick=openInNewTabNow("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=3&SID=TDSARTL-3");>ULAPPH Cloud Desktop Guide</button>
-    <h1>Settings</h1>
+    
+	<h1><a name="settings"></a>Settings</h1>
     <button onclick=openInNewTab("/people-edit?EditPeopleFunc=EditPeople&UID=");>Edit Profile</button>
     <button onclick=openInNewTab("/people-edit?EditPeopleFunc=deleteMyAccount&UID=");>Delete Profile</button>
     <button onclick=openInNewTab("/people-edit?EditPeopleFunc=EDIT_TOP_LIST_MENU_MINE&UID=");>Edit Personal Menu</button>
@@ -297,7 +312,8 @@
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=MyPreferences");>My Preferences</button>
     <button onclick=openInNewTab("/tools?FUNC=WIDGET&t=MyUrlFetcher");>My URL Fetcher</button>
     <button onclick=openInNewTab("/people-edit?EditPeopleFunc=EDIT_SHORTCUTS&UID=");>My Shortcuts</button>	
-    <h1>Admin</h1>
+    
+	<h1><a name="admin"></a>Admin</h1>
 	<button onclick=openInNewTab("/admin-setup");>Admin Setup</button>
     <button onclick=openInNewTab("/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-LOG&SID=ULAPPH-NOTIFICATIONS-LOG");>Access Logs</button>
     <button onclick=openInNewTab("/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-MAP");>Access Maps</button>

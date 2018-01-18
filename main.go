@@ -344,15 +344,18 @@ import (
 	"appengine/urlfetch"
 	"appengine/runtime"
 	//third party APIs
-	"user_agent"
+	//"user_agent"
+	"github.com/edwindvinas/user_agent"
 	"github.com/dustin/go-humanize"
-	"code.google.com/p/go.net/html"
+	//"code.google.com/p/go.net/html"
+	"github.com/edwindvinas/html"
 	//google plus API
 	"google.golang.org/api/googleapi/transport"
 	"google.golang.org/api/plus/v1"
 	//google youtube API
 	"flag"
-	"code.google.com/p/google-api-go-client/youtube/v3"
+	//"code.google.com/p/google-api-go-client/youtube/v3"
+	"google.golang.org/api/youtube/v3"
 	"golang.org/x/net/context"
 	newappengine "google.golang.org/appengine"
 	//encryption
@@ -373,16 +376,19 @@ import (
 	"crypto/rsa"
 	"github.com/dgrijalva/jwt-go"
 	//goquery
-	"github.com/PuerkitoBio/goquery"
+	//"github.com/PuerkitoBio/goquery"
+	"github.com/edwindvinas/goquery"
 	"gopkg.in/neurosnap/sentences.v1/english"
 	//D0033
 	"golang.org/x/oauth2"
 	"github.com/google/go-github/github"
 	//bleve
 	//D0036
-	"github.com/blevesearch/bleve"
+	//"github.com/blevesearch/bleve"
+	"github.com/edwindvinas/bleve"
 	//D0037
-	"github.com/Masterminds/sprig"
+	//"github.com/Masterminds/sprig"
+	"github.com/edwindvinas/sprig"
 	//D0039
 	"encoding/binary"
 	//D0044
@@ -8915,8 +8921,7 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 				STR_FILLER10: h.Get("U-Referer"),
 				BOOL_FILLER1: SYS_SUPER_USER,
 			}
-	
-			//edwinxxx
+
 			if err := desktopBodyTooltipTemplate.Execute(w, &TEMPDATA4); err != nil {
 				panic(err)
 			}
@@ -9277,8 +9282,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					STR_FILLER10: h.Get("U-Referer"),
 					BOOL_FILLER1: SYS_SUPER_USER,
 				}
- 
-				//edwinxxx
+
  				if err := desktopBodyTooltipTemplate.Execute(w, &TEMPDATA4); err != nil {
 					panic(err)
 				}
@@ -17195,7 +17199,6 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
-		//edwinxxx
 		case "TIMELINE":
 			SID := r.FormValue("SID")
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
@@ -18599,6 +18602,26 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	
 	CMD_FUNC := r.FormValue("CMD_FUNC")
 	
+	//edwinxxx
+	//todos updates (adhoc)
+	if CMD_FUNC == "TODOS" {
+		TARGET := r.FormValue("t")
+		switch TARGET {
+			case "update":
+				uid := r.FormValue("uid")
+				stat := r.FormValue("stat")
+				todo := r.FormValue("todo")
+				//ckey := r.FormValue("ckey")
+				updateTodo(w,r,uid,stat,todo)
+				return
+				
+			default:
+				return
+			
+				
+		}
+	}
+	
 	//speed testing
 	if CMD_FUNC == "SPEEDTEST" {
 		TARGET := r.FormValue("t")
@@ -18689,6 +18712,67 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	}
 	//return
 	
+}
+
+//edwinxxx
+//delete All Todos related to XPIMS app
+func deleteTodos(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	q := datastore.NewQuery("Todo").KeysOnly()
+	keys, err := q.GetAll(c, nil)
+	if err != nil {
+		panic(err)
+	}
+	err = datastore.DeleteMulti(c, keys)
+	if err != nil {
+		panic(err)
+	}	
+			
+}
+
+//edwinxxx
+//update TODOs from XPIMS app
+func updateTodo(w http.ResponseWriter, r *http.Request,uid,stat,todo string) {
+	c := appengine.NewContext(r)
+	c.Infof("uid: %v", uid)
+	c.Infof("stat: %v", stat)
+	c.Infof("todo: %v", todo)
+	
+	if todo != "" {
+		//update items
+		q := datastore.NewQuery("Todo").Order("Done")
+		//c.Errorf("[S0040]")
+		recCount,_ := q.Count(c)
+		todos := make([]Todo, 0, recCount)
+		if _, err := q.GetAll(c, &todos); err != nil {
+			 panic(err)
+			//return
+		 }
+		FL_FOUND := false
+		for _, p := range todos {
+			c.Infof("p.Text: %v", p.Text)
+			c.Infof("todo: %v", todo)
+			if html.UnescapeString(p.Text) == html.UnescapeString(todo) {
+				c.Infof("found: %v", p.Id)
+				if stat == "x" {
+					p.Done = true
+					p.save(c,uid)
+					c.Infof("Saved p: %v", p)
+				}
+				FL_FOUND = true
+				break				
+			}
+		}
+		if FL_FOUND == false {
+			c.Infof("not found: %v", todo)
+			g := Todo{
+					Done: false,
+					Text: todo,
+			}
+			g.save(c,uid)
+			c.Infof("Saved g: %v", g)			
+		}
+	}
 }
 
 //function which can scrape webpages 
@@ -76327,14 +76411,24 @@ func createClient(context appengine.Context, t time.Duration) *http.Client {
         },
     }
 }
- 
+
+//edwinxxx 
 //D0029
 //Todos manager handler for /todos
 //user can create and manage TODOs using the AngularJS interface
 func ulapphTodos(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+	
 	_, uid := checkSession(w,r)
 	if uid == "" {
+		return
+	}
+	
+	if r.FormValue("t") == "delete-all" {
+		//xpims cleanup
+		deleteTodos(w,r)
+		redURL := fmt.Sprintf("/tools?FUNC=WIDGET&t=TODO")
+		http.Redirect(w, r, redURL, http.StatusFound)
 		return
 	}
 	
@@ -76440,7 +76534,7 @@ const todosHTML = `<!doctype html>
       <h2><a href="/tools?FUNC=WIDGET&t=TODO&desktop={{desktop}}">TODOs</a></h2>
       <div ng-controller="TodoCtrl">
         <p><span>{{remaining()}} of {{todos.length}} remaining</span>
-        [ <a href="" ng-click="archive()">archive</a> ]</p>
+        [ <a href="" ng-click="archive()">archive</a> ] [ <a href="/todos?t=delete-all">DeleteAll</a> ]</p>
         <form ng-submit="addTodo()">
           <input type="text" ng-model="todoText"  size="30"
                  placeholder="add new todo here">
