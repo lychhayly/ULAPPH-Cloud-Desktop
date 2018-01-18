@@ -36,4 +36,6 @@ Change History
 ---------------
 - **1/12/2018 01:34AM** EDV - Uploaded opensource version under https://github.com/Accenture/ULAPPH-Cloud-Desktop
 - **1/14/2018 03:32AM** EDV - Added browser fingerprinting
+- **1/19/2018 02:43AM** EDV - Tested installer to work via gcloud instead of appcfg.py
+
 
