@@ -6328,7 +6328,8 @@ func checkSession(w http.ResponseWriter, r *http.Request) (FL_OU_USER bool, uid 
 	
 	return FL_OU_USER, uid
 }
- 
+
+//checks if user is logged in 
 func isLoggedIn(w http.ResponseWriter, r *http.Request) (FL_LOGGED_IN bool) {
 	c := appengine.NewContext(r) 	
 	u := user.Current(c)
@@ -10968,6 +10969,43 @@ func putSearchIndexP(w http.ResponseWriter, r *http.Request, indexName string, t
 	}
 	return
 }
+
+//edwinxxx
+//put search index for items for profiles  
+func runTopicsHaveNeed(w http.ResponseWriter, r *http.Request, UID, mode string) {
+	c := appengine.NewContext(r)
+	
+	//get from profile
+	q := datastore.NewQuery("TDSPROF").Filter("UID =", UID).Limit(1)
+	profile := make([]TDSPROF, 0, 1)
+	if _, err := q.GetAll(c, &profile); err != nil {
+		 panic(err)
+	}
+	
+	pstr := ""
+	for _, x := range profile{
+		if mode == "have" {
+			pstr = x.I_HAVE_TEXT
+		} else {
+			pstr = x.I_NEED_TEXT
+		}
+	}
+						
+	s := bufio.NewScanner(strings.NewReader(pstr))
+
+	for s.Scan() {
+		if len(s.Text()) > 0 {
+			thisStr := fmt.Sprintf("%v", s.Text())
+			if string(thisStr[0]) != "#" {
+				SEARCH_KEY := s.Text()
+				data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_GOOGLE_SEARCH@888@%v", SEARCH_KEY)
+				sendChannelMessage(w,r,UID,data)
+				dummyCmd(w,r,UID)
+			}
+		}
+	}
+}
+
 
 //function which serves the /wall url
 //used for sending messages or copying files via wall 
@@ -16337,18 +16375,33 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 	
+	//edwinxxx
 	switch STR_FUNC {
 		case "RUN_TOPICS":
 			UID := fmt.Sprintf("%v---%v", uid, r.FormValue("u"))
-			topicsource := getTopicsSource(w,r,uid,r.FormValue("u"))
-			if topicsource != "" {
-				laterRunStream.Call(c, UID)
-				STRMSG := fmt.Sprintf("<img src=\"/img/cron.png\" width=45 height=45>Your run request has been queued.")
-				//when run request
-				sendChannelMessage(w,r,UID, STRMSG)
-				fmt.Fprintf(w, "Request to run topic search has been queued.<br>")		
-			} else {
-				fmt.Fprintf(w, "No topics found!<br>")
+			switch r.FormValue("u") {
+				case "-1":
+					//forsale
+					runTopicsHaveNeed(w,r,uid,"have")
+					fmt.Fprintf(w, "Topic search has been run.<br>")
+					
+				case "-2":
+					//wantobuy
+					runTopicsHaveNeed(w,r,uid,"need")
+					fmt.Fprintf(w, "Topic search has been run.<br>")
+				
+				default:
+					topicsource := getTopicsSource(w,r,uid,r.FormValue("u"))
+					if topicsource != "" {
+						laterRunStream.Call(c, UID)
+						STRMSG := fmt.Sprintf("<img src=\"/img/cron.png\" width=45 height=45>Your run request has been queued.")
+						//when run request
+						sendChannelMessage(w,r,UID, STRMSG)
+						fmt.Fprintf(w, "Request to run topic search has been queued.<br>")		
+					} else {
+						fmt.Fprintf(w, "No topics found!<br>")
+					}				
+				
 			}
 			return
 		case "REQ_RUN":
@@ -18601,8 +18654,7 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	}
 	
 	CMD_FUNC := r.FormValue("CMD_FUNC")
-	
-	//edwinxxx
+
 	//todos updates (adhoc)
 	if CMD_FUNC == "TODOS" {
 		TARGET := r.FormValue("t")
@@ -18714,7 +18766,6 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	
 }
 
-//edwinxxx
 //delete All Todos related to XPIMS app
 func deleteTodos(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
@@ -18730,7 +18781,6 @@ func deleteTodos(w http.ResponseWriter, r *http.Request) {
 			
 }
 
-//edwinxxx
 //update TODOs from XPIMS app
 func updateTodo(w http.ResponseWriter, r *http.Request,uid,stat,todo string) {
 	c := appengine.NewContext(r)
@@ -22128,7 +22178,9 @@ func searchIndex(w http.ResponseWriter, r *http.Request, searchChan chan []byte,
 				buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.IMG_URL))
 				buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 				buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.DOC_TITLE, p.DOC_DESC)))
+				
+				//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.DOC_TITLE, p.DOC_DESC)))
+				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.DOC_TITLE, stmpHumanize(p.DATE_UPDATED))))
 				buffer3.WriteString(fmt.Sprintf("	  </div>"))
 				buffer3.WriteString(fmt.Sprintf(""))
 				buffer3.WriteString(fmt.Sprintf("	  <a href=\"/message-channel?CHAN_FUNC=openLink&UID=&message=@888@ULAPPH-SYS-UPD@888@SYS_OPEN_LINK@888@%v@888@0\"  target=\"view\"></a>", searchSchemeHandler(w,r,p.CONTENT_URL,sec)))
@@ -22189,7 +22241,8 @@ func searchIndex(w http.ResponseWriter, r *http.Request, searchChan chan []byte,
 				buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.IMG_URL))
 				buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 				buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.DOC_TITLE, p.DOC_DESC)))
+				//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.DOC_TITLE, p.DOC_DESC)))
+				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.DOC_TITLE, stmpHumanize(p.DATE_UPDATED))))
 				buffer3.WriteString(fmt.Sprintf("	  </div>"))
 				buffer3.WriteString(fmt.Sprintf(""))
 				buffer3.WriteString(fmt.Sprintf("	  <a href=\"%v\"  target=\"view\"></a>", searchSchemeHandler(w,r,p.CONTENT_URL,sec)))
@@ -30977,7 +31030,8 @@ func TASK_MEMCACHER_contentsAll_Slides(w http.ResponseWriter, r *http.Request, T
 				buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 				buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 				buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 				buffer3.WriteString(fmt.Sprintf("	  </div>"))
 				buffer3.WriteString(fmt.Sprintf(""))
 				buffer3.WriteString(fmt.Sprintf("	  <a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&SOUND=%v\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, SLIDE_SOUND_SET))
@@ -31032,7 +31086,8 @@ func TASK_MEMCACHER_contentsAll_Slides(w http.ResponseWriter, r *http.Request, T
 				buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 				buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 				buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 				buffer3.WriteString(fmt.Sprintf("	  </div>"))
 				buffer3.WriteString(fmt.Sprintf(""))
 				buffer3.WriteString(fmt.Sprintf("	  <a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&SOUND=%v\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, SLIDE_SOUND_SET))
@@ -31100,7 +31155,8 @@ func TASK_MEMCACHER_contentsAll_Articles(w http.ResponseWriter, r *http.Request,
 				buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 				buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 				buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 				buffer3.WriteString(fmt.Sprintf("	  </div>"))
 				buffer3.WriteString(fmt.Sprintf(""))
 				buffer3.WriteString(fmt.Sprintf("	  <a href=\"/articles?TYPE=ARTICLE&TITLE==%v&DOC_ID=%v&BLOB_KEY=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v\"></a>", p.TITLE, p.DOC_ID, p.BLOB_URL, p.DOC_ID, p.MUSIC_ID))
@@ -31153,7 +31209,8 @@ func TASK_MEMCACHER_contentsAll_Articles(w http.ResponseWriter, r *http.Request,
 				buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 				buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 				buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+				buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 				buffer3.WriteString(fmt.Sprintf("	  </div>"))
 				buffer3.WriteString(fmt.Sprintf(""))
 				buffer3.WriteString(fmt.Sprintf("	  <a href=\"/articles?TYPE=ARTICLE&TITLE==%v&DOC_ID=%v&BLOB_KEY=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v\"></a>", p.TITLE, p.DOC_ID, p.BLOB_URL, p.DOC_ID, p.CATEGORY, p.MUSIC_ID))
@@ -31804,7 +31861,7 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, redURL, http.StatusFound)
 		}
 		return
- 
+
 	case "EDIT_WINDOWS_MINE":
 		//SPC_OPT to /people-edit?EditPeopleFunc=SET_WINDOWS_MINE_SOURCE&MEDIA_ID=787
 		//get config id
@@ -35998,7 +36055,7 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						if _, err := q.GetAll(c, &articles); err != nil {
 							 panic(err)
 						}
-						
+
 						if err := mobileBodyTemplateContentLoaderSingleItemA2.Execute(w, articles); err != nil {
 						  panic(err)
 						}
@@ -36075,7 +36132,7 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						if _, err := q.GetAll(c, &articles); err != nil {
 							 panic(err)
 						}
-						
+
 						if err := mobileBodyTemplateContentLoaderSingleItemA2.Execute(w, articles); err != nil {
 						  panic(err)
 						}
@@ -36193,7 +36250,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer3.WriteString(fmt.Sprintf("	  </div>"))
 						buffer3.WriteString(fmt.Sprintf(""))
 						buffer3.WriteString(fmt.Sprintf("	  <a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET))
@@ -36279,7 +36337,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer4.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer4.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer4.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer4.WriteString(fmt.Sprintf("	  </div>"))
 						buffer4.WriteString(fmt.Sprintf(""))
 						buffer4.WriteString(fmt.Sprintf("	  <a href=\"/articles?TYPE=ARTICLE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSARTL-%v&CATEGORY=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY))
@@ -36366,7 +36425,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer3.WriteString(fmt.Sprintf("	  </div>"))
 						buffer3.WriteString(fmt.Sprintf(""))
 						buffer3.WriteString(fmt.Sprintf("	  <a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET))
@@ -36450,7 +36510,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer4.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer4.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer4.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer4.WriteString(fmt.Sprintf("	  </div>"))
 						buffer4.WriteString(fmt.Sprintf(""))
 						buffer4.WriteString(fmt.Sprintf("	  <a href=\"/articles?TYPE=ARTICLE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID))
@@ -36534,7 +36595,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						
 						buffer5.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer5.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer5.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer5.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer5.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer5.WriteString(fmt.Sprintf("	  </div>"))
 						buffer5.WriteString(fmt.Sprintf(""))
 						switch {
@@ -36636,7 +36698,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer3.WriteString(fmt.Sprintf("	  </div>"))
 						buffer3.WriteString(fmt.Sprintf(""))
 						buffer3.WriteString(fmt.Sprintf("	  <a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET))
@@ -36720,7 +36783,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer3.WriteString(fmt.Sprintf("	  </div>"))
 						buffer3.WriteString(fmt.Sprintf(""))
 						buffer3.WriteString(fmt.Sprintf("	  <a href=\"/articles?TYPE=ARTICLE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID))
@@ -36821,7 +36885,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer3.WriteString(fmt.Sprintf("	  </div>"))
 						buffer3.WriteString(fmt.Sprintf(""))
 						buffer3.WriteString(fmt.Sprintf("	  <a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET))
@@ -36903,7 +36968,7 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer4.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer4.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer4.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer4.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer4.WriteString(fmt.Sprintf("	  </div>"))
 						buffer4.WriteString(fmt.Sprintf(""))
 						buffer4.WriteString(fmt.Sprintf("	  <a href=\"/articles?TYPE=ARTICLE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSARTL-%v&CATEGORY=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY))
@@ -36998,7 +37063,8 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						//buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer3.WriteString(fmt.Sprintf("	  </div>"))
 						buffer3.WriteString(fmt.Sprintf(""))
 						buffer3.WriteString(fmt.Sprintf("	  <a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET))
@@ -37079,7 +37145,7 @@ func dispTopContents(w http.ResponseWriter, r *http.Request, deskName, DISP_CODE
 						buffer3.WriteString(fmt.Sprintf("	  <img src=\"%v\" width=\"100%%\" height=\"100%%\">", p.TAGS))
 						buffer3.WriteString(fmt.Sprintf("	  <div class=\"item_overlay\">"))
 						buffer3.WriteString(fmt.Sprintf("		<h3 class=\"title\">"))
-						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, p.DESC)))
+						buffer3.WriteString(fmt.Sprintf("		  %v </h3>", fmt.Sprintf("%v - %v", p.TITLE, stmpHumanize(p.DT_UPLOAD))))
 						buffer3.WriteString(fmt.Sprintf("	  </div>"))
 						buffer3.WriteString(fmt.Sprintf(""))
 						buffer3.WriteString(fmt.Sprintf("	  <a href=\"/articles?TYPE=ARTICLE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&BLOB_KEY=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v\"  target=\"view\"></a>", p.TITLE, p.BLOB_URL, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.MUSIC_ID))
@@ -39996,7 +40062,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										}
 																									
 									}
-									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID)
+									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Admin URL:</b> <a href=\"/media?FUNC_CODE=VIEW&MEDIA_ID=%v\">%vmedia?FUNC_CODE=VIEW&MEDIA_ID=%v</a><br>", p.MEDIA_ID, getSchemeUrl(w,r), p.MEDIA_ID)
@@ -42071,7 +42137,7 @@ const htmlDesktopsJSONtoTableA = `
 <div id="desktops"></div>
 <div id="columns"></div>
 <br>
-[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://ulapph-public-1.appspot.com'); return false;">Notes</a>]
+[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://ulapph-public-1.appspot.com'); return false;">Notes</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Servers@888@/login?q=login&LFUNC=GOOGLE&TARGET_URL=/login?continue=/uwm', 'https://ulapph-public-1.appspot.com'); return false;">Servers</a>]
 <script>
   $(document).ready(function() {
     var json = {{.}};
@@ -58568,6 +58634,7 @@ var htmlHeaderModalProfile = template.Must(template.New("htmlHeaderModalProfile"
     <link rel="stylesheet" media="screen,projection,tv" href="/css/modalWindow.css"/>
     <link rel="stylesheet" media="screen,projection,tv" href="/css/msgs.css" />
   <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/lib/css/buttons/buttons.css">
   <script type="text/javascript" language="javascript" src="/js/jquery-1.11.1.min.js"></script>
   <script src="/js/bootstrap.min.js"></script>
   <style type='text/css'>
@@ -61245,8 +61312,14 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
  
  
 `))
- 
+
+//edwinxxx 
 var htmlFooterJSWM = template.Must(template.New("htmlFooterJSWM").Parse(`
+	<script type="text/javascript">
+		if (document.getElementById("desktop").value == "uwm") {
+			window.open('/contents?q=home','_blank');
+		}
+	</script>	
   </body>
 </html>
 `))
@@ -63948,7 +64021,7 @@ var profileEditTemplate = template.Must(template.New("profileEditTemplate").Pars
     <li class="toggle4">FS/Selling/Offering/I Have...</li>
     <li class="toggle5">WTB/Buying/Wanted/I Need...</li>
     <li class="toggle6">Ratings</li>
-    <li class="toggle7">Pictures</li>
+    <li class="toggle7">Geolocation</li>
     <li class="toggle8">Ringtone</li>
 </ul>
 <div class="container">
@@ -63986,7 +64059,9 @@ var profileEditTemplate = template.Must(template.New("profileEditTemplate").Pars
 <div class="toggle4">
 		<h3>FS/Selling/Offering/I Have...</h3>
  
-		<div class="info2"><textarea rows="10" cols="50" name="I_HAVE_TEXT" maxlength="2000" value="{{.I_HAVE_TEXT}}">{{.I_HAVE_TEXT}}</textarea><br>Note: Keywords will be matched with other users or notify you any related contents found.<br>
+		<div class="info2"><textarea rows="10" cols="50" name="I_HAVE_TEXT" maxlength="2000" value="{{.I_HAVE_TEXT}}">{{.I_HAVE_TEXT}}</textarea>
+		<span class="button-wrap"><a href="/stream?STR_FUNC=RUN_TOPICS&u=-1" class="button button-pill button-raised button-primary">Search</a></span>
+		<br>Note: Keywords will be matched with other users or notify you any related contents found.<br>
 		Sample:<br>
 		website business<br>
 		programming golang<br>
@@ -63996,7 +64071,9 @@ var profileEditTemplate = template.Must(template.New("profileEditTemplate").Pars
 <div class="toggle5">
 		<h3>WTB/Buying/Wanted/I Need...</h3>
  
-		<div class="info2"><textarea rows="10" cols="50" name="I_NEED_TEXT" maxlength="2000" value="{{.I_NEED_TEXT}}">{{.I_NEED_TEXT}}</textarea><br>Note: Keywords will be matched with other users or notify you any related contents found.<br>
+		<div class="info2"><textarea rows="10" cols="50" name="I_NEED_TEXT" maxlength="2000" value="{{.I_NEED_TEXT}}">{{.I_NEED_TEXT}}</textarea>
+		<span class="button-wrap"><a href="/stream?STR_FUNC=RUN_TOPICS&u=-2" class="button button-pill button-raised button-primary">Search</a></span>
+		<br>Note: Keywords will be matched with other users or notify you any related contents found.<br>
 		Sample:<br>
 		house and lot in philippines<br>
 		management job<br>
@@ -64013,11 +64090,11 @@ var profileEditTemplate = template.Must(template.New("profileEditTemplate").Pars
 		<div class="info2">LIFE_RATING: {{.LIFE_RATING}}<input type="hidden" name="LIFE_RATING" value="{{.LIFE_RATING}}" maxlength="500"/> <br></div>
 </div>
 <div class="toggle7">
-		<h3>Pictures:</h3>
+		<h3>Geolocation:</h3>
  
-		<div class="info2">Gallery 1: <textarea rows="4" cols="50" name="FILLER_1" maxlength="500" value="{{.FILLER_1}}">{{.FILLER_1}}</textarea>Note: .image & .link can be used here<br></div>
-		<div class="info2">Gallery 2: <textarea rows="4" cols="50" name="FILLER_2" maxlength="500" value="{{.FILLER_2}}">{{.FILLER_2}}</textarea>Note: .image & .link can be used here<br></div>	
-		<div class="info2">Gallery 3: <textarea rows="4" cols="50" name="FILLER_3" maxlength="500" value="{{.FILLER_3}}">{{.FILLER_3}}</textarea>Note: .image & .link can be used here<br></div>	
+		<div class="info2">Geolocation: <textarea rows="4" cols="50" name="FILLER_1" maxlength="500" value="{{.FILLER_1}}">{{.FILLER_1}}</textarea></div>
+		<div class="info2">Latitude: <textarea rows="4" cols="50" name="FILLER_2" maxlength="500" value="{{.FILLER_2}}">{{.FILLER_2}}</textarea></div>	
+		<div class="info2">Longitude: <textarea rows="4" cols="50" name="FILLER_3" maxlength="500" value="{{.FILLER_3}}">{{.FILLER_3}}</textarea></div>	
 </div>
 <div class="toggle8">
 		<h3>Ringtone:</h3>
@@ -64055,7 +64132,7 @@ var profileEditTemplateNew1 = template.Must(template.New("profileEditTemplateNew
     <li class="toggle4">FS/Selling/Offering/I Have</li>
     <li class="toggle5">WTB/Buying/Wanted/I Need.</li>
     <li class="toggle6">Ratings</li>
-    <li class="toggle7">Pictures</li>
+    <li class="toggle7">Geolocation</li>
     <li class="toggle8">Ringtone</li>
 </ul>
 <div class="container">
@@ -64113,11 +64190,11 @@ var profileEditTemplateNew2 = template.Must(template.New("profileEditTemplateNew
 		<div class="info2">LIFE_RATING: 0<input type="hidden" name="LIFE_RATING" value="0" maxlength="500"/> <br></div>
 </div>
 <div class="toggle7">
-		<h3>Pictures:</h3>
+		<h3>Geolocation:</h3>
  
-		<div class="info2">Gallery 1: <input type="text" name="FILLER_1" value="" maxlength="500"/>Note: .image http://www.sample.com/image.gif <br></div>
-		<div class="info2">Gallery 2: <input type="text" name="FILLER_2" value="" maxlength="500"/>Note: .image http://www.sample.com/image.gif <br></div>	
-		<div class="info2">Gallery 2: <input type="text" name="FILLER_3" value="" maxlength="500"/>Note: .image http://www.sample.com/image.gif <br></div>
+		<div class="info2">Geolocation: <input type="text" name="FILLER_1" value="" maxlength="500"/></div>
+		<div class="info2">Latitude: <input type="text" name="FILLER_2" value="" maxlength="500"/></div>	
+		<div class="info2">Longitude: <input type="text" name="FILLER_3" value="" maxlength="500"/></div>
 </div>
 <div class="toggle8">
 		<h3>Ringtone:</h3>
@@ -65468,6 +65545,11 @@ func getMapLink(w http.ResponseWriter, r *http.Request, USER_TYPE, TARGET_URL, S
 
 //checks the referrer of the request 
 func checkReferrer(w http.ResponseWriter, r *http.Request) {
+	//skip this if user is logged in as valid user
+	if isLoggedIn(w,r) == true {
+		return
+	}
+	
 	uReferer := r.Referer()
 
 	if SYS_CHECK_REFERER == true {
@@ -65865,7 +65947,6 @@ func handleServe(w http.ResponseWriter, r *http.Request) {
 		return
 }
 
-//edwinxxx
 //saves links to icons db
 func addLinkToIcons(w http.ResponseWriter, r *http.Request, tName, tUrl, tDesk string) {
 	
@@ -67249,7 +67330,7 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 	FUNC_CODE := strings.Replace(FUNC_CODE_R2, "]", "", -1)
 	
 	switch FUNC_CODE {
- 
+
 		//for slides
 		case "UPD-FROM-EDITOR":
 			//DESKTOP := pVals["DESKTOP"]
@@ -67327,6 +67408,8 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 					//clear template cache if any
 					cKey = fmt.Sprintf("GO_TEMPLATE_TDSSLIDE-%v", thisID)
 					_ = memcache.Delete(c,cKey)
+
+					clearCachedSlideWebContents(w,r)
 					
 					//update cached details
 					if uid == "" && UID != "" {
@@ -67466,6 +67549,8 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 					//clear autocomps
 					cKeyAll := fmt.Sprintf("AUTOCOMP_CACHE_%v", uid)
 					putStrToMemcacheWithoutExp(w,r,cKeyAll,"")
+
+					clearCachedSlideWebContents(w,r)
 					
 					FL_SUCCESS = true
 					
@@ -67755,6 +67840,29 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+//clear cached contents for slides
+func clearCachedSlideWebContents(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	
+	//_ = memcache.Delete(c,"CACHE_TDSSLIDE_NUM_LIKES")
+	_ = memcache.Delete(c,"CACHE_TDSSLIDE_LATEST")
+	_ = memcache.Delete(c,"CACHE_SLIDES_CONTENTS_ALL_TILES_RECENT")
+	//_ = memcache.Delete(c,"CACHE_SLIDES_CONTENTS_PINNED")
+	_ = memcache.Delete(c,"CACHE_SLIDES_CONTENTS_ALL_TILES")	
+}
+
+//clear cached contents for articles
+func clearCachedArticleWebContents(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	
+	//_ = memcache.Delete(c,"CACHE_TDSARTL_NUM_LIKES")
+	_ = memcache.Delete(c,"CACHE_TDSARTL_LATEST")
+	_ = memcache.Delete(c,"CACHE_ARTICLES_CONTENTS_ALL_TILES_RECENT")
+	//_ = memcache.Delete(c,"CACHE_ARTICLES_CONTENTS_PINNED")
+	_ = memcache.Delete(c,"CACHE_ARTICLES_CONTENTS_ALL_TILES")	
+}
+
+
 //handles upload of articles 
 func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 	
@@ -67797,7 +67905,7 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintf(w, "FUNC_CODE: %v<br>", FUNC_CODE)
 	
 	switch FUNC_CODE {
-	
+
 		//for articles
 		case "UPD-FROM-EDITOR":
  
@@ -67880,6 +67988,8 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 					//clear template cache if any
 					cKey = fmt.Sprintf("GO_TEMPLATE_TDSARTL-%v", thisID)
 					_ = memcache.Delete(c,cKey)
+
+					clearCachedArticleWebContents(w,r)
 					
 					//update article cache
 					if uid == "" && UID != "" {
@@ -68015,7 +68125,8 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 					//clear autocomps
 					cKeyAll := fmt.Sprintf("AUTOCOMP_CACHE_%v", uid)
 					putStrToMemcacheWithoutExp(w,r,cKeyAll,"")
-					
+
+					clearCachedArticleWebContents(w,r)
  
 					FL_SUCCESS = true
 					//update article cache
@@ -68541,7 +68652,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 							//SPC_OPT to /people-edit?EditPeopleFunc=SET_TOP_LIST_MENU_MINE_SOURCE&MEDIA_ID=787				
 							sysReq := fmt.Sprintf("/people-edit?EditPeopleFunc=SET_TOP_LIST_MENU_MINE_SOURCE&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)	
-						
+
 						case "EDIT_WINDOWS_MINE":
 							//SPC_OPT to /people-edit?EditPeopleFunc=SET_WINDOWS_MINE_SOURCE&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/people-edit?EditPeopleFunc=SET_WINDOWS_MINE_SOURCE&MEDIA_ID=%v", MEDIA_ID)	
@@ -75337,7 +75448,6 @@ func ulapphGPS(w http.ResponseWriter, r *http.Request) {
 				tviaStr := fmt.Sprintf("%v on %v", viaStr, TSTMP)
 				queueLogMapCoors(w,r,xLatLong,uid,xURL,tviaStr,"FAM_TRACKER")
 				//add logic for global map
-				//saveLocProfile(w,r,uid, fmt.Sprintf("%v,%v", lat, lon), "APP_LOC")
 				procBroadcastUserLoc(w,r,uid,fmt.Sprintf("%v,%v", lat, lon))
 			}
 			w.Write([]byte("OK"))
@@ -76412,7 +76522,6 @@ func createClient(context appengine.Context, t time.Duration) *http.Client {
     }
 }
 
-//edwinxxx 
 //D0029
 //Todos manager handler for /todos
 //user can create and manage TODOs using the AngularJS interface
