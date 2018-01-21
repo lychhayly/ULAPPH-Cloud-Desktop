@@ -209,7 +209,7 @@ function initializeClock(id, endtime){
 	  //blink
 		setInterval(function() {
 		    f.style.display = (f.style.display == 'none' ? '' : 'none');
-		}, 1000); 
+		}, 5000); 
 
 	  //sound again
 		setInterval(function() {
