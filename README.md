@@ -20,9 +20,9 @@ Overview
 
 [ULAPPH Cloud Desktop](https://www.ulapph.com/) is a web-based desktop (webtop) for your online work, publishing, and development! ULAPPH is coined from word "ulap" which means cloud and PH which means it originated from the Philippines.
 
-![Automated creation of Google Project ID](https://lh3.googleusercontent.com/ldzUkHX-WOlYFbJMUdLsaUWvpPAGPg9a7Sa1l4G7roi_tcg37DOs9OCxzixADHVnVgeK-9sACI2Smw366q8mgdJJFuiPzJY=s800)
+![Automated creation of Google Project ID](https://lh3.googleusercontent.com/ldzUkHX-WOlYFbJMUdLsaUWvpPAGPg9a7Sa1l4G7roi_tcg37DOs9OCxzixADHVnVgeK-9sACI2Smw366q8mgdJJFuiPzJY=s500)
 
-![ULAPPH UWM Desktop](http://lh3.googleusercontent.com/rdYiJWTDIf0OUVf0cAHwgEJBdKWeFnFC0OFRdoVo8-4tpzNk3MESibvzBLoLVYxZ-8W-2gS7H9o-xzJBy2VEk0bpGZ1NFg=s900)
+![ULAPPH UWM Desktop](http://lh3.googleusercontent.com/rdYiJWTDIf0OUVf0cAHwgEJBdKWeFnFC0OFRdoVo8-4tpzNk3MESibvzBLoLVYxZ-8W-2gS7H9o-xzJBy2VEk0bpGZ1NFg=s500)
 
 ![ULAPPH UWM Desktop](https://lh3.googleusercontent.com/IhJbOUEiXbtqKT-gKoMSf5lBY2oowLLNL9JrXyFMUShlVO5waXjuMMEUyWWZVMuiz11eaYDSbsJWhPeiq2hAe1sb3F9R=s900)
 
