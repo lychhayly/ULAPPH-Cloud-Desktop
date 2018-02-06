@@ -44,4 +44,9 @@ Change History
 - **1/14/2018 03:32AM** EDV - Added browser fingerprinting
 - **1/19/2018 02:43AM** EDV - Tested installer to work via gcloud instead of appcfg.py
 
+TODOs
+---------------
+- Make the installer that runs in the command line and the configurations are pulled from the cloud such as OneDrive or Google sheets. This way we can install and upgrade the cloud desktop anywhere and anytime.
+- Collaborate with fellow Golang programs in order to improve the open source software
 
+- 
