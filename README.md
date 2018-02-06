@@ -1,7 +1,7 @@
-ULAPPH Cloud Desktop
+ULAPPH Cloud Desktop (Source Codes)
 ====================
 
-This repo is for source codes only
+Quick Links
 ------------------------------------
 - **Documentations can be found here: https://github.com/edwindvinas/ULAPPH-Cloud-Desktop**
 - **VBA Installer tool can be found here: https://github.com/ulapph/ULAPPH-Cloud-Desktop-VBA-Installer**
