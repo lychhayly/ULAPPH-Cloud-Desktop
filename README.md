@@ -13,7 +13,7 @@ Contributors
 - Christine T. Cunanan (UI/Testing)
 - Rammel D. Vinas (CorelDraw/Photoshop)
 
-What to contribute or inquire?
+Want to contribute or inquire?
 ------------------------------
 - Contact edwin.d.vinas@gmail.com
 
