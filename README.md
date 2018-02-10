@@ -10,8 +10,8 @@ https://github.com/edwindvinas/ULAPPH-Cloud-Desktop
 Contributors
 ----------------
 - Edwin D. Vinas (Golang/JS/HTML/CSS)
-- Christine T. Cunanan (UI/Testing)
-- Rammel D. Vinas (CorelDraw/Photoshop)
+- Christine T. Cunanan (UI/Testing/ContentManagement)
+- Rammel D. Vinas (CorelDraw/Photoshop/Graphics)
 
 Want to contribute or inquire?
 ------------------------------
