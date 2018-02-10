@@ -68727,7 +68727,7 @@ func renderStyleCssTemplates(w http.ResponseWriter, r *http.Request, extName, TA
 	doc.STR_FILLER2 = TASK_MEMCACHER_desktopWP_bigWP
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -68825,7 +68825,7 @@ func renderStyleCssTemplates2(w http.ResponseWriter, r *http.Request) {
 	doc.STR_FILLER2	= color
 	
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -68864,7 +68864,7 @@ func renderStyleCssColored(w http.ResponseWriter, r *http.Request, name string) 
 	doc.STR_FILLER3	= getInActiveColor(w,r)
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -68994,7 +68994,7 @@ func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d st
 	doc.HTM_FILLER1 = template.HTML(string(mens))
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69036,7 +69036,7 @@ func renderInstallerPage(w http.ResponseWriter, r *http.Request, name, uid strin
 	//get cache
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69219,7 +69219,7 @@ func renderJSWMStyleCssTemplates(w http.ResponseWriter, r *http.Request) {
 	doc.STR_FILLER2 = inActColor
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69258,7 +69258,7 @@ func renderSocialSharing(w http.ResponseWriter, r *http.Request, title, turl str
 	doc.STR_FILLER2 = title
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69296,7 +69296,7 @@ func renderMessage3D(w http.ResponseWriter, r *http.Request, message string) {
 	doc.STR_FILLER1	= message
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69330,7 +69330,7 @@ func renderStaticTemplates(w http.ResponseWriter, r *http.Request, extName strin
 
 	doc := new(TEMPSTRUCT)	
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69399,7 +69399,7 @@ func renderOverQuotaErrorTemplates(w http.ResponseWriter, r *http.Request) {
 	doc.STR_FILLER2 = html.UnescapeString(ADDTL_QUOTA_ERR_MSG)
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
