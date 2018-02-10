@@ -288,17 +288,23 @@
 //---------------------------------------------------------------------------------------------
 //List of firebase channels
 //list-channels
-/*
-	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/channel/<user-assigned-channel-string> 	- client listens to this topic (tok.value)
-	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/things/<user-assigned-channel-string> 	- sends IOT data to topic	
-	[tf] /ulapph-firebase/zzz-shared/chat-worldwide/<SYS_CHAT_WORLD_ROOM_ID> 		- send all chats to worldwide
-																					- delete channel every eod
-	[tf] /ulapph-firebase/zzz-shared/chat-country-<ID>/<SYS_CHAT_COUNTRY_ROOM_ID> 	- send all chats to country ID
-																					- delete channel every eod
-	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/chat-public/<SYS_CHAT_PUB_ROOM_ID> 		- send all chats to this site only
-																					- delete channel every eod
-	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/chat-private/<generated roomID> 		- send all chats to this private room ID
-*/
+//
+//	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/channel/<user-assigned-channel-string> 	
+//		- client listens to this topic (tok.value)
+//	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/things/<user-assigned-channel-string> 	
+//		- sends IOT data to topic	
+//	[tf] /ulapph-firebase/zzz-shared/chat-worldwide/<SYS_CHAT_WORLD_ROOM_ID> 		
+//		- send all chats to worldwide
+//		- delete channel every eod
+//	[tf] /ulapph-firebase/zzz-shared/chat-country-<ID>/<SYS_CHAT_COUNTRY_ROOM_ID> 	
+//		- send all chats to country ID
+//		- delete channel every eod
+//	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/chat-public/<SYS_CHAT_PUB_ROOM_ID> 		
+//		- send all chats to this site only
+//		- delete channel every eod
+//	[ok] /ulapph-firebase/<SYS_SERVER_NAME>/chat-private/<generated roomID> 		
+//		- send all chats to this private room ID
+//
 //---------------------------------------------------------------------------------------------
 package clouddesktop
  
@@ -2415,23 +2421,6 @@ var laterUrlFetchInd = delay.Func("laterUrlFetchInd", func(c appengine.Context, 
 		panic(err)
 	}
 })
- 
-/* // Exec later - Google Plus Queries
-var laterGooglePlus = delay.Func("laterGooglePlus", func(c appengine.Context, FUNC_CODE string, UID, SEARCH_KEY, MODE string) {
-	
-	t := taskqueue.NewPOSTTask("/goplus", map[string][]string{"FUNC_CODE": {FUNC_CODE}, "UID": {UID}, "SEARCH_KEY": {SEARCH_KEY}, "MODE": {MODE}})
-	if _, err := taskqueue.Add(c, t, ""); err != nil {
-		panic(err)
-	}
-}) */
- 
-/* // Exec later - Search Youtube Queries
-var laterGoogleYoutube = delay.Func("laterGoogleYoutube", func(c appengine.Context, FUNC_CODE string, UID, SEARCH_KEY, MODE string) {
-	t := taskqueue.NewPOSTTask("/gsearch", map[string][]string{"FUNC_CODE": {FUNC_CODE}, "UID": {UID}, "SEARCH_KEY": {SEARCH_KEY}, "MODE": {MODE}})
-	if _, err := taskqueue.Add(c, t, ""); err != nil {
-		panic(err)
-	}
-}) */
  
 // Exec later - Notify GB message
 var laterNotifyGB = delay.Func("laterNotifyGB", func(c appengine.Context, RTG_FUNC string, UID string, MESSAGE string, uid string) {
@@ -5948,12 +5937,6 @@ func login(w http.ResponseWriter, r *http.Request) {
 		//}
 		
 		//if u != nil {
-			
-/* 			if SYS_DISP_ADS_CONTENT == true {
-				if err := mobileBodyTemplateContentLoaderSingleItemAds.Execute(w, SYS_DISP_ADS_HOST); err != nil {
-				 panic(err)
-				}
-			} */
 		
 			displayBasicCharts(w,r,false)
 	
@@ -20674,120 +20657,6 @@ func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) {
 	}
 	return
 }
-
-//function handle listing of all icons 
-/* func listAllIcons(w http.ResponseWriter, r *http.Request, uid string) []byte {
-	c := appengine.NewContext(r)
-	
-	var bLine1 bytes.Buffer
-	bLine1.WriteString("<html><head><link rel=\"stylesheet\" href=\"/lib/css/animate/animate.css\">")
-	bLine1.WriteString("<link rel=\"stylesheet\" href=\"/lib/css/buttons/buttons.css\">")
-	bLine1.WriteString("<script src=\"/js/showHide.js\"></script>")
-	
-	style := `<style>
-	.img-circle {
-	border-radius: 50%;
-	}
-	</style>`
-	bLine1.WriteString(style)
-	style2 := fmt.Sprintf("<style>html * { color: #ffffff !important; } body { background: %v;}</style>", getActiveColor(w,r))
-	bLine1.WriteString(style2)
-	bLine1.WriteString("</head><body>[<a href=\"#\" onClick=\"showHideAll(); return false;\">Show/Hide</a>] [<a href=\"/tools?FUNC=ALL_ICONS\">Reload</a>]<br><center>")
-	w.Write(bLine1.Bytes())
-		
-	cKey2 := "ALL_ICONS"
-	ALL_ICONS := getBytMemcacheValueByKey(w,r,cKey2)
-	if ALL_ICONS == nil {
-		var bLine bytes.Buffer
-		q := datastore.NewQuery("TDSCATS").Limit(1000)
-		//c.Errorf("[S0146]")
-		recCount, _  := q.Count(c)
-		if recCount > 0 {
-			//ok
-		} else {
-			fmt.Fprintf(w,"No icons found!")
-			return nil
-		}
-		cats := make([]TDSCATS, 0, recCount)
-		if _, err := q.GetAll(c, &cats); err != nil {
-			//panic(err)
-			return nil
-		}
-		catDesc2 := ""
-		for _, x := range cats {
- 
-			if x.CAT_NAME == catDesc2 {
-				//donothing
-				
-			} else {
-				//write header
-				bLine.WriteString(fmt.Sprintf("		<a href=\"#\" onclick=\"showHide('item_%v'); return false;\" class=\"button button-raised button-pill button-inverse\">%v(%v)</a>\n", x.CAT_NUM, x.CAT_DESC, x.CAT_NUM))
-				bLine.WriteString(fmt.Sprintf("		<div id='item_%v'>\n", x.CAT_NUM))
-				catDesc2 = x.CAT_NAME
-				
-			}
-			
-			q := datastore.NewQuery("TDSICONS").Filter("DESKTOP =", x.CAT_NAME).Limit(100)
-			////c.Errorf("[S0147]")
-			recCount, _  := q.Count(c)
-			icons := make([]TDSICONS, 0, recCount)
-			if _, err := q.GetAll(c, &icons); err != nil {
-				 panic(err)
-				//return nil
-			}
-			
-			for _, p := range icons{
-				bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://ulapph-public-1.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
-			}
-			bLine.WriteString(fmt.Sprintf("		</div>\n"))
- 
-		}
-		//uncategorized
-		bLine.WriteString(fmt.Sprintf("		<a href=\"#\" onclick=\"showHide('item_all')\" class=\"button button-raised button-pill button-inverse\">Uncategorized(all)</a>\n"))
-		q = datastore.NewQuery("TDSICONS").Filter("DESKTOP= ", "all")
-		//c.Errorf("[S0148]")
-		bLine.WriteString(fmt.Sprintf("		<div id='item_%v'>\n", "all"))
- 
-		recCount,_ = q.Count(c)
-		icons := make([]TDSICONS, 0, recCount)
-		if _, err := q.GetAll(c, &icons); err != nil {
-			 panic(err)
-			//return nil
-		}
-		
-		for _, p := range icons{
-			bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://ulapph-public-1.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
-		}
-		bLine.WriteString(fmt.Sprintf("		</div>\n"))
-		
-		bLine.WriteString(fmt.Sprintf("		<a href=\"#\" onclick=\"showHide('item_%v'); return false;\" class=\"button button-raised button-pill button-inverse\">Uncategorized(%v)</a>\n", uid, uid))
-		q = datastore.NewQuery("TDSICONS").Filter("DESKTOP= ", uid)
-		//c.Errorf("[S0149]")
-		bLine.WriteString(fmt.Sprintf("		<div id='item_%v'>\n", uid))
- 
-		recCount,_ = q.Count(c)
-		icons = make([]TDSICONS, 0, recCount)
-		if _, err := q.GetAll(c, &icons); err != nil {
-			 panic(err)
-			//return nil
-		}
-		
-		for _, p := range icons{
-			bLine.WriteString(fmt.Sprintf("<a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@%v', 'https://ulapph-public-1.appspot.com'); return false;\"><img src=\"%v\" width=40 height=40 class=\"img-circle animated infinite pulse\" title=\"%v (%v)\"></a> ", p.ICON_NAME, p.URL_ADD, p.IMG_SRC, p.ICON_NAME, p.ICON_ID))
-		}
-		bLine.WriteString(fmt.Sprintf("		</div>\n"))
-		
-		if recCount > 0 {
-			bLine.WriteString("</center></body></html>")
-		} else {
-			//bLine.WriteString("No icons found!")
-			fmt.Fprintf(w,"No icons found!")
-		}
-		putBytesToMemcacheWithoutExp(w,r,cKey2,bLine.Bytes())
-		return bLine.Bytes()
-	}
-	return ALL_ICONS
-} */
 		
 //function generate random colors
 func getRandomColors() (color1, color2, color3 string) {
@@ -21018,14 +20887,6 @@ func ulapphSearch(w http.ResponseWriter, r *http.Request) {
 			}
 			showOverallMap(w,r)
 			return
-			
-		//check if valid inbound appid
-/* 		case SEARCH_FUNC == "IS_VALID_IAID":
-			appId := r.FormValue("APP_ID")
-			res := isValidInboundAppId(w,r,appId)
-			writeHTMLHeader(w, 200)
-			w.Write([]byte(res))
-			return */
 			
 		case SEARCH_FUNC == "GET_CURR_ACC_LOG":
 			CURR_ACC_LOG := getCurrAccLog(w,r)
@@ -30431,11 +30292,11 @@ func TASK_MEMCACHER_URLFETCH_philvolcs_EQ (w http.ResponseWriter, r *http.Reques
 	}
 	
 	if FL_DUMMY == true {
-/* 		msgDtl3 := fmt.Sprintf("DANGER!!! Earthquake DUMMY run!")
-		sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,"philvolcs","/dummy",""),"")
-		data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "ULAPPH", msgDtl3)
-		ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")
-		laterNotifyGB.Call(c, "autoNotifyPeopleGB", ADMMAIL, msgDtl3, ADMMAIL) */
+//		msgDtl3 := fmt.Sprintf("DANGER!!! Earthquake DUMMY run!")
+//		sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,"philvolcs","/dummy",""),"")
+//		data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "ULAPPH", msgDtl3)
+//		ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS", data, "")
+//		laterNotifyGB.Call(c, "autoNotifyPeopleGB", ADMMAIL, msgDtl3, ADMMAIL)
 	}
 	
 	lines = append(lines, fmt.Sprintf("* URL Fetch"))
@@ -40612,22 +40473,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 							
 							cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, YEAR)
 							putBytesToMemcacheWithExp(w,r,cKey,buffer3.Bytes(),GEN_CONTENT_EXPIRES)
-
-							//display tags
-/* 							cKeyT := fmt.Sprintf("PA_CACHE_TAGS_%s_%v", uid, YEAR)
-							PA_CACHE_TAGS := ""
-							PA_CACHE_TAGS = getStrMemcacheValueByKey(w,r,cKeyT)
-							
-							if PA_CACHE_TAGS == "" {
-								var buf bytes.Buffer
-								for _, p := range media{
-									buf.WriteString(fmt.Sprintf("%v %v", p.TITLE, p.DESC))
-								}
-								//UMP_CACHE = buf.String()
-								display_photo_tags(w,r,uid,YEAR,count_words(get_words_from(buf.String())))
-							} else {
-								fmt.Fprintf(w, "%v", PA_CACHE_TAGS)
-							} */
 							
 						}
 
@@ -40680,22 +40525,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 							
 							cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, FILTER)
 							putBytesToMemcacheWithExp(w,r,cKey,buffer3.Bytes(),GEN_CONTENT_EXPIRES)
-
-							//display tags
-/* 							cKeyT := fmt.Sprintf("PA_CACHE_TAGS_%s_%v", uid, FILTER)
-							PA_CACHE_TAGS := ""
-							PA_CACHE_TAGS = getStrMemcacheValueByKey(w,r,cKeyT)
-							
-							if PA_CACHE_TAGS == "" {
-								var buf bytes.Buffer
-								for _, p := range media{
-									buf.WriteString(fmt.Sprintf("%v %v", p.TITLE, p.DESC))
-								}
-								//UMP_CACHE = buf.String()
-								display_photo_tags(w,r,uid,FILTER,count_words(get_words_from(buf.String())))
-							} else {
-								fmt.Fprintf(w, "%v", PA_CACHE_TAGS)
-							} */
 						}
 						
 						if err := mediaSimpleGalFooter.Execute(w, fmt.Sprintf("%v(%v items)", cKey, recCount)); err != nil {
@@ -42545,294 +42374,6 @@ const formTemplateSrc3 = `<!doctype html>
 	</body>
 </html>
 `
- 
-/* var htmlLeftMenuDefault = template.Must(template.New("htmlLeftMenuDefault").Parse(htmlLeftMenuDefaultA))
- 
-const htmlLeftMenuDefaultA = `	
-        <li id="people">
-         <a href="/people?PEOPLE_FUNC=QUICK-VIEW">
-             <em><span>People</span></em><br>
-                <img src="/img/ulapph-icons-people-icon.png" title="people" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="guestbook">
-         <a href="/guestbook?GB_FUNC=GB_OWNER">
-             <em><span>Guestbook</span></em><br>
-                <img src="/img/guestbook.png" title="gb" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="search">
-         <a href="/search">
-             <em><span>Search</span></em><br>
-                <img src="/img/search-icons.png" title="Search ULAPPH" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="myDesktop">
-         <a href="/uwm">
-             <em><span>myDesktop</span></em><br>
-                <img src="https://lh3.googleusercontent.com/P1Kl0hhScmz294Bhg9o9CsmoENxSJyijLVX1-b8UpQB77HvbzjWVRT1mvbpPzhuQbMJhRTDxz9ZF5P8McqXYugbBgeC3" title="myDesktop" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Slides Home">
-         <a href="/slides?CATEGORY=desktop0">
-             <em><span>Slides Home</span></em><br>
-                <img src="https://lh3.googleusercontent.com/4UHg0Hh0yAda2zpJiiAvviD5tUEWqpkCfRAaHLlfqmVmQ6QLjr-FOQU1ZfG8PvRZijmL1NpBkvwwf2bNY_uaPNJRRLv2FQ" title="Slides Home" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Articles Home">
-         <a href="/articles?CATEGORY=desktop0">
-             <em><span>Articles Home</span></em><br>
-                <img src="https://lh3.googleusercontent.com/7G4vkwZb9Y_jc5eZhub_RGUQeK1iMWPyviFL2inWI9yeAtMcPKIsA2VQSTCDZYy5Gujuvr1KKQ5tRJpHnD0CUsz5YwgZsg" title="Articles Home" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Media Home">
-         <a href="/media?q=desktop0">
-             <em><span>Media Home</span></em><br>
-                <img src="https://lh3.googleusercontent.com/VC8-KBmRE9-OGuVUCYQDJ3g8L8lcUWltTy3qjFSN_ymJvLGwHm36gxZsG1VBL_86dHP63feRvoRFWwMSsYal4hDnexAZ" title="Media Home" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="ULAPPH Gallery">
-         <a href="/media?FUNC_CODE=VIEW_THUMBS">
-             <em><span>ULAPPH Gallery</span></em><br>
-                <img src="https://lh3.googleusercontent.com/yi50g4HBwhK7dtxPPsr4UFVbYsIa2DEnKg4SKDfbSu0bmBwoUxdtTEvjYw1JjLQI1-6Lq8jMqc-rkZFecKwjYe9Y9TM" title="ULAPPH Gallery" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="myInfoDB">
-         <a href="/infodb?q=desktop0">
-             <em><span>myInfoDB</span></em><br>
-                <img src="https://lh3.googleusercontent.com/o_J47rgvshSgv8NXVWmAtoqUY7-WanU44TPY9EyZPPnrIGqVG42W-q_Uk2ieLNPeGrk0Qtj33ERf5oqjJz9tBIqMrlk" title="myInfoDB" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="uExplorer">
-         <a href="/contents?q=home">
-             <em><span>uExplorer</span></em><br>
-                <img src="https://lh3.googleusercontent.com/HWsL8pcqxOagXyrB-NaXP-LnM9cjRLQuZeADT5dKsZXla-wr4x3nejJj4DvawdXRsEB2TlusJ5OCI7m3WTABcNVkni_p" title="uExplorer" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="editProfile">
-         <a href="/people-edit?EditPeopleFunc=EditPeople">
-             <em><span>editProfile</span></em><br>
-                <img src="https://lh3.googleusercontent.com/pSc6zUlZQZkjv_eTnpDMWf29uugBSza3TjdnDurFBlwAV_dCU2_Ju1sPYUR2mddzohwTwAz-Kb9AZzKDnvXRJMHgGCQA" title="editProfile" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="newArticle">
-         <a href="/editor?EDIT_FUNC=READER&DOC_ID=0&SID=NEWARTICLE&CATEGORY=desktop0">
-             <em><span>newArticle</span></em><br>
-                <img src="https://lh3.googleusercontent.com/bWbqX-0gpLlDLDzlyf1ZoudamXIcx0XOh23pfH04xnriWGSMH4K2eQJ7z9Iv0g695sYUcgxrnMxn2W84dZQD0mLR7ca07g" title="newArticle" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="newSlide">
-         <a href="/editor?EDIT_FUNC=READER&DOC_ID=0&SID=NEWSLIDE&CATEGORY=desktop0">
-             <em><span>newSlide</span></em><br>
-                <img src="https://lh3.googleusercontent.com/G2iUip44r8yUxxsYCYxTj2s8X6P7hMM-piMDyVt0XYx4eCGVfFNnz0gPjkwcarANFBWASI9tFSB_5pSKn6ub7Na5s8hz" title="newSlide" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="newTextFile">
-         <a href="/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0">
-             <em><span>newTextFile</span></em><br>
-                <img src="https://lh3.googleusercontent.com/dp0me5EMk4V5HENykVZtT0CT2SULxt7IIcVuHmKH6n-Eb-vX7tBj2Y_SEgLSCOT92GmfoO5wX3EJc_yQUbduq5pEJTHC" title="newTextFile" height="40" wi	th="40"/>
-            </a>
-        </li>
-        <li id="addImageFile">
-         <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=desktop0#upload-image">
-             <em><span>addImageFile</span></em><br>
-                <img src="https://lh3.googleusercontent.com/kSr4cjtoSAIgMtfCIwP4yTX4rsNwBntXEz2aW9CKKlxCatokvQPkVUKUIQA5K9x7BQCvU9RiALTyPlVfbHRfKzza-OiP" title="addImageFile" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="addWebsite">
-         <a href="/?q=qu">
-             <em><span>addWebsite</span></em><br>
-                <img src="https://lh3.googleusercontent.com/QtzAaanTReFACnFMGZ_Yc2yHOAFOEmOJN9yc_xrGOebTyX81sXFd0uQjbK_lklDC08r21DgSgXEN4qlLsR9J516MVfjGlQ" title="addWebsite" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="qrCode">
-         <a href="https://zxing.appspot.com/generator/">
-             <em><span>qrCode</span></em><br>
-                <img src="https://lh3.googleusercontent.com/5hA7-8LBpTEsTIV_1xv0Se96c_WnGX3bvA6hovg36HjVAt8QmZxXpcEj69lOCh_OgreQb2aU1LrxQ07qW0m4NgOUlV1PGg" title="qrCode" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="invite">
-         <a href="/invitation#invite">
-             <em><span>invite</span></em><br>
-                <img src="https://lh3.googleusercontent.com/zcnbNMsQp-5DQJQ43X07wTkgfoBIqYLcAQ4ipVQUdX28NsRRedyOLsPPzMRl8QoPM8qf8Ngpge5pXW7SoLkkKlE3f6Wj" title="invite" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="advertise">
-         <a href="/advertisement#advertise">
-             <em><span>advertise</span></em><br>
-                <img src="https://lh3.googleusercontent.com/zWweHxrgXW_mFiCBWn2iTsmiOanGL_8h7RH2L36EI9b1j6D35vPCYo85nmgzfMoRJGOGJa9Gn2Ax697Ox1THgvFjy79-" title="advertise" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="feedback2">
-         <a href="/contact-us#feedback">
-             <em><span>feedback</span></em><br>
-                <img src="https://lh3.googleusercontent.com/Aj91JQTUmnIP4RsOkScLgKnecQu_208WclDhi26EZMrEnRM96lB5zCs3LPhzahekWGe4x4-eDsKpg6U_F-Urk03KUCUw" title="feedback2" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="help">
-         <a href="/infodb?DB_FUNC=SLIDES&CATEGORY=HELP">
-             <em><span>help</span></em><br>
-                <img src="https://lh3.googleusercontent.com/9SVr9VNBbQlq6lW9meEijKSfY9i5rtqoLIl6i7SbA9b9bHn7G1igUsiXzPcBWvckdn9tyC6apG5OSx1SuFaQX7lYNtk" title="help" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Multiple Upload">
-         <a href="/media?FUNC_CODE=SET_MULTI_IMAGE_UPLOAD">
-             <em><span>Multiple Upload</span></em><br>
-                <img src="https://lh3.googleusercontent.com/cIVQhhLxXgP7J2ERCOfcDc7_jijzAa4QSICwX_QhrT9GG5n_pKKatFrZjXPFORFTGnljcOx98SMP9VUoK0jynKsGkMGeSg" title="Multiple Upload" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Upload Image">
-         <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL#upload-image">
-             <em><span>Upload Image</span></em><br>
-                <img src="https://lh3.googleusercontent.com/eGqfd8VMV1FCKIaubhMkBDjMnU9lv1WQRu0iqzcAnqLJ60k4wrGp2opS1f-j-Oh0n7uUTBAHxTwSEeQi3efMLdMi1PbW" title="Upload Image" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Upload Text File">
-         <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL#upload-text">
-             <em><span>Upload Text File</span></em><br>
-                <img src="https://lh3.googleusercontent.com/sGoo7YEJKoJ4JrkySxYzcplcZChb6VhOC_7dIkrF78KH0C3GgLvARzvDNUevjcBWZhCGcytW3myUvJoftkMnTseq0SVj" title="Upload Text File" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="New Text File">
-         <a href="/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0">
-             <em><span>New Text File</span></em><br>
-                <img src="https://lh3.googleusercontent.com/HZeDnyMUi99is1fbWsnWnqGrkt-Pde01EHLz4ej-GSZ69S-N3jezP-FoNMuwXaSvv2ntr_cauLhKsIWtAEWOircVhg1PSg" title="New Text File" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="View Personal Media">
-         <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=desktop0">
-             <em><span>View Personal Media</span></em><br>
-                <img src="https://lh3.googleusercontent.com/enc435Yme7GQbr07M44VEOnuOx_w012Uut0iq2NpVtJov6xMtwkZ1rVfgIUG_85ibqfCkefAVQakCTp0e_GxOk462sHjeA" title="View Personal Media" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="List All Slides">
-         <a href="/infodb?DB_FUNC=SLIDES&CATEGORY">
-             <em><span>List All Slides</span></em><br>
-                <img src="https://lh3.googleusercontent.com/1hOYTc1KkYDbvrdqB2TAe9-bE1TfSBBNBhFu2YrKrF1fbhmsxVuK9ZH0_Mf-ghCLUW2HtGBnY6XE1mHGQI8Xp6b1DL58yQ" title="List All Slides" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="New Slide">
-         <a href="/editor?EDIT_FUNC=READER&DOC_ID=0&SID=NEWSLIDE&CATEGORY=desktop0">
-             <em><span>New Slide</span></em><br>
-                <img src="https://lh3.googleusercontent.com/c6C1SEHVDBREUM9hjWwBkE-5xNq5dzrvcdj1iMaNVt6CexLSo9pwivkFpuTc8f4YPvnOfNAoscBPVoHuIXzg1jVR2_G2" title="New Slide" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Upload Slides">
-         <a href="/admin-slides#upload-slides">
-             <em><span>Upload Slides</span></em><br>
-                <img src="https://lh3.googleusercontent.com/wcYYSjl5jjz27wNNAjaZF988sIxwE_w5prJAEpDvi6-sNNjlS2sq8E1kmJhnSlb_HAXTXru9JGKMvS54nKPX-2wDwRf1" title="Upload Slides" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="View Personal Slides">
-         <a href="/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0">
-             <em><span>View Personal Slides</span></em><br>
-                <img src="https://lh3.googleusercontent.com/9huj9qpDUt8idkHGJiEQz2MsnP7i1pRx6gcoR3WN-gixfyUkW48K5yzy3UrQAP01fFOfEpeJ-uvkB-q1VzrLqYRDEWRb" title="View Personal Slides" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Media Gallery">
-         <a href="/media?CATEGORY=">
-             <em><span>Media Gallery</span></em><br>
-                <img src="https://lh3.googleusercontent.com/0DMGfaCaIl5rk0mOnQ3UHDLRfj70_GanQJLxzAPS865GhNkTRJEn7UTEt40U2QtgmHR76t4Mc2ql59xu3QuDQZNtliyXEg" title="Media Gallery" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="List all Articles">
-         <a href="/infodb?DB_FUNC=ARTICLES&CATEGORY=">
-             <em><span>List all Articles</span></em><br>
-                <img src="https://lh3.googleusercontent.com/5F03yVRd68GcmE5hsGW0PSf-j3eR6-QxNWsLOzXOk-qYxWHydMbwG6un3ecZiuYsLmPPWNLf88qE3vaxHX1kVLrJBSccpw" title="List all Articles" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="New Article">
-         <a href="/editor?EDIT_FUNC=READER&DOC_ID=0&SID=NEWARTICLE&CATEGORY=desktop0">
-             <em><span>New Article</span></em><br>
-                <img src="https://lh3.googleusercontent.com/UmYEg0Y9VgTuymOs0U6m_C1EJ02zdX-L-SMJpwuhhphtrc4oVCx5UDJ0Tv4DVbsuzRxmeMxyIE8tMteSV3UKN9B2h4uK" title="New Article" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Upload Article">
-         <a href="#upload-articles">
-             <em><span>Upload Article</span></em><br>
-                <img src="https://lh3.googleusercontent.com/ohqRUQxZxQj5qi2N-njg9sb8dsvogOfM8Zamot1g-9iZXbyKV-peONVDoPNt7GzSRjMY2DbQPHD9phRCe0QdBKVCiwVpqA" title="Upload Article" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Admin Articles">
-         <a href="/admin-articles">
-             <em><span>Admin Articles</span></em><br>
-                <img src="https://lh3.googleusercontent.com/9YwRXxRpwP0J9eLZ5RKcs1NEI2TP_WaulchFx8_gL9aSHKxW9-zBIEH0H6UcYDF40UvR_CdneXC8tQDmnfe_lxjljk5y" title="Admin Articles" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="View Personal Articles">
-         <a href="/infodb?DB_FUNC=ARTICLES&CATEGORY=desktop0">
-             <em><span>View Personal Articles</span></em><br>
-                <img src="https://lh3.googleusercontent.com/UA3v8CtZTiufEmBnraMfGVIFhWKK352Og2hJoHTpeOenu-3BKxAigV6iCtBaMoZFOkWMUwPPFFBEkuIwpPBQ946sspIbVw" title="View Personal Articles" height="40" width="40"/>
-            </a>
-        </li>
- 
-        <li id="Upload Music">
-         <a href="/?q=qm#upload-music">
-             <em><span>Upload Music</span></em><br>
-                <img src="/img/new-music.png" title="Upload Music" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Upload Video">
-         <a href="/?q=qv#upload-video">
-             <em><span>Upload Video</span></em><br>
-                <img src="/img/new-video.png" title="Upload Video" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Music Player">
-         <a href="/media?FUNC_CODE=UMP">
-             <em><span>Music Player</span></em><br>
-                <img src="/img/music-player.png" title="Music Player" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="MIDI Player">
-         <a href="/media?FUNC_CODE=MDP">
-             <em><span>MIDI Player</span></em><br>
-                <img src="/img/midi-player.png" title="MIDI Player" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Video Player">
-         <a href="/media?FUNC_CODE=UVP">
-             <em><span>Video Player</span></em><br>
-                <img src="/img/video-player.png" title="Video Player" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Youtube Player">
-         <a href="/media?FUNC_CODE=YVP">
-             <em><span>Youtube Player</span></em><br>
-                <img src="/img/youtube-player.png" title="Youtube Player" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Show All Texts">
-         <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_TEXTS">
-             <em><span>Show All Texts</span></em><br>
-                <img src="/img/all-text.png" title="Show All Texts" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Local Storage">
-         <a href="/uloc">
-             <em><span>uLoc</span></em><br>
-                <img src="/img/uloc.png" title="Local Storage" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Chat">
-         <a href="/chat">
-             <em><span>Chat</span></em><br>
-                <img src="/img/chat.png" title="Chat" height="40" width="40"/>
-            </a>
-		</li>
-        <li id="Stream">
-         <a href="/stream">
-             <em><span>Stream</span></em><br>
-                <img src="/img/stream.png" title="Stream" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Remote">
-         <a href="/tools?FUNC=WIDGET&t=RemoteControl">
-             <em><span>Remote</span></em><br>
-                <img src="/img/remote.png" title="Remote" height="40" width="40"/>
-            </a>
-        </li>
-` */
  
 var htmlWidgetMyPreferences = template.Must(template.New("htmlWidgetMyPreferences").Parse(htmlWidgetMyPreferencesA))
  
@@ -50471,78 +50012,7 @@ func getHostList(w http.ResponseWriter, r *http.Request) (TOT int, HOST_LIST str
 		
 	return TOT, HOST_LIST
 }
- 
-//for sites server only
-//checks inter ulapph cloud desktop calls if they are valid
-/* func isValidInboundAppId(w http.ResponseWriter, r *http.Request, appId string) (res string) {
-	c := appengine.NewContext(r)
- 
-	cKey2 := fmt.Sprintf("IS_VALID_IAID_%v", appId)
-	IS_VALID_IAID := ""
-	IS_VALID_IAID = getStrMemcacheValueByKey(w,r,cKey2)
-	if IS_VALID_IAID != "" {
-		return IS_VALID_IAID
-	}
-	
-	cKey := fmt.Sprintf("HOST_LIST")
-	HOST_LIST := ""
-	HOST_LIST = getStrMemcacheValueByKey(w,r,cKey)
-	if HOST_LIST != "" {
-		//ok
-	} else {
-		
-		//cache host list here
-		MEDIA_ID := 0
-		cfgName := "SYSTEM_SEARCH_SETTINGS"
-		_, MEDIA_ID = getTDSCNFG(w,r,1,cfgName)
-		if MEDIA_ID <= 0 {
-			fmt.Fprintf(w, "SYSTEM_SEARCH_SETTINGS does not exist. Please create it first via Admin Setup.<br>.")
-			return
-		}
-		//update cache
-		BLOB_KEY := ""
-		BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, MEDIA_ID)	
-		
- 
-		var buf bytes.Buffer
-		reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
-		s := bufio.NewScanner(reader)
-		
-		for s.Scan() {
-			//fmt.Fprintf(w, "%v", s.Text())	
-			buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
-		}
-		
-		cKey := fmt.Sprintf("HOST_LIST")
-		putBytesToMemcacheWithoutExp(w,r,cKey,buf.Bytes())
-		HOST_LIST = buf.String()
- 
-	}
-	
-	//secCtr := 0
-	TOT := 0
-	res = "N"
-	s := bufio.NewScanner(strings.NewReader(HOST_LIST))
-	for s.Scan() {
-		if s.Text() != "" {
-			TOT++
-			//check index
-			i := strings.Index(s.Text(), appId)
-			if i != -1 {
-				res = "Y"
-				break
-			}
- 
-		}		
-	}
-	//return TOT, HOST_LIST
-	//check if valid appId
-	cKey3 := fmt.Sprintf("IS_VALID_IAID_%v", appId)
-	putStrToMemcacheWithoutExp(w,r,cKey3,res)
-	return res
-	
-}
- */
+
 //for sites server only
 //stores user longitude and latitude locations
 func updateMyULAPPHLoc(w http.ResponseWriter, r *http.Request, uid, latlon string) {
@@ -54859,15 +54329,6 @@ const showWhatsNewHdrRec = `
 `
 
 //D0042
-/* 	IMAGE: IMAGE, 	
-	TITLE: TITLE, 	 			
-	USERS: USERS, 			
-	ACTIVITY: ACTIVITY,
-	DT_UPDATE: DT_UPDATE,	
-	COMMENTS: COMMENTS,	
-	URL_DIS: URL_DIS,
-	URL_CON: URL_CON,
- */
 var showDiscussionsHdr = template.Must(template.New("showDiscussionsHdr").Parse(showDiscussionsHdrRec))
 
 const showDiscussionsHdrRec = `
@@ -55126,13 +54587,6 @@ const slidesWhatsNewRec = `
 {{end}}
 {{end}}
 `
-
-/* 	<th scope="col">IMAGE</th>
-	<th scope="col">TITLE/DESC</th>
-	<th scope="col">USERS</th>
-	<th scope="col">COMMENTS</th>
-	<th scope="col">ACTIVITY</th>
-	<th scope="col">LAST_UPDATE</th> */
 
 //D0042
 var recentDiscussions = template.Must(template.New("recentDiscussions").Parse(recentDiscussionsRec))
@@ -56282,23 +55736,23 @@ func getAds2(w http.ResponseWriter, r *http.Request, FUNC_ID string, ADS_ID int,
 	ADS_ID_CACHE = getStrMemcacheValueByKey(w,r,ADS_ID_CACHE_KEY)
 	
 	if ADS_ID_CACHE != "" {
-/* 			0 ADS_CLICK
-		1 ADS_ID	
-		2 ADS_IMG	
-		3 ADS_PUB_ID	
-		4 ADS_SIZE	
-		5 ADS_STATUS	
-		6 ADS_TITLE	
-		7 ADS_TYP	
-		8 ADS_URL	
-		9 ADS_VAL_END	
-		10 ADS_VAL_START	
-		11 ADS_VIEW	
-		12 BLOB_KEY	
-		13 CATEGORY	
-		14 SYS_VER	
-		15 UPLOAD_BY	
-		16 UPLOAD_DATE */
+		// 0 ADS_CLICK
+		// 1 ADS_ID	
+		// 2 ADS_IMG	
+		// 3 ADS_PUB_ID	
+		// 4 ADS_SIZE	
+		// 5 ADS_STATUS	
+		// 6 ADS_TITLE	
+		// 7 ADS_TYP	
+		// 8 ADS_URL	
+		// 9 ADS_VAL_END	
+		// 10 ADS_VAL_START	
+		// 11 ADS_VIEW	
+		// 12 BLOB_KEY	
+		// 13 CATEGORY	
+		// 14 SYS_VER	
+		// 15 UPLOAD_BY	
+		// 16 UPLOAD_DATE
 		FL_FOUND_ADS_ID_CACHE = true
 		SPL := strings.Split(ADS_ID_CACHE,",")
 		//cADS_CLICK = SPL[0]
@@ -56371,23 +55825,23 @@ func getAds2(w http.ResponseWriter, r *http.Request, FUNC_ID string, ADS_ID int,
 			}
  
 		//update cache for next query
-		/* 0 ADS_CLICK
-			1 ADS_ID	
-			2 ADS_IMG	
-			3 ADS_PUB_ID	
-			4 ADS_SIZE	
-			5 ADS_STATUS	
-			6 ADS_TITLE	
-			7 ADS_TYP	
-			8 ADS_URL	
-			9 ADS_VAL_END	
-			10 ADS_VAL_START	
-			11 ADS_VIEW	
-			12 BLOB_KEY	
-			13 CATEGORY	
-			14 SYS_VER	
-			15 UPLOAD_BY	
-			16 UPLOAD_DATE */
+		// 0 ADS_CLICK
+			// 1 ADS_ID	
+			// 2 ADS_IMG	
+			// 3 ADS_PUB_ID	
+			// 4 ADS_SIZE	
+			// 5 ADS_STATUS	
+			// 6 ADS_TITLE	
+			// 7 ADS_TYP	
+			// 8 ADS_URL	
+			// 9 ADS_VAL_END	
+			// 10 ADS_VAL_START	
+			// 11 ADS_VIEW	
+			// 12 BLOB_KEY	
+			// 13 CATEGORY	
+			// 14 SYS_VER	
+			// 15 UPLOAD_BY	
+			// 16 UPLOAD_DATE
  
 			var buffer3 bytes.Buffer
 			buffer3.WriteString(fmt.Sprintf("%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v,%v",
@@ -60020,51 +59474,6 @@ var htmlHeaderGB = template.Must(template.New("htmlHeaderGB").Parse(`
   </head>
   <body>
 `))
- 
-/* var htmlHeaderGBSocial = template.Must(template.New("htmlHeaderGBSocial").Parse(`
-<!DOCTYPE HTML>
-<html lang="en-US" class="no-js">
-  <head>
-    <title>Social::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta name="description" content="ULAPPH_META_DESCRIPTION_CONTENT" />
-    <meta name="copyright" content="Copyright 2014-2018 ULAPPH Cloud Desktop. All Rights Reserved." />
-    <meta name="keywords" content="ULAPPH_META_KEYWORDS_CONTENT" />
-    <meta name="author" content="ULAPPH Cloud Desktop" />
-    <link rel="os-touch-icon" href="images/custom_icon.ico"/>
-    <link rel="shortcut icon" href="/img/favicon.ico"/>
-    <!--[if lte IE 8]>
-        <link rel="stylesheet" href="/css/home1.css">
-    <![endif]-->
-    <!--[if gt IE 8]><!-->
-        <link rel="stylesheet" href="/css/home2.css">
-    <!--<![endif]-->
-    <!--[if lt IE 9]>
-        <script src="/js/html5shiv.js"></script>
-    <![endif]-->
-    <link rel="stylesheet" media="screen,projection,tv" href="/css/msgs.css" />
-  <link rel="stylesheet" href="/css/bootstrap.min.css">
-  <script type="text/javascript" language="javascript" src="/js/jquery-1.11.1.min.js"></script>
-  <script src="/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>	
-  <script src="/js/jquery.linkify-1.0.js"></script>
-  <script type="text/javascript" src="/js/guestbook.js"></script>
-  <script>
-    $(function(){
-      jQuery('#warning').remove();
-      jQuery('body').linkify({
-          handleLinks: function (links) {
-              links
-                  .css('background', '#ff0')
-                  //.after(function (i) { return ' (link '+(i+1)+')'; });
-            }
-        });
-    });
-  </script>
-	<link rel="stylesheet" href="/css/blockquote2.css">
-  </head>
-  <body>
-`)) */
 				
 var htmlHeaderGBSocial = template.Must(template.New("htmlHeaderGBSocial").Parse(`
 <!DOCTYPE HTML>
@@ -61574,204 +60983,7 @@ var loginBodyTemplateRootN2 = template.Must(template.New("loginBodyTemplateRootN
  </div>
 `))
  
-/* var mobileBodyTemplateMenu0 = template.Must(template.New("mobileBodyTemplateMenu0").Parse(`
-        <li id="Weather">
-         <a href="/tools?FUNC=WIDGET&t=Weather" target="search-frame">
-             <em><span>Weather</span></em><br>
-                <img src="/img/weather.png" title="Weather" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Facebook">
-         <a href="http://www.facebook.com" target="search-frame">
-             <em><span>Facebook</span></em><br>
-                <img src="/img/facebook-icon.png" title="Facebook" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Twitter">
-         <a href="http://www.twitter.com" target="search-frame">
-             <em><span>Twitter</span></em><br>
-                <img src="/img/twitter-icon.png" title="Twitter" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Linked In">
-         <a href="http://www.linkedin.com" target="search-frame">
-             <em><span>Linked In</span></em><br>
-                <img src="/img/linkedin-icon.png" title="LinkedIn" height="40" width="40"/>
-            </a>
-        </li> 		
-        <li id="Search">
-         <a href="https://www.google.com" target="search-frame">
-             <em><span>Search</span></em><br>
-                <img src="/img/Search.png" title="Search" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Email">
-         <a href="http://gmail.google.com/" target="gmail-frame">
-             <em><span>Gmail</span></em><br>
-                <img src="/img/Gmail.png" title="Gmail" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Drive">
-         <a href="https://drive.google.com/?authuser=0#my-drive" target="drive-frame">
-		 <em><span>Drive</span></em><br>
-                <img src="/img/GDrive.png" title="Google Drive" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Youtube">
-         <a href="https://www.youtube.com/" target="youtube-frame">
-             <em><span>Youtube</span></em><br>
-                <img src="/img/Youtube.png" title="Youtube" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Calendar">
-         <a href="http://calendar.google.com/" target="calendar-frame">
-             <em><span>Calendar</span></em><br>
-                <img src="/img/GCalendar.png" title="Calendar" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Books">
-         <a href="http://books.google.com" target="books-frame">
-             <em><span>Books</span></em><br>
-                <img src="/img/GBooks.png" title="Books" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Wikipedia">
-         <a href="http://en.wikipedia.org/" target="wikipedia-frame">
-             <em><span>Encyclopedia</span></em><br>
-                <img src="/img/wikipedia.png" title="Wikipedia" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Google Maps">
-         <a href="http://maps.google.com" target="google-maps">
-             <em><span>Google Maps</span></em><br>
-                <img src="/img/google-maps.png" title="Google Maps" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Google Plus">
-         <a href="http://plus.google.com/" target="plus">
-             <em><span>Plus</span></em><br>
-                <img src="/img/Plus.png" title="Plus" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Google News">
-         <a href="http://news.google.com" target="news-frame">
-             <em><span>News</span></em><br>
-                <img src="/img/News.png" title="News" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Play">
-         <a href="http://play.google.com/store?hl=en" target="_blank">
-             <em><span>Play</span></em><br>
-                <img src="/img/google-play.png" title="Play" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Shopping">
-         <a href="https://www.google.com/shopping?hl=en" target="_blank">
-             <em><span>Shopping</span></em><br>
-                <img src="/img/shopping.png" title="Shopping" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Blogger">
-         <a href="http://www.blogger.com/" target="_blank">
-             <em><span>Blogger</span></em><br>
-                <img src="/img/blogger.png" title="Blogger" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Finance">
-         <a href="https://www.google.com/finance" target="_blank">
-             <em><span>Finance</span></em><br>
-                <img src="/img/finance.png" title="Finance" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Google Photos">
-         <a href="http://photos.google.com" target="picasa-frame">
-             <em><span>Photos</span></em><br>
-                <img src="/img/photos.png" title="Picasa" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Contacts">
-         <a href="http://contacts.google.com/" target="picasa-frame">
-             <em><span>Contacts</span></em><br>
-                <img src="/img/contacts.png" title="Contacts" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Trends">
-         <a href="https://www.google.com.ph/trends" target="picasa-frame">
-             <em><span>Trends</span></em><br>
-                <img src="/img/trends.png" title="Trends" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Scholar">
-         <a href="http://scholar.google.com.ph/" target="picasa-frame">
-             <em><span>Scholar</span></em><br>
-                <img src="/img/scholar.jpg" title="Scholar" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Docs">
-         <a href="https://docs.google.com/" target="picasa-frame">
-             <em><span>Docs</span></em><br>
-                <img src="/img/docs.png" title="Docs" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Slides">
-         <a href="https://docs.google.com/presentation/u/0/" target="picasa-frame">
-             <em><span>Slides</span></em><br>
-                <img src="/img/slides.png" title="Slides" height="40" width="40"/>
-            </a>
-        </li>	
-        <li id="Drawings">
-         <a href="https://docs.google.com/drawings" target="picasa-frame">
-             <em><span>Drawings</span></em><br>
-                <img src="/img/drawings.png" title="Drawings" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Sheets">
-         <a href="https://docs.google.com/spreadsheets/u/0/" target="picasa-frame">
-             <em><span>Sheets</span></em><br>
-                <img src="/img/sheets.png" title="Sheets" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Forms">
-         <a href="https://docs.google.com/forms/" target="picasa-frame">
-             <em><span>Forms</span></em><br>
-                <img src="/img/forms.png" title="Forms" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Google Keep">
-         <a href="http://keep.google.com" target="notes-frame">
-             <em><span>Notes</span></em><br>
-                <img src="/img/googlekeep.png" title="Google Keep" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Sites">
-         <a href="http://sites.google.com/?pli=1" target="picasa-frame">
-             <em><span>Sites</span></em><br>
-                <img src="/img/sites.png" title="Sites" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Translate">
-         <a href="http://translate.google.com.ph/" target="picasa-frame">
-             <em><span>Translate</span></em><br>
-                <img src="/img/translate.png" title="Translate" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Groups">
-         <a href="http://groups.google.com/" target="picasa-frame">
-             <em><span>Groups</span></em><br>
-                <img src="/img/groups.png" title="Groups" height="40" width="40"/>
-            </a>
-        </li>
-        <li id="Sky">
-         <a href="https://www.google.com/sky/" target="picasa-frame">
-             <em><span>Sky</span></em><br>
-                <img src="/img/sky.png" title="Sky" height="40" width="40"/>
-            </a>
-        </li>	
- 
- 
-`)) */
- 
- var mobileBodyTemplateContentA = template.Must(template.New("mobileBodyTemplateContentA").Parse(`
+var mobileBodyTemplateContentA = template.Must(template.New("mobileBodyTemplateContentA").Parse(`
         <li id="Webapp">
          <a href="/webapp/">
              <em><span>Webapp</span></em><br>
@@ -65456,24 +64668,6 @@ func countryChecker(w http.ResponseWriter, r *http.Request) (FL_PROC_OK bool){
 	
 	return FL_PROC_OK
 }
-
-//checks if inbound IP address is allowed
-//it calls the sites server
-/* func isInBoundAppidAllowed(w http.ResponseWriter, r *http.Request, appId string) (res string) {
-	
-	IS_SEARCH_SERVER, SEARCH_SERVER, _ := getSitesServer(w,r)
-	res = "N"
-	//if this server is not sites server
-	if IS_SEARCH_SERVER != "Y" {
-		//call sites server
-		URL := fmt.Sprintf("%v/search?f=IS_VALID_IAID&APP_ID=%v", SEARCH_SERVER, appId)
-		res = fetchURL(w,r,URL)
-	} else {
-		res = isValidInboundAppId(w,r,appId)
-	}
-	return res
-	
-} */
 
 //checks if inbound request is vald
 func checkInBoundAppidAllowed(w http.ResponseWriter, r *http.Request) bool {
@@ -69533,7 +68727,7 @@ func renderStyleCssTemplates(w http.ResponseWriter, r *http.Request, extName, TA
 	doc.STR_FILLER2 = TASK_MEMCACHER_desktopWP_bigWP
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69631,7 +68825,7 @@ func renderStyleCssTemplates2(w http.ResponseWriter, r *http.Request) {
 	doc.STR_FILLER2	= color
 	
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69670,7 +68864,7 @@ func renderStyleCssColored(w http.ResponseWriter, r *http.Request, name string) 
 	doc.STR_FILLER3	= getInActiveColor(w,r)
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69800,7 +68994,7 @@ func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d st
 	doc.HTM_FILLER1 = template.HTML(string(mens))
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -69842,7 +69036,7 @@ func renderInstallerPage(w http.ResponseWriter, r *http.Request, name, uid strin
 	//get cache
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -70025,7 +69219,7 @@ func renderJSWMStyleCssTemplates(w http.ResponseWriter, r *http.Request) {
 	doc.STR_FILLER2 = inActColor
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -70064,7 +69258,7 @@ func renderSocialSharing(w http.ResponseWriter, r *http.Request, title, turl str
 	doc.STR_FILLER2 = title
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -70102,7 +69296,7 @@ func renderMessage3D(w http.ResponseWriter, r *http.Request, message string) {
 	doc.STR_FILLER1	= message
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -70136,7 +69330,7 @@ func renderStaticTemplates(w http.ResponseWriter, r *http.Request, extName strin
 
 	doc := new(TEMPSTRUCT)	
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -70205,7 +69399,7 @@ func renderOverQuotaErrorTemplates(w http.ResponseWriter, r *http.Request) {
 	doc.STR_FILLER2 = html.UnescapeString(ADDTL_QUOTA_ERR_MSG)
 		
 	data := struct {
-		//*TEMPSTRUCT2
+		
 		*TEMPSTRUCT
 		Template    *template.Template
 	}{	
@@ -70734,8 +69928,6 @@ func checkSpecialOptions(w http.ResponseWriter, r *http.Request, mode, FL_COUNTR
 							if len(SPR) > 1 {
 								TARGET := SPR[1]
 								validateURL(w,r,TARGET)
-/* 								http.Redirect(w, r, TARGET, http.StatusFound)
-								return */
 								res = TARGET
 								break
 							}					
@@ -71890,19 +71082,6 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 			//c.Infof("delaySecond...")
 			//delaySecond(30)
 			
-			//install the source codes
-/* 			c.Infof("installProject...")
-			//D0051
-			//laterInstallProject.Call(c, pid, tok)
-			err = installProject(w,r,pid,tok)
-			if err != nil {
-				c.Errorf("err: %v", err)
-				//fmt.Fprintf(w,"Error installing project")
-				return
-			} else {
-				c.Infof("installProject...successful!")
-			} */
-			
 			//delay first
 			c.Infof("delaySecond...")
 			delaySecond(30)
@@ -72074,59 +71253,6 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 	c.Infof("b: %v", b)
 	return err
 }
-
-//D0051
-//install ulapph cloud desktop in google appengine project id
-/* func installProject(w http.ResponseWriter, r *http.Request, pid, tok string) error {
-	c := appengine.NewContext(r)
-	
-	thisUrl := "https://raw.githubusercontent.com/edwindvinas/ULAPPH-Cloud-Desktop/master/installer.json"
-	//thisUrl := "https://storage.googleapis.com/ulapph-cloud-desktop.appspot.com/installer_201710150133.json"
-	//thisUrl := "https://storage.googleapis.com/ulapph-cloud-desktop.appspot.com/installer.json"
-	c.Infof("thisUrl: %v", thisUrl)
-	urlRespBytes, err := fetchURLB(w,r,thisUrl)
-	if err != nil {
-		c.Infof("fetchURLB() err: %v", err)
-		return err
- 
-	}	
-
-	destUrl := fmt.Sprintf("https://appengine.googleapis.com/v1/apps/%v/services/default/versions", pid)
-	c.Infof("destUrl: %v", destUrl)
-	req, _ := http.NewRequest("POST", destUrl, bytes.NewBuffer(urlRespBytes))
-	//thisLength := strconv.Itoa(len(encbuf.String()))
-	thisLength := strconv.Itoa(len(urlRespBytes))
-	req.Header.Set("Content-Length", thisLength)
-	//req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-	req.Header.Set("Authorization", "Bearer "+tok)
-	client := urlfetch.Client(c)
-
-	c.Infof("req: %v", req)
-	res, err := client.Do(req)
-	if err != nil {
-		c.Infof("client.Do err: %v", err)
-		return err
-	}
-	if res.StatusCode != 200 {
-		err = fmt.Errorf("failed to post; invalid response code: %v", res.StatusCode)
-		//return
-		c.Infof("res.StatusCode: %v", res.StatusCode)
-		//fmt.Fprintf(w, "Response code: %v", res.StatusCode)
-		return err
- 
-	}
-	b, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		//return
-		c.Infof("ioutil.ReadAll err: %v", err)
-		return err
- 
-	}
-	c.Infof("b: %v", b)
-	return err
-} */
 
 //D0051
 //create google appengine project id
@@ -76815,32 +75941,6 @@ func display_music_tags (w http.ResponseWriter, r *http.Request, uid string, wor
 	fmt.Fprintf(w, "%v", buf.String())
 	putStrToMemcacheWithExp(w,r,cKey,buf.String(), GEN_CONTENT_EXPIRES4)
 }
-
-//sort and display music tages given a list of keywords
-/* func display_photo_tags (w http.ResponseWriter, r *http.Request, uid string, opt string, word_counts map[string]int){
-	var buf bytes.Buffer	
-	cKey := fmt.Sprintf("PA_CACHE_TAGS_%s_%v", uid, opt)
-	buf.WriteString(fmt.Sprintf("<h3>---------------</h3>"))
-	buf.WriteString(fmt.Sprintf("<a name=\"album_tags\"><b>Photo Tags</a>"))
-	
-	n := map[int][]string{}
-	var a []int
-	for k, v := range word_counts {
-		n[v] = append(n[v], k)
-	}
-	for k := range n {
-		a = append(a, k)
-	}
-	sort.Sort(sort.Reverse(sort.IntSlice(a)))
-	for _, k := range a {
-		for _, s := range n[k] {
-			buf.WriteString(fmt.Sprintf("<b><a href=\"/media?FUNC_CODE=VIEW_THUMBS&FILTER=%v\" title=\"Click to filter\">%s</a></b> (%d counts)<br>", s, s, k))
-		}
-	}
-	buf.WriteString(fmt.Sprintf("<h3>---------------</h3>"))
-	fmt.Fprintf(w, "%v", buf.String())
-	putStrToMemcacheWithExp(w,r,cKey,buf.String(), GEN_CONTENT_EXPIRES4)
-} */
  
 //D0033
 //sync with Google drive contents
@@ -77810,12 +76910,6 @@ func getComments(w http.ResponseWriter, r *http.Request, SID, url string) ([]Com
 	
 	if recCount > 0 {
 		for _, p := range cmts{
-		/* 	ID        int       `json:"id"`
-			URL       string    `json:"url"`
-			Comment   string    `json:"comment"`
-			Name      string    `json:"name"`
-			Timestamp time.Time `json:"timestamp"`
-			Parent    int       `json:"parent"` */
 			g := Comment{
 				ID: p.CID,
 				URL: p.URL,
