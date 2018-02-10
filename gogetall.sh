@@ -1,4 +1,5 @@
 #/usr/bin/sh
+echo "Go getting all Golang libraries...please wait..."
 
 go get	"github.com/jaytaylor/html2text"
 go get	"github.com/edwindvinas/percent"
@@ -13,11 +14,17 @@ go get	"golang.org/x/net/context"
 go get	"google.golang.org/appengine"
 go get	"golang.org/x/oauth2/google"
 go get	"github.com/dgrijalva/jwt-go"
-go get	"github.com/PuerkitoBio/goquery"
+#go get	"github.com/PuerkitoBio/goquery"
+go get	"github.com/edwindvinas/goquery"
 go get	"gopkg.in/neurosnap/sentences.v1/english"
 go get	"golang.org/x/oauth2"
 go get	"github.com/google/go-github/github"
-go get	"github.com/blevesearch/bleve"
+#go get	"github.com/blevesearch/bleve"
+go get	"github.com/edwindvinas/bleve"
 go get	"github.com/edwindvinas/sillyname-go"
-go get "github.com/edwindvinas/user_agent"
-go get "github.com/olekukonko/tablewriter"
+go get  "github.com/edwindvinas/user_agent"
+go get  "github.com/olekukonko/tablewriter"
+go get  "github.com/edwindvinas/sprig"
+
+echo "done!"
+

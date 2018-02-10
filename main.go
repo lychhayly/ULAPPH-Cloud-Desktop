@@ -700,7 +700,6 @@ const (
     CMD_API_KEY = ``
 	//Generic API Key
     CMD_GEN_KEY = ``
-	//FIREBASE_URL = ""
 	//paypal	
     PAYPAL_PREMIUM_COST = ``
     PAYPAL_CURRENCY = ``
