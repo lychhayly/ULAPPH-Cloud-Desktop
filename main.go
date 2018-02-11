@@ -749,6 +749,8 @@ const (
 	plusResMax = 20
 	//URL Shortener Key
     apiKeyUs = ``
+	//Enable firebase
+	FL_FIREBASE_ENABLE = false
 	//Firebase Real-time DB
     FIREBASE_URL = ``
 	//Firebase server json
