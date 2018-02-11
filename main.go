@@ -414,7 +414,7 @@ const (
 	// !!!CONFIG-STARTS-HERE!!!
 	///////////////////////////////////////////////////////////////
 	//Youtube channel showing how to use the current version
-    SYS_TUTORIALS_CHANNEL = "https://www.youtube.com/embed?list=PLHGslGB8z3_kDrebayoNNLc7VnXVfjuRZ&autoplay=0"
+	SYS_TUTORIALS_CHANNEL = "https://www.youtube.com/embed?list=PLHGslGB8z3_kDrebayoNNLc7VnXVfjuRZ&autoplay=0"
 	//uninstaller admin key
     SYS_UNINSTALL_KEY = `dleuaoonrfq0nzqx`
 	//default issue page
@@ -16518,6 +16518,14 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
  
 //proc auth firebase to get the jwt token
 func procAuthFirebase(w http.ResponseWriter, r *http.Request, thisChan chan string, chanDone chan bool, uid, token string) {
+	
+	if FL_FIREBASE_ENABLE == false {
+		//return jwToken
+		thisChan <- "1234567890-dummy-firebase-token"
+		chanDone <- true
+		return
+	}
+	
 	//read firebase json
 	readSecret(w,r)
  
