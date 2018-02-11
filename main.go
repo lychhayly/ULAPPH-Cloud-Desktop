@@ -414,9 +414,9 @@ const (
 	// !!!CONFIG-STARTS-HERE!!!
 	///////////////////////////////////////////////////////////////
 	//Youtube channel showing how to use the current version
-    SYS_TUTORIALS_CHANNEL = "https://www.youtube.com/embed?list=PLHGslGB8z3_kDrebayoNNLc7VnXVfjuRZ&autoplay=0"
+	SYS_TUTORIALS_CHANNEL = "https://www.youtube.com/embed?list=PLHGslGB8z3_kDrebayoNNLc7VnXVfjuRZ&autoplay=0"
 	//uninstaller admin key
-    SYS_UNINSTALL_KEY = `dleuaoonrfq0nzqx`
+    SYS_UNINSTALL_KEY = ``
 	//default issue page
     SYS_DOWN_ENABLE = false
 	//change url to https
@@ -449,15 +449,15 @@ const (
 	//current version
 	SYS_VERSION = 1
 	// admin/programmer/superuser email (only this user can access admin-setup)
-    ADMMAIL = `ulapph@gmail.com`
+    ADMMAIL = `demo.ulapph@gmail.com`
 	// system email log
-    SYSMAIL = `ulapph@gmail.com`
+    SYSMAIL = `demo.ulapph@gmail.com`
 	// advertisements email log
-    ADSMAIL = `ctcunanan@gmail.com`
+    ADSMAIL = `demo.ulapph@gmail.com`
 	// reports email log
-    REPMAIL = `edwin.d.vinas@gmail.com`
+    REPMAIL = `demo.ulapph@gmail.com`
 	// customer feedback email
-    FDBKMAIL = `edwin.d.vinas@gmail.com`
+    FDBKMAIL = `demo.ulapph@gmail.com`
 	// premium/super user flag to disable/enable certain features
 	SYS_SUPER_USER = false
 	//domain referer match
@@ -749,6 +749,8 @@ const (
 	plusResMax = 20
 	//URL Shortener Key
     apiKeyUs = ``
+	//Enable firebase
+	FL_FIREBASE_ENABLE = false
 	//Firebase Real-time DB
     FIREBASE_URL = ``
 	//Firebase server json
@@ -1324,7 +1326,7 @@ var adsEffs = []string{"flash",
 // EXCEPTIONS, COUNTRY RESTRICTIONS
 ///////////////////////////////////////////////////////////////
 //List of undeletable accounts - these can't be maintained in web admin-setup
-var isExceptionAccount = map[string]bool{"ulapph@gmail.com":true,}
+var isExceptionAccount = map[string]bool{"demo.ulapph@gmail.com":true,}
 //List of allowed search engines (note enable SYS_SEARCHABLE flag as well)
 var isSearchEngineAllowed = map[string]bool{"US.?.?":true,"CN.?.?":true,"RU.?.?":true,"UA.?.?":true,"MX.?.?":true,"TM.?.?":true,}
 //List of allowed countries
@@ -1730,7 +1732,7 @@ var (
 		".speedtest": parsePresentTemplate("speedtest-template.txt"),
 		".htmlHeaderBodyToken": parsePresentTemplate("htmlHeaderBodyToken.txt"),	
 	}
-	contactEmail      = "ulapph@gmail.com"
+	contactEmail      = "demo.ulapph@gmail.com"
 	gitHubCredentials = ""
 )
 var funcs = template.FuncMap{
@@ -13370,7 +13372,7 @@ func ulapphCache(w http.ResponseWriter, r *http.Request) {
 		case "desktop0":
 			
 			//check if cache needs reload
-			//CACHE_MANIFEST_RELOAD_FLAG_ulapph@gmail.com
+			//CACHE_MANIFEST_RELOAD_FLAG_demo.ulapph@gmail.com
 			CACHE_MANIFEST_RELOAD_FLAG := ""
 			cKey := fmt.Sprintf("CACHE_MANIFEST_RELOAD_FLAG_%s", uid)
 			CACHE_MANIFEST_RELOAD_FLAG = getStrMemcacheValueByKey(w,r,cKey)
@@ -13431,7 +13433,7 @@ func ulapphCache(w http.ResponseWriter, r *http.Request) {
 		case "desktopN":
 			
 			//check if cache needs reload
-			//CACHE_MANIFEST_RELOAD_FLAG_ulapph@gmail.com
+			//CACHE_MANIFEST_RELOAD_FLAG_demo.ulapph@gmail.com
 			CACHE_MANIFEST_RELOAD_FLAG := ""
 			cKey := fmt.Sprintf("CACHE_MANIFEST_RELOAD_FLAG_%s", deskName)
 			CACHE_MANIFEST_RELOAD_FLAG = getStrMemcacheValueByKey(w,r,cKey)
@@ -16518,6 +16520,14 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
  
 //proc auth firebase to get the jwt token
 func procAuthFirebase(w http.ResponseWriter, r *http.Request, thisChan chan string, chanDone chan bool, uid, token string) {
+	
+	if FL_FIREBASE_ENABLE == false {
+		//return jwToken
+		thisChan <- "1234567890-dummy-firebase-token"
+		chanDone <- true
+		return
+	}
+	
 	//read firebase json
 	readSecret(w,r)
  
@@ -16973,7 +16983,7 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				redURL := fmt.Sprintf("%v/uwm", url)	
 				http.Redirect(w, r, redURL, http.StatusFound)
 			} else {
-				//c.Infof("Apologies, your account is not yet mapped to an ULAPPH server. Kindly contact ulapph@gmail.com for support.")
+				//c.Infof("Apologies, your account is not yet mapped to an ULAPPH server. Kindly contact demo.ulapph@gmail.com for support.")
 				fmt.Fprintf(w, "Apologies, your account is not yet mapped to an ULAPPH server. <a href=\"https://ulapph-corporation.appspot.com/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=350&SID=TDSMEDIA-350\">Click here</a> to see pricing of ULAPPH Cloud Desktop. If not interested, kindly <a href=\"/logout\">logout</a>.")
 				//D0044
 			}
@@ -46990,7 +47000,7 @@ func settingsDisplayScreen(w http.ResponseWriter, r *http.Request) {
 			
 			deskNumVal := str2int(r.FormValue("dockTarget"))
 			
-			//DOCKS_LIST_desktop0_ulapph@gmail.com
+			//DOCKS_LIST_desktop0_demo.ulapph@gmail.com
 			cKey := fmt.Sprintf("DOCKS_LIST_%v_%s", deskName, USER_EMAIL_ID)
 			DOCKS_LIST_desktop := ""
 			DOCKS_LIST := ""
@@ -50039,7 +50049,7 @@ func updateMyULAPPHLoc(w http.ResponseWriter, r *http.Request, uid, latlon strin
 	for s.Scan() {
 		//fmt.Fprintf(w, "%v", s.Text())
 		//find the record & update
-		//ctcunanan@gmail.com|https://christine-cunanan.appspot.com|lat,lon|timestamp
+		//demo.ulapph@gmail.com|https://christine-cunanan.appspot.com|lat,lon|timestamp
 		if s.Text() != "" {
 			thisStr := fmt.Sprintf("%v", s.Text())
 			if string(thisStr[0]) != "#" && FL_FOUND == false {
@@ -50118,7 +50128,7 @@ func getMyULAPPH(w http.ResponseWriter, r *http.Request, mode string) (url strin
     scanner := bufio.NewScanner(strings.NewReader(HOST_LIST2))
     for scanner.Scan() {
 		if scanner.Text() != "" {
-			//edwin.d.vinas@gmail.com|https://ulapph-installer.appspot.com
+			//demo.ulapph@gmail.com|https://ulapph-installer.appspot.com
 			SPL := strings.Split(scanner.Text(), "|")
 			if len(SPL) >= 2 {
 				tURL := SPL[1]
@@ -50588,7 +50598,7 @@ func procDiscussions(w http.ResponseWriter, r *http.Request) {
 	// 1
 	// TDSARTL-4
 	// ["My","comments","on","your","MIS","UPOU","course"]
-	// edwin.d.vinas@gmail.com
+	// demo.ulapph@gmail.com
 	//	DT_FIRST	DT_UPDATE	IID	NUM_COMMENTS	SID	TAGS	USERS
 	rt := time.Now().AddDate(0, 0, -30)
 	timestamp := fmt.Sprintf("%v", rt.Format("20060102150405"))
@@ -50840,7 +50850,7 @@ func showOverallMap(w http.ResponseWriter, r *http.Request) {
 						}
 					XTMP := SPL[3]
 					//buf.WriteString("")
-					//edwin.d.vinas@gmail.com|https://|14.7391207,121.0501458|2017-07-01 00:40:15.926259213 +0000 UTC
+					//demo.ulapph@gmail.com|https://|14.7391207,121.0501458|2017-07-01 00:40:15.926259213 +0000 UTC
 					p := UlapphDesktops {
 						PK:				ctr,
 						Lat:			lat,
@@ -50868,7 +50878,7 @@ func showOverallMap(w http.ResponseWriter, r *http.Request) {
     scanner := bufio.NewScanner(strings.NewReader(HOST_LIST2))
     for scanner.Scan() {
 		if scanner.Text() != "" {
-			//edwin.d.vinas@gmail.com|https://ulapph-installer.appspot.com|lat,lon|timestamp
+			//demo.ulapph@gmail.com|https://ulapph-installer.appspot.com|lat,lon|timestamp
 			SPL := strings.Split(scanner.Text(), "|")
 			if len(SPL) >= 4 {
 				ctr++
@@ -53260,7 +53270,7 @@ func adhocWebLoadTDSUSERS(w http.ResponseWriter, r *http.Request) {
  
 	keysBody := []byte(`[
 {"SYS_VER":1,
-"USER":"ulapph@gmail.com",
+"USER":"demo.ulapph@gmail.com",
 "COMPANY_ID":"BSIEDV",
 "CLOUD_NAME":"ULAPPH",
 "GROUP_ID":"GRP_ADMIN",
@@ -53723,7 +53733,7 @@ func adhocWebLoadTDSSLIDE(w http.ResponseWriter, r *http.Request) {
 "DOC_STAT":"Personal",
 "TITLE":"Sample Title",
 "DESC":"This is a sample description",
-"AUTHOR":"ulapph@gmail.com",
+"AUTHOR":"demo.ulapph@gmail.com",
 "YEAR":"2014",
 "CATEGORY":"desktop1",
 "TAGS":"sdd dsds sdsd",
@@ -53768,7 +53778,7 @@ func adhocWebLoadTDSARTL(w http.ResponseWriter, r *http.Request) {
 "DOC_STAT":"Personal",
 "TITLE":"Sample Title",
 "DESC":"This is a sample description",
-"AUTHOR":"ulapph@gmail.com",
+"AUTHOR":"demo.ulapph@gmail.com",
 "YEAR":"2014",
 "CATEGORY":"desktop1",
 "TAGS":"sdd dsds sdsd",
@@ -53814,7 +53824,7 @@ func adhocWebLoadTDSMEDIA(w http.ResponseWriter, r *http.Request) {
 "PROP":"120x120",
 "TITLE":"Sample Title",
 "DESC":"This is a sample description",
-"AUTHOR":"ulapph@gmail.com",
+"AUTHOR":"demo.ulapph@gmail.com",
 "YEAR":"2014",
 "CATEGORY":"desktop0",
 "FL_SHARED":"Y",
@@ -55418,7 +55428,7 @@ func usersProcessor(w http.ResponseWriter, r *http.Request, auth, USER_EMAIL_ID 
 					//cache user data first time
 					var buffer3 bytes.Buffer
 					//SYS_VER	USER	COMPANY_ID	CLOUD_NAME	GROUP_ID	LOGGED_IN	LAST_LOGIN	USER_ACC_OPT	FL_QUOTA	FL_BILLED	FL_WORK	FL_WF_ID
-					//1	ulapph@gmail.com	BSIEDV	ULAPPH	GRP_ADMIN	1	20141110193058	Normal	Y	Y	Y	Y
+					//1	demo.ulapph@gmail.com	BSIEDV	ULAPPH	GRP_ADMIN	1	20141110193058	Normal	Y	Y	Y	Y
 					buffer3.WriteString(fmt.Sprintf("%d,%s,%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s", p.SYS_VER,	p.USER,	p.COMPANY_ID,	p.CLOUD_NAME,	p.GROUP_ID,	p.LOGGED_IN,	p.LAST_LOGIN,	p.USER_ACC_OPT,	p.FL_QUOTA,	p.FL_BILLED,	p.FL_WORK,	p.FL_WF_ID, p.USER_ACC_TYP))
 					TDSUSER_CACHE := buffer3.String()
 					putStrToMemcacheWithoutExp(w,r,usersProcessor_CACHE_KEY,TDSUSER_CACHE)
@@ -55467,7 +55477,7 @@ func TASK_MEMCACHER_usersProcessor(w http.ResponseWriter, r *http.Request) {
 				//cache user data first time
 				var buffer3 bytes.Buffer
 				//SYS_VER	USER	COMPANY_ID	CLOUD_NAME	GROUP_ID	LOGGED_IN	LAST_LOGIN	USER_ACC_OPT	FL_QUOTA	FL_BILLED	FL_WORK	FL_WF_ID
-				//1	ulapph@gmail.com	BSIEDV	ULAPPH	GRP_ADMIN	1	20141110193058	Normal	Y	Y	Y	Y
+				//1	demo.ulapph@gmail.com	BSIEDV	ULAPPH	GRP_ADMIN	1	20141110193058	Normal	Y	Y	Y	Y
 				buffer3.WriteString(fmt.Sprintf("%d,%s,%s,%s,%s,%d,%s,%s,%s,%s,%s,%s,%s", p.SYS_VER,	p.USER,	p.COMPANY_ID,	p.CLOUD_NAME,	p.GROUP_ID,	p.LOGGED_IN,	p.LAST_LOGIN,	p.USER_ACC_OPT,	p.FL_QUOTA,	p.FL_BILLED,	p.FL_WORK,	p.FL_WF_ID, p.USER_ACC_TYP))
 				TDSUSER_CACHE := buffer3.String()
 				usersProcessor_CACHE_KEY := fmt.Sprintf("usersProcessor_CACHE_%s", p.USER)
@@ -74318,7 +74328,7 @@ func handlerOuath2GoogleCallback(w http.ResponseWriter, r *http.Request) {
 		values := url.Values{
 		 "code": {code},
 		 "client_id": {GOOGLE_OAUTH2_CLIENTID},
-		 //"client_id": {"ulapph@gmail.com"},
+		 //"client_id": {"demo.ulapph@gmail.com"},
 		 "client_secret": {GOOGLE_OAUTH2_SECRET},
 		 "redirect_uri": {"https://ulapph-public-1.appspot.com/oauth2/google/callback"},
 		 "grant_type": {"authorization_code"},
