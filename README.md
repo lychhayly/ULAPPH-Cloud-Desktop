@@ -8,13 +8,14 @@ ULAPPH Cloud Desktop
 Use Cases (Developers)
 ---------
 - Run a low-cost cloud desktop server which serves a web server and an online web desktop (webtop)
-- Develop Golang applications by modifying the single Golang code (see main.go)
-- Serve Javascript/HTML/CSS static pages (see /static folder)
-- Develop online applications in Golang or Javascript
+- Develop Golang applications using Golang (see main.go)
+- Develop progressive web apps (see /static/pwa/)
+- Develop Javascript/HTML/CSS static pages (see /static folder)
 - Serve REST API endpoints (i.e., IOT application)
 - Run cron jobs, scrape webpages, real-time notifications, etc
 - Learn how Golang can be used as backend and also serve front-end UIs
 - Can be used as public web server with customizable themes
+- Uses Google Cloud Shell for development (no need to install local IDEs or tools)
 
 Use Cases (Users)
 ---------
@@ -28,6 +29,7 @@ Use Cases (Users)
 - Use it as private(only you can access) or shared in public (so users can register and use the desktop)
 - Can be used for schools or companies as low-cost online desktop for students/employees
 - Can be used as low-cost website with built-in CMS feature
+- Serve static or dynamic apps such as progressive web apps
 
 Documentations
 ----------------
