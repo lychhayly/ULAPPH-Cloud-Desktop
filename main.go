@@ -60994,6 +60994,12 @@ var loginBodyTemplateRootN2 = template.Must(template.New("loginBodyTemplateRootN
 `))
  
 var mobileBodyTemplateContentA = template.Must(template.New("mobileBodyTemplateContentA").Parse(`
+        <li id="UWM">
+         <a href="/uwm">
+             <em><span>UWM</span></em><br>
+                <img src="/img/jswm.png" title="UWM" height="40" width="40"/>
+            </a>
+        </li>
         <li id="Webapp">
          <a href="/webapp/">
              <em><span>Webapp</span></em><br>
