@@ -68821,7 +68821,7 @@ func getStartColor(w http.ResponseWriter, r *http.Request) string {
 	}
 	
 	if color == "" {
-		color = SYS_SLIDE_COLOR
+		color = fmt.Sprintf("#%v", SYS_SLIDE_COLOR)
 	}
 	
 	return color
@@ -69101,7 +69101,7 @@ func getActiveColor(w http.ResponseWriter, r *http.Request) string {
 	
 	if actColor == "" {
 		//actColor = "#06c9c9"
-		actColor = SYS_SLIDE_FROM
+		actColor = fmt.Sprintf("#%v", SYS_SLIDE_FROM)
 	}
 	
 	return actColor
@@ -69131,7 +69131,7 @@ func getInActiveColor(w http.ResponseWriter, r *http.Request) string {
 	
 	if inActColor == "" {
 		//inActColor = "#056f6f"
-		inActColor = SYS_SLIDE_TO
+		inActColor = fmt.Sprintf("#%v", SYS_SLIDE_TO)
 	}
 	
 	return inActColor
@@ -72321,9 +72321,15 @@ func parseHeader(w http.ResponseWriter, r *http.Request, doc *Doc, lines *Lines,
 	}
  
 	//slide theme
-	doc.SlideColor = SYS_SLIDE_COLOR
-	doc.ColorFrom = SYS_SLIDE_FROM
-	doc.ColorTo = SYS_SLIDE_TO
+	if SYS_UWM_RAN_COLORS == true {
+		doc.SlideColor = getStartColor(w,r)
+		doc.ColorFrom = getInActiveColor(w,r) 
+		doc.ColorTo = getActiveColor(w,r) 
+	} else {
+		doc.SlideColor = fmt.Sprintf("#%v", SYS_SLIDE_COLOR)
+		doc.ColorFrom = fmt.Sprintf("#%v", SYS_SLIDE_FROM)
+		doc.ColorTo = fmt.Sprintf("#%v", SYS_SLIDE_TO)
+	}
 	
 	//15/10/2015 - edv - add custom slide tone
 	doc.SlideTone = fmt.Sprintf("%v%v", getSchemeUrl(w,r), DEFAULT_SLIDE_TONE)
