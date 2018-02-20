@@ -54,6 +54,7 @@ Contributors
 - Edwin D. Vinas (Golang/JS/HTML/CSS)
 - Christine T. Cunanan (UI/Testing/ContentManagement)
 - Rammel D. Vinas (CorelDraw/Photoshop/Graphics)
+- And all the developers of free libraries integrated with ULAPPH...
 
 Questions?
 ------------------------------
