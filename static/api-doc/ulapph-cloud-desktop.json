@@ -82,6 +82,13 @@
             "description": "Find out more about commands",
             "url": "/commands"
         }
+    }, {
+        "name": "otto",
+        "description": "Use javascript interpreter APIs",
+        "externalDocs": {
+            "description": "Find out more about commands",
+            "url": "/otto"
+        }
     }],
     "schemes": ["https"],
     "paths": {
@@ -2198,6 +2205,51 @@
                 }],
                 "deprecated": false
             }
+        },
+		"/otto": {
+            "post": {
+                "tags": ["otto"],
+                "summary": "jsOtto() - Executes a Javascript in a VM",
+                "description": "This can be used for creating APIs in Javascript.",
+                "operationId": "runJavascriptOtto",
+                "produces": ["application/xml", "application/json"],
+				"consumes": ["application/xml", "application/json"],
+                "parameters": [{
+                    "name": "DEBUG",
+                    "in": "query",
+                    "description": "Enabled and disable debug mode (Y/N)",
+                    "required": true,
+                    "type": "string",
+                    "format": "string"
+                },{
+                    "name": "SID",
+                    "in": "query",
+                    "description": "The SID of script to be executed",
+                    "required": true,
+                    "type": "string",
+                    "format": "string"
+                },{
+                        "in": "body",
+                        "name": "body",
+                        "description": "The input object to be processed",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ottoInput"
+                        }
+                 }],
+                "responses": {
+                    "200": {
+                        "description": "Otto Javascript Response",
+                    },
+                    "400": {
+                        "description": "Bad request"
+                    }
+                },
+                "security": [{
+                    "server_token": []
+                }],
+                "deprecated": false
+            }
         }
 	},
     "securityDefinitions": {
@@ -2308,6 +2360,17 @@
             },
             "xml": {
                 "name": "NotificationMessage"
+            }
+        },
+        "ottoInput": {
+            "type": "object",
+            "properties": {
+                "dummy": {
+                	"type": "string"
+                }
+            },
+            "xml": {
+                "name": "ottoInput"
             }
         },
         "SystemStatus": {

@@ -1,12 +1,12 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#04/034/2018 08:50:59
+//LAST_UPGRADE#21/04/2017 08:50:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ULAPPH CLOUD DESKTOP SYSTEM
 // ULAPPH Cloud Desktop is a web-based desktop that runs on Google cloud platform and accessible via browsers on different PC and mobile devices.
 // COPYRIGHT (c) 2014-2017 Edwin D. Vinas, Ulapph Cloud Desktop System
-// COPYRIGHT (c) 2017-2018 Accenture, Opensource Version
+// COPYRIGHT (c) 2017 Accenture, Opensource Version
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0001
 //REV DATE: 	2014-Sep-02
@@ -288,11 +288,6 @@
 //REV ID: 		D0055
 //REV DATE: 		2018-Feb-22
 //REV DESC:	 	Added Otto as Javascript interpreter	
-//REV AUTH:		Edwin D. Vinas
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//REV ID: 		D0056
-//REV DATE: 		2018-Mar-04
-//REV DESC:	 	Added Angular UI Tree explorer
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -14202,7 +14197,7 @@ func ranConGen(w http.ResponseWriter, r *http.Request) {
 	
 }
 
-//D0056
+//edwinxxx
 //display angular ui tree
 func ulapphTree(w http.ResponseWriter, r *http.Request) {
 	//fmt.Fprintf(w,"tree goes here")
@@ -52335,6 +52330,7 @@ func blobFileSaver(w http.ResponseWriter, r *http.Request, SID string, DATA []by
 	_ = fw.WriteField("SPC_OPT", "")
 	_ = fw.WriteField("SPC_OPT", "")
 	//_ = fw.WriteField("TITLE", CAPTION)
+        //edwinxxx	
 	UMAIL := ADMMAIL
 	uc := user.Current(c)
 	if uc != nil {

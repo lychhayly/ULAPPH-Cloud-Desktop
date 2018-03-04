@@ -12489,6 +12489,66 @@ env.playCode= function() {
 	parent.postMessage(redirLink,root);
 };
 
+env.playJsOtto= function() {	
+	var urlParams;
+	var match,
+			pl     = /\+/g,  // Regex for replacing addition symbol with a space
+			search = /([^&=]+)=?([^&]*)/g,
+			decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+			query  = window.location.search.substring(1);
+
+	urlParams = {};
+	while (match = search.exec(query))
+	   urlParams[decode(match[1])] = decode(match[2]);
+   
+	var root = location.protocol + '//' + location.host;
+	var SID = urlParams["SID"];
+	if (SID == undefined || SID == "") {
+		return;
+	}
+	var redirLink = root + "/otto?SID=" + SID;
+	
+	var r = confirm("Click OK to open child window or press Cancel to open in new tab!");
+	if (r == true) {
+		console.log("open as child");
+		parent.postMessage(redirLink,root);
+	} else {
+		console.log("open new tab");
+		window.open(redirLink);
+	}
+		
+};
+
+env.genTree = function() {	
+	var urlParams;
+	var match,
+			pl     = /\+/g,  // Regex for replacing addition symbol with a space
+			search = /([^&=]+)=?([^&]*)/g,
+			decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+			query  = window.location.search.substring(1);
+
+	urlParams = {};
+	while (match = search.exec(query))
+	   urlParams[decode(match[1])] = decode(match[2]);
+   
+	var root = location.protocol + '//' + location.host;
+	var SID = urlParams["SID"];
+	if (SID == undefined || SID == "") {
+		return;
+	}
+	var redirLink = root + "/tree?SID=" + SID;
+	
+	var r = confirm("Click OK to open child window or press Cancel to open in new tab!");
+	if (r == true) {
+		console.log("open as child");
+		parent.postMessage(redirLink,root);
+	} else {
+		console.log("open new tab");
+		window.open(redirLink);
+	}
+		
+};
+
 env.playMermaid= function() {	
 	var urlParams;
 	var match,
