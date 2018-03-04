@@ -128,6 +128,12 @@ handlers:
 - url: /people
   script: _go_app
 
+- url: /otto
+  script: _go_app
+  
+- url: /tree
+  script: _go_app
+  
 - url: /goplus
   script: _go_app
 
