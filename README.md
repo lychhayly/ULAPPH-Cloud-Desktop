@@ -43,8 +43,10 @@ Use Cases (Regular Users)
 - Use built-in productivity applications (see Start Menu)
 - Use entertainment tools such as Youtube, music, video, and midi players
 - Use your photos as random desktop wallpapers
-- Use messaging tools such as Guestbook, chat, and channels
+- Use messaging tools such as SMS, Guestbook, chat, and channels
 - Publish blogs or articles/slides either private or public
+- Minimize tabs by opening them in small windows
+- Make yourself organized and more productive!
 
 Documentations
 ----------------
