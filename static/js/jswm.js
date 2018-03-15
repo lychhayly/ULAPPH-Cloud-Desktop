@@ -449,7 +449,7 @@ JSWM.prototype.openWindow = function(uri, title)
 	if(typeof(Storage) !== "undefined") {
 		var root = location.protocol + '//' + location.host;
 		//thisHTML = "<li><h3><a href='" + uri + "' title='" + title + "'>" + title + "</a></h3>";
-		thisHTML = "<li><a href='" + uri + "' title='" + title + "'>" + title + "</a><a href='/tools?FUNC=WIDGET&t=ADDICON&uwm=desktop" + urlParams["u"] + "&url=" + uri + "&title=" + title + "' title='Add to Icons DB'>" + "<img src='/img/top-icon.png' width=20 height=20>" + "</a>";
+		thisHTML = "<li><a href='" + uri + "' title='" + title + "'>" + title + "</a><a href='/tools?FUNC=WIDGET&t=ADDICON&uwm=desktop" + urlParams["u"] + "&url=" + uri + "&title=" + title + "' title='Add to Icons DB' target='addtab'>" + "<img src='/img/top-icon.png' width=20 height=20>" + "</a>";
 		localStorage[root+d.value] = localStorage[root+d.value] + thisHTML;
 		window.open(uri,'_blank')
 	}
@@ -472,7 +472,7 @@ JSWM.prototype.openURI = function(uri, w, h, l, t, options)
 	var d = document.getElementById("desktop");
 	if(typeof(Storage) !== "undefined") {
 		var root = location.protocol + '//' + location.host;
-		thisHTML = "<li><a href='" + uri + "' title='" + otl + "'>" + otl + "</a><a href='/tools?FUNC=WIDGET&t=ADDICON&uwm=desktop" + urlParams["u"] + "&url=" + uri + "&title=" + otl + "' title='Add to Icons DB'>" + "<img src='/img/top-icon.png' width=20 height=20>" + "</a>";
+		thisHTML = "<li><a href='" + uri + "' title='" + otl + "'>" + otl + "</a><a href='/tools?FUNC=WIDGET&t=ADDICON&uwm=desktop" + urlParams["u"] + "&url=" + uri + "&title=" + otl + "' title='Add to Icons DB' target='addtab'>" + "<img src='/img/top-icon.png' width=20 height=20>" + "</a>";
 		localStorage[root+d.value] = localStorage[root+d.value] + thisHTML;
 	}
 	

@@ -237,6 +237,7 @@ mindmaps.SaveDocumentPresenter = function(eventBus, mindmapModel, view, autosave
                 if (SID == "NEWTEXT") {
                   window.location.assign(redirLink); 
                 }
+                alert("Ok, saved successfully!");
                 return;
             }
 
