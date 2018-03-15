@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#04/034/2018 08:50:59
+//LAST_UPGRADE#16/03/2018 08:50:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8383,7 +8383,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 					fmt.Fprintf(w, "<li>")
 					fmt.Fprintf(w, "<a href=\"/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-MAP\">Users Location Map</a>")
 					fmt.Fprintf(w, "<li>")
-					fmt.Fprintf(w, "<a href=\"/infodb?DB_FUNC=VIEWER-SLIDES-STATS\">Top System Stats</a>")
+					fmt.Fprintf(w, "<a href=\"/tools?FUNC=WIDGET&t=ECHARTS\">System eCharts</a>")
 					fmt.Fprintf(w, "<li>")
 		
 				TBL := "channel,Greeting,Social,TDSADS,TDSADTS,TDSADVL,TDSARTL,TDSCATS,TDSCHAT,TDSCNFG,TDSICONS,TDSLOGS,TDSMEDIA,TDSPROF,TDSRULES,TDSSLIDE,TDSSTATS,TDSURLC,TDSUSERS"
@@ -35225,7 +35225,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 						}
  
 						for _, p := range slide{
-								fmt.Fprintf(w, "<b>Title:</b> [TDSSLIDE-%v] %v<br>", p.DOC_ID, p.TITLE)
+								fmt.Fprintf(w, "<b>Title:</b> [TDSSLIDE-%v] %v - %v<br>", p.DOC_ID, p.TITLE, p.DESC)
 								if p.SYS_VER == 777 {
 									fmt.Fprintf(w, "<b>Encrypted:</b> <img src=\"/img/encrypted.png\" width=\"40\" height=\"40\"></img> [<a href=\"/admin-slides?FUNC_CODE=ENC_SLIDE&P=666&DOC_ID=%v\">Decrypt</a>] [ <a download=\"TDSSLIDE-%v-%v.txt\" href=\"/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=TDSSLIDE-%v\">Backup Encrypted File</a> ]<br>", p.DOC_ID, p.DOC_ID, p.TITLE, p.DOC_ID)		
 								} else {
@@ -37829,7 +37829,7 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 						}
  
 						for _, p := range article{
-								fmt.Fprintf(w, "<b>Title:</b> [TDSARTL-%v] %v<br>", p.DOC_ID, p.TITLE)
+								fmt.Fprintf(w, "<b>Title:</b> [TDSARTL-%v] %v - %v<br>", p.DOC_ID, p.TITLE, p.DESC)
 								if p.SYS_VER == 777 {
 									fmt.Fprintf(w, "<b>Encrypted:</b> <img src=\"/img/encrypted.png\" width=\"40\" height=\"40\"></img> [<a href=\"/admin-articles?FUNC_CODE=ENC_ARTICLE&P=666&DOC_ID=%v\">Decrypt</a>] [ <a download=\"TDSARTL-%v-%v.txt\" href=\"/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=TDSSARTL-%v\">Backup Encrypted File</a> ]<br>", p.DOC_ID, p.DOC_ID, p.TITLE, p.DOC_ID)		
 								} else {
@@ -40101,7 +40101,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 
 								case p.DATA_TYPE == "text":
  
-									fmt.Fprintf(w, "<b>Title:</b> [TDSMEDIA-%v] %v<br>", p.MEDIA_ID, p.TITLE)
+									fmt.Fprintf(w, "<b>Title:</b> [TDSMEDIA-%v] %v - %v<br>", p.MEDIA_ID, p.TITLE, p.DESC)
 									if p.SYS_VER == 777 {
 										fmt.Fprintf(w, "<b>Encrypted:</b> <img src=\"/img/encrypted.png\" width=\"40\" height=\"40\"></img> [<a href=\"/media?FUNC_CODE=ENC_MEDIA&P=666&MEDIA_ID=%v\">Decrypt</a>] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Backup Encrypted File</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID)		
 									} else {
@@ -40179,7 +40179,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 									if err != nil {
 											////c.Errorf("%v", err)
 									}
-									
 									err = rootTemplateMediaD2.Execute(w, media)
 									if err != nil {
 											////c.Errorf("%v", err)
@@ -77218,6 +77217,7 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 	//c.Infof("json: %v", json)
 	w.Write(json)
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////
 //TO GOD BE THE GLORY
