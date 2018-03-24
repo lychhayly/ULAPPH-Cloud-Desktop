@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#16/03/2018 08:50:59
+//LAST_UPGRADE#24/03/2018 08:50:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -293,6 +293,11 @@
 //REV ID: 		D0056
 //REV DATE: 		2018-Mar-04
 //REV DESC:	 	Added Angular UI Tree explorer
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0057
+//REV DATE: 		2018-Mar-24
+//REV DESC:	 	Added cascade or tile UWM option; added def wallpaper per desktop
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8970,8 +8975,16 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 				//insert custom windows
 				
 				getPersonalWindows(w,r,"guest",alFlag,SID)
- 
-				if err := htmlFooterJSWM.Execute(w, ""); err != nil {
+				//D0057 
+		               cfgName = fmt.Sprintf("SYSTEM_UWM_ARR_%v_%v", SID, uid)
+		               winArr, _ := getTDSCNFG(w,r,0,cfgName)		
+		               cfgName = fmt.Sprintf("SYSTEM_UWM_WALLP_%v_%v", SID, uid)
+		               wallp, _ := getTDSCNFG(w,r,0,cfgName)		
+				TEMPDATAF := TEMPSTRUCT{
+					STR_FILLER1: winArr,
+					STR_FILLER2: wallp,
+				}
+				if err := htmlFooterJSWM.Execute(w, &TEMPDATAF); err != nil {
 				  panic(err)
 				}
 				
@@ -8991,7 +9004,16 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 				}
 				//insert custom windows
 				getPersonalWindows(w,r,"guest",alFlag,SID)
-				if err := htmlFooterJSWM.Execute(w, ""); err != nil {
+				//D0057
+		               cfgName = fmt.Sprintf("SYSTEM_UWM_ARR_%v_%v", SID, uid)
+		               winArr, _ := getTDSCNFG(w,r,0,cfgName)		
+		               cfgName = fmt.Sprintf("SYSTEM_UWM_WALLP_%v_%v", SID, uid)
+		               wallp, _ := getTDSCNFG(w,r,0,cfgName)		
+				TEMPDATAF := TEMPSTRUCT{
+					STR_FILLER1: winArr,
+					STR_FILLER2: wallp,
+				}
+				if err := htmlFooterJSWM.Execute(w, &TEMPDATAF); err != nil {
 				  panic(err)
 				}
 			}
@@ -9393,10 +9415,20 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					if r.FormValue("u") == "" {
 						getPersonalWindows(w,r,uid,alFlag,"")
 					} else {
-						getPersonalWindows(w,r,uid,alFlag,uwmsource)
+						if str2int(r.FormValue("u")) > 0 {
+							getPersonalWindows(w,r,uid,alFlag,uwmsource)
+						}
 					}
-					
-					if err := htmlFooterJSWM.Execute(w, ""); err != nil {
+					//D0057
+		                        cfgName = fmt.Sprintf("SYSTEM_UWM_ARR_%v_%v", uwmsource, uid)
+		                        winArr, _ := getTDSCNFG(w,r,0,cfgName)		
+				       cfgName = fmt.Sprintf("SYSTEM_UWM_WALLP_%v_%v", uwmsource, uid)
+				       wallp, _ := getTDSCNFG(w,r,0,cfgName)		
+					TEMPDATAF := TEMPSTRUCT{
+						STR_FILLER1: winArr,
+						STR_FILLER2: wallp,
+					}
+					if err := htmlFooterJSWM.Execute(w, &TEMPDATAF); err != nil {
 					  panic(err)
 					}
 					
@@ -9418,10 +9450,20 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					if r.FormValue("u") == "" {
 						getPersonalWindows(w,r,uid,alFlag,"")
 					} else {
-						getPersonalWindows(w,r,uid,alFlag,uwmsource)
+						if str2int(r.FormValue("u")) > 0 {
+							getPersonalWindows(w,r,uid,alFlag,uwmsource)
+						}
 					}
-					
-					if err := htmlFooterJSWM.Execute(w, ""); err != nil {
+					//D0057
+		                        cfgName = fmt.Sprintf("SYSTEM_UWM_ARR_%v_%v", uwmsource, uid)
+		                        winArr, _ := getTDSCNFG(w,r,0,cfgName)		
+				       cfgName = fmt.Sprintf("SYSTEM_UWM_WALLP_%v_%v", uwmsource, uid)
+				       wallp, _ := getTDSCNFG(w,r,0,cfgName)		
+					TEMPDATAF := TEMPSTRUCT{
+						STR_FILLER1: winArr,
+						STR_FILLER2: wallp,
+					}
+					if err := htmlFooterJSWM.Execute(w, &TEMPDATAF); err != nil {
 					  panic(err)
 					}
 				}
@@ -42155,7 +42197,7 @@ const htmlDesktopsJSONtoTableA = `
 <div id="desktops"></div>
 <div id="columns"></div>
 <br>
-[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://ulapph-public-1.appspot.com'); return false;">Notes</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Servers@888@/login?q=login&LFUNC=GOOGLE&TARGET_URL=/login?continue=/uwm', 'https://ulapph-public-1.appspot.com'); return false;">Servers</a>]
+[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://ulapph-public-1.appspot.com'); return false;">Notes</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Servers@888@/login?q=login&LFUNC=GOOGLE&TARGET_URL=/login?continue=/uwm', 'https://ulapph-public-1.appspot.com'); return false;">Servers</a>] [<a href="#" onclick="blankDesktop();return false;">Blank Desktop</a>] [<a href="#" onclick="clearDesktops();return false;">Clear Desktops</a>]
 <script>
   $(document).ready(function() {
     var json = {{.}};
@@ -42210,6 +42252,27 @@ const htmlDesktopsJSONtoTableA = `
 	  
 	  //open new tab
 	  window.open(uLink,name);
+  }
+
+  function blankDesktop() {
+	var tdesk = prompt("Please enter desktop name", "TempDesktop");
+	if (tdesk != null) {
+		window.open("/uwm?u=" + tdesk, "_blank");
+	} else {
+		alert("Please enter desktop name");
+	}
+  }
+
+  function clearDesktops() {
+	var utot = 0;
+	if (localStorage['uwm-ctr'] != undefined && localStorage['uwm-ctr'] != "") {
+		utot = parseInt(localStorage['uwm-ctr']);
+	}
+	for (i = 1; i <= utot; i++) { 
+		localStorage['uwm-'+i] = "";
+		localStorage['uwm-ctr'] = "";
+	}
+        location.reload();
   }
 </script>
 `
@@ -52239,6 +52302,45 @@ func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT st
 			FL_PROC_OK = true
 			//buf.WriteString(fmt.Sprintf(" %v\n", template.HTML(TEXT)))
 			buf.WriteString(fmt.Sprintf(" %v\n", html.UnescapeString(TEXT)))
+			//D0057
+			//add flag if auto-arrange
+			arr := r.FormValue("ARR")
+			if arr != "" {
+				thisKey := fmt.Sprintf("SYSTEM_UWM_ARR_%v_%v", SID, UID)
+				key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+				g := TDSCNFG{
+						SYS_VER: 1,
+						USER: UID,
+						CFG_ID: thisKey,
+						DAT_TYP: "TXT",
+						NUM_VAL: 0,
+						TXT_VAL: arr,
+						CFG_DESC: "UWM Arrangement",
+				}
+				if _, err := datastore.Put(c, key, &g); err != nil {
+						panic(err)
+				}
+			}
+			//set default wallpaper
+			wallp := r.FormValue("WALLP")
+			if wallp != "" {
+				thisKey := fmt.Sprintf("SYSTEM_UWM_WALLP_%v_%v", SID, UID)
+				key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+				g := TDSCNFG{
+						SYS_VER: 1,
+						USER: UID,
+						CFG_ID: thisKey,
+						DAT_TYP: "TXT",
+						NUM_VAL: 0,
+						TXT_VAL: wallp,
+						CFG_DESC: "Default Wallpaper",
+				}
+				if _, err := datastore.Put(c, key, &g); err != nil {
+						panic(err)
+				}
+			}
+
+
 	
 	}
 	
@@ -60926,6 +61028,24 @@ var htmlFooterJSWM = template.Must(template.New("htmlFooterJSWM").Parse(`
 		if (document.getElementById("desktop").value == "uwm") {
 			window.open('/contents?q=home','_blank');
 		}
+		//default tile
+		uwmArrWin();
+		if ({{.STR_FILLER1}} == "cascade") {
+			//cascade
+			uwmArrWin();
+		}
+
+
+		if ({{.STR_FILLER2}} != "") {
+			setTimeout(function(){
+			var rn = document.getElementById("ranid");
+			rn.value = "pause";
+			var bgImgUrl = "{{.STR_FILLER2}}";
+			document.getElementById("DEFAULT_WALLPAPER").value = bgImgUrl;
+			document.getElementById('page').style.backgroundImage = "url(" + bgImgUrl + ")";    
+			}, 10000);
+		}
+
 	</script>	
   </body>
 </html>
