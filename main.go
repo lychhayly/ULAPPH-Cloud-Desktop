@@ -45966,7 +45966,7 @@ const mediaSettingsTemplateTableHTMLFooter9 = `
 <script src="/js/pulldown-tabzilla-dynamic.js"></script>
 	<hr>
 	<h3>[ <a href="/slides">Slides</a> ] [ <a href="/articles">Articles</a> ] [ <a href="/media">Media</a> ]</h3>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
     <a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>	
@@ -59727,7 +59727,7 @@ var htmlQuickSearchForms = template.Must(template.New("htmlQuickSearchForms").Pa
  
 var htmlFooterSearch = template.Must(template.New("htmlFooterSearch").Parse(`
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -60288,7 +60288,7 @@ var htmlFooterBasic = template.Must(template.New("htmlFooterBasic").Parse(`
 var htmlFooterModal = template.Must(template.New("htmlFooterModal").Parse(`
     <br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
@@ -60318,7 +60318,7 @@ var htmlFooterModalKnock = template.Must(template.New("htmlFooterModal").Parse(`
 	</script>
     <br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
@@ -60848,7 +60848,7 @@ var playGoBody = template.Must(template.New("playGoBody").Parse(`
 var htmlFooterModalTools = template.Must(template.New("htmlFooterModalTools").Parse(`
     <br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
@@ -61199,7 +61199,7 @@ var userRegistrationTemplate = template.Must(template.New("userRegistrationTempl
 	<p>
     <div class="success2"><h3><a href="#register">Click here</a> to register!</h3></div>
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
     <a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -61352,6 +61352,12 @@ var mobileBodyTemplateContentA = template.Must(template.New("mobileBodyTemplateC
          <a href="/api-doc/">
              <em><span>API</span></em><br>
                 <img src="/img/ulapph-icons-api.png" title="API" height="40" width="40"/>
+            </a>
+        </li>
+        <li id="LS">
+         <a href="/loc">
+             <em><span>LS</span></em><br>
+                <img src="/img/uloc.png" title="LS" height="40" width="40"/>
             </a>
         </li>
         <li id="Directory">
@@ -63964,7 +63970,7 @@ var desktopBodyTabzillaTemplateMobilePublic = template.Must(template.New("deskto
 `))
  
 var desktopBodyTabzillaTemplateMobilePublicChan = template.Must(template.New("desktopBodyTabzillaTemplateMobilePublicChan").Parse(`
-<center>&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.</center>
+<center>&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.</center>
 <center><a href="https://goo.gl/8PJbT8" title="ULAPPH Cloud Desktop Documentation">Powered by ULAPPH Cloud Desktop</a></center>
 <br>
 <script src="/js/pulldown-tabzilla-dynamic.js"></script>
@@ -63981,7 +63987,7 @@ var generalFooterBodyHTMLzilla = template.Must(template.New("generalFooterBodyHT
 <script src="/js/pulldown-tabzilla-dynamic.js"></script>
 	<br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64049,7 +64055,7 @@ var guestbookTemplateFeedback = template.Must(template.New("guestbookTemplateFee
 	
 var outputFooterTemplate = template.Must(template.New("outputFooterTemplate").Parse(`
     <hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64084,7 +64090,7 @@ var umpFooterTemplate = template.Must(template.New("umpFooterTemplate").Parse(`
     <hr>
 	<h3>[ <a href="/media?FUNC_CODE=SET_MULTI_IMAGE_UPLOAD">Upload</a> ] [ <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_{{.}}">View All {{.}}</a> ]</h3>
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64094,7 +64100,7 @@ var umpFooterTemplate = template.Must(template.New("umpFooterTemplate").Parse(`
  
 var yvpFooterTemplate = template.Must(template.New("yvpFooterTemplate").Parse(`
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64105,7 +64111,7 @@ var yvpFooterTemplate = template.Must(template.New("yvpFooterTemplate").Parse(`
 var outputFooterTemplateChannel = template.Must(template.New("outputFooterTemplateChannel").Parse(`
 	[<a href="/guestbook?GB_FUNC=DELETE_ALL">Delete All Messages</a>] [<a href="/guestbook?GB_FUNC=READ_ALL">Mark all Read</a>]
     <hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64123,7 +64129,7 @@ var outputFooterTemplateToken = template.Must(template.New("outputFooterTemplate
 	<script src="/js/channel-token.js" type="text/javascript"></script>
 	<script src="/js/channel-firebase.js"></script>
     <hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>

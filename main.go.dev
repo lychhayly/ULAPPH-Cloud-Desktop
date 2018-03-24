@@ -61354,6 +61354,12 @@ var mobileBodyTemplateContentA = template.Must(template.New("mobileBodyTemplateC
                 <img src="/img/ulapph-icons-api.png" title="API" height="40" width="40"/>
             </a>
         </li>
+        <li id="LS">
+         <a href="/loc">
+             <em><span>LS</span></em><br>
+                <img src="/img/uloc.png" title="LS" height="40" width="40"/>
+            </a>
+        </li>
         <li id="Directory">
          <a href="/directory?DIR_FUNC=sites">
              <em><span>Directory</span></em><br>
