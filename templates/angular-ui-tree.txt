@@ -122,6 +122,15 @@ angular.module('myApp', ['ui.tree'])
     $scope.refresh = function() {
       location.reload();
     };
+    
+    $scope.showHideJSON = function() {
+	    var x = document.getElementById("jsonarea");
+	    if (x.style.display === "none") {
+	        x.style.display = "block";
+	    } else {
+	        x.style.display = "none";
+	    }
+    };
 
     $scope.saveAll = function() {
 	console.log("Saving JSON...");
@@ -198,7 +207,18 @@ angular.module('myApp', ['ui.tree'])
 	
     $http.get('/media?FUNC_CODE=RAWJSON&SID=' + '{{.STR_FILLER1}}')
     .then(function(response) {
-      $scope.data = response.data;
+      if (response.data != "") {
+      	$scope.data = response.data;
+      } else {
+		var tempJSON = [{
+		    "id": 100,
+		    "title": "Testing",
+		    "url": "",
+		    "nodes": []
+		 }];
+      	$scope.data = tempJSON;
+      }
+
     });
 
   });
@@ -270,6 +290,7 @@ angular.module('myApp', ['ui.tree'])
         <button ng-click="expandAll()">Expand all</button>
         <button ng-click="collapseAll()">Collapse all</button>
         <button ng-click="saveAll()">Save all</button>
+        <button ng-click="showHideJSON()">Show/Hide JSON</button>
 		<button ng-click="refresh()">Refresh</button>
       </div>
     </div>
@@ -295,7 +316,7 @@ angular.module('myApp', ['ui.tree'])
         </div>
       </div>
 
-      <div class="col-sm-6">
+      <div class="col-sm-6" id="jsonarea">
         <div class="info">
           {{"{{"}}info{{"}}"}}
         </div>

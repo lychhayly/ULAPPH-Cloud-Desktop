@@ -74,7 +74,9 @@
 	</script>
   {{end}}
   Auto-open: <input type="checkbox" id="auto"><br>
-  Show Button Only: <input type="checkbox" id="button"><br><br>
+  Show Button Only: <input type="checkbox" id="button"><br>
+  Tile windows: <input type="checkbox" id="tile"><br>
+  Wallpaper: <input type="text" id="wallp" maxlength=500><br><br>
   <input type="button" onclick="copyToUWM()" value="Generate HTML Codes"> Or [<a href="/admin-icons">Choose from Icons</a>]
   <br>
   <br>
@@ -180,6 +182,18 @@ function appendUWMSettings(desktop) {
 	}
 	formData.append("UID", UID);
 	formData.append("AP_FUNC", "APPEND-UWM");
+	//flag if tile/cascade
+	var isTile = document.getElementById("tile").checked;
+	console.log("isTile: "+isTile);
+	if (isTile == true) {
+		formData.append("ARR", "tile");
+    } else {
+    	formData.append("ARR", "cascade");
+    }
+    //set wallpaper
+	var wpurl = document.getElementById("wallp").value;
+	console.log("wpurl: "+wpurl);
+    formData.append("WALLP", wpurl);
 	var thisContent = document.getElementById("text-area").innerText;
 	if (thisContent == "" || thisContent == undefined) {
 		alert("Error! No data to save!");
@@ -202,14 +216,16 @@ function appendUWMSettings(desktop) {
 			console.log("cleared storage! -> "+localStorageKey);
 			document.getElementById("text-area").innerText = "";
 			//alert(xmlhttp.responseText);
-			alert("Successful operation!");
-			e.src = curImg;
+			//alert("Successful operation!");
+			console.log("Successful operation!");
+			e.src = "/img/success.png";
 			return;
 		}
 		
 	  if (xmlhttp.readyState==4 && xmlhttp.status==400)
 		{
-			alert("Error in saving data!");
+			//alert("Error in saving data!");
+			console.log("Error in saving data!");
 			e.src = "/img/error.png";
 			return;
 		}
