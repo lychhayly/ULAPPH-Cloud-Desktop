@@ -8383,6 +8383,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				///fmt.Fprintf(w, "<h1>System Status</h1>")
 				fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-large\">System Status</a>")
 					fmt.Fprintf(w, "<ul>")
+					fmt.Fprintf(w, "<li>Build Version: %v", UCD_BUILD_STR)
 					fmt.Fprintf(w, "<li>")
 					fmt.Fprintf(w, "<a href=\"/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-LOG&SID=ULAPPH-NOTIFICATIONS-LOG\">Notifications Logs</a>")
 					fmt.Fprintf(w, "<li>")

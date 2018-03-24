@@ -24,7 +24,9 @@ go get	"github.com/edwindvinas/bleve"
 go get	"github.com/edwindvinas/sillyname-go"
 go get  "github.com/edwindvinas/user_agent"
 go get  "github.com/olekukonko/tablewriter"
-go get  "github.com/edwindvinas/sprig"
+#go get  "github.com/edwindvinas/sprig"
+go get  "github.com/robertkrimen/otto"
+go get "github.com/satori/go.uuid"
 
 echo "done!"
 
