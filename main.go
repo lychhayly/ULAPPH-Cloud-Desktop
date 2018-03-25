@@ -300,6 +300,16 @@
 //REV DESC:	 	Added cascade or tile UWM option; added def wallpaper per desktop
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0058
+//REV DATE: 		2018-Mar-25
+//REV DESC:	  	Added office365 API support	
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0059
+//REV DATE: 		2018-Mar-25
+//REV DESC:	  	Added office365 planner extract 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------
 //List of firebase channels
@@ -420,6 +430,9 @@ import (
 	"github.com/edwindvinas/sillyname-go"
 	//D0055
 	"github.com/robertkrimen/otto"
+	//D0059
+	"github.com/tealeg/xlsx"
+
 )
 //contants configs
 const (
@@ -791,6 +804,15 @@ const (
     GITHUB_OAUTH2_STATE = ``
     GITHUB_AUTH_URL = ``
     GITHUB_TOKEN_URL = ``
+	//Microsoft
+	MICROSOFT_USER_NAME = ``
+    MICROSOFT_CLIENT_ID = ``
+    MICROSOFT_CLIENT_SECRET = ``
+    MICROSOFT_OAUTH2_STATE = ``
+    MICROSOFT_OAUTH2_SCOPE = ``
+    MICROSOFT_AUTH_URL = ``
+    MICROSOFT_TOKEN_URL = ``
+
     ///////////////////////////////////////////////////////////////
 	// CUSTOM PARAMETERS (TABLES)
 	///////////////////////////////////////////////////////////////
@@ -885,6 +907,94 @@ var (
 	SERVICE_ACCOUNT_EMAIL                 = ""
 	PRIVATE_KEY          *rsa.PrivateKey = nil
 )
+//D0059
+//extract planner
+//config options
+var (
+	iTasks string
+	iConfig string
+)
+
+//Configuration configs struct
+type Configuration struct {
+	TeamID  		string    `json:"teamId"`
+	TeamName    	string    `json:"teamName"`
+	PlanID     		string    `json:"planId"`
+	PlanName     	string    `json:"planName"`
+	Buckets    	    []Buckets `json:"buckets"`
+	Members    	    []Members `json:"members"`
+}
+
+//Members
+type Members struct {
+	MemberID    	string	  `json:"memberId"`
+	MemberName    	string	  `json:"memberName"`
+}
+
+//Buckets
+type Buckets struct {
+	BucketID    	string	  `json:"bucketId"`
+	BucketName    	string	  `json:"bucketName"`
+}
+
+//Planner tasks struct
+type Planner struct {
+	Ocontext  		string    `json:"@odata.context"`
+	OCount    		int    	  `json:"@odata.count"`
+	OLink     		string    `json:"@odata.nextLink"`
+	Tasks    		[]Task	  `json:"value"`
+}
+
+type Task struct {
+	Oetag  			string    `json:"@odata.etag"`
+	CreatedBy    	User	  `json:"createdBy"`
+	PlanID    		string	  `json:"planId"`
+	BucketID    	string	  `json:"bucketId"`
+	Title    		string	  `json:"title"`
+	OrderHint    		string	  `json:"orderHint"`
+	AssigneePriority    string	  `json:"assigneePriority"`
+	PercentComplete    	int	  `json:"percentComplete"`
+	startDateTime    	time.Time	  `json:"startDateTime"`
+	CreatedDateTime    	time.Time	  `json:"createdDateTime"`
+	DueDateTime    		time.Time	  `json:"dueDateTime"`
+	HasDescription    	bool	  `json:"hasDescription"`
+	PreviewType    		string	  `json:"previewType"`
+	CompletedDateTime   time.Time	  `json:"completedDateTime"`
+	CompletedBy    		CompletedBy	  `json:"completedBy"`
+	ReferenceCount    	int	  `json:"referenceCount"`
+	ChecklistItemCount    		int	  `json:"checklistItemCount"`
+	ActiveChecklistItemCount    int	  `json:"activeChecklistItemCount"`
+	appliedCategories    		AppliedCategories	  `json:"appliedCategories"`
+	Assignments    				map[string]interface{}	  `json:"assignments"`
+	ConversationThreadId    	string	  `json:"conversationThreadId"`
+	ID    						string	  `json:"id"`
+}
+
+type PUser struct {
+	DisplayName    	string	  `json:"displayName"`
+	ID    			string	  `json:"id"`
+}
+
+type Assignments struct {
+	Items []Assignment
+	
+}
+
+type Assignment struct {
+	ODataType 			string `json:"@odata.type"`
+	User 				User   `json:"assignedBy"`
+	AssignedDateTime 	string `json:"assignedDateTime"`
+	OrderHint 			string `json:"orderHint"`
+}
+
+type AppliedCategories struct {
+}
+
+type CompletedBy struct {
+	User User `json:"user"`
+}
+//D0059-end
+
 //scraper data
 type Scraper struct {
 	Title 		string `json:"title"`
@@ -946,6 +1056,12 @@ type MyBox struct {
 }
 //D0033
 type GithubToken struct {
+	AccessToken string `json:"access_token"`
+	Scope string `json:"scope"`
+	TokenType string `json:"token_type"`
+}
+//D0058
+type MicrosoftToken struct {
 	AccessToken string `json:"access_token"`
 	Scope string `json:"scope"`
 	TokenType string `json:"token_type"`
@@ -2751,6 +2867,10 @@ func init() {
 		http.HandleFunc("/oauth2/github/callback", handlerOuath2GithubCallback)
 		//D0044
 		http.HandleFunc("/oauth2/admin/callback", handlerGaeAdminCallback)
+		//D0058
+		http.HandleFunc("/oauth2/microsoft/call", handlerOuath2MicrosoftCall)
+		http.HandleFunc("/oauth2/microsoft/callback", handlerOuath2MicrosoftCallback)
+		//http.HandleFunc("/oauth2/microsoft/token", handlerOuath2MicrosoftToken)
 }
  
 //main entry to clouddesktop
@@ -8376,7 +8496,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				if err := htmlHeaderAdmin.Execute(w, ""); err != nil {
 				  panic(err)
 				}
-				fmt.Fprintf(w, "<a href=\"https://appengine.google.com/\" class=\"button button-3d button-action button-pill\">App Engine<a href=\"/admin-setup\" class=\"button button-3d button-action button-pill\">Admin - Setup</a><a href=\"/admin-icons\" class=\"button button-3d button-action button-pill\">Admin - Icons</a><a href=\"/admin-slides\" class=\"button button-3d button-action button-pill\">Admin - Slides</a><a href=\"/admin-articles\" class=\"button button-3d button-action button-pill\">Admin - Articles</a><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL\" class=\"button button-3d button-action button-pill\">Admin - Media</font></a><a href=\"/admin-ads\" class=\"button button-3d button-action button-pill\">Admin - Ads</a>")
+				fmt.Fprintf(w, "<a href=\"https://appengine.google.com/\" class=\"button button-3d button-action button-pill\">App Engine<a href=\"/admin-setup\" class=\"button button-3d button-action button-pill\">Admin - Setup</a><a href=\"/admin-icons\" class=\"button button-3d button-action button-pill\">Admin - Icons</a><a href=\"/admin-slides\" class=\"button button-3d button-action button-pill\">Admin - Slides</a><a href=\"/admin-articles\" class=\"button button-3d button-action button-pill\">Admin - Articles</a><a href=\"/infodb?DB_FUNC=MEDIA&CATEGORY=ALL\" class=\"button button-3d button-action button-pill\">Admin - Media</font></a><a href=\"/admin-ads\" class=\"button button-3d button-action button-pill\">Admin - Ads</a><a href=\"/api-doc/\" class=\"button button-3d button-action button-pill\">Admin - API</a>")
 				fmt.Fprintf(w, "<hr>")
 				fmt.Fprintf(w, "<a href=\"/admin-setup?ADMIN_FUNC=TDSUSERS-MANAGE\" class=\"button button-glow button-border button-rounded button-primary\">Manage TDSUSERS</a><a href=\"/admin-setup?ADMIN_FUNC=SEND_MSG_ALL\" class=\"button button-glow button-border button-rounded button-primary\">Send Message to Users</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_TABZILLA_SOURCE\" class=\"button button-glow button-border button-rounded button-primary\">Edit Tabzilla Menu</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_LEFT_MENU_SOURCE\" class=\"button button-glow button-border button-rounded button-primary\">Edit Hidable Left Menu</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST\" class=\"button button-glow button-border button-rounded button-primary\">Edit Categories List</a><a href=\"/admin-setup?ADMIN_FUNC=SET_SEARCH_CNFG\" class=\"button button-glow button-border button-rounded button-primary\">Set Search Settings</a><a href=\"/admin-setup?ADMIN_FUNC=SET_TEMPLATES\" class=\"button button-glow button-border button-rounded button-primary\">Set Templates Settings</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_TOP_LIST_MENU\" class=\"button button-glow button-border button-rounded button-primary\">Edit System Top List Menu</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_PUB_WP_LIST\" class=\"button button-glow button-border button-rounded button-primary\">Edit Public Wallpapers</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_PUB_UWM\" class=\"button button-glow button-border button-rounded button-primary\">Edit Public UWM</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_SEARCH_HOST_LIST\" class=\"button button-glow button-border button-rounded button-primary\">Edit Search Host List</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_USERS_HOST_LIST\" class=\"button button-glow button-border button-rounded button-primary\">Edit Users Host List</a><a href=\"/admin-setup?ADMIN_FUNC=EDIT_ADS_SLOTS_LIST\" class=\"button button-glow button-border button-rounded button-primary\">Edit Ads Slots List</a>")
  
@@ -18832,7 +18952,8 @@ func commonTools(w http.ResponseWriter, r *http.Request, uid, FORMAT, SID, uRefe
 //handles /comands url
 //accepts special API commands 
 func ulapphCommands(w http.ResponseWriter, r *http.Request) {
-
+	//D0059
+	c := appengine.NewContext(r)
 	API_KEY_R := r.Header["Authorization"]
 	API_KEY := ""
 	if len(API_KEY_R) <= 0 {
@@ -18915,6 +19036,18 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	_, uid := checkSession(w,r)
 
 	switch CMD_FUNC {
+		//D0059
+		case "extract_planner":
+			cfgMedia := r.FormValue("SID")
+			token := r.FormValue("token")
+			//bodyBytes, _ := ioutil.ReadAll(r.Body)
+			//c.Infof("token: %v", token)
+			c.Infof("config: %v", cfgMedia)
+			err := extractPlannerTasks(w,r,token,cfgMedia)
+			if err != nil {
+				fmt.Fprintf(w, "Error extracting planner tasks: %v", err)
+			}
+			return
 		
 		case "scrape":
  
@@ -71581,10 +71714,8 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 	}
 	
 	req, _ := http.NewRequest("POST", "https://cloudresourcemanager.googleapis.com/v1/projects", strings.NewReader(encbuf.String()))
-	//thisLength := strconv.Itoa(len(encbuf.String()))
 	thisLength := strconv.Itoa(len(encbuf.Bytes()))
 	req.Header.Set("Content-Length", thisLength)
-	//req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Accept", "application/json")
 	req.Header.Set("Authorization", "Bearer "+tok)
@@ -74842,6 +74973,86 @@ func handlerOuath2GithubCallback(w http.ResponseWriter, r *http.Request) {
 	}
 			
 }
+
+//D0058
+//handles Oauth2 callback from Microsoft Graph
+func handlerOuath2MicrosoftCallback(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+ 
+	code := r.FormValue("code")
+	state := r.FormValue("state")
+	error := r.FormValue("error")
+	c.Infof("code: %v", code)
+	c.Infof("state: %v", state)
+	c.Infof("error: %v", error) 
+ 
+	if error != "" {
+		fmt.Fprintf(w, "[ERROR: %v] Request not processed.", error)	
+		return
+	}
+	if state == MICROSOFT_OAUTH2_STATE {
+ 
+		turl := MICROSOFT_TOKEN_URL
+		values := url.Values{
+		 "code": {code},
+		 "state": {state},
+		 "client_id": {MICROSOFT_CLIENT_ID},
+		 "client_secret": {MICROSOFT_CLIENT_SECRET},
+		 "redirect_uri": {"https://ulapph-public-1.appspot.com/oauth2/microsoft/callback"},
+		}
+		
+		req, _ := http.NewRequest("POST", turl, strings.NewReader(values.Encode()))
+		thisLength := strconv.Itoa(len(values))
+		req.Header.Set("Content-Length", thisLength)
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
+		req.Header.Set("Accept", "application/json")
+		client := urlfetch.Client(c)
+ 
+		res, err := client.Do(req)
+		if err != nil {
+ 
+			return
+		}
+ 
+		bodyBytes, _ := ioutil.ReadAll(res.Body)
+		c.Infof("%v", string(bodyBytes))
+		
+		if res.StatusCode == 200 {
+			gr := new(MicrosoftToken)
+			err = json.Unmarshal(bodyBytes, gr)
+			if err != nil {
+				//c.Errorf("[json.Unmarshal] error: %v", err)
+			} else {
+
+				//save
+				_, uid := checkSession(w,r)
+				//check quota
+				if uid == "" {
+					fmt.Fprintf(w, "[Error] User not found<br>")
+					return
+				}
+	
+				//cKey := fmt.Sprintf("GITHUB_TOKEN_CACHE_%v", uid)
+				cKey := fmt.Sprintf("GITHUB_TOKEN_CACHE_%v", MICROSOFT_USER_NAME)
+				putBytesToMemcacheWithExp(w,r,cKey,bodyBytes,GEN_CONTENT_EXPIRES)
+				fmt.Fprintf(w, "[Response OK] You can close this window.<br>")
+				const closetab = `
+				<script>
+					setTimeout("window.close()", 1000);
+				</script>
+				`
+				fmt.Fprintf(w, "%v", closetab)
+			}			
+		} else {
+			fmt.Fprintf(w, "[Response Code] %v<br>", res.StatusCode)	
+			fmt.Fprintf(w, "[Response Body] %v<br>", string(bodyBytes))
+		}
+	} else {
+ 
+	}
+			
+}
+
  
 //Url Shortener
 //shortens a URL based on Google url shortener service
@@ -77013,7 +77224,38 @@ func oauth2GithubCall(w http.ResponseWriter, r *http.Request, uid, target string
 			http.Redirect(w, r, redURL, http.StatusFound)
 	}
 }
- 
+
+//D0058
+//oauth2 microsoft callback
+func handlerOuath2MicrosoftCall(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	client_id := r.FormValue("client_id")
+	redirect_uri := r.FormValue("redirect_uri")
+	response_type := r.FormValue("response_type")
+	response_mode := r.FormValue("response_mode")
+	scope := r.FormValue("scope")
+	access_type := r.FormValue("access_type")
+	state := r.FormValue("state")
+	c.Infof("client_id: %v", client_id)
+	c.Infof("redirect_uri: %v", redirect_uri)
+	c.Infof("response_type: %v", response_type)
+	c.Infof("response_mode: %v", response_mode)
+	c.Infof("scope: %v", scope)
+	c.Infof("access_type: %v", access_type)
+	c.Infof("state: %v", state)
+	
+	redURL := ""	
+	switch {
+		case client_id == "" && redirect_uri == "" && scope == "":
+			redURL = fmt.Sprintf("%v?client_id=%v&response_type=code&response_mode=query&redirect_uri=https://ulapph-public-1.appspot.com/oauth2/microsoft/callback&scope=%v&state=%v", MICROSOFT_AUTH_URL, MICROSOFT_CLIENT_ID, MICROSOFT_OAUTH2_SCOPE, MICROSOFT_OAUTH2_STATE)	
+		default:
+			redURL = fmt.Sprintf("%v?client_id=%v&response_type=%v&response_mode=%v&redirect_uri=https://ulapph-public-1.appspot.com/oauth2/microsoft/callback&scope=%v&state=%v", MICROSOFT_AUTH_URL, client_id, response_type, response_mode, scope, state)	
+			
+	}
+	c.Infof("redURL: %v", redURL)
+	http.Redirect(w, r, redURL, http.StatusFound)
+}
+
 //converts string to integer
 func str2int(a string) (i int) {
 	i, _ = strconv.Atoi(a)	
@@ -77343,6 +77585,239 @@ func (res *resultContainer) render(w http.ResponseWriter) {
 	}
 	//c.Infof("json: %v", json)
 	w.Write(json)
+}
+
+//D0059
+//Extract Planner tasks
+func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia string) (err error) {
+	c := appengine.NewContext(r)
+
+	//c.Infof("TOKEN: %v",token)
+	//c.Infof("CONFIG: %v",string(configBytes))
+	
+    var file *xlsx.File
+    var sheet *xlsx.Sheet
+    var row *xlsx.Row
+    var cell *xlsx.Cell
+	
+    file = xlsx.NewFile()
+	//c.Infof("++ Adding sheet \"Planner\"")
+    sheet, err = file.AddSheet("Planner")
+    if err != nil {
+        //fmt.Printf(err.Error())
+		panic(err)
+    }
+	
+	//-------------------------------
+	// Open our configFile
+	//c.Infof("++ Opening config file")
+	//cfgfile, err := os.Open(configFile)
+	// if we os.Open returns an error then handle it
+	//if err != nil {
+	//	//fmt.Println(err)
+	//	panic(err)
+	//} 
+
+
+	//fmt.Printf("\n++ Successfully Opened input file")
+	// defer the closing of our configFile so that we can parse it later on
+	//defer cfgfile.Close()
+
+
+	// read our opened file as a byte array.
+	//byteInput, err := ioutil.ReadAll(cfgfile)
+	//if err != nil {
+	//	//fmt.Printf("\nERROR: %v", err)
+	//	panic(err)
+	//}
+
+	// we initialize our Users array
+	var config Configuration
+
+
+	// we unmarshal our byteArray which contains our
+	// jsonFile's content into 'users' which we defined above
+        //BLOB_KEY := contentCheckSid(w,r,cfgMedia)
+	SPL := strings.Split(cfgMedia,"-")
+	DOC_ID := ""
+	if len(SPL[0]) > 1 {
+		DOC_ID = SPL[1]
+	}
+	MEDIA_ID := str2int(DOC_ID)
+	BLOB_KEY, _, _, _, _, _, _, _, _, _, _ := getTDSMEDIABlobKey(w, r, MEDIA_ID)
+	//c.Infof("BLOB_KEY: %v", BLOB_KEY)
+        blobByte := getBlobByte(w, r, BLOB_KEY)	
+	//c.Infof("config: %v", string(blobByte ))
+	err = json.Unmarshal(blobByte, &config)
+	if err != nil {
+		panic(err)
+	}
+	// Process config items
+	//teamName := config.TeamName
+	//c.Infof("\nTeam Name: %v", teamName)
+	//planName := config.PlanName
+	//c.Infof("\nPlan Name: %v", planName)
+	planID := config.PlanID
+	//c.Infof("\nPlan ID: %v", planID)
+	//outputFile := fmt.Sprintf("./output/%v - %v.xlsx", teamName, planName)
+	//fmt.Printf("\nOutput File: %v", outputFile)
+	//c.Infof("\nMembers: %v", config.Members)
+	members := make(map[string]string)
+	for _, v := range config.Members {
+		//fmt.Printf("\ni: %v v:%v", i, v)
+		//c.Infof("\ni: %v id:%v value: %v", i, v.MemberID, v.MemberName)
+		members[v.MemberID] = v.MemberName
+	}
+	//c.Infof("\nBuckets: %v", config.Buckets)
+	buckets := make(map[string]string)
+	for _, v := range config.Buckets {
+		//fmt.Printf("\ni: %v v:%v", i, v)
+		//c.Infof("\ni: %v id:%v value: %v", i, v.BucketID, v.BucketName)
+		buckets[v.BucketID] = v.BucketName
+	}
+	//-----------------------------
+	
+	// Open our jsonFile
+	//c.Infof("\n++ Opening input file")
+	//jsonFile, err := os.Open(inputFile)
+	// if we os.Open returns an error then handle it
+	//if err != nil {
+	//	//fmt.Println(err)
+	//	panic(err)
+	//} 
+
+
+	//fmt.Println("Successfully Opened users.json")
+	//fmt.Printf("\n++ Successfully Opened input file")
+	// defer the closing of our jsonFile so that we can parse it later on
+	//defer jsonFile.Close()
+
+
+	// read our opened file as a byte array.
+	//byteValue, err := ioutil.ReadAll(jsonFile)
+	//if err != nil {
+	//	//fmt.Printf("\nERROR: %v", err)
+	//	panic(err)
+	//}
+	//D0059
+	//Call graph api using the token
+	req, _ := http.NewRequest("GET", fmt.Sprintf("https://graph.microsoft.com/v1.0/planner/plans/%v/tasks", planID), nil)
+	//req.Header.Set("Accept", "application/json")
+	req.Header.Set("Authorization", "Bearer "+token)
+	client := urlfetch.Client(c)
+
+	//c.Infof("req: %v", req)
+	res, err := client.Do(req)
+	if err != nil {
+		c.Errorf("client.Do err: %v", err)
+		return err
+	}
+	if res.StatusCode != 200 {
+		c.Errorf("res.StatusCode: %v", res.StatusCode)
+		return err
+ 
+	}
+	plannerBytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		c.Errorf("ioutil.ReadAll err: %v", err)
+		return err
+ 
+	}
+	//c.Infof("tasks: %v", string(plannerBytes))
+
+	// we initialize our Users array
+	var planner Planner
+
+
+	// we unmarshal our byteArray which contains our
+	// jsonFile's content into 'users' which we defined above
+	err = json.Unmarshal(plannerBytes, &planner)
+	if err != nil {
+		panic(err)
+	}
+
+	//Add row header
+	row = sheet.AddRow()
+	cell = row.AddCell()
+	cell.Value = "TASKS"	
+	cell = row.AddCell()
+	cell.Value = "COMPLETED DATE"
+	cell = row.AddCell()
+	cell.Value = "DUE DATE"
+	cell = row.AddCell()
+	cell.Value = "BUCKET"
+	cell = row.AddCell()
+	cell.Value = "ASSIGNED TO"
+	cell = row.AddCell()
+	cell.Value = "TASK DETAILS"
+	
+	// we iterate through every user within our users array and
+	// print out the user Type, their name, and their facebook url
+	// as just an example
+	for i := 0; i < len(planner.Tasks); i++ {
+		
+		taskTitle := planner.Tasks[i].Title
+		//taskPercent := planner.Tasks[i].PercentComplete
+		completedDateTime := planner.Tasks[i].CompletedDateTime
+		dueDateTime := planner.Tasks[i].DueDateTime
+		bucketID := planner.Tasks[i].BucketID
+		assignments := planner.Tasks[i].Assignments
+		taskID := planner.Tasks[i].ID
+		//fmt.Printf("\n+++++++++++++++++++++++++\nASS: %v", assignments)
+		//fmt.Printf("\nlen(assignments.Items): %v", len(assignments.Items))
+		//loop in assignments
+		//itemsMap3 := assignments.(map[string]interface{})
+		taskLink := fmt.Sprintf("https://tasks.office.com/accenture.onmicrosoft.com/en-us/Home/Task/%v", taskID)
+		lusers := ""
+		for i, _ := range assignments {
+			//fmt.Printf("\ni: %v v:%v", i, v)
+			if lusers == "" {
+				lusers = fmt.Sprintf("%v", members[i])
+			} else {
+				lusers = fmt.Sprintf("%v; %v", lusers, members[i])
+			}
+		}
+		
+		row = sheet.AddRow()
+		cell = row.AddCell()
+		cell.Value = taskTitle			
+		cell = row.AddCell()
+		SPL := strings.Split(fmt.Sprintf("%v", completedDateTime), " ")
+		cell.Value = SPL[0]
+		cell = row.AddCell()
+		SPL2 := strings.Split(fmt.Sprintf("%v", dueDateTime), " ")
+		cell.Value = SPL2[0]		
+		cell = row.AddCell()
+		cell.Value = buckets[bucketID]
+		//cell.Value = bucketID
+		cell = row.AddCell()
+		cell.Value = lusers
+		cell = row.AddCell()
+		cell.Value = taskLink
+		
+		//fmt.Printf("\n+++ Title: %v", taskTitle)
+		//fmt.Printf("\n+++ Percentage: %v", taskPercent)
+		//fmt.Printf("\n+++ Completed: %v", completedDateTime)
+		//fmt.Printf("\n+++ DueDate: %v", dueDateTime)
+		//fmt.Printf("\n+++ Bucket: %v", getBucket[bucketID])
+		//fmt.Printf("\n+++ Bucket: %v", bucketID)
+		//fmt.Printf("\n+++ Assignments: %v", lusers)
+		
+	}
+	
+//	fmt.Printf("\n++ Saving outout file: %v",outputFile)
+	//err = file.Save(outputFile)
+	//if err != nil {
+	//	//fmt.Printf(err.Error())
+	//	panic(err)
+	//}
+	//c.Infof("output: %v",  file.Write(w))
+	//w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%v", planName))
+	w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	w.WriteHeader(200)
+	file.Write(w)
+	return err
 }
 
 
