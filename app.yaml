@@ -28,6 +28,15 @@ handlers:
 - url: /oauth2/github/callback
   script: _go_app
 
+- url: /oauth2/microsoft/call
+  script: _go_app
+
+- url: /oauth2/microsoft/callback
+  script: _go_app
+
+- url: /oauth2/microsoft/token
+  script: _go_app
+
 - url: /oauth2/admin/callback
   script: _go_app
 
