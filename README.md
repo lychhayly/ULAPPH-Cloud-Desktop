@@ -48,6 +48,10 @@ Use Cases (Regular Users)
 - Minimize tabs by opening them in small windows
 - Make yourself organized and more productive!
 
+Other Use Cases
+---------
+- Create an extract tool to extract tasks from Microsoft Planner Office 365 into Excel spreadhsheet
+
 Documentations
 ----------------
 https://github.com/edwindvinas/ULAPPH-Cloud-Desktop
