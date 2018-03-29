@@ -9536,7 +9536,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					if r.FormValue("u") == "" {
 						getPersonalWindows(w,r,uid,alFlag,"")
 					} else {
-						if str2int(r.FormValue("u")) > 0 {
+						if str2int(r.FormValue("u")) >= 0 {
 							getPersonalWindows(w,r,uid,alFlag,uwmsource)
 						}
 					}
@@ -9571,7 +9571,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					if r.FormValue("u") == "" {
 						getPersonalWindows(w,r,uid,alFlag,"")
 					} else {
-						if str2int(r.FormValue("u")) > 0 {
+						if str2int(r.FormValue("u")) >= 0 {
 							getPersonalWindows(w,r,uid,alFlag,uwmsource)
 						}
 					}
@@ -77655,7 +77655,7 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 	// Process config items
 	//teamName := config.TeamName
 	//c.Infof("\nTeam Name: %v", teamName)
-	//planName := config.PlanName
+	planName := config.PlanName
 	//c.Infof("\nPlan Name: %v", planName)
 	planID := config.PlanID
 	//c.Infof("\nPlan ID: %v", planID)
