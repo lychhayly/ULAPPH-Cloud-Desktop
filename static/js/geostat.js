@@ -302,7 +302,8 @@ function chkSYS1() {
 					volume: 75,
 					url: root + "/audio/WarningSiren.ogg"
 				});
-				playSoundEvenDisabled('mySoundEQ');
+				//playSoundEvenDisabled('mySoundEQ');
+				playSound('mySoundEQ');
 				document.getElementById("ping-res").innerHTML = "<img src='/img/sysinf.gif' width='20' height='20' align='middle'></img>Alert";
 				titleBlink("Alert",currVal);
 				return;

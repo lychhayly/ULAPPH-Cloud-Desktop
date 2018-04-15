@@ -134,7 +134,7 @@ function copyToUWM() {
 		e.innerHTML = currHTML + "&lt;!--" + title + "--&gt;" + "<br>" + "&lt;input type=\"hidden\" value=\"'" + link2 + "', 500, 300, 'left', 'top', {title: '" + title + "', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"" + "ulapph-" + mid + "\" /&gt;&lt;script type=\"text/javascript\"&gt;eval('windowManager.openURI(' + $('" + "ulapph-" + mid + "').value + ');');&lt;/script&gt;" + "<br>" + "<br>";
 	}
 
-	document.getElementById("stat-area").innerHTML = "<a href=\"#\" onclick=\"appendUWMSettings({{.STR_FILLER2}});\"><img id=\"saveicon\" src=\"/img/cloud-save.png\" width=\"48\" height=\"48\" title=\"Update Cloud\"></a>";
+	document.getElementById("stat-area").innerHTML = "<a href=\"#\" onclick=\"appendUWMSettings({{.STR_FILLER2}});\"><img id=\"saveicon\" src=\"/img/cloud-save.png\" width=\"48\" height=\"48\" title=\"Append to UWM Settings\"></a>";
 	return;
 }
 
@@ -197,6 +197,7 @@ function appendUWMSettings(desktop) {
 	var thisContent = document.getElementById("text-area").innerText;
 	if (thisContent == "" || thisContent == undefined) {
 		alert("Error! No data to save!");
+		e.src = "/img/success.png";
 		return;
 	}
 	console.log("thisContent: "+thisContent);
