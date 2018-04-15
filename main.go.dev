@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#25/03/2018 08:50:59
+//LAST_UPGRADE#16/04/2018 04:50:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -308,6 +308,11 @@
 //REV ID: 		D0059
 //REV DATE: 		2018-Mar-25
 //REV DESC:	  	Added office365 planner extract 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0060
+//REV DATE: 		2018-Apr-16
+//REV DESC:	  	Added d3.js support; modified RAWTEXT function to getNode 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20229,7 +20234,12 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 			case "ADDUWM":
 				n := r.FormValue("n")
 				d := r.FormValue("d")
-				renderAddUWMPage(w,r,".adduwm", uid, n, d)
+				uwmsource := getUWMSource(w,r,uid,n)
+				if uwmsource != "" {
+					renderAddUWMPage(w,r,".adduwm", uid, n, d)
+				} else {
+					fmt.Fprintf(w, "No UWM source has been set for UWM%v. Please check documentation on how to set the UWM source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>. Then get the SID and enter ULAPPH command in start menu: <b>setuwm TDSMEDIA-ID</b> in order to set the UWM for this desktop. You may just set it to blank initially.", )
+				}
 				return
 
 			//save link to icons
@@ -35412,7 +35422,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 										fmt.Fprintf(w, "<b>Not Encrypted:</b> <img src=\"/img/decrypted.png\" width=\"40\" height=\"40\"></img> [<a href=\"/admin-slides?FUNC_CODE=ENC_SLIDE&P=777&DOC_ID=%v\">Encrypt</a>] [ <a download=\"TDSSLIDE-%v-%v.txt\" href=\"/editor?EDIT_FUNC=CRYPTO&EDIT_MODE=NEW-CRYPTO&sid=TDSSLIDE-%v&ct=e&cv=d\">Backup Encrypted File</a> ]<br>", p.DOC_ID, p.DOC_ID, p.TITLE, p.DOC_ID)
 									}									
 								}
-								fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&DOC_ID=%v&SID=TDSSLIDE-%v\">View Raw Text</a> ] [ <a download=\"TDSSLIDE-%v-%v.doc\" href=\"/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=TDSSLIDE-%v\">Download Doc File</a> ] [ <a download=\"TDSSLIDE-%v-%v.slide\" href=\"/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=TDSSLIDE-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&DOC_ID=%v&SID=TDSSLIDE-%v\">View Raw JSON</a><br>", p.DOC_ID, p.DOC_ID, p.CATEGORY, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.DOC_ID, p.DOC_ID, p.DOC_ID, p.TITLE, p.DOC_ID, p.DOC_ID, p.TITLE, p.DOC_ID, p.DOC_ID, p.DOC_ID)		
+								fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&DOC_ID=%v&SID=TDSSLIDE-%v\">View Raw Text</a> ] [ <a download=\"TDSSLIDE-%v-%v.doc\" href=\"/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=TDSSLIDE-%v\">Download Doc File</a> ] [ <a download=\"TDSSLIDE-%v-%v.slide\" href=\"/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=TDSSLIDE-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&DOC_ID=%v&SID=TDSSLIDE-%v\">View Raw JSON</a> ]<br>", p.DOC_ID, p.DOC_ID, p.CATEGORY, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.DOC_ID, p.DOC_ID, p.DOC_ID, p.TITLE, p.DOC_ID, p.DOC_ID, p.TITLE, p.DOC_ID, p.DOC_ID, p.DOC_ID)		
 								reqStr := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET, p.FL_COUNTRY_SPECIFIC)
 								fmt.Fprintf(w, "<b>Slide URL:</b> <a href=\"%v\">%v</a><br>", reqStr, reqStr)
 								reqStr2 := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.GET_NEXT, p.FL_COUNTRY_SPECIFIC)
@@ -39614,6 +39624,11 @@ func media(w http.ResponseWriter, r *http.Request) {
  
 		case FUNC_CODE == "RAWTEXT":
 			SID := r.FormValue("SID")
+			//D0060
+			D3_NODE_FILTER := r.FormValue("getNode")
+			D3_TRIM := r.FormValue("trimNode")
+		 	//c.Infof("D3_NODE_FILTER: %v", D3_NODE_FILTER)	
+		 	//c.Infof("D3_TRIM: %v", D3_TRIM)	
 			
 			SPL := strings.Split(SID,"-")
 			TARGET := SPL[0]
@@ -39674,6 +39689,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 			
 			}
 			if FL_PROC_OK == true {
+				//c.Infof("FL_PROC_OK...")
  
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
@@ -39687,9 +39703,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							SPL := strings.Split(s.Text()," ")
 							if len(SPL) > 1 {
 								TARGET := SPL[1]
-				
 								validateURL(w,r,TARGET)
-								
 								//fetch contents of url and append
 								urlData := fetchURL(w,r,TARGET)
 								if urlData != "" {
@@ -39699,7 +39713,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 										buf.WriteString(fmt.Sprintf("%v\n", msg))
 									}
 								}
-								
 							}
 						} else {
 							buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
@@ -39708,20 +39721,57 @@ func media(w http.ResponseWriter, r *http.Request) {
 						buf.WriteString(fmt.Sprintf("%v", s.Text()))
 					}
 				}
- 
-				w.Header().Set("Content-Type", "text/plain; charset=utf-8")
-				writeHTMLHeader(w, 200)
-				w.Write(buf.Bytes())
+				//D0060
+				//if D3_NODE_FILTER != "" && D3_NODE_FILTER != "undefined" && D3_SID != "" { 
+				if D3_NODE_FILTER != "" && D3_NODE_FILTER != "undefined" && D3_TRIM == "Y" { 
+					c.Infof("D3_NODE_FILTER process...")
+					//return target notes only
+					s := bufio.NewScanner(bytes.NewReader(buf.Bytes()))
+					var buf bytes.Buffer
+					lCtr := 0
+					//parse node filter and form possible matches
+					SPL := strings.Split(D3_NODE_FILTER, ".")
+					for s.Scan() {
+						lCtr++
+						//if lCtr == 1 || lCtr == 2 {
+						if lCtr == 1 {
+							buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
+						} else {
+							keyWord := ""
+							for i:=len(SPL); i > 0; i-- {
+								if i <  len(SPL) {
+									keyWord = strings.Join(SPL[:i], ".")
+									//c.Infof("keyWord: %v", keyWord)
+									if strings.HasPrefix(s.Text(), fmt.Sprintf("%v,",keyWord)) {
+										buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
+									}
+								} else {
+									keyWord = strings.Join(SPL[:len(SPL)], ".")
+									//c.Infof("keyWord: %v", keyWord)
+									if strings.HasPrefix(s.Text(), keyWord) {
+										buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
+									}
+
+								}
+							}
+						}
+					}
+					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+					writeHTMLHeader(w, 200)
+					//c.Infof(fmt.Sprintf("%v", buf.String()))
+					w.Write(buf.Bytes())
+				} else {
+					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+					//c.Infof(fmt.Sprintf("%v", buf.String()))
+					writeHTMLHeader(w, 200)
+					w.Write(buf.Bytes())
+				}
 			}
-			return		
-		
+			return
 	default:
-	
-	
 		//////////////////////
 		_, uid := checkSession(w,r)
 		_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
-				
 		//get user privilege
 		FUNC_CODE2 := "GET_GRP_ID"
 		FL_VALID_USER, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE2)
