@@ -39627,8 +39627,8 @@ func media(w http.ResponseWriter, r *http.Request) {
 			//D0060
 			D3_NODE_FILTER := r.FormValue("getNode")
 			D3_TRIM := r.FormValue("trimNode")
-		 	//c.Infof("D3_NODE_FILTER: %v", D3_NODE_FILTER)	
-		 	//c.Infof("D3_TRIM: %v", D3_TRIM)	
+		 	c.Infof("D3_NODE_FILTER: %v", D3_NODE_FILTER)	
+		 	c.Infof("D3_TRIM: %v", D3_TRIM)	
 			
 			SPL := strings.Split(SID,"-")
 			TARGET := SPL[0]
@@ -39689,16 +39689,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 			
 			}
 			if FL_PROC_OK == true {
-				//c.Infof("FL_PROC_OK...")
+				c.Infof("FL_PROC_OK...")
  
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
-				
-				//secCtr := 0
 				for s.Scan() {
 					if TARGET == "TDSSLIDE" || TARGET == "TDSARTL" || TARGET == "TDSMEDIA" {
-						
+						//D0060
 						if strings.HasPrefix(s.Text(), "#APPEND_URL_DATA: ") || strings.HasPrefix(s.Text(), "#APPEND_URL_DATA ") {
 							SPL := strings.Split(s.Text()," ")
 							if len(SPL) > 1 {
@@ -39734,6 +39732,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 					for s.Scan() {
 						lCtr++
 						//if lCtr == 1 || lCtr == 2 {
+
 						if lCtr == 1 {
 							buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 						} else {
