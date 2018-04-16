@@ -72180,15 +72180,15 @@ func readLines3(w http.ResponseWriter, r *http.Request, blobkey, DESKTOP, SID st
 				URL := SPL[1]
 				//append the referrer 
 				//D0060
-				turl, err := url.Parse(URL)
-				if err != nil {
-					panic(err)
-				}
-				if turl.RawQuery == "" {
-					URL = fmt.Sprintf("%v?ref=%v",URL, r.Referer)
-				} else {
-					URL = fmt.Sprintf("%v&ref=%v",URL, r.Referer)
-				}
+				//turl, err := url.Parse(URL)
+				//if err != nil {
+				//	panic(err)
+				//}
+				//if turl.RawQuery == "" {
+				//	URL = fmt.Sprintf("%v?ref=%v",URL, *r.Referer)
+				//} else {
+				//	URL = fmt.Sprintf("%v&ref=%v",URL, *r.Referer)
+				//}
 				validateURL(w,r,URL)
 				http.Redirect(w, r, URL, http.StatusFound)
 				return "r", &Lines{0, lines}, nil
