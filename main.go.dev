@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#16/04/2018 04:50:59
+//LAST_UPGRADE#16/04/2018 10:00:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -20238,7 +20238,7 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				if uwmsource != "" {
 					renderAddUWMPage(w,r,".adduwm", uid, n, d)
 				} else {
-					fmt.Fprintf(w, "No UWM source has been set for UWM%v. Please check documentation on how to set the UWM source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>. Then get the SID and enter ULAPPH command in start menu: <b>setuwm TDSMEDIA-ID</b> in order to set the UWM for this desktop. You may just set it to blank initially.", )
+					fmt.Fprintf(w, "No UWM source has been set for UWM%v. Please check documentation on how to set the UWM source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>. Then get the SID and enter ULAPPH command in start menu: <b>setuwm TDSMEDIA-ID</b> in order to set the UWM for this desktop. You may just set it to blank initially.", n)
 				}
 				return
 
@@ -39839,14 +39839,28 @@ func media(w http.ResponseWriter, r *http.Request) {
 									p.IMG_URL = "/img/music.png"
 								case DATA_TYPE == "video":
 									p.IMG_URL = "/img/video.png"
-								case strings.Index(MIME_TYPE, "application/") != -1 && DATA_TYPE != "":
-									thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
-									p.IMG_URL = thisURL
+								case strings.Index(MIME_TYPE, "/") != -1 && DATA_TYPE != "":
+									SPL := strings.Split(MIME_TYPE, "/")
+									if len(SPL) > 0 {
+										thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", SPL[1])
+										p.IMG_URL = thisURL
+									}
 							}
 						} else {
-							if IMG_URL == "" && strings.Index(MIME_TYPE, "application/") != -1 && DATA_TYPE != "" {
-								thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
-								p.IMG_URL = thisURL								
+							if IMG_URL == "" || IMG_URL == "/img/text-icon.gif" && strings.Index(MIME_TYPE, "/") != -1 && DATA_TYPE != "" {
+								if DATA_TYPE == "text" {
+									SPL := strings.Split(MIME_TYPE, "/")
+									if len(SPL) > 0 {
+										thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", SPL[1])
+										p.IMG_URL = thisURL								
+									}else {
+										thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
+										p.IMG_URL = thisURL								
+									}
+								} else {
+									thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
+									p.IMG_URL = thisURL								
+								}
 							} else {
 								if IMG_URL != "" {
 									p.IMG_URL = IMG_URL
@@ -72164,7 +72178,17 @@ func readLines3(w http.ResponseWriter, r *http.Request, blobkey, DESKTOP, SID st
 			SPL := strings.Split(s.Text()," ")
 			if len(SPL) > 1 {
 				URL := SPL[1]
- 
+				//append the referrer 
+				//D0060
+				turl, err := url.Parse(URL)
+				if err != nil {
+					panic(err)
+				}
+				if turl.RawQuery == "" {
+					URL = fmt.Sprintf("%v?ref=%v",URL, r.Referer)
+				} else {
+					URL = fmt.Sprintf("%v&ref=%v",URL, r.Referer)
+				}
 				validateURL(w,r,URL)
 				http.Redirect(w, r, URL, http.StatusFound)
 				return "r", &Lines{0, lines}, nil
@@ -73284,6 +73308,13 @@ func renderLink(href, text string) string {
 	if text == "" {
 		text = href
 	}
+	//D0048
+	//bug - doesnt work on slides
+	if strings.Index(href, "anchor") != -1 {
+		target := "_self"
+		anc := strings.Replace(href,"#","",-1)
+		return fmt.Sprintf(`<a href="#" onclick="gotoAnchor('%s')" target="%s">%s</a>`, anc, target, text)
+	} 
 	// Open links in new window only when their url is absolute.
 	target := "_blank"
 	if u, err := url.Parse(href); err != nil {
@@ -73291,11 +73322,6 @@ func renderLink(href, text string) string {
 	} else if !u.IsAbs() || u.Scheme == "javascript" {
 		target = "_self"
 	}
-	//D0048
-	if strings.Index(href, "#anchor-") != -1 {
-		anc := strings.Replace(href, "#", "", -1)
-		return fmt.Sprintf(`<a href="#" onclick="gotoAnchor('%s')" target="%s">%s</a>`, anc, target, text)
-	} 
 	return fmt.Sprintf(`<a href="%s" target="%s">%s</a>`, href, target, text)
 }
  
