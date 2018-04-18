@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#16/04/2018 10:00:59
+//LAST_UPGRADE#17/04/2018 09:23:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -784,7 +784,8 @@ const (
 	apiKey = ""
 	plusResMax = 20
 	//URL Shortener Key
-    apiKeyUs = ``
+	SYS_ENABLE_URL_SHORTENER = false
+        apiKeyUs = ``
 	//Enable firebase
 	FL_FIREBASE_ENABLE = false
 	//Firebase Real-time DB
@@ -75134,7 +75135,11 @@ func handlerOuath2MicrosoftCallback(w http.ResponseWriter, r *http.Request) {
 //an integration with the Google Shortner API
 func ShortenUrl(w http.ResponseWriter, r *http.Request, longUrl string) (shortenUrl string) {
 	c := appengine.NewContext(r)
- 
+
+	if SYS_ENABLE_URL_SHORTENER  == false {
+		return longUrl
+	}
+	
 	var encbuf bytes.Buffer
 	enc := json.NewEncoder(&encbuf)
 	err := enc.Encode(map[string]string{"longUrl": longUrl})
