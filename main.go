@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#17/04/2018 09:23:59
+//LAST_UPGRADE#25/04/2018 01:23:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -929,6 +929,7 @@ type Configuration struct {
 	PlanName     	string    `json:"planName"`
 	Buckets    	    []Buckets `json:"buckets"`
 	Members    	    []Members `json:"members"`
+	Labels    	    []Labels `json:"labels"`
 }
 
 //Members
@@ -941,6 +942,12 @@ type Members struct {
 type Buckets struct {
 	BucketID    	string	  `json:"bucketId"`
 	BucketName    	string	  `json:"bucketName"`
+}
+
+//Buckets
+type Labels struct {
+	CatID    	string	  `json:"category"`
+	CatName    	string	  `json:"categoryName"`
 }
 
 //Planner tasks struct
@@ -963,6 +970,7 @@ type Task struct {
 	startDateTime    	time.Time	  `json:"startDateTime"`
 	CreatedDateTime    	time.Time	  `json:"createdDateTime"`
 	DueDateTime    		time.Time	  `json:"dueDateTime"`
+	//DueDateTime    		string	  `json:"dueDateTime"`
 	HasDescription    	bool	  `json:"hasDescription"`
 	PreviewType    		string	  `json:"previewType"`
 	CompletedDateTime   time.Time	  `json:"completedDateTime"`
@@ -970,7 +978,8 @@ type Task struct {
 	ReferenceCount    	int	  `json:"referenceCount"`
 	ChecklistItemCount    		int	  `json:"checklistItemCount"`
 	ActiveChecklistItemCount    int	  `json:"activeChecklistItemCount"`
-	appliedCategories    		AppliedCategories	  `json:"appliedCategories"`
+	//appliedCategories    		AppliedCategories	  `json:"appliedCategories"`
+	AppliedCategories		map[string]interface{}	  `json:"appliedCategories"`
 	Assignments    				map[string]interface{}	  `json:"assignments"`
 	ConversationThreadId    	string	  `json:"conversationThreadId"`
 	ID    						string	  `json:"id"`
@@ -993,8 +1002,8 @@ type Assignment struct {
 	OrderHint 			string `json:"orderHint"`
 }
 
-type AppliedCategories struct {
-}
+//type AppliedCategories struct {
+//}
 
 type CompletedBy struct {
 	User User `json:"user"`
@@ -77755,6 +77764,14 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 		//c.Infof("\ni: %v id:%v value: %v", i, v.BucketID, v.BucketName)
 		buckets[v.BucketID] = v.BucketName
 	}
+	//c.Infof("\nCategories: %v", config.Labels)
+	labels := make(map[string]string)
+	for _, v := range config.Labels {
+		//fmt.Printf("\ni: %v v:%v", i, v)
+		//c.Infof("\ni: %v id:%v value: %v", i, v.CatID, v.CatName)
+		labels[v.CatID] = v.CatName
+	}
+
 	//-----------------------------
 	
 	// Open our jsonFile
@@ -77829,6 +77846,10 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 	cell = row.AddCell()
 	cell.Value = "ASSIGNED TO"
 	cell = row.AddCell()
+	cell.Value = "LABELS"
+	cell = row.AddCell()
+	cell.Value = "AGE"
+	cell = row.AddCell()
 	cell.Value = "TASK DETAILS"
 	
 	// we iterate through every user within our users array and
@@ -77839,9 +77860,11 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 		taskTitle := planner.Tasks[i].Title
 		//taskPercent := planner.Tasks[i].PercentComplete
 		completedDateTime := planner.Tasks[i].CompletedDateTime
+		//2018-04-24T10:00:00Z
 		dueDateTime := planner.Tasks[i].DueDateTime
 		bucketID := planner.Tasks[i].BucketID
 		assignments := planner.Tasks[i].Assignments
+		appliedCategories := planner.Tasks[i].AppliedCategories
 		taskID := planner.Tasks[i].ID
 		//fmt.Printf("\n+++++++++++++++++++++++++\nASS: %v", assignments)
 		//fmt.Printf("\nlen(assignments.Items): %v", len(assignments.Items))
@@ -77855,6 +77878,15 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 				lusers = fmt.Sprintf("%v", members[i])
 			} else {
 				lusers = fmt.Sprintf("%v; %v", lusers, members[i])
+			}
+		}
+		lcats := ""
+		for i, _ := range appliedCategories {
+			//fmt.Printf("\ni: %v v:%v", i, v)
+			if lcats == "" {
+				lcats = fmt.Sprintf("%v", labels[i])
+			} else {
+				lcats = fmt.Sprintf("%v; %v", lcats, labels[i])
 			}
 		}
 		
@@ -77873,8 +77905,11 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 		cell = row.AddCell()
 		cell.Value = lusers
 		cell = row.AddCell()
+		cell.Value = lcats
+		cell = row.AddCell()
+		cell.Value = fmt.Sprintf("=B%v-C%v", i+2, i+2) 
+		cell = row.AddCell()
 		cell.Value = taskLink
-		
 		//fmt.Printf("\n+++ Title: %v", taskTitle)
 		//fmt.Printf("\n+++ Percentage: %v", taskPercent)
 		//fmt.Printf("\n+++ Completed: %v", completedDateTime)
