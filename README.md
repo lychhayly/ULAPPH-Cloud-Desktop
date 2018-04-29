@@ -1,7 +1,9 @@
-ULAPPH Cloud Desktop
+ULAPPH Cloud Desktop - Your web-based cloud desktop!
 ====================
 
 ![ULAPPH Installation Demo](https://lh3.googleusercontent.com/G_obRdz4_ySYr2qyoLhPpmtF9Qcv-bpLFjV44yIBdKCuVNr_TYiVu5oGtHzBqp1lOtPeb9a6Y9Q4mXOeE8DSQOVRcjYZVeA=s900 "ULAPPH Installation Demo")
+
+![ULAPPH Desktop Demo](https://lh3.googleusercontent.com/AJBWaOVmclUEqZA9TJIAvR1X6j0VuUrmpzj6RwqWcSS5WbnyDfv1fxyybpQ1yqaaA6iimhZgLNNp5aiWjjyD_y5MbF1Zjw=s900 "ULAPPH Desktop Demo")
 
 ULAPPH Login
 ----------------
