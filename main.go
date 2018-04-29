@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#25/04/2018 01:23:59
+//LAST_UPGRADE#29/04/2018 07:18:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -39636,6 +39636,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 			SID := r.FormValue("SID")
 			//D0060
 			D3_NODE_FILTER := r.FormValue("getNode")
+			D3_NODE_LINK_FILTER := r.FormValue("getNodeLink")
 			D3_TRIM := r.FormValue("trimNode")
 		 	c.Infof("D3_NODE_FILTER: %v", D3_NODE_FILTER)	
 		 	c.Infof("D3_TRIM: %v", D3_TRIM)	
@@ -39730,8 +39731,8 @@ func media(w http.ResponseWriter, r *http.Request) {
 					}
 				}
 				//D0060
-				//if D3_NODE_FILTER != "" && D3_NODE_FILTER != "undefined" && D3_SID != "" { 
-				if D3_NODE_FILTER != "" && D3_NODE_FILTER != "undefined" && D3_TRIM == "Y" { 
+				switch {
+				case D3_NODE_FILTER != "" && D3_NODE_FILTER != "undefined" && D3_TRIM == "Y": 
 					c.Infof("D3_NODE_FILTER process...")
 					//return target notes only
 					s := bufio.NewScanner(bytes.NewReader(buf.Bytes()))
@@ -39769,7 +39770,33 @@ func media(w http.ResponseWriter, r *http.Request) {
 					writeHTMLHeader(w, 200)
 					//c.Infof(fmt.Sprintf("%v", buf.String()))
 					w.Write(buf.Bytes())
-				} else {
+				case D3_NODE_LINK_FILTER != "" && D3_NODE_LINK_FILTER != "undefined": 
+					c.Infof("D3_NODE_LINK_FILTER process...")
+					//return target notes only
+					s := bufio.NewScanner(bytes.NewReader(buf.Bytes()))
+					for s.Scan() {
+						SPL := strings.Split(s.Text(), "--D3JS--")
+						if len(SPL) > 0 {
+							//fmt.Println(s.Text())
+							if SPL[0] == D3_NODE_LINK_FILTER {
+								thisShort := SPL[1]
+								thisDesc := SPL[2]
+								thisUrl := SPL[3]
+								g := TEMPSTRUCT {
+									STR_FILLER1: thisShort,
+									STR_FILLER2: thisDesc,
+									STR_FILLER3: thisUrl,
+								}
+								if err := htmlD3PopPage.Execute(w, &g); err != nil {
+								  panic(err)
+								}
+								break
+								return
+							}
+						}
+
+					}
+				default:
 					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 					//c.Infof(fmt.Sprintf("%v", buf.String()))
 					writeHTMLHeader(w, 200)
@@ -40362,7 +40389,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										}
 																									
 									}
-									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid)
+									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree/?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid)
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Admin URL:</b> <a href=\"/media?FUNC_CODE=VIEW&MEDIA_ID=%v\">%vmedia?FUNC_CODE=VIEW&MEDIA_ID=%v</a><br>", p.MEDIA_ID, getSchemeUrl(w,r), p.MEDIA_ID)
@@ -41454,6 +41481,24 @@ func media(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+var htmlD3PopPage = template.Must(template.New("htmlPopPage").Parse(htmlPopPageA))
+ 
+const htmlPopPageA = `
+
+<!DOCTYPE html>
+<meta charset="utf-8">
+<head>
+	<title>Quick Info</title>
+</head>
+<h1>{{.STR_FILLER1}}</h1>
+<hr>
+{{.STR_FILLER2}}
+<hr>
+<h3><a href="{{.STR_FILLER3}}">More...</a></h3>
+
+`
+
  
 var mediaMusicPlayerA = template.Must(template.New("mediaMusicPlayerA").Parse(mediaMusicPlayerUMP1))
  
