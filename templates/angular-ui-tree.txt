@@ -127,8 +127,12 @@ angular.module('myApp', ['ui.tree'])
 	    var x = document.getElementById("jsonarea");
 	    if (x.style.display === "none") {
 	        x.style.display = "block";
+		var treeArea = document.getElementsByClassName("col-sm-6")[0];
+		treeArea.setAttribute("style","width:50%");
 	    } else {
 	        x.style.display = "none";
+		var treeArea = document.getElementsByClassName("col-sm-6")[0];
+		treeArea.setAttribute("style","width:100%");
 	    }
     };
 
@@ -160,7 +164,7 @@ angular.module('myApp', ['ui.tree'])
 		$scope.temp = {id:nodeData.id, title:nodeData.title, url: nodeData.url, nodes: nodeData.nodes};
 		//alert($scope.temp);
 		//console.log($scope.temp);
-		alert("Edit the item and click save icon!")
+		//alert("Edit the item and click save icon!")
     };
 	
     $scope.viewLink = function(scope) {
@@ -178,7 +182,13 @@ angular.module('myApp', ['ui.tree'])
 		//alert("Edit the item and click save icon!")
 		//window.open(nodeData.url, nodeData.url);
 		var root = location.protocol + '//' + location.host;
-		parent.postMessage('ULAPPH-SYS-UPD@888@'+ nodeData.title +'@888@' + nodeData.url, root); 
+		var str = nodeData.url;
+		var n = str.indexOf(location.host);
+		if (n > 0) {
+			parent.postMessage('ULAPPH-SYS-UPD@888@'+ nodeData.title +'@888@' + nodeData.url, root); 
+		} else {
+			window.open(nodeData.url, "_blank");
+		}
 		return false;
     };
 	
