@@ -103,10 +103,11 @@ angular.module('myApp', ['ui.tree'])
 
     $scope.newSubItem = function(scope) {
       var nodeData = scope.$modelValue;
+      var uniqID = Date.now();
       nodeData.nodes.push({
-        id: nodeData.id * 10 + nodeData.nodes.length,
+        id: uniqID + nodeData.id * 10 + nodeData.nodes.length,
         title: nodeData.title + '.' + (nodeData.nodes.length + 1),
-		url: "",
+	url: "",
         nodes: []
       });
     };
@@ -204,7 +205,7 @@ angular.module('myApp', ['ui.tree'])
 		//$scope.temp = {id:nodeData.id, title:nodeData.title, url: nodeData.url, nodes: nodeData.nodes};
 		//alert($scope.temp);
 		//var nodeData = $scope.data;
-        //objIndex = nodeData.findIndex((scope => $scope.temp.id == 1));
+        	//objIndex = nodeData.findIndex((scope => $scope.temp.id == 1));
 		//Log object to Console.
 		//console.log("Before update: ", nodeData[objIndex])
 		//Update object's name property.
@@ -266,7 +267,7 @@ angular.module('myApp', ['ui.tree'])
   
 </head>
 
-<body onload="showHideJSON()">
+<body>
   <div ng-app="myApp"> 
   <div ng-controller="myCtrl">
     <!-- Nested node template -->
