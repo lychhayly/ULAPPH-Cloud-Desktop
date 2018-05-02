@@ -215,7 +215,7 @@ angular.module('myApp', ['ui.tree'])
 	  
     };
 	
-    $http.get('/media?FUNC_CODE=RAWJSON&SID=' + '{{.STR_FILLER1}}')
+    $http.get('/media?FUNC_CODE=RAWJSON&SID=' + '{{.STR_FILLER1}}' + "&tok=" + localStorage['tok'])
     .then(function(response) {
       if (response.data != "") {
       	$scope.data = response.data;
@@ -266,7 +266,7 @@ angular.module('myApp', ['ui.tree'])
   
 </head>
 
-<body>
+<body onload="showHideJSON()">
   <div ng-app="myApp"> 
   <div ng-controller="myCtrl">
     <!-- Nested node template -->
@@ -336,7 +336,6 @@ angular.module('myApp', ['ui.tree'])
   </div> 
 
 </div>
-
 
 </body>
 

@@ -1,11 +1,11 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#29/04/2018 07:18:59
+//LAST_UPGRADE#03/05/2018 02:18:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ULAPPH CLOUD DESKTOP SYSTEM
 // ULAPPH Cloud Desktop is a web-based desktop that runs on Google cloud platform and accessible via browsers on different PC and mobile devices.
-// COPYRIGHT (c) 2014-2017 Edwin D. Vinas, Ulapph Cloud Desktop System
+// COPYRIGHT (c) 2014-2018 Edwin D. Vinas, Ulapph Cloud Desktop System
 // COPYRIGHT (c) 2017-2018 Accenture, Opensource Version
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0001
@@ -9157,8 +9157,8 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 		
 		//update presence
 		updateUserActiveData(w, r, c, uid, "uwm-guest")
-		STRMSG := fmt.Sprintf("<img src=\"/img/visitor.png\" width=45 height=45>[%v] Guest has accessed your cloud desktop at %v.", uid, getSchemeUrl(w,r))
-		STRMSG2 := fmt.Sprintf("UID: %v has accessed your cloud desktop at %v as guest.", uid, getSchemeUrl(w,r))
+		STRMSG := fmt.Sprintf("<img src=\"/img/visitor.png\" width=45 height=45>[%v] Guest has accessed your cloud desktop >>> at %v.", uid, getSchemeUrl(w,r))
+		STRMSG2 := fmt.Sprintf("UID: %v has accessed your cloud desktop >>> at %v as guest.", uid, getSchemeUrl(w,r))
 		laterNotifyGB.Call(c, "autoNotifyPeopleGB", FDBKMAIL, STRMSG2, ADMMAIL)
 		data := fmt.Sprintf("@888@ULAPPH-CHAT@888@%v@888@%v", "GUEST", STRMSG2)
 		ulapphChatSender(w,r,"CH_MSG_NOTIFY_CHATS_WORLD", data, "")
@@ -27166,66 +27166,60 @@ func social(w http.ResponseWriter, r *http.Request) {
 			}
 
  
+			//send to email
+			nameOk := false
+			fromOk := false
+			msgOk := false
+			name := ""
+			from := ""
+			msg := ""
+			SPD := strings.Split(ANS,"$")
+			for i:=0; i < len(SPD); i++ {
+				//is item found
+				//$id:answer
+				if SPD[i] != "" {
+					if strings.Index(SPD[i], "inputName:") != -1 {
+
+						SPL := strings.Split(SPD[i], ":")
+						if len(SPL) == 2 {
+							name = SPL[1]
+							if name != "" {
+								nameOk = true
+							}
+						}
+					}
+					if strings.Index(SPD[i], "inputEmail:") != -1 {
+
+						SPL := strings.Split(SPD[i], ":")
+						if len(SPL) == 2 {
+							from = SPL[1]
+							if from != "" {
+								fromOk = true
+							}
+						}
+					}
+					if strings.Index(SPD[i], "inputMessage:") != -1 {
+
+						SPL := strings.Split(SPD[i], ":")
+						if len(SPL) == 2 {
+							msg = SPL[1]
+							if msg != "" {
+								msgOk = true
+							}
+						}
+					}
+				}
+
+			}
  
 			
 			switch mode {
 				case "email":
-					//send to email
-					nameOk := false
-					fromOk := false
-					msgOk := false
-					name := ""
-					from := ""
-					msg := ""
-					SPD := strings.Split(ANS,"$")
-					for i:=0; i < len(SPD); i++ {
-						//is item found
-						//$id:answer
-						if SPD[i] != "" {
-							if strings.Index(SPD[i], "inputName:") != -1 {
- 
-								SPL := strings.Split(SPD[i], ":")
-								if len(SPL) == 2 {
-									name = SPL[1]
-									if name != "" {
-										nameOk = true
-									}
-									
-								}
-								
-							}
-							if strings.Index(SPD[i], "inputEmail:") != -1 {
- 
-								SPL := strings.Split(SPD[i], ":")
-								if len(SPL) == 2 {
-									from = SPL[1]
-									if from != "" {
-										fromOk = true
-									}
-									
-								}
-								
-							}
-							if strings.Index(SPD[i], "inputMessage:") != -1 {
- 
-								SPL := strings.Split(SPD[i], ":")
-								if len(SPL) == 2 {
-									msg = SPL[1]
-									if msg != "" {
-										msgOk = true
-									}
-								}
-								
-							}							
-						}
- 
-					}
 					if nameOk == true && fromOk == true && msgOk == true {
 						subj := fmt.Sprintf("[URGENT] [%v] [%v] New Contact from [%v][%v]", name, from, SID, SYS_SERVER_NAME)
 						geoStr := getGeoString(w,r)
 						geoAcc := getAccessString(w,r,"")
 						msg = fmt.Sprintf("%v \n--sent by [%v] [%v] \n--no-reply \n--geo [%v] \n--via [%v]", msg, name, from, geoStr, geoAcc)
-						
 						to := FDBKMAIL
 						SENDGENEMAIL(c, subj, to, from, msg)
 						fmt.Fprintf(w, "SUCCESS: Message sent!")	
@@ -27241,7 +27235,12 @@ func social(w http.ResponseWriter, r *http.Request) {
 					//res, pass, title, err := getBlobTextQuiz(w,r,SID,ANS)
 					res, _, _, err := getBlobTextQuiz(w,r,SID,ANS)
 					if err == nil {
-						content := fmt.Sprintf("%v got a score of %v", uid, res)
+						content := ""
+						if nameOk == true && fromOk == true {
+							content = fmt.Sprintf("%v (%v) got a score of %v", name, from, res)
+						} else {
+							content = fmt.Sprintf("%v got a score of %v", uid, res)
+						}
 						rh := r.Header
 						oLatLong := rh.Get("X-AppEngine-CityLatLong")
 						comUrl  := fmt.Sprintf("%v/comments?C_FUNC=create2&SID=%v&parent=-1&name=%v&comment=%v&latlon=%v&url=&cc_key=%v", "https://ulapph-public-1.appspot.com", SID, uid, content, oLatLong, SYS_RECAPTCHA_KEY)
@@ -27256,6 +27255,15 @@ func social(w http.ResponseWriter, r *http.Request) {
 						}
 						fmt.Fprintf(w, "Thank you for your feedback!")
 						//http.Redirect(w, r, comUrl, http.StatusFound)
+						if nameOk == true && fromOk == true {
+							subj := fmt.Sprintf("[QUIZ][%v][%v][%v]", name, from, res)
+							geoStr := getGeoString(w,r)
+							geoAcc := getAccessString(w,r,"")
+							msg := fmt.Sprintf("%v \n--submitted by [%v] [%v] \n--no-reply \n--geo [%v] \n--via [%v]", msg, name, from, geoStr, geoAcc)
+							to := FDBKMAIL
+							SENDGENEMAIL(c, subj, to, from, msg)
+							fmt.Fprintf(w, "SUCCESS: Message sent!")	
+						}
 						return		
 					} else {
 						w.WriteHeader(200)
@@ -42216,11 +42224,12 @@ You can share a UWM desktop by enabling sharing and informing users of the passw
 <input type="text" id="KEY" name="KEY" value="{{.STR_FILLER3}}" placeholder="" maxlength="50"/>
 <input type="submit" onclick="switch2();" value="Submit">
 <hr>
-<b>Link which does not ask password:</b>
+<!--b>Link which does not ask password:</b>
 <br>
 <a href="/uwm?u={{.STR_FILLER1}}&passcode={{.STR_FILLER3}}&uid={{.STR_FILLER4}}">/uwm?u={{.STR_FILLER1}}&passcode={{.STR_FILLER3}}&uid={{.STR_FILLER4}}</a>
 <br>
-<b>Link which asks password:</b>
+<b>Link which asks password:</b-->
+<b>Share this link:</b>
 <br>
 <a href="/uwm?u={{.STR_FILLER1}}&passcode=&uid={{.STR_FILLER4}}">/uwm?u={{.STR_FILLER1}}&passcode=&uid={{.STR_FILLER4}}</a>
 <script>
@@ -46218,7 +46227,7 @@ const mediaSettingsTemplateTableHTMLFooter9 = `
 <script src="/js/pulldown-tabzilla-dynamic.js"></script>
 	<hr>
 	<h3>[ <a href="/slides">Slides</a> ] [ <a href="/articles">Articles</a> ] [ <a href="/media">Media</a> ]</h3>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
     <a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>	
@@ -59979,7 +59988,7 @@ var htmlQuickSearchForms = template.Must(template.New("htmlQuickSearchForms").Pa
  
 var htmlFooterSearch = template.Must(template.New("htmlFooterSearch").Parse(`
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -60540,7 +60549,7 @@ var htmlFooterBasic = template.Must(template.New("htmlFooterBasic").Parse(`
 var htmlFooterModal = template.Must(template.New("htmlFooterModal").Parse(`
     <br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
@@ -60570,7 +60579,7 @@ var htmlFooterModalKnock = template.Must(template.New("htmlFooterModal").Parse(`
 	</script>
     <br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
@@ -61100,7 +61109,7 @@ var playGoBody = template.Must(template.New("playGoBody").Parse(`
 var htmlFooterModalTools = template.Must(template.New("htmlFooterModalTools").Parse(`
     <br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
@@ -61451,7 +61460,7 @@ var userRegistrationTemplate = template.Must(template.New("userRegistrationTempl
 	<p>
     <div class="success2"><h3><a href="#register">Click here</a> to register!</h3></div>
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>
     <a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64222,7 +64231,7 @@ var desktopBodyTabzillaTemplateMobilePublic = template.Must(template.New("deskto
 `))
  
 var desktopBodyTabzillaTemplateMobilePublicChan = template.Must(template.New("desktopBodyTabzillaTemplateMobilePublicChan").Parse(`
-<center>&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.</center>
+<center>&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.</center>
 <center><a href="https://goo.gl/8PJbT8" title="ULAPPH Cloud Desktop Documentation">Powered by ULAPPH Cloud Desktop</a></center>
 <br>
 <script src="/js/pulldown-tabzilla-dynamic.js"></script>
@@ -64239,7 +64248,7 @@ var generalFooterBodyHTMLzilla = template.Must(template.New("generalFooterBodyHT
 <script src="/js/pulldown-tabzilla-dynamic.js"></script>
 	<br>
 	<br>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64307,7 +64316,7 @@ var guestbookTemplateFeedback = template.Must(template.New("guestbookTemplateFee
 	
 var outputFooterTemplate = template.Must(template.New("outputFooterTemplate").Parse(`
     <hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64342,7 +64351,7 @@ var umpFooterTemplate = template.Must(template.New("umpFooterTemplate").Parse(`
     <hr>
 	<h3>[ <a href="/media?FUNC_CODE=SET_MULTI_IMAGE_UPLOAD">Upload</a> ] [ <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_{{.}}">View All {{.}}</a> ]</h3>
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64352,7 +64361,7 @@ var umpFooterTemplate = template.Must(template.New("umpFooterTemplate").Parse(`
  
 var yvpFooterTemplate = template.Must(template.New("yvpFooterTemplate").Parse(`
 	<hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64363,7 +64372,7 @@ var yvpFooterTemplate = template.Must(template.New("yvpFooterTemplate").Parse(`
 var outputFooterTemplateChannel = template.Must(template.New("outputFooterTemplateChannel").Parse(`
 	[<a href="/guestbook?GB_FUNC=DELETE_ALL">Delete All Messages</a>] [<a href="/guestbook?GB_FUNC=READ_ALL">Mark all Read</a>]
     <hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -64381,7 +64390,7 @@ var outputFooterTemplateToken = template.Must(template.New("outputFooterTemplate
 	<script src="/js/channel-token.js" type="text/javascript"></script>
 	<script src="/js/channel-firebase.js"></script>
     <hr>
-	&copy; 2014-2017 ULAPPH Cloud Desktop. All rights reserved.
+	&copy; 2014-2018 ULAPPH Cloud Desktop. All rights reserved.
     <br>
     <a href="https://goo.gl/8PJbT8"><img src="https://lh3.googleusercontent.com/rWg64BhkoZePFav1Piw-3GUL8HpG0_Bz3fjhw6vbPDjcAIrkFGfJFU0E3uEOEc6xN5RfAnBxUH1sJ2onP4tnDfs9bOpn4Bs" width=50 height=50></a>	
 	<a href="https://golang.org/"><img src="/img/gopher.png" width=50 height=40></a><a href="https://cloud.google.com/"><img src="/img/google-cloud.png" width=50 height=50></a>
@@ -77988,7 +77997,7 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ULAPPH CLOUD DESKTOP SYSTEM
 // ULAPPH Cloud Desktop is a web-based desktop that runs on Google cloud platform and accessible via browsers on different PC and mobile devices.
-// COPYRIGHT (c) 2014-2017 Edwin D. Vinas, Ulapph Cloud Desktop System
+// COPYRIGHT (c) 2014-2018 Edwin D. Vinas, Ulapph Cloud Desktop System
 // COPYRIGHT (c) 2017-2018 Accenture, Opensource Version
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //// END OF CODES //////////////////////////

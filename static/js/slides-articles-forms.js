@@ -4,15 +4,15 @@ function emailContact() {
 	var mode = "email";
 	var all = "";
 	var fmtstr = "";
-	var name = document.getElementById("name");
+	var name = document.getElementById("inputName");
 	var fmtstr = "$" + "inputName" + ":" + name.value;
 	all = all + fmtstr;	
 	
-	var email = document.getElementById("email");
+	var email = document.getElementById("inputEmail");
 	var fmtstr = "$" + "inputEmail" + ":" + email.value;
 	all = all + fmtstr;	
 	
-	var message = document.getElementById("message");
+	var message = document.getElementById("inputMessage");
 	var fmtstr = "$" + "inputMessage" + ":" + message.value;
 	all = all + fmtstr;	
 	
@@ -76,6 +76,15 @@ function getElements(mode) {
 			break;
 	}
   }
+	//include name and email if given
+	var name = document.getElementById("inputName");
+	var fmtstr = "$" + "inputName" + ":" + name.value;
+	all = all + fmtstr;	
+	
+	var email = document.getElementById("inputEmail");
+	var fmtstr = "$" + "inputEmail" + ":" + email.value;
+	all = all + fmtstr;	
+
 	var alldata = encodeURIComponent(all);
 	console.log(alldata);
 	//send to server
@@ -83,6 +92,7 @@ function getElements(mode) {
 };
 
 function submitData(name, mode,ans) {
+
 	console.log("submitData");
 	if (window.XMLHttpRequest)
 	  {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -94,7 +104,8 @@ function submitData(name, mode,ans) {
 	  }
 	  
 	var sid = document.getElementsByName("SID")[0].value
-	chk_url = '/social?SO_FUNC=QUIZ&ANS=' + ans + '&SID=' + sid + '&mode=' + mode + '&name=' + name;
+	//chk_url = '/social?SO_FUNC=QUIZ&ANS=' + ans + '&SID=' + sid + '&mode=' + mode + '&name=' + name;
+	chk_url = '/social?SO_FUNC=QUIZ&ANS=' + ans + '&SID=' + sid + '&mode=' + mode;
 	console.log(chk_url);
 	xmlhttsd.open("GET",chk_url,true);
 	xmlhttsd.send();
@@ -115,7 +126,8 @@ function submitData(name, mode,ans) {
 					if (mode == "default") {
 						//quiz type
 						//open the comments section
-						window.open("/social?SID=" + sid + "&SO_FUNC=SO_VIEW");
+						//window.open("/social?SID=" + sid + "&SO_FUNC=SO_VIEW");
+						window.open("/captcha?CC_FUNC=DISP&R=COMMENT&SID=" + sid);
 					} else {
 						alert(currVal);
 					}					
