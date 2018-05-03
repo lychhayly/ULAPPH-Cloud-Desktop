@@ -60,6 +60,7 @@ Use Cases (Regular Users)
 Other Use Cases
 ---------
 - Create an extract tool to extract tasks from Microsoft Planner Office 365 into Excel spreadhsheet
+- Organize courses/trainings using D3.js, UI tree, automated quizzes etc.
 
 Documentations
 ----------------
