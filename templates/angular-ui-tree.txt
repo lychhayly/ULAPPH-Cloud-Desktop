@@ -123,6 +123,29 @@ angular.module('myApp', ['ui.tree'])
     $scope.refresh = function() {
       location.reload();
     };
+
+    $scope.loadStatus = function() {
+      //location.reload();
+	console.log("loading status");
+	//console.log(localStorage.length);
+
+	for ( var i = 0, len = localStorage.length; i < len; ++i ) {
+	  //console.log( localStorage.getItem( localStorage.key( i ) ) );
+	  var str = localStorage.key( i );
+	  var n = str.indexOf("{{.STR_FILLER1}}-node-");
+	  if (n >= 0) {
+		console.log("found status");
+		//also strikethrough
+		var res = str.replace("{{.STR_FILLER1}}-", "");
+		//console.log(res);
+		var ele = document.getElementById(res);
+		ele.style.setProperty("text-decoration", "line-through");
+		//also set background
+		ele.style.backgroundColor = "yellow";
+
+	  }
+	}
+    };
     
     $scope.showHideJSON = function() {
 	    var x = document.getElementById("jsonarea");
@@ -190,6 +213,14 @@ angular.module('myApp', ['ui.tree'])
 		} else {
 			window.open(nodeData.url, "_blank");
 		}
+		//also strikethrough
+		var ele = document.getElementById("node-" + nodeData.id);
+		ele.style.setProperty("text-decoration", "line-through");
+		//also set background
+		ele.style.backgroundColor = "yellow";
+		//save status in localstorage
+		localStorage["{{.STR_FILLER1}}-node-" + nodeData.id] = "x";
+
 		return false;
     };
 	
@@ -216,7 +247,7 @@ angular.module('myApp', ['ui.tree'])
 	  
     };
 	
-    $http.get('/media?FUNC_CODE=RAWJSON&SID=' + '{{.STR_FILLER1}}' + "&tok=" + localStorage['tok'])
+    $http.get('/media?FUNC_CODE=RAWJSON&SID=' + '{{.STR_FILLER1}}')
     .then(function(response) {
       if (response.data != "") {
       	$scope.data = response.data;
@@ -272,7 +303,7 @@ angular.module('myApp', ['ui.tree'])
   <div ng-controller="myCtrl">
     <!-- Nested node template -->
     <script type="text/ng-template" id="nodes_renderer.html">
-      <div ui-tree-handle class="tree-node tree-node-content">
+      <div ui-tree-handle class="tree-node tree-node-content" id="node-{{"{{"}}node.id{{"}}"}}">
         <a class="btn btn-success btn-xs" ng-if="node.nodes && node.nodes.length > 0" data-nodrag ng-click="toggle(this)"><span
         class="glyphicon"
         ng-class="{
@@ -302,7 +333,8 @@ angular.module('myApp', ['ui.tree'])
         <button ng-click="collapseAll()">Collapse all</button>
         <button ng-click="saveAll()">Save all</button>
         <button ng-click="showHideJSON()">Show/Hide JSON</button>
-		<button ng-click="refresh()">Refresh</button>
+        <button ng-click="loadStatus()">Load Status</button>
+	<button ng-click="refresh()">Refresh</button>
       </div>
     </div>
 	
