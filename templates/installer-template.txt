@@ -92,8 +92,8 @@ if (status != undefined && status != "" && cfun != "INSTALL") {
 		var cfun = urlParams["COM_FUN"];
 		var pid = urlParams["pid"];
 	    var turl = "https://" + pid + ".appspot.com"; */
-		var src = window.location.href;
-		document.getElementById("status").innerHTML = '<font color=green>Initialization Completed!</font><br><font color=magenta>ULAPPH Cloud Desktop - Your computer in the cloud!</font><br><font color=blue><a href="#" onclick="openServer(src);return false;">Click here to proceed with Setup!</a></font>';
+		var src = location.href;
+		document.getElementById("status").innerHTML = '<font color=green>Initialization Completed!</font><br><font color=magenta>ULAPPH Cloud Desktop - Your computer in the cloud!</font><br><font color=blue><a href=\"#\" onclick=\"openServer(src);return false;\">Click here to proceed with Setup!</a></font>';
 	});
 }
 
