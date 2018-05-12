@@ -6804,21 +6804,9 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 	checkSysIns(w,r)
 
 	_, uid := checkSession(w,r)
-	_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
-
-	FUNC_CODE := "GET_GRP_ID"
 	FL_ADMIN_USER := false
-	FL_VALID_USER, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
-	
-	if FL_VALID_USER == true {
-	
-		if GROUP_ID == "GRP_ADMIN" {
-			FL_ADMIN_USER = true
-		} else {
-			fmt.Fprintf(w, "Sorry, only administrators can access this page.")
-			return
-		}
-		
+	if uid == ADMMAIL {
+		FL_ADMIN_USER = true
 	}
  
 	//check if system is installed already
@@ -16504,7 +16492,6 @@ func ulapphCaptcha(w http.ResponseWriter, r *http.Request) {
 			REC_TYP := r.FormValue("REC_TYP")
 
 			if isLoggedIn(w,r) == true {
-				//edwinxxx	
 				redURL := fmt.Sprintf("/social?SO_FUNC=SO_VIEW&SID=%v&TITLE=%v&cc_key=%v", SID, TITLE, SYS_RECAPTCHA_KEY)
 				http.Redirect(w, r, redURL, http.StatusFound)
 				return
@@ -29442,10 +29429,12 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 		case "NEW_INSTALL":
 			//newconfigtemplate
 			u := user.Current(c)
-			if u == nil {
-				//newconfigtemplate
-				loginGoogle(w,r,r.URL.String())
+			_, uid := checkSession(w,r)
+			if uid != ADMMAIL {
+				fmt.Fprintf(w, "Unauthorized operation!")
+				return
 			}
+
 			confirm := r.FormValue("CONFIRM")
 			if confirm == "Y" {
 				client := urlfetch.Client(c)
@@ -29478,6 +29467,8 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 				http.Redirect(w, r, sysReq, http.StatusFound)
 				return
 			} else {
+				
+				fmt.Fprintf(w, "<title>Install ULAPPH Cloud Desktop</title>")
 				fmt.Fprintf(w, "<center><a href=\"/ulapph-router?RTR_FUNC=NEW_INSTALL&CONFIRM=Y\" title=\"Click to install\"><img src=\"/img/install.png\" height=100 width=100></a>")
 				fmt.Fprintf(w, "<center><font color=green><h2>ULAPPH Cloud Desktop</h2>Kindly click button above to setup ULAPPH Cloud Desktop!</font>")	
 				fmt.Fprintf(w, "<h3><font color=green>%v</font></h3>", getSchemeUrl(w,r))
@@ -29515,8 +29506,9 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 					}
 				}
 				memcache.Flush(c)
-				sysReq := fmt.Sprintf("/uwm")
-				http.Redirect(w, r, sysReq, http.StatusFound)
+				//sysReq := fmt.Sprintf("/uwm")
+				//http.Redirect(w, r, sysReq, http.StatusFound)
+				fmt.Fprintf(w, "Uninstall successful!")
 				return
 			}
 		case "queue-social":
