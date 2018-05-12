@@ -71760,8 +71760,10 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 			//https://ulapph-installer.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL
 			if isLoggedIn(w,r) != true {
 					//c.Infof("Redirect user to login!")
-					redURL := fmt.Sprintf("https://ulapph-installer.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL")
-					http.Redirect(w, r, redURL, http.StatusFound)
+					//edwinxxx
+					//redURL := fmt.Sprintf("https://ulapph-installer.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL")
+					//http.Redirect(w, r, redURL, http.StatusFound)
+					loginGoogle(w,r,"https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL")
 					return					
 			}
 			//verify if user is registered
