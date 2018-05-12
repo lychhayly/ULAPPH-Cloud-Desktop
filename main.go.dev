@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#04/05/2018 03:18:59
+//LAST_UPGRADE#12/05/2018 02:57:59
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1205,7 +1205,7 @@ type TDSCOMIDX struct {
 type TDSCOMMENT struct {
 	CID int
 	SID string
-    URL string
+	URL string
 	NAME string
 	UID string
 	COMMENT string
@@ -16494,12 +16494,21 @@ func ulapphCaptcha(w http.ResponseWriter, r *http.Request) {
 			
 		case "DISP":
  
+			//skip checking if logged in
+			//https://edwin-daen-vinas.appspot.com/social?SO_FUNC=SO_VIEW&SID=TDSSLIDE-578&TITLE=Oracle%20FMW%20Administration%20Training%20-%20Post-Assessment&cc_key=6LcvMwoUAAAAAPsrpukBmQ5vocDI7y1K7-iSTRCM
 			REDIR := r.FormValue("R")
 			SID := r.FormValue("SID")
 			SO_FUNC := r.FormValue("SO_FUNC")
 			TITLE := r.FormValue("TITLE")
 			content := r.FormValue("content")
 			REC_TYP := r.FormValue("REC_TYP")
+
+			if isLoggedIn(w,r) == true {
+				//edwinxxx	
+				redURL := fmt.Sprintf("/social?SO_FUNC=SO_VIEW&SID=%v&TITLE=%v&cc_key=%v", SID, TITLE, SYS_RECAPTCHA_KEY)
+				http.Redirect(w, r, redURL, http.StatusFound)
+				return
+			} else {
 	
 			sitekey := SYS_RECAPTCHA_KEY		
 			TEMPDATA := TEMPSTRUCT2{
@@ -16514,6 +16523,7 @@ func ulapphCaptcha(w http.ResponseWriter, r *http.Request) {
 					
 			if err := formTemplate.Execute(w, &TEMPDATA); err != nil {
 				http.Error(w, err.Error(), http.StatusInternalServerError)
+			}
 			}
 		
 		case "CHECK":
@@ -27233,7 +27243,8 @@ func social(w http.ResponseWriter, r *http.Request) {
 					//get percentage
 					//fmt.Fprintf(w, "Your score is 100%%")
 					//res, pass, title, err := getBlobTextQuiz(w,r,SID,ANS)
-					res, _, _, err := getBlobTextQuiz(w,r,SID,ANS)
+					//res, _, _, err := getBlobTextQuiz(w,r,SID,ANS)
+					res, _, title, err := getBlobTextQuiz(w,r,SID,ANS)
 					if err == nil {
 						content := ""
 						if nameOk == true && fromOk == true {
@@ -27256,10 +27267,10 @@ func social(w http.ResponseWriter, r *http.Request) {
 						fmt.Fprintf(w, "Thank you for your feedback!")
 						//http.Redirect(w, r, comUrl, http.StatusFound)
 						if nameOk == true && fromOk == true {
-							subj := fmt.Sprintf("[QUIZ][%v][%v][%v]", name, from, res)
+							subj := fmt.Sprintf("[QUIZ][%v][%v][%v][%v]", SID, name, from, res)
 							geoStr := getGeoString(w,r)
 							geoAcc := getAccessString(w,r,"")
-							msg := fmt.Sprintf("%v \n--submitted by [%v] [%v] \n--no-reply \n--geo [%v] \n--via [%v]", msg, name, from, geoStr, geoAcc)
+							msg := fmt.Sprintf("[%v] %v<br>%v <br><br>--submitted by [%v] [%v] <br>--no-reply <br>--geo [%v] <br>--via [%v]",SID, title, content, name, from, geoStr, geoAcc)
 							to := FDBKMAIL
 							SENDGENEMAIL(c, subj, to, from, msg)
 							fmt.Fprintf(w, "SUCCESS: Message sent!")	
@@ -42490,6 +42501,11 @@ const htmlDesktopsJSONtoTableA = `
 	for (i = 1; i <= utot; i++) { 
 		chtm = document.getElementById("desktops").innerHTML;
 		document.getElementById("desktops").innerHTML = chtm + localStorage['uwm-'+i];
+	}
+	if (utot > 0) {
+		  thisDesk = '<span class=\"button-wrap\"><a href=\"#\" onclick=\"clearDesktops();\" class=\"button button-pill button-raised button-primary\">Clear</a></span>';
+		  chtm = document.getElementById("desktops").innerHTML;
+		  document.getElementById("desktops").innerHTML = chtm + thisDesk;
 	}
 
   function openDesktop(uLink, name, id) {
@@ -77502,7 +77518,6 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 			} else {
 				thisCID = 1
 			}
-		
 			g := TDSCOMMENT{
 				CID: thisCID,
 				SID: SID,
@@ -77519,7 +77534,8 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 			}
 			//c.Infof("TDSCOMMENT: %v", g)
 			
-			thisKey := fmt.Sprintf("%d", g.CID)
+			//thisKey := fmt.Sprintf("%d", g.CID)
+			thisKey := fmt.Sprintf("%v-%v-%d", SID, time.Now(), g.CID)
 			//c.Infof("thisKey: %v", thisKey)
 			
 			key := datastore.NewKey(c, "TDSCOMMENT", thisKey, 0, nil)
@@ -77561,7 +77577,9 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 		}
 		//c.Infof("TDSCOMMENT: %v", g)
 		
-		thisKey := fmt.Sprintf("%d", g.CID)
+		//thisKey := fmt.Sprintf("%d", g.CID)
+		//thisKey := fmt.Sprintf("%v-%v-%d", SID, uid, g.CID)
+		thisKey := fmt.Sprintf("%v-%v-%d", SID, time.Now(), g.CID)
 		//c.Infof("thisKey: %v", thisKey)
 		
 		key := datastore.NewKey(c, "TDSCOMMENT", thisKey, 0, nil)

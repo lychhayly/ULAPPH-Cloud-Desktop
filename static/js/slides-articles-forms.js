@@ -127,7 +127,8 @@ function submitData(name, mode,ans) {
 						//quiz type
 						//open the comments section
 						//window.open("/social?SID=" + sid + "&SO_FUNC=SO_VIEW");
-						window.open("/captcha?CC_FUNC=DISP&R=COMMENT&SID=" + sid);
+						title = document.getElementById("TITLE").value;
+						window.open("/captcha?CC_FUNC=DISP&R=COMMENT&SID=" + sid + "&TITLE=" + title);
 					} else {
 						alert(currVal);
 					}					
