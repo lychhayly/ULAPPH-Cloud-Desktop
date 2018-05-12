@@ -70,6 +70,14 @@ Source Codes (this repo)
 ----------------
 https://github.com/Accenture/ULAPPH-Cloud-Desktop
 
+How to Install via Google Appengine and Google Cloud Shell?
+------------------
+https://github.com/edwindvinas/ULAPPH-Cloud-Desktop/blob/master/DOCS/Installation%20Guide.md
+
+How to Install via other cloud providers or servers?
+---------
+Not possible yet. Only works inside Google Appengine only.
+
 Contributors
 ----------------
 - Edwin D. Vinas (Golang/JS/HTML/CSS)
