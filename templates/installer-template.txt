@@ -92,8 +92,7 @@ if (status != undefined && status != "" && cfun != "INSTALL") {
 		var cfun = urlParams["COM_FUN"];
 		var pid = urlParams["pid"];
 	    var turl = "https://" + pid + ".appspot.com"; */
-		var src = location.href;
-		document.getElementById("status").innerHTML = '<font color=green>Initialization Completed!</font><br><font color=magenta>ULAPPH Cloud Desktop - Your computer in the cloud!</font><br><font color=blue><a href=\"#\" onclick=\"openServer(src);return false;\">Click here to proceed with Setup!</a></font>';
+		document.getElementById("status").innerHTML = "<font color=green>Initialization Completed!</font><br><font color=magenta>ULAPPH Cloud Desktop - Your computer in the cloud!</font><br><font color=blue><a href='#' onclick='openServer()'>Click here to open Google Cloud Shell!</a></font>";
 	});
 }
 
@@ -188,7 +187,10 @@ if (status != undefined && status != "" && cfun != "INSTALL") {
 	}
   }
   
-  function openServer(src) {
+  function openServer() {
+	var src = location.href;
+	console.log(src);
+
 	var urlParams;
 	var match,
 			pl     = /\+/g,  // Regex for replacing addition symbol with a space
@@ -206,7 +208,9 @@ if (status != undefined && status != "" && cfun != "INSTALL") {
 	console.log("turl: "+turl);
 	//window.location.href = turl;
 	alert("Your project ID is " + pid + " and your URL is "+turl);
-	window.open("https://github.com/edwindvinas/ULAPPH-Cloud-Desktop/blob/master/README.md", "_blank");
+	var htmo = document.getElementById("status").innerHTML;
+	document.getElementById("status").innerHTML = htmo + "<br><font color=red>Project ID: </font>" + pid + "<br><font color=red>URL: </font>" + turl;
+	window.open("https://console.cloud.google.com/cloudshell/editor?project=" + pid + "&serviceId=default&duration=PT1H&shellonly=true", "_blank");
   }
   
 </script>
