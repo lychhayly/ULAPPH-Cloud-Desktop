@@ -25508,6 +25508,9 @@ func stmpHumanize(tStr string) (fTime string) {
 	if tStr != "" {
 		//tStr := "20150316022627"
 		t := strings.Split(tStr,"")
+		if len(t) != 14 {
+			return tStr 
+		}
 		date := fmt.Sprintf("%s%s%s%s-%s%s-%s%s %s%s:%s%s:%s%s +0000 UTC", t[0], t[1], t[2], t[3], t[4], t[5], t[6], t[7], t[8], t[9], t[10], t[11], t[12], t[13])
 		//fmt.Printf("%v\n", date)
 		t2, err := time.Parse("2006-01-02 15:04:05 +0000 UTC", date)
