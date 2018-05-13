@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#12/05/2018 02:57:59
+//LAST_UPGRADE#13/05/2018 09:32:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -194,7 +194,6 @@
 //REV DESC:		Incorporated bleve search
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0037
 //REV DATE: 	2017-May-10
 //REV DESC:		Ability to setup custom website pages and incorporated sprig functions
@@ -313,6 +312,11 @@
 //REV ID: 		D0060
 //REV DATE: 		2018-Apr-16
 //REV DESC:	  	Added d3.js support; modified RAWTEXT function to getNode 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0061
+//REV DATE: 		2018-May-13
+//REV DESC:	  	Export quiz or comments to excel 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1209,6 +1213,8 @@ type TDSCOMMENT struct {
 	NAME string
 	UID string
 	COMMENT string
+	//D0061
+	SVAL string
 	DEPTH int
 	TIMESTAMP time.Time
 	//D0042
@@ -26584,20 +26590,14 @@ func markMsgDelete(w http.ResponseWriter, r *http.Request,uid,mid string) (ok bo
 
 //handles sharing of contents 
 func share(w http.ResponseWriter, r *http.Request) {
-	
-	
- 
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	c := appengine.NewContext(r)
-	
 	_, uid := checkSession(w,r)
 	updateUserActiveData(w, r, c, uid, "social-sharing")
-	
 	//fmt.Fprintf(w, "Welcome to ULAPPH Share!<br>")
 	SH_FUNC := r.FormValue("SH_FUNC")
 	url := r.FormValue("url")
 	title := r.FormValue("title")
-	
 	switch SH_FUNC {
 		case "content":
 			SID := r.FormValue("SID")
@@ -26617,69 +26617,56 @@ func share(w http.ResponseWriter, r *http.Request) {
 					_, _, _, _, _, TITLE, _, _, MUSIC_ID, GET_NEXT := getTDSSLIDEBlobKey(w, r, docID)
 					reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/slides?TYPE=SLIDE&DOC_ID=%v&SID=%v&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=ON", DOC_ID, SID, TITLE, MUSIC_ID, GET_NEXT)
 					redir = fmt.Sprintf("https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v", TITLE, ShortenUrl(w,r,reqStr))
-			
 				case "TDSARTL":
 					_, _, _, _, _, TITLE, _, _, MUSIC_ID := getTDSARTLBlobKey(w, r, docID)
 					reqStr := fmt.Sprintf("https://ulapph-public-1.appspot.com/articles?TYPE=ARTICLE&DOC_ID=%v&SID=%v&TITLE=%v&MUSIC_ID=%v", DOC_ID, SID, TITLE, MUSIC_ID)
 					redir = fmt.Sprintf("https://ulapph-public-1.appspot.com/share?SH_FUNC=all&title=%v&url=%v", TITLE, ShortenUrl(w,r,reqStr))
-					
 				default:
 					fmt.Fprintf(w, "Sorry, slide & article only shared using this method.<br>")
 					return
-					
 			}
 			http.Redirect(w, r, redir, http.StatusFound)	
 			return
-			
 		case "all":
 			if url == "" {
 				fmt.Fprintf(w, "Invalid parameters<br>")
 				return
 			}
 			renderSocialSharing(w,r,title,url)
-			
 		case "custom":
 			renderSocialSharing(w,r,title,url)
-			
 		default:
 			fmt.Fprintf(w, "Sorry, API request not yet supported.<br>")
 	}
-	
 }
 
 //D0040
 //handles commenting system using commento.js
 func ulapphComments(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
 
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
-	
 	C_FUNC := r.FormValue("C_FUNC")
-	
 	//D0040
 	CC_KEY, _ := getCCKey(w,r,r.PostFormValue("url"))
 	if CC_KEY != SYS_RECAPTCHA_KEY && isLoggedIn(w,r) != true {
 		//c.Infof("Error: Access to this page requires captch verification!")
 		fmt.Fprintf(w, "Error: Access to this page requires captch verification!")
-		return			
+		return
 	}
-	
 	switch C_FUNC {
- 
+
 		case "get":
 			comments := []Comment{}
 			var err error
-			
 			//D0040
 			//add caching
 			url := r.PostFormValue("url")
 			SID, sidOk := getRefDoc(w,r,url)
 			if sidOk == false {
 				return
-				
 			}
-			
 			result := &resultContainer{Success: true}
-			
 			//lets serve some cache
 			cKeyC := fmt.Sprintf("JSON_COMMENTS_%v", SID)
 			JLIST := getBytMemcacheValueByKey(w,r,cKeyC)
@@ -26695,7 +26682,6 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 				result.render(w)
 				return
 			}
-	
 			comments, err = getComments(w,r,SID,url)
 			//c.Infof("comments: %v", comments)
 			if err != nil {
@@ -26706,15 +26692,13 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			data, err := json.Marshal(comments)
 			if err != nil {
 				//c.Infof("json.Marshal() Error: %v", err)
-			}			
+			}
 			putBytesToMemcacheWithoutExp(w,r,cKeyC,data)
 			//c.Infof("comments cached: %v", string(data))
 			result.Comments = comments
 			result.render(w)
 			return
-		
 		case "create":
-			
 			result := &resultContainer{}
 			if r.Method != "POST" {
 				//c.Infof("This request must be a POST request: %v", r.Method)
@@ -26738,7 +26722,6 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			name := template.HTMLEscapeString(r.PostFormValue("name"))
 			comment := template.HTMLEscapeString(r.PostFormValue("comment"))
 			latlon := r.PostFormValue("latlon")
-			
 			if r.PostFormValue("gotcha") != "" {
 				result.render(w)
 				return
@@ -26748,8 +26731,8 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			if uid == "" {
 				uid = getGeoString(w,r)
 			}
-
-			err = createComment(w,r,r.PostFormValue("url"), name, uid, comment, latlon, parent)
+			//D0061
+			err = createComment(w,r,r.PostFormValue("url"), name, "", uid, comment, latlon, parent)
 			if err != nil {
 				//Emit(err)
 				result.Status = http.StatusInternalServerError
@@ -26763,7 +26746,6 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			return
 
 		case "create2":
-			
 			result := &resultContainer{}
 			if r.Method != "POST" {
 				//c.Infof("This request must be a POST request: %v", r.Method)
@@ -26787,7 +26769,8 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			name := template.HTMLEscapeString(r.FormValue("name"))
 			comment := template.HTMLEscapeString(r.FormValue("comment"))
 			latlon := r.FormValue("latlon")
-			
+			//D0061
+			res := r.FormValue("res")
 			if r.FormValue("gotcha") != "" {
 				result.render(w)
 				return
@@ -26797,7 +26780,8 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			if uid == "" {
 				uid = getGeoString(w,r)
 			}
-			err = createComment(w,r,r.FormValue("url"), name, uid, comment, latlon, parent)
+			//D0061
+			err = createComment(w,r,r.FormValue("url"), name, res, uid, comment, latlon, parent)
 			if err != nil {
 				//Emit(err)
 				//c.Infof("getComments() Error: %v", err)
@@ -26810,12 +26794,22 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			result.Message = "Comment successfully created"
 			result.render(w)
 			return
-		
+		//D0061
+		case "export_comments":
+			SID := r.FormValue("SID")
+			TITLE := r.FormValue("TITLE")
+			c.Infof("SID: %v", SID)
+			c.Infof("TITLE: %v", TITLE)
+			err := extractComments(w,r,SID,TITLE)
+			if err != nil {
+				fmt.Fprintf(w,"Error extracting comments: %v", err)
+			}
+			return
+
 		default:
 			//c.Infof("/comments index!")
 			return
-		
-	}		
+	}
 }
 
 //handles /social handler 
@@ -27244,7 +27238,8 @@ func social(w http.ResponseWriter, r *http.Request) {
 						}
 						rh := r.Header
 						oLatLong := rh.Get("X-AppEngine-CityLatLong")
-						comUrl  := fmt.Sprintf("%v/comments?C_FUNC=create2&SID=%v&parent=-1&name=%v&comment=%v&latlon=%v&url=&cc_key=%v", "https://ulapph-public-1.appspot.com", SID, uid, content, oLatLong, SYS_RECAPTCHA_KEY)
+						//D0061
+						comUrl  := fmt.Sprintf("%v/comments?C_FUNC=create2&SID=%v&res=%v&parent=-1&name=%v&comment=%v&latlon=%v&url=&cc_key=%v", "https://ulapph-public-1.appspot.com", SID, res, uid, content, oLatLong, SYS_RECAPTCHA_KEY)
 						//Post data to server
 						//URL := fmt.Sprintf("%v/social?SO_FUNC=proc-broadcast-contents&encMsg=%v", SEARCH_SERVER, encMsg)
 						req, err := http.NewRequest("POST", comUrl, nil)
@@ -60092,7 +60087,7 @@ var htmlHeaderGBSocial = template.Must(template.New("htmlHeaderGBSocial").Parse(
     <div class="content-wrapper">
         <div class="content">
 			<h3>{{.STR_FILLER4}} ({{.STR_FILLER3}})</h3>
-			<p>Join the discussion by sharing your comments for this <a href="{{.STR_FILLER2}}">content</a>! Please note that your comment will be connected to user <b>{{.STR_FILLER1}}</b> and location is as shown in this <b><a href="#" id="myloc">map</a></b>.</p>
+			<p>Join the discussion by sharing your comments for this <a href="{{.STR_FILLER2}}">content</a>! Please note that your comment will be connected to user <b>{{.STR_FILLER1}}</b> and location is as shown in this <b><a href="#" id="myloc">map</a></b>. You may also <a href="/comments?C_FUNC=export_comments&SID={{.STR_FILLER3}}&TITLE={{.STR_FILLER4}}"><b>export</b></a> these comments into a spreadsheet.</p>
             <div id="commento">
             </div>
         </div>
@@ -77420,7 +77415,8 @@ func str2int(a string) (i int) {
 
 //D0040
 //creates a new comment entry
-func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comment, latlon string, parent int) error {
+//D0061
+func createComment(w http.ResponseWriter, r *http.Request, url, name, res, uid, comment, latlon string, parent int) error {
 	c := appengine.NewContext(r)
 	
 	//D0040
@@ -77528,6 +77524,8 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 				//DT_UPDATE: getTimestamp(),
 				LATLON: latlon,
 				PARENT: parent,
+				//D0061
+				SVAL: res,
 			}
 			//c.Infof("TDSCOMMENT: %v", g)
 			
@@ -77571,6 +77569,8 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 			//DT_UPDATE: getTimestamp(),
 			LATLON: latlon,
 			PARENT: parent,
+			//D0061
+			SVAL: res,
 		}
 		//c.Infof("TDSCOMMENT: %v", g)
 		
@@ -77681,26 +77681,19 @@ func createComment(w http.ResponseWriter, r *http.Request, url, name, uid, comme
 // put a table data into array of structs
 func getComments(w http.ResponseWriter, r *http.Request, SID, url string) ([]Comment, error) {
 	c := appengine.NewContext(r)
-	
 	var pl []Comment
-	
-	//q := datastore.NewQuery("TDSCOMMENT").Filter("URL =", url)
 	q := datastore.NewQuery("TDSCOMMENT").Filter("SID =", SID)
 	recCount,_ := q.Count(c)
-	//c.Infof("recCount: %v", recCount)
-	
 	cmts := make([]TDSCOMMENT, 0, recCount)
 	if _, err := q.GetAll(c, &cmts); err != nil {
 		 panic(err)
 	}
-	
 	if recCount > 0 {
 		for _, p := range cmts{
 			g := Comment{
 				ID: p.CID,
 				URL: p.URL,
 				Name: p.NAME,
-				//Name: fmt.Sprintf("%v (%v)", p.NAME, p.UID),
 				UID: p.UID,
 				Comment: p.COMMENT,
 				Profile: getProfilePic(w, r, p.UID),
@@ -77709,12 +77702,9 @@ func getComments(w http.ResponseWriter, r *http.Request, SID, url string) ([]Com
 				Latlon: p.LATLON,
 				Parent: p.PARENT,
 			}
-			//c.Infof("Comment: %v", g)
 			pl = append(pl, g)
 		}
 	}
-	
-	//c.Infof("pl: %v", pl)
 	return pl, nil
 }
 
@@ -77752,43 +77742,18 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 
 	//c.Infof("TOKEN: %v",token)
 	//c.Infof("CONFIG: %v",string(configBytes))
-	
-    var file *xlsx.File
-    var sheet *xlsx.Sheet
-    var row *xlsx.Row
-    var cell *xlsx.Cell
-	
-    file = xlsx.NewFile()
+	var file *xlsx.File
+	var sheet *xlsx.Sheet
+	var row *xlsx.Row
+	var cell *xlsx.Cell
+
+	file = xlsx.NewFile()
 	//c.Infof("++ Adding sheet \"Planner\"")
-    sheet, err = file.AddSheet("Planner")
-    if err != nil {
-        //fmt.Printf(err.Error())
+	sheet, err = file.AddSheet("Planner")
+	if err != nil {
+		//fmt.Printf(err.Error())
 		panic(err)
-    }
-	
-	//-------------------------------
-	// Open our configFile
-	//c.Infof("++ Opening config file")
-	//cfgfile, err := os.Open(configFile)
-	// if we os.Open returns an error then handle it
-	//if err != nil {
-	//	//fmt.Println(err)
-	//	panic(err)
-	//} 
-
-
-	//fmt.Printf("\n++ Successfully Opened input file")
-	// defer the closing of our configFile so that we can parse it later on
-	//defer cfgfile.Close()
-
-
-	// read our opened file as a byte array.
-	//byteInput, err := ioutil.ReadAll(cfgfile)
-	//if err != nil {
-	//	//fmt.Printf("\nERROR: %v", err)
-	//	panic(err)
-	//}
-
+	}
 	// we initialize our Users array
 	var config Configuration
 
@@ -77841,30 +77806,6 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 		labels[v.CatID] = v.CatName
 	}
 
-	//-----------------------------
-	
-	// Open our jsonFile
-	//c.Infof("\n++ Opening input file")
-	//jsonFile, err := os.Open(inputFile)
-	// if we os.Open returns an error then handle it
-	//if err != nil {
-	//	//fmt.Println(err)
-	//	panic(err)
-	//} 
-
-
-	//fmt.Println("Successfully Opened users.json")
-	//fmt.Printf("\n++ Successfully Opened input file")
-	// defer the closing of our jsonFile so that we can parse it later on
-	//defer jsonFile.Close()
-
-
-	// read our opened file as a byte array.
-	//byteValue, err := ioutil.ReadAll(jsonFile)
-	//if err != nil {
-	//	//fmt.Printf("\nERROR: %v", err)
-	//	panic(err)
-	//}
 	//D0059
 	//Call graph api using the token
 	req, _ := http.NewRequest("GET", fmt.Sprintf("https://graph.microsoft.com/v1.0/planner/plans/%v/tasks", planID), nil)
@@ -77935,10 +77876,6 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 		assignments := planner.Tasks[i].Assignments
 		appliedCategories := planner.Tasks[i].AppliedCategories
 		taskID := planner.Tasks[i].ID
-		//fmt.Printf("\n+++++++++++++++++++++++++\nASS: %v", assignments)
-		//fmt.Printf("\nlen(assignments.Items): %v", len(assignments.Items))
-		//loop in assignments
-		//itemsMap3 := assignments.(map[string]interface{})
 		taskLink := fmt.Sprintf("https://tasks.office.com/accenture.onmicrosoft.com/en-us/Home/Task/%v", taskID)
 		lusers := ""
 		for i, _ := range assignments {
@@ -77970,7 +77907,6 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 		cell.Value = SPL2[0]		
 		cell = row.AddCell()
 		cell.Value = buckets[bucketID]
-		//cell.Value = bucketID
 		cell = row.AddCell()
 		cell.Value = lusers
 		cell = row.AddCell()
@@ -77979,24 +77915,9 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 		cell.Value = fmt.Sprintf("=B%v-C%v", i+2, i+2) 
 		cell = row.AddCell()
 		cell.Value = taskLink
-		//fmt.Printf("\n+++ Title: %v", taskTitle)
-		//fmt.Printf("\n+++ Percentage: %v", taskPercent)
-		//fmt.Printf("\n+++ Completed: %v", completedDateTime)
-		//fmt.Printf("\n+++ DueDate: %v", dueDateTime)
-		//fmt.Printf("\n+++ Bucket: %v", getBucket[bucketID])
-		//fmt.Printf("\n+++ Bucket: %v", bucketID)
-		//fmt.Printf("\n+++ Assignments: %v", lusers)
 		
 	}
 	
-//	fmt.Printf("\n++ Saving outout file: %v",outputFile)
-	//err = file.Save(outputFile)
-	//if err != nil {
-	//	//fmt.Printf(err.Error())
-	//	panic(err)
-	//}
-	//c.Infof("output: %v",  file.Write(w))
-	//w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%v", planName))
 	w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
 	w.WriteHeader(200)
@@ -78004,6 +77925,90 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 	return err
 }
 
+//D0061
+//Extract comments 
+func extractComments(w http.ResponseWriter, r *http.Request, SID, TITLE string) (err error) {
+	c := appengine.NewContext(r)
+
+	c.Infof("SID: %v",SID)
+	var file *xlsx.File
+	var sheet *xlsx.Sheet
+	var row *xlsx.Row
+	var cell *xlsx.Cell
+
+	file = xlsx.NewFile()
+	sheet, err = file.AddSheet(SID)
+	if err != nil {
+		panic(err)
+	}
+
+	//Add row header
+	row = sheet.AddRow()
+	cell = row.AddCell()
+	cell.Value = "NAME"
+	cell = row.AddCell()
+	cell.Value = "VALUE"
+	cell = row.AddCell()
+	cell.Value = "SID"
+	cell = row.AddCell()
+	cell.Value = "UID"
+	cell = row.AddCell()
+	cell.Value = "COMMENT"
+	cell = row.AddCell()
+	cell.Value = "TIMESTAMP"
+	cell = row.AddCell()
+	cell.Value = "CID"
+	cell = row.AddCell()
+	cell.Value = "DEPTH"
+	cell = row.AddCell()
+	cell.Value = "LATLON"
+	cell = row.AddCell()
+	cell.Value = "PARENT"
+	cell = row.AddCell()
+	cell.Value = "URL"
+
+	q := datastore.NewQuery("TDSCOMMENT").Filter("SID =", SID)
+	recCount,_ := q.Count(c)
+	cmts := make([]TDSCOMMENT, 0, recCount)
+	if _, err := q.GetAll(c, &cmts); err != nil {
+		 panic(err)
+	}
+	if recCount > 0 {
+		for _, p := range cmts{
+			row = sheet.AddRow()
+			cell = row.AddCell()
+			cell.Value = p.NAME
+			cell = row.AddCell()
+			sValue, _ := strconv.ParseFloat(p.SVAL, 64)
+			cell.SetFloat(sValue)
+			cell = row.AddCell()
+			cell.Value = p.SID
+			cell = row.AddCell()
+			cell.Value = p.UID
+			cell = row.AddCell()
+			cell.Value = p.COMMENT
+			cell = row.AddCell()
+			cell.Value = fmt.Sprintf("%v", p.TIMESTAMP)
+			cell = row.AddCell()
+			//cell.Value = fmt.Sprintf("%v", p.CID)
+			cell.SetInt(p.CID)
+			cell = row.AddCell()
+			cell.SetInt(p.DEPTH)
+			cell = row.AddCell()
+			cell.Value = p.LATLON
+			cell = row.AddCell()
+			cell.SetInt(p.PARENT)
+			cell = row.AddCell()
+			cell.Value = p.URL
+		}
+	}
+	expName := fmt.Sprintf("%v %v.xlsx", SID, TITLE)
+	w.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%v", expName))
+	w.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	w.WriteHeader(200)
+	file.Write(w)
+	return err
+}
 
 ////////////////////////////////////////////////////////////////////////////////////
 //TO GOD BE THE GLORY
