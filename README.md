@@ -7,6 +7,7 @@ ULAPPH Cloud Desktop - Your web-based cloud desktop!
 
 ![Slides Editor and Viewer](https://lh3.googleusercontent.com/ttdHI6awI2U7ZBJD00ev7s0fQC-XNW95ucv9HnpaLRFVFHH0UqAFKxdc-_0dyb_5X0fV_NhTUmkZfdvGCVXYFy4Jbfzw=s800 "Slides Editor and Viewer")
 
+![Machine Learning - Google DialogFlow](https://lh3.googleusercontent.com/6-YiTLEFiWE2C5-LdD7NKIwFVh2tnBT-_fhxNhyr2AyuI-f42mZCObzPZwJCF9o2ZLVgmNfJnm1HH-3sPymSVXjVXbE3M8A=s800 "Machine Learning - Google DialogFlow")
 
 ![Powered by Golang](https://lh3.googleusercontent.com/0wQw4w0aQg9qHame4KLFB1NVAEeyFuRyfrFZhe60yebEmuTr5ZzLJJ7I7efQdSCNIWYJ2SNsNAZe2ygFJD4eNJRsjSD___o "Powered by Golang")
 
@@ -61,6 +62,7 @@ Other Use Cases
 ---------
 - Create an extract tool to extract tasks from Microsoft Planner Office 365 into Excel spreadhsheet
 - Organize courses/trainings using D3.js, UI tree, automated quizzes etc.
+- Machine learning AI bots
 
 Documentations
 ----------------
