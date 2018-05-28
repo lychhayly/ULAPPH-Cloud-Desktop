@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#13/05/2018 09:32:59 PM PST
+//LAST_UPGRADE#28/05/2018 01:01:59 AM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -317,6 +317,11 @@
 //REV ID: 		D0061
 //REV DATE: 		2018-May-13
 //REV DESC:	  	Export quiz or comments to excel 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0062
+//REV DATE: 		2018-May-28
+//REV DESC:	  	Integrate dialogflow for ULAPPH Bot
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2778,9 +2783,9 @@ var laterQueueInsertUnknownRule = delay.Func("laterQueueInsertUnknownRule", func
 func init() {
  
         http.HandleFunc("/", root)
-		http.HandleFunc("/m", ulapphMobile)
+		//http.HandleFunc("/m", ulapphMobile)
 		http.HandleFunc("/go", ulapphGo)
-        http.HandleFunc("/bible", ulapphBible)
+		http.HandleFunc("/bible", ulapphBible)
 		http.HandleFunc("/todos", ulapphTodos)
 		//http.HandleFunc("/events", ulapphEvents)
 		http.HandleFunc("/gps", ulapphGPS)
@@ -2829,14 +2834,14 @@ func init() {
 		http.HandleFunc("/click-url/", handleClickUrl)
 		http.HandleFunc("/click-url-public/", handleClickUrlPublic)
 		//blobstore-icons
-        http.HandleFunc("/serve/", handleServe)
-        http.HandleFunc("/upload", handleUpload)
+		http.HandleFunc("/serve/", handleServe)
+		http.HandleFunc("/upload", handleUpload)
 		//blobstore-people
-        http.HandleFunc("/serve-people/", handleServePeople)
-        http.HandleFunc("/upload-people", handleUploadPeople)
+		http.HandleFunc("/serve-people/", handleServePeople)
+		http.HandleFunc("/upload-people", handleUploadPeople)
 		//blobstore-ads
-        http.HandleFunc("/serve-ads/", handleServeAds)
-        http.HandleFunc("/upload-ads", handleUploadAds)
+		http.HandleFunc("/serve-ads/", handleServeAds)
+		http.HandleFunc("/upload-ads", handleUploadAds)
 		http.HandleFunc("/click-ads/", handleClickAds)
 		//golang slides & articles
 		http.HandleFunc("/slides", slides)
@@ -2872,6 +2877,9 @@ func init() {
 		http.HandleFunc("/things", ulapphThings)
 		//notifications
 		http.HandleFunc("/notifications", ulapphNotifs)
+		//D0062
+		//dialog flow ml
+		http.HandleFunc("/bot", ulapphBot)
 		//jswm
 		http.HandleFunc("/uwm", uwm)
 		//desktops
@@ -2879,8 +2887,8 @@ func init() {
 		http.HandleFunc("/desktop0", desktop0)
 		http.HandleFunc("/desktop", desktop)
 		//settings
-        http.HandleFunc("/settings", settings)
-        http.HandleFunc("/settings-display-screen", settingsDisplayScreen)
+		http.HandleFunc("/settings", settings)
+		http.HandleFunc("/settings-display-screen", settingsDisplayScreen)
 		//cron jobs
 		http.HandleFunc("/ulapph-router", ulapphRouter)		
 		//oauth2 handlers
@@ -6271,7 +6279,7 @@ func ulapphGo(w http.ResponseWriter, r *http.Request) {
 	}
 }
  
-func ulapphMobile(w http.ResponseWriter, r *http.Request) {
+/*func ulapphMobile(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	
 	if SYS_SITE_PRIVATE == true {
@@ -6299,6 +6307,7 @@ func ulapphMobile(w http.ResponseWriter, r *http.Request) {
 	return
 				
 }
+*/
  
 func logout(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
@@ -6812,6 +6821,10 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 	_, uid := checkSession(w,r)
 	FL_ADMIN_USER := false
 	if uid == ADMMAIL {
+		FL_ADMIN_USER = true
+	}
+	if FL_ADMIN_USER == false {
+		_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
 		FL_ADMIN_USER = true
 	}
  
@@ -38280,6 +38293,88 @@ func getPushContents(w http.ResponseWriter, r *http.Request, target string) stri
 	return CACHE_DATA
 }
  
+//D0062
+//Handles bot messaging via dialogflow
+func ulapphBot(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	//c.Infof("%v", r)
+	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	//w.Write(bodyBytes)
+	//c.Infof("%v", string(bodyBytes))
+	data := map[string]interface{}{}
+	dec := json.NewDecoder(bytes.NewReader(bodyBytes))
+	dec.Decode(&data)
+	jq := jsonq.NewQuery(data)
+
+	//get func
+	bFunc, err := jq.String("queryResult","parameters","func")
+	c.Infof("bFunc: %v", bFunc)
+	c.Infof("err: %v", err)
+	bFunc = strings.TrimSpace(bFunc)
+	switch bFunc {
+		case "convert":
+			bSID, err := jq.String("queryResult","parameters","sid")
+			bNum, err := jq.Int("queryResult","parameters","number")
+			bType, err := jq.String("queryResult","parameters","type")
+			bDelimO, err := jq.String("queryResult","parameters","delim")
+			c.Infof("bSID: %v", bSID)
+			c.Infof("bNum: %v", bNum)
+			SPL := strings.Split(fmt.Sprintf("%v", bNum), ".")
+			nSID := ""
+			bNum2 := ""
+			if len(SPL) > 0 {
+				bNum2 = SPL[0]
+				nSID = fmt.Sprintf("%v-%v", bSID, bNum2)
+			}
+			c.Infof("bType: %v", bType)
+			c.Infof("nSID: %v", nSID)
+			c.Infof("bDelim: %v", bDelimO)
+			bDelim := ""
+			switch bDelimO {
+				case "semicolon":
+					bDelim = ";"
+				case "colon":
+					bDelim = ":"
+				case "comma":
+					bDelim = ","
+			}
+			c.Infof("err: %v", err)
+			//depends on type of output
+			switch bType {
+				case "excel":
+					//tbd
+				case "list":
+					//open the file and split into a list
+					MEDIA_ID, _ := strconv.Atoi(bNum2)
+					BLOB_KEY, _, _, _, _, _, _, _, _, _, _ := getTDSMEDIABlobKey(w, r, MEDIA_ID)	
+					blobText := getBlobText(w, r, BLOB_KEY)
+				//	BLOB_KEY := contentCheckSid(w,r,nSID)
+					var buf bytes.Buffer
+					//reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
+					//reader := blobstore.NewReader(c, strings.NewReader)
+					s := bufio.NewScanner(strings.NewReader(blobText))
+					//secCtr := 0
+					for s.Scan() {
+						//c.Infof("%v", s.Text())
+						SPL := strings.Split(s.Text(), bDelim)
+						for i:=0; i < len(SPL); i++ {
+							buf.WriteString(fmt.Sprintf("%v<br>", SPL[i]))
+						}
+					}
+					//c.Infof("%v", buf.String())
+					subj := fmt.Sprintf("UlapphBot-%v-%v-%v-%v", bFunc, nSID, bType, bDelimO)
+					putBytesToMemcacheWithExp(w,r,subj,buf.Bytes(),GEN_CONTENT_EXPIRES3)
+					getURL := fmt.Sprintf("%vsearch?f=get-auto-content2&API_KEY=%v&cKey=%v", getSchemeUrl(w,r), CMD_API_KEY, subj)
+					geoStr := getGeoString(w,r)
+					geoAcc := getAccessString(w,r,"")
+					msg := fmt.Sprintf("COPY-PASTE-LINK (don't click):<br>%v<br><br>--no-reply <br>--geo [%v] <br>--via [%v]", getURL, geoStr, geoAcc)
+					to := "edwin.d.vinas@gmail.com" 
+					SENDGENEMAIL(c, subj, to, "ulapphbot@ulapph.com", msg)
+					c.Infof("SUCCESS: Email sent!")	
+			}
+	}
+}
+
 //D0028
 //handles notifications specially for the things api
 //it can trigger alarm on the user desktop
@@ -41932,7 +42027,7 @@ const htmlWidgetBrowserAB = `
 </body>
 </html>
 `
- 
+/* 
 var htmlWidgetBrowserMobile = template.Must(template.New("htmlWidgetBrowserMobile").Parse(htmlWidgetBrowserMobileUI))
 	
 const htmlWidgetBrowserMobileUI = `	
@@ -41982,6 +42077,7 @@ const htmlWidgetBrowserMobileUI = `
 </body>
 </html>
 `
+*/
  
 var htmlWidgetBrowserLoading2 = template.Must(template.New("htmlWidgetBrowserLoading2").Parse(htmlWidgetBrowserLoading2a))
 	
