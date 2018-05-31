@@ -63,8 +63,11 @@ function removeEventListeners() {
 
 function dispSearch() {
 
-	var url = "/tools?t=QUICK_SEARCH";
-	alertify.set({ delay: 59000 });
-	alertify.error("<iframe src=\"" + url + "\" frameborder=\"0\" scrolling=\"yes\" allowtransparency=\"true\" height=\"400px\"></iframe>");
+	//var url = "/tools?t=QUICK_SEARCH";
+	var url = "https://console.dialogflow.com/api-client/demo/embedded/d601df4c-e725-459a-a030-9885e225388c";
+	//alertify.set({ delay: 59000 });
+	alertify.set({ delay: 300000 });
+	//alertify.error("<iframe src=\"" + url + "\" frameborder=\"0\" scrolling=\"yes\" allowtransparency=\"true\" height=\"400px\"></iframe>");
+	alertify.log("<iframe src=\"" + url + "\" frameborder=\"0\" scrolling=\"yes\" allowtransparency=\"true\" height=\"400px\"></iframe>");
 	
 }

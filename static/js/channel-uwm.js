@@ -282,6 +282,18 @@ function procMessage(obj) {
 				}
 				alertify.error("System sound preference updated to " + cmdata[3], "", 0);
 				break;
+
+			default:
+				var OL = res.split("@888@");
+				var tgt = OL[3];
+				var ttl = OL[2];
+				var hv = tgt.indexOf("http://");
+				var hs = tgt.indexOf("https://");
+				if (hv < 0 && hs < 0) {
+					tgt = root + tgt;
+				}
+				var res = tgt.replace("http://", "https://");
+				openWindow(res, ttl);
 		}
 		return;
 	}

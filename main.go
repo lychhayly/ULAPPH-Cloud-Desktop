@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#28/05/2018 01:01:59 AM PST
+//LAST_UPGRADE#31/05/2018 07:11:59 AM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1018,6 +1018,11 @@ type CompletedBy struct {
 	User User `json:"user"`
 }
 //D0059-end
+
+//D0062
+type DFResponse struct {
+  FulfillmentText string `json:"fulfillmentText"`
+}
 
 //scraper data
 type Scraper struct {
@@ -5003,7 +5008,6 @@ func sendChatPrivate(w http.ResponseWriter, r *http.Request, roomID string, msg 
 	sendChannelFirebase(w,r,topic,data)
 }
  
-//func sendChannelFirebase(w http.ResponseWriter, r *http.Request, chanID, recID, token string, payload []byte) {
 func sendChannelFirebase(w http.ResponseWriter, r *http.Request, topic string, payload []byte) {
 	//c := appengine.NewContext(r)
  
@@ -21786,7 +21790,8 @@ func ulapphSearch(w http.ResponseWriter, r *http.Request) {
 			//uReferer := r.Referer()
 			//http.Redirect(w, r, uReferer, http.StatusFound)
 			return
-			
+		//D0062
+		//maybe we can remove these search due to dialogflow
 		case SEARCH_FUNC == "TDSSLIDE":			
 			SEARCH_KEY := r.FormValue("q")
 			redURL := fmt.Sprintf("/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v", SEARCH_KEY, SEARCH_KEY)
@@ -21834,7 +21839,7 @@ func ulapphSearch(w http.ResponseWriter, r *http.Request) {
 			redURL := fmt.Sprintf("https://en.wikipedia.org/w/index.php?search=%v", SEARCH_KEY)
 			http.Redirect(w, r, redURL, http.StatusFound)
 			return
- 
+ 		
 		case SEARCH_TARGET == "InDoc":
 			if SYS_SITE_PRIVATE == true {
 				_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
@@ -38311,8 +38316,115 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 	c.Infof("bFunc: %v", bFunc)
 	c.Infof("err: %v", err)
 	bFunc = strings.TrimSpace(bFunc)
-	switch bFunc {
-		case "convert":
+	switch {
+		case bFunc == "open" || bFunc == "view" || bFunc == "edit" || bFunc == "update":
+			bTarget, err := jq.String("queryResult","parameters","any")
+			//c.Infof("%v", string(bodyBytes))
+			c.Infof("bTarget: %v", bTarget)
+			c.Infof("err: %v", err)
+			//determine target
+			redURL := ""
+			switch {
+				case strings.Index(bTarget, "TDSMEDIA-") != -1:
+					SPL := strings.Split(bTarget, "-")
+					switch {
+						case bFunc == "open" || bFunc == "view" || bFunc == "edit" || bFunc == "update":
+							redURL = fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%v", SPL[1])
+					}
+				case strings.Index(bTarget, "TDSSLIDE-") != -1:
+					SPL := strings.Split(bTarget, "-")
+					switch {
+						case bFunc == "open" || bFunc == "view":
+							redURL = fmt.Sprintf("/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v",SPL[1], SPL[1])
+						case bFunc == "edit" || bFunc == "update":
+							redURL = fmt.Sprintf("/admin-slides?FUNC_CODE=VIEW&DOC_ID=%v", SPL[1])
+					}
+				case strings.Index(bTarget, "TDSARTL-") != -1:
+					SPL := strings.Split(bTarget, "-")
+					switch {
+						case bFunc == "open" || bFunc == "view":
+							redURL = fmt.Sprintf("/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", SPL[1], SPL[1])
+						case bFunc == "edit" || bFunc == "update":
+							redURL = fmt.Sprintf("/admin-articles?FUNC_CODE=VIEW&DOC_ID=%v", SPL[1])
+					}
+				case strings.Index(bTarget, "media ") != -1 || strings.Index(bTarget, "m ") != -1:
+					SPL := strings.Split(bTarget, " ")
+					switch {
+						case bFunc == "open" || bFunc == "view" || bFunc == "edit" || bFunc == "update":
+							redURL = fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%v", SPL[1])
+					}
+				case strings.Index(bTarget, "slide ") != -1 || strings.Index(bTarget, "s ") != -1:
+					SPL := strings.Split(bTarget, " ")
+					switch {
+						case bFunc == "open" || bFunc == "view":
+							redURL = fmt.Sprintf("/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v",SPL[1], SPL[1])
+						case bFunc == "edit" || bFunc == "update":
+							redURL = fmt.Sprintf("/admin-slides?FUNC_CODE=VIEW&DOC_ID=%v", SPL[1])
+					}
+				case strings.Index(bTarget, "article ") != -1 || strings.Index(bTarget, "a ") != -1:
+					SPL := strings.Split(bTarget, " ")
+					switch {
+						case bFunc == "open" || bFunc == "view":
+							redURL = fmt.Sprintf("/articles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSARTL-%v", SPL[1], SPL[1])
+						case bFunc == "edit" || bFunc == "update":
+							redURL = fmt.Sprintf("/admin-articles?FUNC_CODE=VIEW&DOC_ID=%v", SPL[1])
+					}
+
+			}
+			c.Infof("%v", redURL)
+			data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@%v@888@%v", bTarget, redURL)
+			c.Infof("%v", data)
+			uid := FDBKMAIL 
+			sendChannelMessage(w,r,uid,data)
+			return
+
+		case bFunc == "quote":
+			//c.Infof("%v", string(bodyBytes))
+			_, RAN_MSG, _ := getMOTD(w, r, "")
+			if RAN_MSG == "" {
+				RAN_MSG = "Sorry, no quote found"
+			}
+			res := &DFResponse {
+			  FulfillmentText : RAN_MSG,
+			}
+			content, err := json.Marshal(res)
+			w.Write(content)
+			c.Infof("err: %v", err)
+			return
+
+		case bFunc == "search":
+			bTarget, err := jq.String("queryResult","parameters","search_target")
+			bKey, err := jq.String("queryResult","parameters","any")
+			//c.Infof("%v", string(bodyBytes))
+			c.Infof("bTarget: %v", bTarget)
+			c.Infof("bKey: %v", bKey)
+			c.Infof("err: %v", err)
+			redURL := ""
+			switch {
+				case bTarget == "ulapph":
+					//redURL = fmt.Sprintf("/search?f=glow2&s=%v&t=%v", bKey, "In ULAPPH")
+					redURL = fmt.Sprintf("/search?s=%v&f=glow2&i=yes&t=In+ULAPPH", bKey)
+				case bTarget == "all-ulapph":
+					//redURL = fmt.Sprintf("/search?f=glow2&s=%v&t=%v", bKey, "All ULAPPH Sites")
+					redURL = fmt.Sprintf("/search?s=%v&f=glow2&i=yes&t=All+ULAPPH+Sites", bKey)
+				case bTarget == "accenture":
+					redURL = fmt.Sprintf("/media?FUNC_CODE=RAWTEXT&MEDIA_ID=5687&SID=TDSMEDIA-5687&k=%v", bKey)
+				case bTarget == "internet":
+					redURL = fmt.Sprintf("/media?FUNC_CODE=RAWTEXT&MEDIA_ID=5688&SID=TDSMEDIA-5688&k=%v", bKey)
+				case bTarget == "google":
+					redURL = fmt.Sprintf("https://www.google.com?q=%v", bKey)
+				case bTarget == "wiki":
+					redURL = fmt.Sprintf("https://en.wikipedia.org/w/index.php?search=%v", bKey)
+			}
+			c.Infof("%v", redURL)
+			data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@%v@888@%v", bTarget, redURL)
+			c.Infof("%v", data)
+			uid := FDBKMAIL 
+			sendChannelMessage(w,r,uid,data)
+			return
+
+
+		case bFunc == "convert":
 			bSID, err := jq.String("queryResult","parameters","sid")
 			bNum, err := jq.Int("queryResult","parameters","number")
 			bType, err := jq.String("queryResult","parameters","type")
@@ -71851,7 +71963,6 @@ func serveCompile(w http.ResponseWriter, r *http.Request) {
 			//https://ulapph-installer.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL
 			if isLoggedIn(w,r) != true {
 					//c.Infof("Redirect user to login!")
-					//edwinxxx
 					//redURL := fmt.Sprintf("https://ulapph-installer.appspot.com/?q=login&LFUNC=GOOGLE&TARGET_URL=https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL")
 					//http.Redirect(w, r, redURL, http.StatusFound)
 					loginGoogle(w,r,"https://ulapph-installer.appspot.com/compile?COM_FUN=INSTALL")
