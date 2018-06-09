@@ -1,7 +1,7 @@
 	window.onload = function() {
 			//if SID is populated
 			var sid = document.getElementsByName("SID")[0].value;
-			if (sid == undefined || sid != "") {
+			if (sid != undefined && sid != "") {
 				//get the SID content in server
 				loadSidData(sid);
 				return;				
@@ -16,7 +16,7 @@
 					reader.onload = function(e) {
 						var lc = LC.init(document.getElementsByClassName('literally imgur')[0])
 						lc.loadSnapshot(JSON.parse(reader.result));
-						console.log(JSON.parse(reader.result));
+						//console.log(JSON.parse(reader.result));
 					}
 					reader.readAsText(file);	
 			});
@@ -44,12 +44,13 @@
 		  {
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200)
 			{
-				console.log(xmlhttp.responseText);
+				//console.log(xmlhttp.responseText);
 				if (xmlhttp.responseText != "") {
 					var objJSON = xmlhttp.responseText;
 					var lc = LC.init(document.getElementsByClassName('literally imgur')[0])
 					lc.loadSnapshot(JSON.parse(objJSON));
-					console.log(JSON.parse(objJSON));
+     					//localStorage.setItem(localStorageKey, objJSON);
+					//console.log(JSON.parse(objJSON));
 					//lc.loadSnapshot(xmlhttp.responseText);
 					console.log("Json has been loaded...");
 				}
@@ -85,6 +86,7 @@
 	
     $('.imgur-submit [data-action=upload-to-imgur]').click(function(e) {
       e.preventDefault();
+		var upText = prompt("Please enter title", "Sample drawing");
  
 		var xmlhttp;
 		
@@ -112,8 +114,8 @@
 				var blob = dataURItoBlob(lc.getImage().toDataURL());
 				var fd = new FormData(document.forms[0]);
 				fd.append("file", blob);
-				fd.append("TITLE", "literallyCanvasImage");
-				fd.append("DESC", "literallyCanvasImage");
+				fd.append("TITLE", "literallyCanvasImage "+upText);
+				fd.append("DESC", "literallyCanvasImage "+upText);
 				fd.append("DATA_TYPE", "image");
 				fd.append("MIME_TYPE", "image/png");
 				fd.append("FL_SHARED", "N");
@@ -128,6 +130,7 @@
 					{
 						var redirLink = request.responseText;
 						alert("Image has been uploaded to Media Gallery!");
+						//window.open(redirLink);
 						return;
 					}
 				 }
@@ -139,7 +142,9 @@
 	
     $('.imgur-submit [data-action=export-as-png]').click(function(e) {
       e.preventDefault();
-      window.open(lc.getImage().toDataURL());
+    	var lc = LC.init(document.getElementsByClassName('literally imgur')[0]);
+      //window.open(lc.getImage().toDataURL());
+      location.href=lc.getImage().toDataURL();
     });
 	
 	//auto-save in local storage
@@ -157,18 +162,21 @@
    
  	if (urlParams["SID"] != "" && urlParams["SID"] != undefined) {
 		var root = location.protocol + '//' + location.host;
-		localStorageKey = root + urlParams["SID"];
+		localStorageKey = root + "drawing" + urlParams["SID"];
 	}
    
     if (localStorage.getItem(localStorageKey)) {
      lc.loadSnapshot(JSON.parse(localStorage.getItem(localStorageKey)));
     }
     lc.on('drawingChange', function() {
+     console.log("drawingChange!");
      localStorage.setItem(localStorageKey, JSON.stringify(lc.getSnapshot()));
     });
 	
     $('.imgur-submit [data-action=upload-as-text]').click(function(e) {
+    		var lc = LC.init(document.getElementsByClassName('literally imgur')[0]);
 		e.preventDefault();
+		var upText = prompt("Please enter title", "Sample drawing");
 		
 		var urlParams;
 		var match,
@@ -193,9 +201,10 @@
  
 		var editor_url = "";
 		var root = location.protocol + '//' + location.host;
-		var SID = "NEWTEXT";
-		if (urlParams["SID"] != "" && urlParams["SID"] != undefined) {
-			SID = urlParams["SID"];
+		var SID = urlParams["SID"];
+		//console.log(SID);
+		if (SID == "" || SID == undefined) {
+			SID = "NEWTEXT";
 		}
 		editor_url = root + '/editor?EDIT_FUNC=GET_UP_URL&SID=' + SID;
 		xmlhttp.open("POST",editor_url,true);
@@ -211,8 +220,8 @@
 				formData.append("EDIT_FUNC2", "SAVE_TEXT");
 				formData.append("FUNC_CODE", "UPD-FROM-EDITOR");
 				formData.append("SID", urlParams["SID"]);
-				formData.append("TITLE", "literallyCanvas");
-				formData.append("DESC", "literallyCanvas");
+				formData.append("TITLE", "literallyCanvas "+upText);
+				formData.append("DESC", "literallyCanvas "+upText);
 				var thisContent = JSON.stringify(lc.getSnapshot());
 				var blob = new Blob([thisContent], { type: "text/plain"});
  
