@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#31/05/2018 07:11:59 AM PST
+//LAST_UPGRADE#09/06/2018 11:36:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -446,6 +446,7 @@ import (
 	"github.com/robertkrimen/otto"
 	//D0059
 	"github.com/tealeg/xlsx"
+	"reflect"
 
 )
 //contants configs
@@ -6509,20 +6510,14 @@ func isLoggedIn(w http.ResponseWriter, r *http.Request) (FL_LOGGED_IN bool) {
 }
  
 func promptLogin(w http.ResponseWriter, r *http.Request, LFUNC string) {
- 
-	c := appengine.NewContext(r) 	
+	c := appengine.NewContext(r)
 	u := user.Current(c)
 	uReferero := r.Referer()
- 
 	uReferer := strings.Replace(r.URL.String(), "&", "@888@", -1)
 	TARGET_URL := uReferer
-	//fmt.Fprintf(w, "%v", uReferer)
 	duser := ""
-	//dchan := ""
 	dtok := ""
 	targetURL := ""
-	
-	//i := strings.Index(TARGET_URL, "@888@")
 	if (strings.Index(TARGET_URL, "@888@user=") != -1 && strings.Index(TARGET_URL, "@888@chan=") != -1 && strings.Index(TARGET_URL, "@888@tok=") != -1) {
 		targetURL = strings.Replace(TARGET_URL, "@888@", "&", -1)
 		z, err := url.Parse(targetURL)
@@ -6536,35 +6531,25 @@ func promptLogin(w http.ResponseWriter, r *http.Request, LFUNC string) {
 		dtok = m["tok"][0]
 		LFUNC = "TOKEN"
 	}
-				
- 
-	
 	switch LFUNC {
- 
 		case "ULAPPH":
 			lref := fmt.Sprintf("/login?continue=%v", url.QueryEscape(uReferero))
 			w.Header().Set("Location", lref)
 			w.WriteHeader(http.StatusFound)
-	
 		case "GOOGLE":
- 
 			loginGoogle(w,r,r.URL.String())
-			
 		case "TOKEN":
- 
 			FL_TOKEN_PROC := false
 			if duser == "" && dtok == "" {
 				_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
 			} else {
 				FL_TOKEN_PROC = validateToken(w, r, "IS_VALID_USER", duser, dtok)
 			}
-			
 			if FL_TOKEN_PROC == false {
 			   if u == nil {
 					//edv 29/09/2015
 					url, err := user.LoginURL(c, r.URL.String())
 					//url, err := user.LoginURL(c, TARGET_URL)
- 
 					if err != nil {
 						 panic(err)
 						//return
@@ -6576,35 +6561,27 @@ func promptLogin(w http.ResponseWriter, r *http.Request, LFUNC string) {
 			} else {
 				fmt.Fprintf(w, " ")
 			}
-			
 		default:
-			
 			//edv 04/10/2015
 			rLoad := fmt.Sprintf("300;url=/?q=login&LFUNC=GOOGLE&TARGET_URL=%v", TARGET_URL)
-			
 			if err := htmlHeaderModalRefreshNoHome.Execute(w, rLoad); err != nil {
 			 panic(err)
 			}
-	
+
 			displayMOTD(w,r,"")
-		
 			displayOauthIcons(w,r,TARGET_URL,"")
 			if SYS_DISP_ADS_CONTENT == true {
 				if err := mobileBodyTemplateContentLoaderSingleItemAds.Execute(w, SYS_DISP_ADS_HOST); err != nil {
 				 panic(err)
 				}
 			}
-			
 			displayBasicCharts(w,r,false)
-			
 			displayCurrAccLog(w,r)
-			
 			if err := htmlFooterModal.Execute(w, ""); err != nil {
 			  panic(err)
 			}
 			//edv 10/100/2015 - dont return
 			//return
-					
 	}
 }
 
@@ -25540,15 +25517,11 @@ func stmpHumanize(tStr string) (fTime string) {
 func validateAccess(w http.ResponseWriter, r *http.Request, FUNC_CODE, lref string) (FL_PROCEED_OK bool) {
 	c := appengine.NewContext(r)
 	u := user.Current(c)
- 
 	uid := ""
- 
 	if u == nil {
- 
 		if lref == "" {
 			promptLogin(w,r,"ULAPPH")
 		} else {
- 
 			redURL := fmt.Sprintf("/login?continue=%v", url.QueryEscape(lref))
 			http.Redirect(w, r, redURL, http.StatusFound)
 		}
@@ -25556,26 +25529,18 @@ func validateAccess(w http.ResponseWriter, r *http.Request, FUNC_CODE, lref stri
 	} else {
 		uid = u.Email
 	}
-	
 	if uid == "" {
 		if u != nil {
 			uid = u.Email
 		}
 	}
-	
 	FL_PROCEED_OK = false
- 
 	switch FUNC_CODE {
-	
 		case "IS_VALID_USER":
-		
 			FUNC_CODE := "GET_GRP_ID"
 			FL_VALID_USER, _, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
-			
 			if FL_VALID_USER == true {
-			
 				FL_PROCEED_OK = true
- 
 			}else {
 				msgDtl := fmt.Sprintf("[U00167b] ERROR: Access is not allowed for this session!")
 				msgTyp := "error"
@@ -25584,18 +25549,14 @@ func validateAccess(w http.ResponseWriter, r *http.Request, FUNC_CODE, lref stri
 				sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, msgURL, action)
 				http.Redirect(w, r, sysReq, http.StatusFound)
 				return
-
-			}	
+			}
 	}
-	
 	//prevents bots
 	FL_IS_BOT := isBot(w,r)
 	if FL_IS_BOT == true && FL_PROCEED_OK != true {
 		//if this is an api call, allow
- 
 		if isValidApiCall(w,r) == true {
 			FL_PROCEED_OK = true
-			
 		} else {
 			msgDtl := fmt.Sprintf("[U00167] ERROR: Hi!, You appear to us as a bot! We currently disallow robots from accessing some parts of the website. Thanks!")
 			msgTyp := "error"
@@ -25604,7 +25565,7 @@ func validateAccess(w http.ResponseWriter, r *http.Request, FUNC_CODE, lref stri
 			sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, msgURL, action)
 			http.Redirect(w, r, sysReq, http.StatusFound)
 			return
-		}		
+		}
 	}
 	return FL_PROCEED_OK
 }
@@ -39377,6 +39338,8 @@ func media(w http.ResponseWriter, r *http.Request) {
 						panic(err)
 					}
 					
+					//randomize slice
+					Shuffle(media)
 					//WALLPAPERS_LIST_STR := ""
 					for _, p := range media{
 							
@@ -39396,6 +39359,8 @@ func media(w http.ResponseWriter, r *http.Request) {
 						panic(err)
 					}
 					
+					//randomize slice
+					Shuffle(media)
 					//WALLPAPERS_LIST_STR := ""
 					for _, p := range media{
 							if p.DATA_TYPE == "image" {
@@ -40605,7 +40570,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										}
 																									
 									}
-									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree/?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid)
+									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree/?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ] [ <a href=\"/editor?EDIT_FUNC=DRAW&SID=TDSMEDIA-%v\">View Drawing</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid, p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Admin URL:</b> <a href=\"/media?FUNC_CODE=VIEW&MEDIA_ID=%v\">%vmedia?FUNC_CODE=VIEW&MEDIA_ID=%v</a><br>", p.MEDIA_ID, getSchemeUrl(w,r), p.MEDIA_ID)
@@ -41267,18 +41232,16 @@ func media(w http.ResponseWriter, r *http.Request) {
 								return
 							}
 					}
-					
 				case "RAWJSON":
 					SID := r.FormValue("SID")
-					
 					SPL := strings.Split(SID,"-")
 					TARGET := SPL[0]
 					DOC_ID := "0"
 					if len(SPL) > 1 {
 						DOC_ID = SPL[1]
 					}
-					
 					BLOB_KEY := contentCheckSid(w,r,SID)
+					//c.Infof("BLOB_KEY: %v", BLOB_KEY)
 					switch TARGET {
 						case "TDSSLIDE":
 							laterIncNumViewsSocial.Call(c, "", fmt.Sprintf("TDSSLIDE-%v", DOC_ID), "SO_INC_NUM_VIEWS")
@@ -41287,22 +41250,19 @@ func media(w http.ResponseWriter, r *http.Request) {
 						case "TDSMEDIA":
 							laterIncNumViewsSocial.Call(c, "", fmt.Sprintf("TDSMEDIA-%v", DOC_ID), "SO_INC_NUM_VIEWS")
 					}
-					
- 
 					var buf bytes.Buffer
 					reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 					s := bufio.NewScanner(reader)
-					
-					//secCtr := 0
+					sbuf := make([]byte, 0, 64*1024)
+					s.Buffer(sbuf, 1024*1024)
 					for s.Scan() {
 						buf.WriteString(fmt.Sprintf("%v", s.Text()))
 					}
 					w.Header().Set("Content-Type", "application/json")
 					writeHTMLHeader(w, 200)
+					//c.Infof("%v", buf.String())
 					w.Write(buf.Bytes())
-					//w.Write(data)
 					return
-					
 				case "DELETE":
 					updateUserActiveData(w, r, c, uid, "/media(delete)")
 					MEDIA_ID := r.FormValue("MEDIA_ID")
@@ -61002,7 +60962,7 @@ var textDrawBody = template.Must(template.New("textDrawBody").Parse(`
 <form class="imgur-submit">
     <input type="submit" data-action="upload-to-imgur" value="Upload to Gallery">
     <input type="submit" data-action="export-as-png" value="Export as PNG">
-	<input type="submit" data-action="upload-as-text" value="Upload as Text"><input type="file" id="fileInput">
+	<input type="submit" data-action="upload-as-text" value="Save as JSON"><input type="file" id="fileInput">
 </form>
 <form name="draw" action="/editor?EDIT_FUNC=DRAW" method="post">
 	SOURCE: <input type="text" name="SID" value="{{.}}" maxlength=50/>				
@@ -78215,6 +78175,16 @@ func extractComments(w http.ResponseWriter, r *http.Request, SID, TITLE string) 
 	w.WriteHeader(200)
 	file.Write(w)
 	return err
+}
+
+func Shuffle(slice interface{}) {
+    rv := reflect.ValueOf(slice)
+    swap := reflect.Swapper(slice)
+    length := rv.Len()
+    for i := length - 1; i > 0; i-- {
+            j := rand.Intn(i + 1)
+            swap(i, j)
+    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
