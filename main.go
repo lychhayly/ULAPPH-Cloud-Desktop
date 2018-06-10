@@ -42637,7 +42637,7 @@ const htmlDesktopsJSONtoTableA = `
 		  {"header":"Icon", "key":"iconLink", "template":'<img src="{{"{{"}}iconLink{{"}}"}}" width=32 height=32/>'},
 		  {"header":"ID", "key":"id"},
 		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"openDesktop(\'{{"{{"}}uLink{{"}}"}}\', \'UWM-{{"{{"}}name{{"}}"}}\', \'{{"{{"}}id{{"}}"}}\'); return false;\" target=\'UWM-{{"{{"}}name{{"}}"}}\' title=\'Open UWM in new tab\'>{{"{{"}}name{{"}}"}}</a>'},
-		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' title=\'Click to run topics search\' target=\'TOP-{{"{{"}}name{{"}}"}}\'><img src=\'/img/run.png\' width=32 height=32></a>'},
+		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}rLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\" title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
 		  {"header":"TSet", "key":"tSource", "template":'<img src=\'{{"{{"}}tSource{{"}}"}}\' width=32 height=32>'},
 		  {"header":"IsShared", "key":"isShared", "template":'<img src=\'{{"{{"}}isShared{{"}}"}}\' width=32 height=32>'},
 		  {"header":"Desktop", "key":"dLink", "template":'<a href=\'{{"{{"}}dLink{{"}}"}}\' target=\'D-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
