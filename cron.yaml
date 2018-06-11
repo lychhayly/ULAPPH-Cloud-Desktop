@@ -15,6 +15,10 @@ cron:
   url: /ulapph-router?RTR_FUNC=TASK_UPDATE_OSBR
   schedule: every 6 hours
 
+- description: regular indexing of unindexed items 
+  url: /ulapph-router?RTR_FUNC=TASK_UPDATE_INDEX
+  schedule: every 6 hours
+
 # biiling fix
 #- description: regular updates of OVERALL TOP SITES stats
 #  url: /ulapph-router?RTR_FUNC=TASK_UPDATE_TOP_CLICKS
