@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#09/06/2018 11:36:59 PM PST
+//LAST_UPGRADE#14/06/2018 11:36:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -322,6 +322,11 @@
 //REV ID: 		D0062
 //REV DATE: 		2018-May-28
 //REV DESC:	  	Integrate dialogflow for ULAPPH Bot
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0063
+//REV DATE: 		2018-June-12
+//REV DESC:	  	Search results issue; add cron to re-index missing items 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8778,7 +8783,29 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 	}
 		
 }
+
+//D0063 
+func isIndexed(w http.ResponseWriter, r *http.Request, IDX_TARGET string, IDX_KEY string) (FL_INDEX_FOUND bool) {
+	c := appengine.NewContext(r)
+	
+	index, err := search.Open(IDX_TARGET)
+	if err != nil {
+		 //panic(err)
+	}
  
+	var p IDX_TDSSLIDE
+	err = index.Get(c, IDX_KEY, &p)
+	if err != nil {
+		return false
+	}
+	if p.DOC_TITLE != ""  {
+		FL_INDEX_FOUND = true
+	} else {
+		FL_INDEX_FOUND = false
+	}
+	return FL_INDEX_FOUND 
+}
+
 func printIndex(w http.ResponseWriter, r *http.Request, IDX_TARGET string, IDX_KEY string) {
 	c := appengine.NewContext(r)
 	
@@ -22343,7 +22370,9 @@ func searchIndex(w http.ResponseWriter, r *http.Request, searchChan chan []byte,
 			case SEARCH_FUNC == "ifs-wtb":
 				FL_SEARCH_OK = true
 				FL_DISP_MODE = "cron"
-				
+			//D0063
+			//case p.DOC_AUTHOR == uid:
+			//	FL_SEARCH_OK = true
 		}
 		
 		if FL_SEARCH_OK == true {
@@ -29618,6 +29647,16 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 				return
 			} else {
 				taskUpdateStatsOsBr(w, r)
+			}
+		//D0063
+		case "TASK_UPDATE_INDEX":
+			IS_OK_TO_RUN := checkIfOkToRun(w, r)
+			if IS_OK_TO_RUN == false {
+				fmt.Fprintf(w, "IS_OK_TO_RUN == false")
+				//donothing
+				return
+			} else {
+				taskUpdateSearchIndex(w, r)
 			}
 		case "TASK_CLEAN_UP_INACT_USERS":
 			taskCleanupInactiveUsers(w, r)
@@ -37558,12 +37597,9 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 					tstamp := getTimestamp()
 					thisIdxKey := fmt.Sprintf("TDSARTL-%d", DOC_ID)
 					thisIdxURL := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v", getSchemeUrl(w,r), DOC_ID, thisIdxKey, CATEGORY)
-					//blobText := ""
-					//blobText = getBlobText(w, r, blobkey)
 					blobChan := make(chan string)
 					go getBlobTextChan(w, r,blobChan, blobkey)
 					blobText := <- blobChan
-					//if SYS_VER == 666 && strings.Index(blobkey, "GET_WALL:") == -1 {
 					if SYS_VER == 777 && strings.Index(blobkey, "GET_WALL:") == -1 {
 						cStr := encrypter2(w,r,blobText,ENCRYPTION_KEY)
 						blobText = string(cStr)
@@ -42637,7 +42673,7 @@ const htmlDesktopsJSONtoTableA = `
 		  {"header":"Icon", "key":"iconLink", "template":'<img src="{{"{{"}}iconLink{{"}}"}}" width=32 height=32/>'},
 		  {"header":"ID", "key":"id"},
 		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"openDesktop(\'{{"{{"}}uLink{{"}}"}}\', \'UWM-{{"{{"}}name{{"}}"}}\', \'{{"{{"}}id{{"}}"}}\'); return false;\" target=\'UWM-{{"{{"}}name{{"}}"}}\' title=\'Open UWM in new tab\'>{{"{{"}}name{{"}}"}}</a>'},
-		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}rLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\" title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
+		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
 		  {"header":"TSet", "key":"tSource", "template":'<img src=\'{{"{{"}}tSource{{"}}"}}\' width=32 height=32>'},
 		  {"header":"IsShared", "key":"isShared", "template":'<img src=\'{{"{{"}}isShared{{"}}"}}\' width=32 height=32>'},
 		  {"header":"Desktop", "key":"dLink", "template":'<a href=\'{{"{{"}}dLink{{"}}"}}\' target=\'D-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
@@ -65607,6 +65643,124 @@ func checkIfOkToRun(w http.ResponseWriter, r *http.Request) (IS_OK_TO_RUN bool) 
 	}
 	
 	return IS_OK_TO_RUN
+}
+
+//D0063
+//edwinxxx
+func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
+	//check unindexed slides
+	c := appengine.NewContext(r)
+	c.Infof("taskUpdateSearchIndex()")
+	q := datastore.NewQuery("TDSSLIDE").Order("DOC_ID")
+	recCount, _  := q.Count(c)
+	c.Infof("recCount: %v", recCount)
+	slide := make([]TDSSLIDE, 0, recCount)
+	if _, err := q.GetAll(c, &slide); err != nil {
+		 panic(err)
+	 }
+	for _, p := range slide {
+		if p.FL_SHARED == "Y" && p.SYS_VER != 666 && p.SYS_VER != 777 {	
+			//check if index exists
+			isIndexed := isIndexed(w,r,"IDX_TDSSLIDE",fmt.Sprintf("TDSSLIDE-%v",p.DOC_ID))
+			if isIndexed == false {
+				fmt.Fprintf(w, "Indexed %v<br>", fmt.Sprintf("TDSSLIDE-%v",p.DOC_ID))
+				tstamp := getTimestamp()
+				thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", p.DOC_ID)
+				thisIdxURL := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", getSchemeUrl(w,r), p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
+				//blobChan := make(chan string)
+				//go getBlobTextChan(w, r,blobChan, p.BLOB_URL)
+				//blobText := <- blobChan
+				blobText := ""
+				slideIdx := &IDX_TDSSLIDE{
+					DOC_KEY: 			thisIdxKey,
+					SEARCH_TYPE: 		"SLIDES",
+					SOURCE_TYPE: 		"ULAPPH",	
+					SOURCE_TBL:  		"TDSSLIDE",	
+					DESKTOP: 			p.CATEGORY,
+					FL_SHARED:			p.FL_SHARED,
+					DOC_STAT:			p.DOC_STAT,
+					DOC_SCOPE_OVERALL:	"",
+					DOC_SCOPE_COUNTRY:  "",
+					DOC_SCOPE_REGION:  	"",
+					DOC_SCOPE_CITY: 	"",
+					DOC_SCOPE_BARANGAY: "",
+					DOC_TITLE: 			p.TITLE,	
+					DOC_DESC: 			p.DESC,
+					DOC_AUTHOR:         p.AUTHOR,					
+					DOC_CONTENT_TEXT: 	blobText,
+					DOC_CONTENT_HTML: 	"",	
+					DOC_CONTENT_ATOM: 	"",	
+					DOC_NUM_LIKES:		float64(p.NUM_LIKES),		
+					DOC_NUM_COMMENTS:	float64(p.NUM_COMMENTS),
+					DOC_NUM_VIEWS:		float64(p.NUM_VIEWS),
+					CONTENT_URL: 		thisIdxURL,
+					IMG_URL: 			p.TAGS,
+					DATE_UPDATED: 		tstamp,
+				}
+
+				putSearchIndexS(w,r,"IDX_TDSSLIDE",thisIdxKey,slideIdx)
+				c.Infof("Cron indexed TDSSLIDE-%v", p.DOC_ID) 
+			}
+		}
+	}
+
+	//check unindexed articles
+	q = datastore.NewQuery("TDSARTL").Order("-DOC_ID")
+	recCount,_ = q.Count(c)
+	c.Infof("recCount: %v", recCount)
+
+	articles := make([]TDSARTL, 0, recCount)
+	if _, err := q.GetAll(c, &articles); err != nil {
+		 panic(err)
+	}
+	for _, p := range articles{
+		if p.FL_SHARED == "Y" && p.SYS_VER != 666 && p.SYS_VER != 777 {	
+			//check if index exists
+			isIndexed := isIndexed(w,r,"IDX_TDSARTL",fmt.Sprintf("TDSARTL-%v",p.DOC_ID))
+			if isIndexed == false {
+				fmt.Fprintf(w, "Indexed %v<br>", fmt.Sprintf("TDSARTL-%v",p.DOC_ID))
+				tstamp := getTimestamp()
+				thisIdxKey := fmt.Sprintf("TDSARTL-%d", p.DOC_ID)
+				thisIdxURL := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v", getSchemeUrl(w,r), p.DOC_ID, thisIdxKey, p.CATEGORY)
+				//blobChan := make(chan string)
+				//go getBlobTextChan(w, r,blobChan, p.BLOB_URL)
+				//blobText := <- blobChan
+				blobText := ""
+				articleIdx := &IDX_TDSARTL{
+					DOC_KEY: 			thisIdxKey,
+					SEARCH_TYPE: 		"ARTICLES",
+					SOURCE_TYPE: 		"ULAPPH",	
+					SOURCE_TBL:  		"TDSARTL",	
+					DESKTOP: 			p.CATEGORY,
+					FL_SHARED:			p.FL_SHARED,
+					DOC_STAT:			p.DOC_STAT,
+					DOC_SCOPE_OVERALL:	"",
+					DOC_SCOPE_COUNTRY:  "",
+					DOC_SCOPE_REGION:  	"",
+					DOC_SCOPE_CITY: 	"",
+					DOC_SCOPE_BARANGAY: "",
+					DOC_TITLE: 			p.TITLE,	
+					DOC_DESC: 			p.DESC,
+					DOC_AUTHOR:         p.AUTHOR,
+					DOC_CONTENT_TEXT: 	blobText,
+					DOC_CONTENT_HTML: 	"",	
+					DOC_CONTENT_ATOM: 	"",	
+					DOC_NUM_LIKES:		float64(p.NUM_LIKES),		
+					DOC_NUM_COMMENTS:	float64(p.NUM_COMMENTS),
+					DOC_NUM_VIEWS:		float64(p.NUM_VIEWS),
+					CONTENT_URL: 		thisIdxURL,
+					IMG_URL: 			p.TAGS,
+					DATE_UPDATED: 		tstamp,
+				}
+
+				putSearchIndexA(w,r,"IDX_TDSARTL",thisIdxKey,articleIdx)
+				c.Infof("Cron indexed TDSARTL-%v", p.DOC_ID)
+			}
+
+		}
+	}
+//check unindexed media
+	//TBD
 }
  
 //update STATS.OS & STATS.BROWSER statistics
