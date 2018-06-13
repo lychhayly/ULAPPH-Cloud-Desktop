@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#12/06/2018 11:36:59 PM PST
+//LAST_UPGRADE#14/06/2018 11:36:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -8798,7 +8798,7 @@ func isIndexed(w http.ResponseWriter, r *http.Request, IDX_TARGET string, IDX_KE
 	if err != nil {
 		return false
 	}
-	if len(p) > 0 {
+	if p.DOC_TITLE != ""  {
 		FL_INDEX_FOUND = true
 	} else {
 		FL_INDEX_FOUND = false
@@ -42673,7 +42673,7 @@ const htmlDesktopsJSONtoTableA = `
 		  {"header":"Icon", "key":"iconLink", "template":'<img src="{{"{{"}}iconLink{{"}}"}}" width=32 height=32/>'},
 		  {"header":"ID", "key":"id"},
 		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"openDesktop(\'{{"{{"}}uLink{{"}}"}}\', \'UWM-{{"{{"}}name{{"}}"}}\', \'{{"{{"}}id{{"}}"}}\'); return false;\" target=\'UWM-{{"{{"}}name{{"}}"}}\' title=\'Open UWM in new tab\'>{{"{{"}}name{{"}}"}}</a>'},
-		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}rLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\" title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
+		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
 		  {"header":"TSet", "key":"tSource", "template":'<img src=\'{{"{{"}}tSource{{"}}"}}\' width=32 height=32>'},
 		  {"header":"IsShared", "key":"isShared", "template":'<img src=\'{{"{{"}}isShared{{"}}"}}\' width=32 height=32>'},
 		  {"header":"Desktop", "key":"dLink", "template":'<a href=\'{{"{{"}}dLink{{"}}"}}\' target=\'D-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
@@ -65649,8 +65649,11 @@ func checkIfOkToRun(w http.ResponseWriter, r *http.Request) (IS_OK_TO_RUN bool) 
 //edwinxxx
 func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 	//check unindexed slides
+	c := appengine.NewContext(r)
+	c.Infof("taskUpdateSearchIndex()")
 	q := datastore.NewQuery("TDSSLIDE").Order("DOC_ID")
 	recCount, _  := q.Count(c)
+	c.Infof("recCount: %v", recCount)
 	slide := make([]TDSSLIDE, 0, recCount)
 	if _, err := q.GetAll(c, &slide); err != nil {
 		 panic(err)
@@ -65660,16 +65663,14 @@ func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 			//check if index exists
 			isIndexed := isIndexed(w,r,"IDX_TDSSLIDE",fmt.Sprintf("TDSSLIDE-%v",p.DOC_ID))
 			if isIndexed == false {
-				NUM_LIKES := float64(0)	
-				NUM_COMMENTS := float64(0)
-				NUM_VIEWS := float64(0)
-
+				fmt.Fprintf(w, "Indexed %v<br>", fmt.Sprintf("TDSSLIDE-%v",p.DOC_ID))
 				tstamp := getTimestamp()
 				thisIdxKey := fmt.Sprintf("TDSSLIDE-%d", p.DOC_ID)
 				thisIdxURL := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%d&SID=%v&CATEGORY=%v&MUSIC_ID=%v", getSchemeUrl(w,r), p.DOC_ID, thisIdxKey, p.CATEGORY, p.MUSIC_ID)
-				blobChan := make(chan string)
-				go getBlobTextChan(w, r,blobChan, p.BLOB_KEY)
-				blobText := <- blobChan
+				//blobChan := make(chan string)
+				//go getBlobTextChan(w, r,blobChan, p.BLOB_URL)
+				//blobText := <- blobChan
+				blobText := ""
 				slideIdx := &IDX_TDSSLIDE{
 					DOC_KEY: 			thisIdxKey,
 					SEARCH_TYPE: 		"SLIDES",
@@ -65689,9 +65690,9 @@ func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 					DOC_CONTENT_TEXT: 	blobText,
 					DOC_CONTENT_HTML: 	"",	
 					DOC_CONTENT_ATOM: 	"",	
-					DOC_NUM_LIKES:		p.NUM_LIKES,		
-					DOC_NUM_COMMENTS:	p.NUM_COMMENTS,
-					DOC_NUM_VIEWS:		p.NUM_VIEWS,
+					DOC_NUM_LIKES:		float64(p.NUM_LIKES),		
+					DOC_NUM_COMMENTS:	float64(p.NUM_COMMENTS),
+					DOC_NUM_VIEWS:		float64(p.NUM_VIEWS),
 					CONTENT_URL: 		thisIdxURL,
 					IMG_URL: 			p.TAGS,
 					DATE_UPDATED: 		tstamp,
@@ -65704,8 +65705,9 @@ func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//check unindexed articles
-	q := datastore.NewQuery("TDSARTL").Order("-DOC_ID")
-	recCount,_ := q.Count(c)
+	q = datastore.NewQuery("TDSARTL").Order("-DOC_ID")
+	recCount,_ = q.Count(c)
+	c.Infof("recCount: %v", recCount)
 
 	articles := make([]TDSARTL, 0, recCount)
 	if _, err := q.GetAll(c, &articles); err != nil {
@@ -65716,12 +65718,14 @@ func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 			//check if index exists
 			isIndexed := isIndexed(w,r,"IDX_TDSARTL",fmt.Sprintf("TDSARTL-%v",p.DOC_ID))
 			if isIndexed == false {
+				fmt.Fprintf(w, "Indexed %v<br>", fmt.Sprintf("TDSARTL-%v",p.DOC_ID))
 				tstamp := getTimestamp()
 				thisIdxKey := fmt.Sprintf("TDSARTL-%d", p.DOC_ID)
 				thisIdxURL := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%d&SID=%v&CATEGORY=%v", getSchemeUrl(w,r), p.DOC_ID, thisIdxKey, p.CATEGORY)
-				blobChan := make(chan string)
-				go getBlobTextChan(w, r,blobChan, p.BLOB_KEY)
-				blobText := <- blobChan
+				//blobChan := make(chan string)
+				//go getBlobTextChan(w, r,blobChan, p.BLOB_URL)
+				//blobText := <- blobChan
+				blobText := ""
 				articleIdx := &IDX_TDSARTL{
 					DOC_KEY: 			thisIdxKey,
 					SEARCH_TYPE: 		"ARTICLES",
@@ -65741,9 +65745,9 @@ func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 					DOC_CONTENT_TEXT: 	blobText,
 					DOC_CONTENT_HTML: 	"",	
 					DOC_CONTENT_ATOM: 	"",	
-					DOC_NUM_LIKES:		p.NUM_LIKES,		
-					DOC_NUM_COMMENTS:	p.NUM_COMMENTS,
-					DOC_NUM_VIEWS:		p.NUM_VIEWS,
+					DOC_NUM_LIKES:		float64(p.NUM_LIKES),		
+					DOC_NUM_COMMENTS:	float64(p.NUM_COMMENTS),
+					DOC_NUM_VIEWS:		float64(p.NUM_VIEWS),
 					CONTENT_URL: 		thisIdxURL,
 					IMG_URL: 			p.TAGS,
 					DATE_UPDATED: 		tstamp,
