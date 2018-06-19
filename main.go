@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#14/06/2018 11:36:59 PM PST
+//LAST_UPGRADE#20/06/2018 05:03:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -16709,16 +16709,16 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 					fmt.Fprintf(w, "Topic search has been run.<br>")
 				
 				default:
-					topicsource := getTopicsSource(w,r,uid,r.FormValue("u"))
-					if topicsource != "" {
+					//topicsource := getTopicsSource(w,r,uid,r.FormValue("u"))
+					//if topicsource != "" {
 						laterRunStream.Call(c, UID)
 						STRMSG := fmt.Sprintf("<img src=\"/img/cron.png\" width=45 height=45>Your run request has been queued.")
 						//when run request
 						sendChannelMessage(w,r,UID, STRMSG)
 						fmt.Fprintf(w, "Request to run topic search has been queued.<br>")		
-					} else {
-						fmt.Fprintf(w, "No topics found!<br>")
-					}				
+					//} else {
+					//	fmt.Fprintf(w, "No topics found!<br>")
+					//}				
 				
 			}
 			return
@@ -30304,7 +30304,7 @@ func TASK_MEMCACHER_motd(w http.ResponseWriter, r *http.Request, DISP_MODE, TITL
 //then it opens windows on the main desktop displaying the Google latest results for that topic
 func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request, UID, MODE string) {
 	c := appengine.NewContext(r)
-	
+	//c.Infof("TASK_MEMCACHER_RUN_TOPIC_STREAM_UID")	
 	if UID == "" {
 		return
 	}
@@ -30318,10 +30318,25 @@ func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request,
 	}
 	uid := SPL[0]
 	topicsource := getTopicsSource(w,r,SPL[0],SPL[1])
-	SPX := strings.Split(topicsource, "-")
-	if len(SPX) <= 0 {
+	//c.Infof("topicsource: %v", topicsource)	
+	if len(topicsource) <= 0 {
+		//when no topic source
+		catDesc := deskNum2Name(w,r,fmt.Sprintf("desktop%v", SPL[1]))
+		//c.Infof("catDesc : %v", catDesc)	
+		f := func(c rune) bool {
+			return !unicode.IsLetter(c) && !unicode.IsNumber(c)
+		}
+		words := strings.FieldsFunc(catDesc, f)
+		for i:=0; i<len(words); i++ {
+			//fmt.Printf("%v\n", words[i])
+			SEARCH_KEY := words[i]
+			data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_GOOGLE_SEARCH@888@%v", SEARCH_KEY)
+			sendChannelMessage(w,r,uid,data)
+			dummyCmd(w,r,uid)
+		}
 		return
 	}
+	SPX := strings.Split(topicsource, "-")
 	docID := str2int(SPX[1])
 	BLOB_KEY, _, _, _, _, _, _, _, _, _, _ := getTDSMEDIABlobKey(w, r, docID)
 
@@ -61497,7 +61512,8 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 var htmlFooterJSWM = template.Must(template.New("htmlFooterJSWM").Parse(`
 	<script type="text/javascript">
 		if (document.getElementById("desktop").value == "uwm") {
-			window.open('/contents?q=home','_blank');
+			//window.open('/contents?q=home','_blank');
+			window.open('/tools?FUNC=ALL_DESKTOPS','_blank');
 		}
 		//default tile
 		uwmArrWin();
@@ -65646,7 +65662,6 @@ func checkIfOkToRun(w http.ResponseWriter, r *http.Request) (IS_OK_TO_RUN bool) 
 }
 
 //D0063
-//edwinxxx
 func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 	//check unindexed slides
 	c := appengine.NewContext(r)
