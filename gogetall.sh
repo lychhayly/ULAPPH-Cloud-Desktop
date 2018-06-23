@@ -28,6 +28,7 @@ go get  "github.com/olekukonko/tablewriter"
 go get  "github.com/robertkrimen/otto"
 go get "github.com/satori/go.uuid"
 go get "github.com/tealeg/xlsx"
+go get "github.com/edwindvinas/sprig"
 
 echo "done!"
 
