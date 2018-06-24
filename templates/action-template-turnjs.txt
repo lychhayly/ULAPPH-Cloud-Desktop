@@ -1,5 +1,5 @@
 {/*
-This is the action template.
+This is the action template for Turnjs template
 It determines how the formatting actions are rendered.
 */}
 
@@ -34,19 +34,19 @@ It determines how the formatting actions are rendered.
 {{define "image"}}
 <div class="image">
   <!--img class="lazy" src="{{.URL}}" data-original="{{.URL}}" {{with .Height}} height="{{.}}"{{end}}{{with .Width}} width="{{.}}"{{end}}-->
-  <img src="{{.URL}}" data-original="{{.URL}}" {{with .Height}} height="{{.}}"{{end}}{{with .Width}} width="{{.}}"{{end}}>
+  <img src="{{.URL}}" data-original="{{.URL}}" {{with .Height}} height="500"{{end}}{{with .Width}} width="450"{{end}}>
 </div>
 {{end}}
 
 {{define "iframe"}}
-<iframe src="{{.URL}}"{{with .Height}} height="{{.}}"{{end}}{{with .Width}} width="{{.}}"{{end}}></iframe>
+<iframe src="{{.URL}}"{{with .Height}} height="500"{{end}}{{with .Width}} width="450"{{end}}></iframe>
 {{end}}
 
 {{define "link"}}<p class="link"><a href="{{.URL}}" target="_blank">{{style .Label}}</a></p>{{end}}
 
 {{define "html"}}{{.HTML}}{{end}}
 
-{{define "caption"}}<figcaption>{{style .Text}}</figcaption>{{end}}
+{{define "caption"}}<br><caption>{{style .Text}}</caption>{{end}}
 		
 {{define "checkbox"}}<div><input type="checkbox" name="feedbacks" id="{{.Name}}" class="css-checkbox" /><label for="{{.Name}}" class="css-label">{{.Label}}</label></div>{{end}}
 
