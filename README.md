@@ -20,7 +20,7 @@ Automatic Text to Article Formatting (you type in text editor and it creates the
 
 Automatic Text to TurnJS Formatting (you type in text editor and it creates the TurnJS)
 ----------------
-![Text to Turnjs Converter](https://lh3.googleusercontent.com/T781CWr6FIPe8auSdmRHb6gXqQc9Wg9GiMNs76QZz0yLsGZWdeIhaKPAw9ayhY33gM3gkLBseNJ7MxVE6aoppk4Qdmvodg=s1200 "Text to Turnjs Converter")
+![Text to Turnjs Converter](https://lh3.googleusercontent.com/RL8DJrDID1YpUyARSvqlbKCzyOGpoW-clTGtsP59ds7eq8-LcxpPGp7ArwepL0wXGgdaSRxJARaebQox09hEfJFypBJVIw=s1200 "Text to Turnjs Converter")
 
 Integrate an Artificial Intelligence Bot (using Google Dialogflow)
 ----------------
