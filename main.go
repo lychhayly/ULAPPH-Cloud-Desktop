@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#20/06/2018 05:03:59 PM PST
+//LAST_UPGRADE#24/06/2018 05:03:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -326,6 +326,11 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0063
 //REV DATE: 		2018-June-12
+//REV DESC:	  	Search results issue; add cron to re-index missing items 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0064
+//REV DATE: 		2018-June-24
 //REV DESC:	  	Search results issue; add cron to re-index missing items 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1903,6 +1908,7 @@ var (
 		".speedtest": parsePresentTemplate("speedtest-template.txt"),
 		".htmlHeaderBodyToken": parsePresentTemplate("htmlHeaderBodyToken.txt"),
 		".ui-tree": parsePresentTemplate("angular-ui-tree.txt"),
+		".turnjs": parsePresentTemplate2("turnjs-template.html"),
 	}
 	contactEmail      = "demo.ulapph@gmail.com"
 	gitHubCredentials = ""
@@ -35259,6 +35265,10 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 					
 					ARTICLES_CACHE_KEY := fmt.Sprintf("ARTICLES_CACHE_%v", blobkey)
 					putStrToMemcacheWithoutExp(w,r,ARTICLES_CACHE_KEY,"")
+
+					//D0064
+					TURNJS_CACHE_KEY := fmt.Sprintf("SLIDES_TURNJS_%v", blobkey)
+					putStrToMemcacheWithoutExp(w,r,TURNJS_CACHE_KEY,"")
 					
 					msgDtl := "[U00120] SUCCESS: Cache has been cleared."
 					msgTyp := "success"
@@ -35482,6 +35492,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 								fmt.Fprintf(w, "<b>ShortURL:</b> <a href=\"%v\">%v</a><br>", ShortenUrl(w,r,reqStr), ShortenUrl(w,r,reqStr))
 								admURL := fmt.Sprintf("%vadmin-slides?FUNC_CODE=VIEW&DOC_ID=%v&SID=TDSSLIDE-%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID)
 								fmt.Fprintf(w, "<b>AdminURL:</b> <a href=\"%v\">%v</a><br>", admURL, admURL)
+								fmt.Fprintf(w, "<b>TurnJS URL:</b> <a href=\"%v&APP=turnjs\">%v&APP=turnjs</a><br>", reqStr, reqStr)
 								fmt.Fprintf(w, "<b>Doc ID:</b> %v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>SID:</b> TDSSLIDE-%v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
@@ -37867,6 +37878,10 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 					
 					ARTICLES_CACHE_KEY := fmt.Sprintf("ARTICLES_CACHE_%v", blobkey)
 					putStrToMemcacheWithoutExp(w,r,ARTICLES_CACHE_KEY,"")
+
+					//D0064
+					TURNJS_CACHE_KEY := fmt.Sprintf("ARTICLES_TURNJS_%v", blobkey)
+					putStrToMemcacheWithoutExp(w,r,TURNJS_CACHE_KEY,"")
 					
 					msgDtl := "[U00121] SUCCESS: Cache has been cleared."
 					msgTyp := "success"
@@ -38084,6 +38099,7 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 								fmt.Fprintf(w, "<b>ShortURL:</b> <a href=\"%v\">%v</a><br>", ShortenUrl(w,r,reqStr), ShortenUrl(w,r,reqStr))
 								admURL := fmt.Sprintf("%vadmin-articles?FUNC_CODE=VIEW&DOC_ID=%v&SID=TDSARTL-%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID)
 								fmt.Fprintf(w, "<b>AdminURL:</b> <a href=\"%v\">%v</a><br>", admURL, admURL)
+								fmt.Fprintf(w, "<b>TurnJS URL:</b> <a href=\"%v&APP=turnjs\">%v&APP=turnjs</a><br>", reqStr, reqStr)
 								fmt.Fprintf(w, "<b>Doc ID:</b> %v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>SID:</b> TDSARTL-%v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
@@ -42678,7 +42694,7 @@ const htmlDesktopsJSONtoTableA = `
 <div id="desktops"></div>
 <div id="columns"></div>
 <br>
-[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://ulapph-public-1.appspot.com'); return false;">Notes</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Servers@888@/login?q=login&LFUNC=GOOGLE&TARGET_URL=/login?continue=/uwm', 'https://ulapph-public-1.appspot.com'); return false;">Servers</a>] [<a href="#" onclick="blankDesktop();return false;">Blank Desktop</a>] [<a href="#" onclick="clearDesktops();return false;">Clear Desktops</a>]
+[<a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Notes@888@/tools?FUNC=ALL_NOTES', 'https://ulapph-public-1.appspot.com'); return false;">Notes</a>] [<a href="#" onClick="parent.postMessage('ULAPPH-SYS-UPD@888@Servers@888@/login?q=login&LFUNC=GOOGLE&TARGET_URL=/login?continue=/uwm', 'https://ulapph-public-1.appspot.com'); return false;">Servers</a>] [<a href="#" onclick="blankDesktop();return false;">Blank Desktop</a>] [<a href="#" onclick="clearDesktops();return false;">Clear Desktops</a>] [<a href="/webapp" target="webapp">Webapp</a>]
 <script>
   $(document).ready(function() {
     var json = {{.}};
@@ -69510,6 +69526,21 @@ func parsePresentTemplate(name string) *template.Template {
 	return t
 }
 
+//D0064
+//parses a template 
+func parsePresentTemplate2(name string) *template.Template {
+	t := Template()
+	t = t.Funcs(template.FuncMap{"playable": playable})
+	if _, err := t.ParseFiles("templates/"+name, "templates/action-template-turnjs.txt"); err != nil {
+		panic(err)
+	}
+	t = t.Lookup("root")
+	if t == nil {
+		panic("root template not found for " + name)
+	}
+	return t
+}
+
 //parses a custom template
 func parseCustomTemplatePres(tempt string) *template.Template {
 	t := Template()
@@ -71829,14 +71860,15 @@ func presenter(w http.ResponseWriter, r *http.Request) {
 //it can handle auto switching between slides and articles depending on device type
 func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE string, PARM string, SECS string, TITLE string, blobkey string, SL_TMP string, SID string, FORCE, FL_COUNTRY_SPECIFIC, DESKTOP, SOUND, DOC_ID, IMG_URL, GOTO, PRESENTER_SESSION_KEY, MUSIC_ID, GET_NEXT, AUTHOR, PUB_STAT, FL_SHARED string) error {
 	//h := r.Header
+	c := appengine.NewContext(r)
 	TARGET_CACHE_CONTENT := []byte("")
 	SLIDES_CACHE_KEY := ""
 	ARTICLES_CACHE_KEY := ""
-	
+	//D0064
+	APP := r.FormValue("APP")
 	if DESKTOP == "" {
 		DESKTOP = "desktop0"
 	}
-	
 	if SYS_CHK_AUTO_SL2ART == true {
 	//if check to force slide to article for mobile devices
 		if (TYPE == "SLIDE" || TYPE == "") && MODE != "PRESENTER" && PARM != "AUTO" {
@@ -71884,6 +71916,11 @@ func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE
 				//force regenerate of content
 				SLIDES_CACHE_KEY = fmt.Sprintf("SLIDES_CACHE_%v_%v", blobkey, stemp)
 			}
+			//D0064
+			if APP == "turnjs" {
+				c.Infof("type SLIDE, APP=turnjs")
+				SLIDES_CACHE_KEY = fmt.Sprintf("SLIDES_TURNJS_%v", blobkey)
+			}
  
 			//TARGET_CACHE_CONTENT := []byte("")
 			TARGET_CACHE_CONTENT = getBytMemcacheValueByKey(w,r,SLIDES_CACHE_KEY)
@@ -71901,12 +71938,18 @@ func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE
 				//force regenerate of content
 				ARTICLES_CACHE_KEY = fmt.Sprintf("ARTICLES_CACHE_%v_%v", blobkey, stemp)
 			}
+			//D0064
+			if APP == "turnjs" {
+				c.Infof("type ARTICLE, APP=turnjs")
+				ARTICLES_CACHE_KEY = fmt.Sprintf("ARTICLES_TURNJS_%v", blobkey)
+			}
 			
 			//TARGET_CACHE_CONTENT := []byte("")
 			TARGET_CACHE_CONTENT = getBytMemcacheValueByKey(w,r,ARTICLES_CACHE_KEY)
 	}
 	
 	if string(TARGET_CACHE_CONTENT) == "" {
+		c.Infof("TARGET_CACHE_CONTENT is blank")
 		//---------------
 		//put data to memcache
 		_, doc, err := Parse3(w, r, blobkey, TITLE, 0, DESKTOP, SID, "ONLINE", AUTHOR, PUB_STAT, FL_SHARED)
@@ -71975,6 +72018,12 @@ func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE
 		}
  
 		//renderPresentation(&buf, title2, doc)
+		c.Infof("Calling renderPresentation()")
+		//D0064
+		if APP == "turnjs" {
+			SL_TMP = ""
+			title2 = ".turnjs"
+		}
 		if err := renderPresentation(w,r,&buf, title2, doc, SL_TMP); err != nil {
 			//panic(err)
 			msgDtl := fmt.Sprintf("[U00147] Critical error. renderPresentation error. [ERROR: %v] [KEY: %v] (SID:%v) [S0628]", err, blobkey, SID)
@@ -71985,25 +72034,20 @@ func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE
 			http.Redirect(w, r, sysReq, http.StatusFound)
 			return err
 		}
- 
 		switch TYPE {
-		
 			case "SLIDE":
 				title2 = fmt.Sprintf("%v.slide", TITLE)
 				putBytesToMemcacheWithExp(w,r,SLIDES_CACHE_KEY,buf.Bytes(),MC_ADS_EXPIRES_30_MIN)
-				
 			case "ARTICLE":
 				title2 = fmt.Sprintf("%v.article", TITLE)
 				putBytesToMemcacheWithExp(w,r,ARTICLES_CACHE_KEY,buf.Bytes(),MC_ADS_EXPIRES_30_MIN)
 		}
-		
 		TARGET_CACHE_CONTENT = buf.Bytes()
 	}
- 
 	writeHTMLHeader(w, 200)
 	_, err := w.Write(TARGET_CACHE_CONTENT)
 	return err
-}			
+}
 
 //D0044 
 //Handles installer logic
