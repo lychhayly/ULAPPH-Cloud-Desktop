@@ -16,11 +16,11 @@ Automatic Text to Slides Formatting (you type in text editor and it creates the 
 
 Automatic Text to Article Formatting (you type in text editor and it creates the article)
 ----------------
-![Text to Article Converter](https://lh3.googleusercontent.com/BgYQ5T2PcEwBAxV3YC1WtQqNRno1r0M674LHwZXahSCN_c1LiHWLinT_H9HFLNa2cExETfhKRSEsb13kmumcAJFgjKJRew=s1000=s1200 "Text to Article Converter")
+![Text to Article Converter](https://lh3.googleusercontent.com/BgYQ5T2PcEwBAxV3YC1WtQqNRno1r0M674LHwZXahSCN_c1LiHWLinT_H9HFLNa2cExETfhKRSEsb13kmumcAJFgjKJRew=s1200 "Text to Article Converter")
 
 Automatic Text to TurnJS Formatting (you type in text editor and it creates the TurnJS)
 ----------------
-![Text to Turnjs Converter](https://lh3.googleusercontent.com/T781CWr6FIPe8auSdmRHb6gXqQc9Wg9GiMNs76QZz0yLsGZWdeIhaKPAw9ayhY33gM3gkLBseNJ7MxVE6aoppk4Qdmvodg=s1000=s1200 "Text to Turnjs Converter")
+![Text to Turnjs Converter](https://lh3.googleusercontent.com/T781CWr6FIPe8auSdmRHb6gXqQc9Wg9GiMNs76QZz0yLsGZWdeIhaKPAw9ayhY33gM3gkLBseNJ7MxVE6aoppk4Qdmvodg=s1200 "Text to Turnjs Converter")
 
 Integrate an Artificial Intelligence Bot (using Google Dialogflow)
 ----------------
