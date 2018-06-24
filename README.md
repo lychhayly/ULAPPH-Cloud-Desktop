@@ -1,14 +1,33 @@
 ULAPPH Cloud Desktop - Your web-based cloud desktop!
 ====================
 
+Use Google Cloud Shell to install to Google Cloud...
+----------------
+
 ![ULAPPH Installation Demo](https://lh3.googleusercontent.com/G_obRdz4_ySYr2qyoLhPpmtF9Qcv-bpLFjV44yIBdKCuVNr_TYiVu5oGtHzBqp1lOtPeb9a6Y9Q4mXOeE8DSQOVRcjYZVeA=s1200 "ULAPPH Installation Demo")
 
+ULAPPH Window Manager gives you a feel of a desktop...
+----------------
 ![ULAPPH Desktop Demo](https://lh3.googleusercontent.com/AJBWaOVmclUEqZA9TJIAvR1X6j0VuUrmpzj6RwqWcSS5WbnyDfv1fxyybpQ1yqaaA6iimhZgLNNp5aiWjjyD_y5MbF1Zjw=s1200 "ULAPPH Desktop Demo")
 
+Automatic Text to Slides Formatting (you type in text editor and it creates the slides)
+----------------
 ![Slides Editor and Viewer](https://lh3.googleusercontent.com/ttdHI6awI2U7ZBJD00ev7s0fQC-XNW95ucv9HnpaLRFVFHH0UqAFKxdc-_0dyb_5X0fV_NhTUmkZfdvGCVXYFy4Jbfzw=s1200 "Slides Editor and Viewer")
 
+Automatic Text to Article Formatting (you type in text editor and it creates the article)
+----------------
+![Text to Article Converter](https://lh3.googleusercontent.com/BgYQ5T2PcEwBAxV3YC1WtQqNRno1r0M674LHwZXahSCN_c1LiHWLinT_H9HFLNa2cExETfhKRSEsb13kmumcAJFgjKJRew=s1000=s1200 "Text to Article Converter")
+
+Automatic Text to TurnJS Formatting (you type in text editor and it creates the TurnJS)
+----------------
+![Text to Turnjs Converter](https://lh3.googleusercontent.com/T781CWr6FIPe8auSdmRHb6gXqQc9Wg9GiMNs76QZz0yLsGZWdeIhaKPAw9ayhY33gM3gkLBseNJ7MxVE6aoppk4Qdmvodg=s1000=s1200 "Text to Turnjs Converter")
+
+Integrate an Artificial Intelligence Bot (using Google Dialogflow)
+----------------
 ![Machine Learning - Google DialogFlow](https://lh3.googleusercontent.com/6-YiTLEFiWE2C5-LdD7NKIwFVh2tnBT-_fhxNhyr2AyuI-f42mZCObzPZwJCF9o2ZLVgmNfJnm1HH-3sPymSVXjVXbE3M8A=s1200 "Machine Learning - Google DialogFlow")
 
+The core language used to create ULAPPH Cloud Desktop is the Go Language!
+----------------
 ![Powered by Golang](https://lh3.googleusercontent.com/0wQw4w0aQg9qHame4KLFB1NVAEeyFuRyfrFZhe60yebEmuTr5ZzLJJ7I7efQdSCNIWYJ2SNsNAZe2ygFJD4eNJRsjSD___o "Powered by Golang")
 
 ULAPPH Login
