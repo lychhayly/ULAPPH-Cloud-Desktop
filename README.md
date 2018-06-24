@@ -26,7 +26,19 @@ Integrate an Artificial Intelligence Bot (using Google Dialogflow)
 ----------------
 ![Machine Learning - Google DialogFlow](https://lh3.googleusercontent.com/6-YiTLEFiWE2C5-LdD7NKIwFVh2tnBT-_fhxNhyr2AyuI-f42mZCObzPZwJCF9o2ZLVgmNfJnm1HH-3sPymSVXjVXbE3M8A=s1200 "Machine Learning - Google DialogFlow")
 
-The core language used to create ULAPPH Cloud Desktop is the Go Language!
+Organize your stuff into different desktops and push a button to search the latest about the topic
+----------------
+![Organized Desktops with Topic Search](https://lh3.googleusercontent.com/aIueODdeMk1ex1o9o6-TFHq0KwHehCez_SoEJiofLw-NlFvxJ0rnxk7Zg6OZ0gZLkZ8R5byElbDFERDdTLgBhzscQOknNQ=s1200 "Organized Desktops with Topic Search")
+
+Dump your photos to ULAPPH and turn your desktop into a random wallpaper/album
+----------------
+![Random Wallpapers & Album](https://lh3.googleusercontent.com/lBNaDiE150aebsUrUKN8fWSqDSKbw208IyaeyrZ9TZ_4z4v4qX06282G8QhcRtGb1Ckx4x4gAdwm4whi8bhz4CoHPnBS=s1200 "Random Wallpapers & Album")
+
+And if your techie, create an app to monitor your house using ULAPPH!
+----------------
+![Multisensor Home Monitor](https://lh3.googleusercontent.com/rLdIwZYuOrbVPPSFBxx7HIwF2DtS3t0jV4bng-aDUFoct_W6Rt3f5yvC7dGuevWVn8zrOkrXF1MWHbyC0_Cy8o6hJAkLfQ=s1200 "Multisensor Home Monitor")
+
+And if you are adventurous, learn Golang by modifying the main.go single code of ULAPPH Cloud Desktop!
 ----------------
 ![Powered by Golang](https://lh3.googleusercontent.com/0wQw4w0aQg9qHame4KLFB1NVAEeyFuRyfrFZhe60yebEmuTr5ZzLJJ7I7efQdSCNIWYJ2SNsNAZe2ygFJD4eNJRsjSD___o "Powered by Golang")
 
