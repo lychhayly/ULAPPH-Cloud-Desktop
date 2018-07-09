@@ -252,8 +252,18 @@ function procMessage(obj) {
 				
 			case "SYS_GOOGLE_SEARCH":
 				var kw = cmdata[3];
+				//var uid = cmdata[4];
 				var tgt = 'https://www.google.com.ph/search?q=' + kw + '&source=lnt&tbs=qdr:d&sa=X&&biw=1366&bih=700';
-				openWindowNow(tgt, 'SEARCH: '+kw);
+				//var duwm = uid.indexOf("---");
+				//if (duwm <= 0) {
+				//	console.log("opening window in main UWM...");
+					openWindowNow(tgt, 'SEARCH: '+kw);
+				//} else {
+				//	console.log("should open in sub uwm...");
+				//	console.log(tgt);
+					//localStorage[uid] = tgt;
+				//	localStorage.setItem(uid, tgt);
+				//}
 				break;
 				
 			case "SYS_UPDATE_TLM":

@@ -37,7 +37,7 @@ function initFirebase() {
    * the data stored in Firebase
    */
   function onMessage(newState) {
-	  //console.log("onMessage(): "+newState);
+	  console.log("onMessage(): "+newState);
 	  if (isJson(newState) == true) {
 		  var jsonObj = JSON.parse(newState);
 		  if(jsonObj.hasOwnProperty('message')){
@@ -55,13 +55,13 @@ function initFirebase() {
    */
   function openChannel() {
 	//open channel only on uwm0
-	var desktop = document.getElementById("desktop");
-	if (desktop.value == "uwm" || desktop.value == "stream" || desktop.value == "uwm-share") {
-		//ok channel
-	} else {
-		console.log("Invalid desktop value");
-		return;
-	}
+//	var desktop = document.getElementById("desktop");
+//	if (desktop.value == "uwm" || desktop.value == "stream" || desktop.value == "uwm-share") {
+//		//ok channel
+//	} else {
+//		console.log("Invalid desktop value");
+//		return;
+//	}
 	
     // sign into Firebase with the token passed from the server
 	var jwt = document.getElementById("jwt");
@@ -71,10 +71,10 @@ function initFirebase() {
 		localStorage['idToken'] = idToken;
 	}
     firebase.auth().signInWithCustomToken(idToken).catch(function(error) {
-      //console.log('Login Failed!', error.code);
-      //console.log('Error message: ', error.message);
+      console.log('Login Failed!', error.code);
+      console.log('Error message: ', error.message);
     });
-	//console.log('Login successful!');
+	console.log('Firebase Login successful!');
 	//get message for the user channel
 	var tok = document.getElementById("tok");
 	var aep = document.getElementById("aep");
@@ -86,7 +86,7 @@ function initFirebase() {
 		localStorage['sss'] = sss.value;
 	}
 	var refChan = aep.value + '/channel/' + tok.value;
-	//console.log("refChan: ", refChan);
+	console.log("refChan: ", refChan);
 	channel = firebase.database().ref(refChan);
 	//listener
     channel.limitToLast(1).on('value', function(data) {
