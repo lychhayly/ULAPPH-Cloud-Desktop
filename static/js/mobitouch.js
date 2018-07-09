@@ -64,9 +64,10 @@ function launchAS() {
 /* 	var jswmstr = "'" + "/tools?FUNC=ALL_DESKTOPS" + "', 500, 300, 'middle', 'middle', {title: '" + "All Desktops" + "', icon: '/img/jswm-web.png'}";
 	eval('windowManager.openURI(' + jswmstr + ');'); */
 
-	var tdesk = prompt("Please enter desktop name", "TempDesktop");
-	if (tdesk != null) {
-	window.open("/uwm?u=" + tdesk, "_blank");
+	//var tdesk = prompt("Please enter desktop name", "TempDesktop");
+	//if (tdesk != null) {
+	//window.open("/uwm?u=" + tdesk, "_blank");
+	window.open("/chat-bubble/ulapphbot.html", "_blank");
 	/*var jswmstr = "'" + "/uwm?u=" + tdesk + "', 500, 300, 'middle', 'middle', {title: '" + "Mirror" + "', icon: '/img/jswm-web.png'}";
 	eval('windowManager.openURI(' + jswmstr + ');');
 	
@@ -77,9 +78,9 @@ function launchAS() {
 		url: root + "/audio/water-drop.ogg"
 	});
 	playSound('waterMob');*/
-	} else {
-		alert("Please enter desktop name");
-	}
+	//} else {
+	//	alert("Please enter desktop name");
+	//}
 };
 
 node.addEventListener("mousedown", start);
