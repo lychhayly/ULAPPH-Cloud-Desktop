@@ -80,7 +80,8 @@ var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
 				    {
 				      "i-dont-get-it": {
 				        says: [currVal],
-				        reply: o.convo[o.standingAnswer].reply
+				        //reply: o.convo[o.standingAnswer].reply
+				        reply: []
 				      }
 				    },
 				    "i-dont-get-it"
@@ -118,7 +119,16 @@ var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
 // "Basic chat-bubble Example" (1-basics.html)
 var convo = {
   ice: {
-    says: ["Hi, I'm ULAPPH Bot!", "How can I help you today?"],
+    says: ["Hi, I'm ULAPPH Bot!", "<img src=\"/chat-bubble/bot.gif\">"],
+	  reply: [
+	    {
+	      question: "Find out more...",
+	      answer: "what-bot-can-do"
+	    }
+	  ]
+  },
+  "what-bot-can-do": {
+	  says: ["Click anything below:"],
 	  reply: [
 	    {
 	      question: "List functions",
@@ -147,11 +157,15 @@ var convo = {
 	    {
 	      question: "Show Topic News",
 	      answer: "showTopicNews"
+	    },
+	    {
+	      question: "Show Random",
+	      answer: "showRandoms"
 	    }
 	  ]
-  },
+	},
   "iceListFunctions": {
-    says: ["Here are some functions you can call:",
+    says: ["Here are some text you can type:",
     			"<i>view the slide num 3</i>",
     			"<i>view the article num 3</i>",
     			"<i>view the media num 3</i>",
@@ -167,12 +181,41 @@ var convo = {
     			"<i>open the wallpapers</i>",
     			"<i>recent in slides, articles or media</i>",
     			"<i>recent in comments</i>",
-    		"You can enter them anytime!",
+    		"You can type your text below...",
     	],
     reply: []
   },
+  "showRandoms": {
+	  says: ["Great! You'll enjoy this.", "What would like to do?"],
+	  reply: [
+	    {
+	      question: "Random Media",
+	      answer: "funcRandomMedia"
+	    },
+	   	{
+	      question: "Random Tips",
+	      answer: "funcRandomTips"
+	    },
+	   	{
+	      question: "Random Content",
+	      answer: "funcRandomContents"
+	    },
+	   	{
+	      question: "Random Pics",
+	      answer: "funcRandomPics"
+	    },
+	    {
+		  question: "Random Youtube",
+		  answer: "funcRandomYoutube"
+		},
+	    {
+	      question: "Start Over",
+	      answer: "ice"
+	    }
+	  ]
+	},
   "nlp-success-invalid-function": {
-	  says: ["I understood your intention but did not match any function!", "What would like to do?"],
+	  says: ["Apologies, I don't get that!", "What would like to do?"],
 	  reply: [
 	    {
 	      question: "Open Search Widget",
@@ -185,7 +228,7 @@ var convo = {
 	  ]
 	},
   "nlp-failed": {
-      says: ["Sorry I can't understand your intention!", "What would like to do?"],
+      says: ["Sorry I can't understand you!", "What would like to do?"],
       reply: [
 	    {
 	      question: "Click desktop & press Escape",
@@ -304,6 +347,295 @@ funcAllWhatsNew = function () {
 	    },
 	    "funcAllWhatsNewRes"
 	  )
+}
+
+funcRandomMedia = function () {
+	//call nlp
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr2=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr2=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Calling GET_RAN_MED...");
+	xhr2.open("POST","/media?FUNC_CODE=GET_RAN_MED", true); 
+	xhr2.send();
+	
+	 xhr2.onreadystatechange=function(convo)
+	  {
+	  if (xhr2.readyState==4 && xhr2.status==200)
+		{
+		var currVal = xhr2.responseText;
+			console.log(currVal);
+			  chatWindow.talk(
+				{
+				  "randome-media": {
+					says: [currVal],
+					reply: [	    {
+						  question: "Random Media",
+						  answer: "funcRandomMedia"
+						},
+						{
+						  question: "Random Tips",
+						  answer: "funcRandomTips"
+						},
+					   	{
+					      question: "Random Content",
+					      answer: "funcRandomContents"
+					    },
+					   	{
+					      question: "Random Pics",
+					      answer: "funcRandomPics"
+					    },
+						{
+						  question: "Random Youtube",
+						  answer: "funcRandomYoutube"
+						}]
+				  }
+				},
+				"randome-media"
+			)
+			return;
+		}
+	  }
+
+}
+
+funcRandomTips = function () {
+	//call nlp
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr3=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr3=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Calling random tips...");
+	xhr3.open("POST","/nlp?p=" + "motd", true); 
+	xhr3.send();
+	
+	 xhr3.onreadystatechange=function(convo)
+	  {
+	  if (xhr3.readyState==4 && xhr3.status==200)
+		{
+		var currVal = xhr3.responseText;
+			console.log(currVal);
+			  chatWindow.talk(
+				{
+				  "randome-tips": {
+					says: [currVal],
+					reply: [	    {
+						  question: "Random Media",
+						  answer: "funcRandomMedia"
+						},
+						{
+						  question: "Random Tips",
+						  answer: "funcRandomTips"
+					   	},
+					   	{
+					      question: "Random Content",
+					      answer: "funcRandomContents"
+					    },
+					   	{
+					      question: "Random Pics",
+					      answer: "funcRandomPics"
+					    },
+						{
+						  question: "Random Youtube",
+						  answer: "funcRandomYoutube"
+						}]
+				  }
+				},
+				"randome-tips"
+			)
+			return;
+		}
+	  }
+}
+
+funcRandomContents = function () {
+	//call nlp
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr3=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr3=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Calling random contents...");
+	con_url = '/rcg?m=sing&q=' + "desktop0" + '&n=' + 1;
+	xhr3.open("POST",con_url, true); 
+	xhr3.send();
+	
+	 xhr3.onreadystatechange=function(convo)
+	  {
+	  if (xhr3.readyState==4 && xhr3.status==200)
+		{
+		var currVal = xhr3.responseText;
+			console.log(currVal);
+			  chatWindow.talk(
+				{
+				  "randome-contents": {
+					says: [currVal],
+					reply: [	    {
+						  question: "Random Media",
+						  answer: "funcRandomMedia"
+						},
+						{
+						  question: "Random Tips",
+						  answer: "funcRandomTips"
+					   	},
+					   	{
+					      question: "Random Contents",
+					      answer: "funcRandomContents"
+					    },
+					   	{
+					      question: "Random Pics",
+					      answer: "funcRandomPics"
+					    },
+						{
+						  question: "Random Youtube",
+						  answer: "funcRandomYoutube"
+						}]
+				  }
+				},
+				"randome-contents"
+			)
+			return;
+		}
+	  }
+}
+
+funcRandomPics = function () {
+	//call nlp
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr4=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr4=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Calling random pics...");
+	xhr4.open("POST","/media?FUNC_CODE=GET_RAN_WP", true); 
+	xhr4.send();
+	
+	 xhr4.onreadystatechange=function(convo)
+	  {
+	  if (xhr4.readyState==4 && xhr4.status==200)
+		{
+		var currVal = xhr4.responseText;
+			console.log(currVal);
+			  if (currVal != "") {
+					//get random number
+					var SPL = currVal.split("@888@");
+					bgImgUrl = SPL[1];
+					bgImgTitle = SPL[2];
+					bgImgDesc = SPL[3];
+
+					ranVal = SPL[0];
+					if (ValidURL(bgImgUrl) == true) {
+						  chatWindow.talk(
+							{
+							  "randome-pics": {
+							  says: ["<img src=\"" + bgImgUrl + "\" target=\"ranpics\"></img>"],
+								reply: [	    {
+									  question: "Random Media",
+									  answer: "funcRandomMedia"
+									},
+									{
+									  question: "Random Tips",
+									  answer: "funcRandomTips"
+									},
+									{
+									  question: "Random Contents",
+									  answer: "funcRandomContents"
+									},
+									{
+									  question: "Random Pics",
+									  answer: "funcRandomPics"
+									},
+									{
+									  question: "Random Youtube",
+									  answer: "funcRandomYoutube"
+									}]
+							  }
+							},
+							"randome-pics"
+						)
+					}
+			  }
+			return;
+		}
+	  }
+}
+
+funcRandomYoutube = function () {
+	//call nlp
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr5=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr5=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Calling random youtube...");
+	var search = prompt("What youtube videos?", "funny cats");
+	if (search == "") {
+		search = "funny animals"
+	}
+	xhr5.open("POST","/utube?YT_FUNC=2&SEARCH_KEY=" + search +"&order=viewCount&duration=any", true); 
+	xhr5.send();
+	
+	 xhr5.onreadystatechange=function(convo)
+	  {
+	  if (xhr5.readyState==4 && xhr5.status==200)
+		{
+		var currVal = xhr5.responseText;
+			console.log(currVal);
+			  if (currVal != "") {
+				  chatWindow.talk(
+					{
+					  "randome-youtube": {
+					  says: [currVal],
+						reply: [	    {
+							  question: "Random Media",
+							  answer: "funcRandomMedia"
+							},
+							{
+							  question: "Random Tips",
+							  answer: "funcRandomTips"
+							},
+							{
+							  question: "Random Contents",
+							  answer: "funcRandomContents"
+							},
+							{
+							  question: "Random Pics",
+							  answer: "funcRandomPics"
+							},
+							{
+							  question: "Random Youtube",
+							  answer: "funcRandomYoutube"
+							}]
+					  }
+					},
+					"randome-youtube"
+				)
+			}
+			return;
+		}
+	  }
+}
+
+function ValidURL(textval) {
+    var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
+    return urlregex.test(textval);
 }
 	
 // pass JSON to your function and you're done!
