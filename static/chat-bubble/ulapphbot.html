@@ -129,6 +129,22 @@ var convo = {
 	      answer: "funcAllDesktops"
 	    },
 	    {
+	      question: "All Sites",
+	      answer: "funcAllSites"
+	    },
+	    {
+	      question: "All People",
+	      answer: "funcAllPeople"
+	    },
+	    {
+	      question: "All Trending",
+	      answer: "funcAllTrending"
+	    },
+	    {
+	      question: "Whats New!",
+	      answer: "funcAllWhatsNew"
+	    },
+	    {
 	      question: "Show Topic News",
 	      answer: "showTopicNews"
 	    }
@@ -235,6 +251,58 @@ funcAllDesktops = function () {
 	      }
 	    },
 	    "funcAllDesktopsRes"
+	  )
+}
+
+funcAllSites = function () {
+    var msg = "<a href=\"/directory?DIR_FUNC=sites\" target=\"allsites\">List All Sites</a>";
+	  chatWindow.talk(
+	    {
+	      "funcAllSitesRes": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "funcAllSitesRes"
+	  )
+}
+
+funcAllPeople = function () {
+    var msg = "<a href=\"/directory?DIR_FUNC=people\" target=\"allpeople\">List All People</a>";
+	  chatWindow.talk(
+	    {
+	      "funcAllPeopleRes": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "funcAllPeopleRes"
+	  )
+}
+
+funcAllTrending = function () {
+    var msg = "<a href=\"/social?SO_FUNC=show-trending\" target=\"alltrends\">Trending Now</a>";
+	  chatWindow.talk(
+	    {
+	      "funcAllTrendingRes": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "funcAllTrendingRes"
+	  )
+}
+
+funcAllWhatsNew = function () {
+    var msg = "<a href=\"/social?SO_FUNC=show-whats-new\" target=\"allnew\">Whats New!</a>";
+	  chatWindow.talk(
+	    {
+	      "funcAllWhatsNewRes": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "funcAllWhatsNewRes"
 	  )
 }
 	

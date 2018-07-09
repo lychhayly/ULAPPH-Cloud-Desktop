@@ -17253,21 +17253,16 @@ func registerAccessCode(w http.ResponseWriter, r *http.Request, SID, accessCode 
 func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
     if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
-	
 	DIR_FUNC := r.FormValue("DIR_FUNC")
-	
 	//serve real people only
 	FL_IS_BOT := isBot(w,r)
-	
 	switch DIR_FUNC {
 		case "map":
 			updateUserActiveData(w, r, c, "", "/directory-map")
-			
 			if FL_IS_BOT == true {
 				fmt.Fprintf(w, "Robot not allowed!")
 				return
 			}
-			
 			IS_SEARCH_SERVER, SEARCH_SERVER, _ := getSitesServer(w,r)
 			//if this server is not sites server
 			if IS_SEARCH_SERVER != "Y" {	
@@ -17276,27 +17271,22 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				if err := r.ParseForm(); err != nil {
 					panic(err)
 				}
-				
 				resp, err := client.Get(urlStr)
 				if err != nil {
 					panic(err)
 				}
-		 
 				bodyBytes, _ := ioutil.ReadAll(resp.Body)
 				w.Write(bodyBytes)
 				return
-				
 			} else {
 				showOverallMap(w,r)
 				return
 			}
-			
 		case "sites":
 			updateUserActiveData(w, r, c, "", "/directory-sites")
-			
 			IS_SEARCH_SERVER, SEARCH_SERVER, _ := getSitesServer(w,r)
 			//if this server is not sites server
-			if IS_SEARCH_SERVER != "Y" {	
+			if IS_SEARCH_SERVER != "Y" {
 				redURL := fmt.Sprintf("%v/directory?DIR_FUNC=sites", getSchemeNewUrl(w,r,SEARCH_SERVER))
 				http.Redirect(w, r, redURL, http.StatusFound)
 				return
@@ -31101,17 +31091,17 @@ func getNewDiscussions(w http.ResponseWriter, r *http.Request) {
 //applicable only for sites server
 func getDesktopsDirectory(w http.ResponseWriter, r *http.Request) {
 //ULAPPH Desktops Directory
+	c := appengine.NewContext(r)
 	IS_SEARCH_SERVER, _, _ := getSitesServer(w,r)
 	if IS_SEARCH_SERVER == "Y" {
 		//scan host list
 		_, HOST_LIST := getHostList(w,r)
 		//foreach host post presence message
 		temp := strings.Split(HOST_LIST,"\n")
+		c.Infof("LEN: %v", len(temp))
 		var buffer3 bytes.Buffer
-				
 		if len(temp) > 0 {
 			for j := 0; j < len(temp); j++ {
- 
 				tURL := ""
 				tags := ""
 				SPL := strings.Split(temp[j], "|")
@@ -31123,16 +31113,18 @@ func getDesktopsDirectory(w http.ResponseWriter, r *http.Request) {
 				}
 				i := strings.Index(getSchemeUrl(w,r), tURL)
 				thisStr := fmt.Sprintf("%v", temp[j])
+				c.Infof("tURL: %v", tURL)
 				if tURL != "" && i == -1 && string(thisStr[0]) != "#" {
 					buffer3.WriteString(fmt.Sprintf("<tr>"))
 						STR_FILLER1 := fetchURL(w,r,fmt.Sprintf("%v/social?SO_FUNC=get-logo", tURL))
+						c.Infof("T: %v", STR_FILLER1)
 							j := strings.Index(STR_FILLER1, "[U00000] OVER QUOTA ERROR:")
 							k := strings.Index(STR_FILLER1, "ERROR:")
 							if j == -1 && k == -1 {
 								buffer3.WriteString(fmt.Sprintf("<td data-order=\"%v\"><a href=\"%v\"><img src=\"%v\" width=60 height=60 class=\"img-circle\"></a></td>", STR_FILLER1, string(tURL), STR_FILLER1))
 							} else {
-								buffer3.WriteString(fmt.Sprintf("<td data-order=\"%v\"><a href=\"%v\"><img src=\"%v\" width=60 height=60 class=\"img-circle\"></a></td>", "/img/error.png", string(tURL), "/img/error.png"))								
-							}						
+								buffer3.WriteString(fmt.Sprintf("<td data-order=\"%v\"><a href=\"%v\"><img src=\"%v\" width=60 height=60 class=\"img-circle\"></a></td>", "/img/error.png", string(tURL), "/img/error.png"))
+							}
 						STR_FILLER1 = fetchURL(w,r,fmt.Sprintf("%v/social?SO_FUNC=get-privacy", tURL))
 						STR_FILLER2 := fetchURL(w,r,fmt.Sprintf("%v/social?SO_FUNC=get-searchable", tURL))
  
@@ -31153,7 +31145,6 @@ func getDesktopsDirectory(w http.ResponseWriter, r *http.Request) {
 							} else {
 								buffer3.WriteString(fmt.Sprintf("<td>...</td>"))
 							}
-							
 						STR_FILLER1 =  string(tURL)
  
 							if j == -1 && k == -1 {
@@ -31161,7 +31152,6 @@ func getDesktopsDirectory(w http.ResponseWriter, r *http.Request) {
 							} else {
 								buffer3.WriteString(fmt.Sprintf("<td>...</td>"))
 							}
-						
 						STR_FILLER1 = fetchURL(w,r,fmt.Sprintf("%v/social?SO_FUNC=get-health", tURL))
  
 							m, _ := url.Parse(tURL)
@@ -31172,7 +31162,6 @@ func getDesktopsDirectory(w http.ResponseWriter, r *http.Request) {
 							} else {
 								buffer3.WriteString(fmt.Sprintf("<td data-order=\"notok\"><a href=\"%v\"><img src=\"/img/notok.png\" width=40 height=40></a></td>", dwurl))
 							}
-							
 						STR_FILLER1 = fetchURL(w,r,fmt.Sprintf("%v/social?SO_FUNC=get-version", tURL))
 							//BUILD_2016-09-07-03-22-09
  
@@ -51899,29 +51888,24 @@ func showOverallPeople(w http.ResponseWriter, r *http.Request, FL_BOT bool) {
 
 //shows overall sites 
 func showOverallSites(w http.ResponseWriter, r *http.Request, FL_BOT bool) {
-	
     c := appengine.NewContext(r)
-	
 	if FL_BOT == true {
 		//showOverallRobot(w,r)
 		fmt.Fprintf(w, "Robot not allowed!")
 		return
 	}
-	
 	updateUserActiveData(w, r, c, "", "showOverallSites")
-	
 	IS_SEARCH_SERVER, SEARCH_SERVER, _ := getSitesServer(w,r)
 	if IS_SEARCH_SERVER == "N" {
 		//redirect
 		redURL := fmt.Sprintf("%v/directory?DIR_FUNC=sites", getSchemeNewUrl(w,r,SEARCH_SERVER))
 		http.Redirect(w, r, redURL, http.StatusFound)
-		return		
+		return
 	}
-	
 	cKey := fmt.Sprintf("OVERALL_SITES")
 	OVERALL_SITES := ""
 	OVERALL_SITES = getStrMemcacheValueByKey(w,r,cKey)
-	if OVERALL_SITES != "" {	
+	if OVERALL_SITES != "" {
 		if err := showSitesDir.Execute(w, ""); err != nil {
 			 panic(err)
 		}
@@ -51931,14 +51915,12 @@ func showOverallSites(w http.ResponseWriter, r *http.Request, FL_BOT bool) {
 		//show cache
 		//fmt.Fprintf(w, "SOC_FUNC: %s<br>", SOC_FUNC)
 		w.Write([]byte(OVERALL_SITES))
-		
 		if err := showSitesDirFooter.Execute(w, SYS_ADD_THIS_PUB_ID); err != nil {
 			 panic(err)
 		}
 	} else {
 		fmt.Fprintf(w, "Sorry, no cache available at this time. <a href=\"/m\">Click here</a> to open quick search.")
 	}
-	
 }
 
 //shows overall trending contents 
