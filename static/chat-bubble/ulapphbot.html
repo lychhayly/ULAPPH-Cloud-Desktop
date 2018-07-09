@@ -117,9 +117,10 @@ var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
 
 // conversation object defined separately, but just the same as in the
 // "Basic chat-bubble Example" (1-basics.html)
+var botUrl = window.location.href;
 var convo = {
   ice: {
-    says: ["Hi, I'm ULAPPH Bot!", "<img src=\"/chat-bubble/bot.gif\">"],
+    says: ["Hi, I'm ULAPPH Bot!", "<a href=\"" + botUrl + "\" title=\"Click to restart ULAPPH bot!\"><img src=\"/chat-bubble/bot.gif\"></a>"],
 	  reply: [
 	    {
 	      question: "Find out more...",
@@ -285,7 +286,7 @@ nlpSucceedsOpenSearchWidget = function () {
 }
 
 funcAllDesktops = function () {
-    var msg = "<a href=\"/tools?FUNC=ALL_DESKTOPS\" target=\"alldesk\">List All Desktops</a>";
+    var msg = "<a href=\"/tools?FUNC=ALL_DESKTOPS\" target=\"alldesk\">List All Desktops</a><br><a href=\"#\" onclick=\"blankDesktop()\">New Blank Desktop</a>";
 	  chatWindow.talk(
 	    {
 	      "funcAllDesktopsRes": {
@@ -637,7 +638,20 @@ function ValidURL(textval) {
     var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
     return urlregex.test(textval);
 }
-	
+
+function blankDesktop() {
+	var tdesk = prompt("Please enter desktop name", "TempDesktop");
+	if (tdesk != null) {
+		window.open("/uwm?u=" + tdesk, "_blank");
+	} else {
+		alert("Please enter desktop name");
+	}
+}
+
+function reloadPage() {
+    location.reload();
+}
+  
 // pass JSON to your function and you're done!
 chatWindow.talk(convo)
 </script>
