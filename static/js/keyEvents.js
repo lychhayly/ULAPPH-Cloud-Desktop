@@ -71,7 +71,8 @@ function dispSearch() {
 		var url = "/chat-bubble/ulapphbot.html";
 	}
 	//alertify.set({ delay: 59000 });
-	alertify.set({ delay: 300000 });
+	//alertify.set({ delay: 300000 });
+	alertify.set({ delay: 21600000 });
 	//alertify.error("<iframe src=\"" + url + "\" frameborder=\"0\" scrolling=\"yes\" allowtransparency=\"true\" height=\"400px\"></iframe>");
 	alertify.log("<iframe src=\"" + url + "\" frameborder=\"0\" scrolling=\"yes\" allowtransparency=\"true\" height=\"400px\"></iframe>");
 	
