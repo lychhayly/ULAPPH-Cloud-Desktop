@@ -14228,12 +14228,15 @@ func ranConGen(w http.ResponseWriter, r *http.Request) {
 	checkReferrer(w,r)
  
 	timestamp := getTimestamp()
-	sRand := fmt.Sprintf("ADS_RAND_%s", string(timestamp[13]))
-	if sRand == "ADS_RAND_0" || sRand == "ADS_RAND_2" || sRand == "ADS_RAND_4" || sRand == "ADS_RAND_6" || sRand == "ADS_RAND_8" {
- 
-		sysReq := fmt.Sprintf("/media?FUNC_CODE=GET_RAN_MED")
-		http.Redirect(w, r, sysReq, http.StatusFound)
-		return		
+	//D0065
+	if SYS_DISP_ADS_CONTENT  == true {
+		sRand := fmt.Sprintf("ADS_RAND_%s", string(timestamp[13]))
+		if sRand == "ADS_RAND_0" || sRand == "ADS_RAND_2" || sRand == "ADS_RAND_4" || sRand == "ADS_RAND_6" || sRand == "ADS_RAND_8" {
+	 
+			sysReq := fmt.Sprintf("/media?FUNC_CODE=GET_RAN_MED")
+			http.Redirect(w, r, sysReq, http.StatusFound)
+			return		
+		}
 	}
 	
 	
@@ -41827,13 +41830,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 					SIZE := r.FormValue("SIZE")
 					order := r.FormValue("order")
 					duration := r.FormValue("duration")
+
 					if err := mediaYoutubePlayerA.Execute(w, ""); err != nil {
 						panic(err)
 					}
 					//list all videos
 					if SEARCH_KEY != "" {
 						//print search results here
-						urlStr := fmt.Sprintf("%vutube?YT_FUNC=3&SEARCH_KEY=%v&order=%v&duration=%v", getSchemeUrl(w,r), SEARCH_KEY, order, duration)
+						urlStr := fmt.Sprintf("%vutube?YT_FUNC=2&SEARCH_KEY=%v&order=%v&duration=%v", getSchemeUrl(w,r), SEARCH_KEY, order, duration)
 						client := urlfetch.Client(c)
 						if err := r.ParseForm(); err != nil {
 							panic(err)

@@ -29,6 +29,9 @@ go get  "github.com/robertkrimen/otto"
 go get "github.com/satori/go.uuid"
 go get "github.com/tealeg/xlsx"
 go get "github.com/edwindvinas/sprig"
+go get "github.com/cdipaolo/goml/text"
+go get "github.com/shixzie/nlp"
+
 
 echo "done!"
 
