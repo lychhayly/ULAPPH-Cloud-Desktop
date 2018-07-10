@@ -15944,6 +15944,15 @@ const chatTemplateDispA2 = `
 		</li>
 		<li class="login page">
 		  <div class="form">
+                       {{if eq .STR_FILLER5 "worldwide"}}
+                       <img src="/img/globerotate.gif">
+                       {{end}}
+                       {{if eq .STR_FILLER5 "country"}}
+                       <img src="/img/cuberotate.gif">
+                       {{end}}
+                       {{if eq .STR_FILLER5 "public"}}
+                       <img src="/img/circlerotate.gif">
+                       {{end}}
 			<h3 class="title">What's your nickname?</h3>
 			 <input class="usernameInput" type="text" value="{{.STR_FILLER2}}" maxlength="50" />
 			 <input type="hidden" id="desktop" value="{{.STR_FILLER1}}">
@@ -33072,7 +33081,13 @@ func getDefUwms(w http.ResponseWriter, r *http.Request) string {
 		//buf.WriteString(fmt.Sprintf("	if (document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('online777').value + ');'); }"))
 		buf.WriteString(fmt.Sprintf("	if (localStorage['online'] != 'N' && document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('online777').value + ');'); }"))
 		buf.WriteString(fmt.Sprintf("</script>"))
- 
+
+                //display chatbot 
+                buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'/chat-bubble/ulapphbot.html', 500, 300, 'left', 'top', {title: 'ULAPPH Bot', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"chatbot777\" />"))
+                buf.WriteString(fmt.Sprintf("<script type=\"text/javascript\">"))
+                buf.WriteString(fmt.Sprintf("   if (localStorage['chatbot'] != 'N' && document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('chatbot777').value + ');'); }"))
+                buf.WriteString(fmt.Sprintf("</script>"))
+
 	} else {
 		/*
 		buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'/tools?FUNC=WIDGET&t=TODO', 500, 300, 'right', 'top', {title: 'TODOs', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"todo777\" />"))
@@ -43540,6 +43555,12 @@ We have listed below some important links about your ULAPPH cloud desktop.
   <div class="slider round"></div>
 </label> Randomize Desktop Colors<br>
  
+<hr>
+<h3>Force Screensize</h3>
+<label class="switch">
+  <input type="checkbox" checked onclick="screensize();" id="SYS_SMALL_SCREEN">
+  <div class="slider round"></div>
+</label> If yes, windows open in new tabs.<br>
 <script type="text/javascript" src="/js/switch_uwm.js"></script>
 <script type="text/javascript" src="/js/myprefs.js"></script>
 `

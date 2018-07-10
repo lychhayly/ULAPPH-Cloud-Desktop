@@ -1237,6 +1237,9 @@ window.addEventListener("resize", resizeFunc);
 
 //var x = 0;
 function resizeFunc() {
+    if (localStorage[root+'isScreenSmall-force'] == 'Y') {
+	return;
+    }
     var txt = "";
     txt += "<p>innerWidth: " + window.innerWidth + "</p>";
     txt += "<p>innerHeight: " + window.innerHeight + "</p>"; 
