@@ -88,6 +88,12 @@ document.getElementById("SYS_UWM_RAN_COLORS").checked = true;
 } else {
 document.getElementById("SYS_UWM_RAN_COLORS").checked = false; 	
 }
+//force screen settings
+if (localStorage['SYS_SMALL_SCREEN'] == "Y") { 
+document.getElementById("SYS_SMALL_SCREEN").checked = true; 
+} else {
+document.getElementById("SYS_SMALL_SCREEN").checked = false; 	
+}
 
 function switch4(elem) {
   if (document.getElementById(elem).checked) 
@@ -246,5 +252,21 @@ function switch2()
       //alert("un-checked");
 	  localStorage['uwmsw'] = "N";
 	  window.location.href = "/tools?FUNC=WIDGET&t=MyPreferences&MP_FUNC=JSWM_AUTO_LOAD_OFF";
+  }
+}
+
+
+function screensize()
+{
+  var root = location.protocol + '//' + location.host;
+  if (document.getElementById('SYS_SMALL_SCREEN').checked) 
+  {
+      //alert("checked");
+	localStorage[root+'isScreenSmall-force'] = 'Y';
+	localStorage[root+'isScreenSmall'] = 'Y';
+  } else {
+      //alert("un-checked");
+	localStorage[root+'isScreenSmall-force'] = 'N';
+	localStorage[root+'isScreenSmall'] = 'N';
   }
 }

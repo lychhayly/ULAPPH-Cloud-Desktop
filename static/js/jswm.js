@@ -487,7 +487,7 @@ JSWM.prototype.openURI = function(uri, w, h, l, t, options)
 	
 	var isMobile = document.getElementById("isMobile").value;
 	var isSmallScreen = localStorage[root+'isScreenSmall'];
-	if (isMobile == "true" || isMobile == true || isSmallScreen == "Y") {
+	if (isMobile == "true" || isSmallScreen == "Y") {
 		window.open(uri,'_blank')
 		return;
 	}
