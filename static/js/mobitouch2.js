@@ -106,7 +106,7 @@ function upload_ulapph() {
 			var tgt = document.getElementById("sid").value;
 			if (parseInt(tgt) > 0) {
 				sid = 'TDSSLIDE-' + tgt;
-				document.getElementById("note").innerHTML = "";
+				document.getElementById("note").innerHTML = "<h1>" + sid + "</h1>";
 			} else {
 				sid = '';
 				document.getElementById("note").innerHTML = "<h1>No target slide!</h1>";
@@ -118,12 +118,23 @@ function upload_ulapph() {
 			var ttl = document.getElementById("title").value;
 			if (ttl != "") {
 				caption = ttl;
-				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "";
+				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<h3>" + ttl + "</h3>";
 			} else {
 				caption = '';
 				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<b>No caption or title!</b>";
 			}
+
+			var streamUwm = "";
+			var uwm = document.getElementById("uwm").value;
+			if (uwm != "") {
+				streamUwm = uwm;
+				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<h3>Streaming to UWM: " + streamUwm + "</h3>";
+			} else {
+				streamUwm = '';
+				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<b>No caption or title!</b>";
+			}
 			fd.append("TITLE", caption);
+			fd.append("STRUWM", streamUwm);
 			
 			fd.append("DESC", "ulapphMirrorImage");
 			fd.append("DATA_TYPE", "image");

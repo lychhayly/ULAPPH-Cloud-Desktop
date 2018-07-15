@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#08/07/2018 05:03:59 PM PST
+//LAST_UPGRADE#15/07/2018 05:03:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -337,6 +337,11 @@
 //REV ID: 		D0065
 //REV DATE: 		2018-July-8
 //REV DESC:	  	Integrated built-in NLP logic 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0066
+//REV DATE: 		2018-July-15
+//REV DESC:	  	Added bot settings per uwm 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1144,6 +1149,9 @@ type Desktops struct {
 	TLink string `json:"tLink"`
 	RLink string `json:"rLink"`
 	SLink string `json:"sLink"`
+	//D0066
+	BLink string `json:"bLink"`
+	CLink string `json:"cLink"`
 }
 
 //icons
@@ -2623,7 +2631,7 @@ type IDX_TDSMEDIA struct {
 ///////////////////////////////////////////////////////////////
 // Exec later - download url
 // execute logic with delays
-var laterWgetToCloud = delay.Func("laterWgetToCloud", func(c appengine.Context, WG_FUNC string, WURL, UID string) {
+var laterWgetToCloud = delay.Func("laterWgetToCloud", func(c appengine.Context, WG_FUNC, WURL, UID string) {
 	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-wget-url", map[string][]string{"WG_FUNC": {WG_FUNC}, "WURL": {WURL}, "UID": {UID}})
 	if _, err := taskqueue.Add(c, t, ""); err != nil {
 		panic(err)
@@ -2631,15 +2639,22 @@ var laterWgetToCloud = delay.Func("laterWgetToCloud", func(c appengine.Context, 
 })
  
 // Exec later - Embed image
-var laterAddToDefaultSid = delay.Func("laterAddToDefaultSid", func(c appengine.Context, ATS_FUNC string, UID, SID, TYP, SRC, TITLE string) {
+var laterAddToDefaultSid = delay.Func("laterAddToDefaultSid", func(c appengine.Context, ATS_FUNC, UID, SID, TYP, SRC, TITLE string) {
 	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-add-to-default-sid", map[string][]string{"ATS_FUNC": {ATS_FUNC}, "UID": {UID}, "SID": {SID}, "TYP": {TYP}, "SRC": {SRC}, "TITLE": {TITLE}})
 	if _, err := taskqueue.Add(c, t, ""); err != nil {
 		panic(err)
 	}
 })
- 
+//D0066 
+// Exec later - Stream image to UWM
+var laterMirrorStreamUwm = delay.Func("laterMirrorStreamUwm", func(c appengine.Context, MSU_FUNC, UID, STRUWM, TYP, SRC, TITLE string) {
+	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-stream-mirror-uwm", map[string][]string{"MSU_FUNC": {MSU_FUNC}, "UID": {UID}, "STRUWM": {STRUWM}, "TYP": {TYP}, "SRC": {SRC}, "TITLE": {TITLE}})
+	if _, err := taskqueue.Add(c, t, ""); err != nil {
+		panic(err)
+	}
+})
 // Exec later - Ratings
-var laterQueueRatings = delay.Func("laterQueueRatings", func(c appengine.Context, RTG_FUNC string, UID string, uid string) {
+var laterQueueRatings = delay.Func("laterQueueRatings", func(c appengine.Context, RTG_FUNC, UID, uid string) {
 	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-ratings", map[string][]string{"RTG_FUNC": {RTG_FUNC}, "UID": {UID}, "FROM": {uid}})
 	if _, err := taskqueue.Add(c, t, ""); err != nil {
 		panic(err)
@@ -2704,8 +2719,8 @@ var laterRunAPIs = delay.Func("laterRunAPIs", func(c appengine.Context, UID stri
 })
  
 // Exec later - Run Specific Topics
-var laterRunStream = delay.Func("laterRunStream", func(c appengine.Context, UID string) {
-	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=RUN_TOPIC_STREAM", map[string][]string{"UID": {UID}})
+var laterRunStream = delay.Func("laterRunStream", func(c appengine.Context, UID, UWM string) {
+	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=RUN_TOPIC_STREAM", map[string][]string{"UID": {UID}, "UWM": {UWM}})
 	if _, err := taskqueue.Add(c, t, ""); err != nil {
 		panic(err)
 	}
@@ -9123,8 +9138,9 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 				STR_FILLER3: getCountry(w,r),
 				STR_FILLER4: fmt.Sprintf("%v", checkMobile(w,r)),
 				STR_FILLER5: getSchemeUrl(w,r),
+				STR_FILLER6: TARGET_DESKTOP,
 				STR_FILLER9: getScheme(w,r),
-				BOOL_FILLER1: checkMobile(w,r),
+				//BOOL_FILLER1: checkMobile(w,r),
 			}
 			
 			if isNotesCapable[nameb] == true {
@@ -9468,6 +9484,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					STR_FILLER3: getCountry(w,r),
 					STR_FILLER4: fmt.Sprintf("%v", checkMobile(w,r)),
 					STR_FILLER5: getSchemeUrl(w,r),
+					STR_FILLER6: TARGET_UWM,
 				}
 				if isNotesCapable[nameb] == true {
 					if err := desktopBody2Template.Execute(w, &TEMPDATA3); err != nil {
@@ -10659,7 +10676,14 @@ func getTopicsSource(w http.ResponseWriter, r *http.Request, uid, unum string) (
 	return sid
 					
 }
- 
+//D0066
+//gets the SID (TDSMEDIA-nn) where the Bot settings for the given UWM is stored
+func getBotSource(w http.ResponseWriter, r *http.Request, uid, unum string) (sid string) {
+	cfgName := fmt.Sprintf("SYSTEM_BOT_%v_%v", unum, uid)
+	sid, _ = getTDSCNFG(w,r,0,cfgName)
+	return sid
+					
+}
 //displays the personal UWM settings
 func getPersonalWindows(w http.ResponseWriter, r *http.Request, uid, alFlag, SID string) {
 	switch {
@@ -16741,6 +16765,15 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 			} else {
 				UID = fmt.Sprintf("%v---%v", uid, r.FormValue("u"))
 			}
+			refUwm := getRefUwm(w,r)
+			UWM := ""
+			c.Infof("refUwm: %v", refUwm)
+			if refUwm != "" {
+				UWM = fmt.Sprintf("%v---%v", uid, refUwm)
+			} else {
+				UWM = uid 
+			}
+
 			switch r.FormValue("u") {
 				case "-1":
 					//forsale
@@ -16755,7 +16788,7 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 				default:
 					//topicsource := getTopicsSource(w,r,uid,r.FormValue("u"))
 					//if topicsource != "" {
-						laterRunStream.Call(c, UID)
+						laterRunStream.Call(c, UID, UWM)
 						STRMSG := fmt.Sprintf("<img src=\"/img/cron.png\" width=45 height=45>Your run request has been queued.")
 						//when run request
 						sendChannelMessage(w,r,UID, STRMSG)
@@ -16771,7 +16804,7 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 			k := strings.Index(UID, "---")
 			if UID != "" && k != -1 {
  
-				laterRunStream.Call(c, UID)
+				laterRunStream.Call(c, UID, "")
 				STRMSG := fmt.Sprintf("<img src=\"/img/cron.png\" width=45 height=45>Your run request has been queued.")
 				//when run request
 				sendChannelMessage(w,r,UID, STRMSG)
@@ -22803,7 +22836,54 @@ func people(w http.ResponseWriter, r *http.Request) {
 			writeHTMLHeader(w, 200)
 			w.Write([]byte("Topics source has been set successfully!"))	
 			return				
-	
+		//D0066
+		case "SETBOT":
+			if isAdmin(w,r) == false {
+				fmt.Fprintf(w, "Only admins allowed!")
+				return
+			}
+			//var seturl = '/people?PEOPLE_FUNC=SETBOT&u=' + urlParams["u"] + '&UID=' + aUser.value + '&SID=' + sid;
+			unum := r.FormValue("u")
+			UID := r.FormValue("UID")
+			//UID := "SYSTEM_USER"
+			SID := r.FormValue("SID")
+			SPL := strings.Split(UID, "---")
+			if len(SPL) <= 0 {
+				writeHTMLHeader(w, 200)
+				w.Write([]byte("Unauthorized operation!"))
+				return
+			}
+			if SPL[0] == "" || SPL[1] == "" {
+				writeHTMLHeader(w, 200)
+				w.Write([]byte("Unauthorized operation!"))
+				return
+			}
+			if uid != SPL[0] {
+				writeHTMLHeader(w, 200)
+				w.Write([]byte("Unauthorized operation!"))
+				return
+			}
+			cfgName := fmt.Sprintf("SYSTEM_BOT_%v_%v", unum, uid)
+			g := TDSCNFG{
+					SYS_VER: 1,
+					USER: uid,
+					CFG_ID: cfgName,
+					DAT_TYP: "TXT",
+					NUM_VAL: 0,
+					TXT_VAL: SID,
+					CFG_DESC: "Set via Media Gallery",
+			}
+			key := datastore.NewKey(c, "TDSCNFG", cfgName, 0, nil)
+			if _, err := datastore.Put(c, key, &g); err != nil {
+					panic(err)
+			}
+			//c.Errorf("[S0151]")
+			msgDtl3 := fmt.Sprintf("Bot source has been set successfully! >>> UWM:%v SID: %v", unum, SID)
+			laterNotifyGB.Call(c, "autoNotifyPeopleGB", uid, msgDtl3, ADMMAIL)
+			writeHTMLHeader(w, 200)
+			w.Write([]byte("Bot source has been set successfully!"))
+			return
+
 		case "SYNC_NOTE":
 			//r.ParseForm()
  
@@ -25338,15 +25418,18 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 						if len(SPL3) > 1 {
 							thisNum := str2int(SPL3[0])
 							thisDesc := SPL3[1]
+							//D0066
 							//check topic exists
-							topicsource := getTopicsSource(w,r,uid,SPL3[0])
+							/*topicsource := getTopicsSource(w,r,uid,SPL3[0])
 							tImage := ""
 							if len(topicsource) <= 0 {
 								tImage = "/img/seen2.png"
 							} else {
 								tImage = "/img/seen.png"
 							}
-							isShared := "/img/notok.png"
+							*/
+							//isShared := "/img/notok.png"
+							/*isShared := "/img/delete2.png"
 							//check if shared
 							desktopKey := fmt.Sprintf("desktop%v", thisNum)
 							q := datastore.NewQuery("TDSCATS").Filter("__key__ =", getKeyDesktop(c,desktopKey))
@@ -25362,8 +25445,8 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 										isShared = "/img/ok.png"
 									}
 									break
-								}	
-							}
+								}
+							}*/
 							if thisNum == 0 {
 								p := Desktops {
 									IconLink:		"/img/jswm-desktop.png",
@@ -25373,10 +25456,15 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 									DSLink: 		"/settings?q=desktop0",
 									ULink: 			"/uwm?u=0",
 									USLink: 		"/people-edit?EditPeopleFunc=EDIT_WINDOWS_SUBUWM&u=0",
-									TSource:		tImage,
-									IsShared:		isShared,
-									TLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_TOPICS_SUBUWM&u=0&TOPIC=%v", topicsource),
+									//edwinxxx
+									//TSource:		tImage,
+									//IsShared:		isShared,
+									//TLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_TOPICS_SUBUWM&u=0&TOPIC=%v", topicsource),
+									TLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_TOPICS_SUBUWM&u=0"),
 									RLink: 			"/stream?STR_FUNC=RUN_TOPICS&u=0",
+									//D0066
+									BLink: 			"/bot?bFunc=bchat&u=0",
+									CLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_BOT_SUBUWM&u=0"),
 									SLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_SHARING_SUBUWM&u=0"),
 								}
 								dks = append(dks, p)
@@ -25389,10 +25477,14 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 									DSLink: 		fmt.Sprintf("/settings?q=desktop%v", thisNum),
 									ULink: 			fmt.Sprintf("/uwm?u=%v", thisNum),
 									USLink: 		fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_WINDOWS_SUBUWM&u=%v", thisNum),
-									TSource:		tImage,
-									IsShared:		isShared,
-									TLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_TOPICS_SUBUWM&u=%v&TOPIC=%v", thisNum, topicsource),
+									//TSource:		tImage,
+									//IsShared:		isShared,
+									//TLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_TOPICS_SUBUWM&u=%v&TOPIC=%v", thisNum, topicsource),
+									TLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_TOPICS_SUBUWM&u=%v", thisNum),
 									RLink: 			fmt.Sprintf("/stream?STR_FUNC=RUN_TOPICS&u=%v", thisNum),
+									//D0066
+									BLink: 			fmt.Sprintf("/bot?bFunc=bchat&u=%v", thisNum),
+									CLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_BOT_SUBUWM&u=%v", thisNum),
 									SLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_SHARING_SUBUWM&u=%v", thisNum),
 								}
 								dks = append(dks, p)
@@ -29553,6 +29645,9 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 			queueRatings(w,r)
 		case "queue-add-to-default-sid":
 			queueAddToSid(w,r)
+		//edwinxxx
+		case "queue-stream-mirror-uwm":
+			queueStreamMirrorToUwm(w,r)
 		case "queue-wget-url":
 			queueWgetUrl(w,r)
 		case "queue-notify-gb":
@@ -30032,13 +30127,14 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 			
 		case "RUN_TOPIC_STREAM":
 			UID := r.FormValue("UID")
+			UWM := r.FormValue("UWM")
 			IS_OK_TO_RUN := checkIfOkToRun(w, r)
 			if IS_OK_TO_RUN == false {
 				//donothing
 				fmt.Fprintf(w, "IS_OK_TO_RUN == false")
 				return
 			} else {
-				TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w,r,UID,"D")
+				TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w,r,UID,UWM,"D")
 			}
 	}
 }
@@ -30335,7 +30431,7 @@ func TASK_MEMCACHER_motd(w http.ResponseWriter, r *http.Request, DISP_MODE, TITL
 
 //runs a list of topics for a given desktop; each UWM desktop can have lists of particular topics
 //then it opens windows on the main desktop displaying the Google latest results for that topic
-func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request, UID, MODE string) {
+func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request, UID, UWM, MODE string) {
 	c := appengine.NewContext(r)
 	//c.Infof("TASK_MEMCACHER_RUN_TOPIC_STREAM_UID")	
 	if UID == "" {
@@ -30351,6 +30447,9 @@ func TASK_MEMCACHER_RUN_TOPIC_STREAM_UID(w http.ResponseWriter, r *http.Request,
 	//D0065
 	//uid := SPL[0]
 	uid := UID 
+	if UWM != "" {
+		uid = UWM
+	}
 	topicsource := getTopicsSource(w,r,SPL[0],SPL[1])
 	//c.Infof("topicsource: %v", topicsource)	
 	if len(topicsource) <= 0 {
@@ -32253,6 +32352,32 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, redURL, http.StatusFound)
 		} else {
 			fmt.Fprintf(w, "No topic source has been set for UWM%v. Please check documentation on how to set the topic source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>.", r.FormValue("u"))
+		}
+		return
+	//D0066
+	//edwinxxx
+	case "EDIT_BOT_SUBUWM":
+		botsource := ""
+		docID := 0
+		if r.FormValue("u") == "" {
+			botsource = ""
+		} else {
+			botsource = getBotSource(w,r,uid,r.FormValue("u"))
+			if botsource != "" {
+				SPL := strings.Split(botsource,"-")
+				DOC_ID := "0"
+				if len(SPL) > 1 {
+					DOC_ID = SPL[1]
+				}
+				docID = str2int(DOC_ID)
+			}
+		}
+		
+		if botsource != "" {
+			redURL := fmt.Sprintf("/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v", docID, docID)
+			http.Redirect(w, r, redURL, http.StatusFound)
+		} else {
+			fmt.Fprintf(w, "No bot source has been set for UWM%v. Please check documentation on how to set the bot source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>.", r.FormValue("u"))
 		}
 		return
 
@@ -38516,25 +38641,81 @@ func nlpUpdate(w http.ResponseWriter, r *http.Request, nr *ulapphBotNlpRes) (str
 	}
 	return "Sorry, we can't update the content!"
 }
+//D0066
 //D0062
 //Handles bot messaging via dialogflow
 func ulapphBot(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
+
+	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
+	checkReferrer(w,r)
+	_, uid := checkSession(w,r)
 	//c.Infof("%v", r)
-	bodyBytes, _ := ioutil.ReadAll(r.Body)
+	//D0066
+	//bodyBytes, _ := ioutil.ReadAll(r.Body)
 	//w.Write(bodyBytes)
 	//c.Infof("%v", string(bodyBytes))
-	data := map[string]interface{}{}
-	dec := json.NewDecoder(bytes.NewReader(bodyBytes))
-	dec.Decode(&data)
-	jq := jsonq.NewQuery(data)
+	//data := map[string]interface{}{}
+	//dec := json.NewDecoder(bytes.NewReader(bodyBytes))
+	//dec.Decode(&data)
+	//jq := jsonq.NewQuery(data)
 
 	//get func
-	bFunc, err := jq.String("queryResult","parameters","func")
+	//bFunc, err := jq.String("queryResult","parameters","func")
+	//c.Infof("err: %v", err)
+	//bFunc = strings.TrimSpace(bFunc)
+	//D0066
+	bFunc := r.FormValue("bFunc") 
 	c.Infof("bFunc: %v", bFunc)
-	c.Infof("err: %v", err)
-	bFunc = strings.TrimSpace(bFunc)
-	switch {
+	switch bFunc {
+		case "bchat":
+		uwm := r.FormValue("u")
+		c.Infof("uwm: %v", uwm) 
+		//D0066
+		//edwinxxx
+		botsource := ""
+		//docID := 0
+		//SID := ""
+		if uwm == "" {
+			botsource = ""
+		} else {
+			botsource = getBotSource(w,r,uid,uwm)
+			/*if botsource != "" {
+				SPL := strings.Split(botsource,"-")
+				DOC_ID := "0"
+				if len(SPL) > 1 {
+					DOC_ID = SPL[1]
+				}
+				docID = str2int(DOC_ID)
+			}*/
+		}
+		if botsource != "" {
+			//D0066
+			//edwinxxx
+			//redURL := fmt.Sprintf("/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v", docID, docID)
+			//http.Redirect(w, r, redURL, http.StatusFound)
+			//get bot script
+			BLOB_KEY := contentCheckSid(w,r,botsource)
+			blobChan := make(chan string)
+			go getBlobTextChan(w, r,blobChan, BLOB_KEY)
+			thisCont := <- blobChan
+
+			g := TEMPSTRUCT {
+				STR_FILLER1: "",
+			}
+			if err := htmlBotHdr.Execute(w, &g); err != nil {
+			  panic(err)
+			}
+
+			fmt.Fprintf(w, "%v", thisCont)
+			if err := htmlBotFtr.Execute(w, ""); err != nil {
+			  panic(err)
+			}
+		} else {
+			fmt.Fprintf(w, "No custom bot source has been set for UWM%v. Please check documentation on how to set the bot source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>. You may also proceed with the <a href=\"/chat-bubble/ulapphbot.html?u=%v\">default bot</a>.", r.FormValue("u"), r.FormValue("u"))
+		}
+		return
+		/*
 		case bFunc == "open" || bFunc == "view" || bFunc == "edit" || bFunc == "update":
 			bTarget, err := jq.String("queryResult","parameters","any")
 			//c.Infof("%v", string(bodyBytes))
@@ -38595,8 +38776,9 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			uid := FDBKMAIL 
 			sendChannelMessage(w,r,uid,data)
 			return
+		*/
 
-		case bFunc == "quote":
+		/*case bFunc == "quote":
 			//c.Infof("%v", string(bodyBytes))
 			_, RAN_MSG, _ := getMOTD(w, r, "")
 			if RAN_MSG == "" {
@@ -38609,7 +38791,8 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			w.Write(content)
 			c.Infof("err: %v", err)
 			return
-
+		*/
+		/*
 		case bFunc == "search":
 			bTarget, err := jq.String("queryResult","parameters","search_target")
 			bKey, err := jq.String("queryResult","parameters","any")
@@ -38640,8 +38823,8 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			uid := FDBKMAIL 
 			sendChannelMessage(w,r,uid,data)
 			return
-
-
+		*/
+		/*
 		case bFunc == "convert":
 			bSID, err := jq.String("queryResult","parameters","sid")
 			bNum, err := jq.Int("queryResult","parameters","number")
@@ -38702,6 +38885,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 					SENDGENEMAIL(c, subj, to, "ulapphbot@ulapph.com", msg)
 					c.Infof("SUCCESS: Email sent!")	
 			}
+		*/
 	}
 }
 
@@ -40832,6 +41016,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Set As UWM:</b> setuwm TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Set As Topics:</b> settopics TDSMEDIA-%v<br>", p.MEDIA_ID)
+									fmt.Fprintf(w, "<b>Set As Bot:</b> setbot TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Admin URL:</b> <a href=\"/media?FUNC_CODE=VIEW&MEDIA_ID=%v\">%vmedia?FUNC_CODE=VIEW&MEDIA_ID=%v</a><br>", p.MEDIA_ID, getSchemeUrl(w,r), p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
@@ -41917,6 +42102,52 @@ func media(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+//D0066
+//edwinxxx
+var htmlBotHdr = template.Must(template.New("htmlBotHdr").Parse(htmlBotHdrA))
+const htmlBotHdrA = `
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ULAPPH Bot</title>
+
+	<!-- for mobile screens -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<!-- stylesheets are conveniently separated into components -->
+	<link rel="stylesheet" media="all" href="/lib/css/chat-bubble/setup.css">
+	<link rel="stylesheet" media="all" href="/lib/css/chat-bubble/says.css">
+	<link rel="stylesheet" media="all" href="/lib/css/chat-bubble/reply.css">
+	<link rel="stylesheet" media="all" href="/lib/css/chat-bubble/typing.css">
+	<link rel="stylesheet" media="all" href="/lib/css/chat-bubble/input.css">
+	<style>
+	body {
+		background: #dcdde0;
+	}
+	.bubble-container {
+		height: 100vh;
+	}
+	.bubble-container .input-wrap textarea {
+		margin: 0;
+		width: calc(100% - 30px);
+	}
+	</style>
+</head>
+<body>
+
+<!-- container element for chat window -->
+<div id="chat"></div>
+
+<!-- import the JavaScript file -->
+<script src="/lib/js/chat-bubble/Bubbles.js"></script>
+`
+
+//D0066
+var htmlBotFtr = template.Must(template.New("htmlBotFtr").Parse(htmlBotFtrA))
+const htmlBotFtrA = `
+</body>
+</html>
+`
 
 var htmlD3PopPage = template.Must(template.New("htmlPopPage").Parse(htmlPopPageA))
  
@@ -42867,6 +43098,8 @@ const htmlDriveJSONtoTableA = `
 `
 
 //D0033
+//D0066
+//edwinxxx
 var htmlDesktopsJSONtoTable = template.Must(template.New("htmlDesktopsJSONtoTable").Parse(htmlDesktopsJSONtoTableA))
  
 const htmlDesktopsJSONtoTableA = `
@@ -42898,17 +43131,19 @@ const htmlDesktopsJSONtoTableA = `
 		  {"header":"ID", "key":"id"},
 		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"openDesktop(\'{{"{{"}}uLink{{"}}"}}\', \'UWM-{{"{{"}}name{{"}}"}}\', \'{{"{{"}}id{{"}}"}}\'); return false;\" target=\'UWM-{{"{{"}}name{{"}}"}}\' title=\'Open UWM in new tab\'>{{"{{"}}name{{"}}"}}</a>'},
 		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
-		  {"header":"TSet", "key":"tSource", "template":'<img src=\'{{"{{"}}tSource{{"}}"}}\' width=32 height=32>'},
-		  {"header":"IsShared", "key":"isShared", "template":'<img src=\'{{"{{"}}isShared{{"}}"}}\' width=32 height=32>'},
+		  {"header":"Run Bot", "key":"bLink", "template":'<a href=\'{{"{{"}}bLink{{"}}"}}\' target=\'B-{{"{{"}}name{{"}}"}}\' title=\'Click to bot for this desktop\'><img src=\'/img/robot.png\' width=32 height=32></a>'},
 		  {"header":"Desktop", "key":"dLink", "template":'<a href=\'{{"{{"}}dLink{{"}}"}}\' target=\'D-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
 		  {"header":"UWM", "key":"uLink", "template":'<a href=\'{{"{{"}}uLink{{"}}"}}\' target=\'UWM-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}uLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
 		  {"header":"Desktop Settings", "key":"dsLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dsLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
 		  {"header":"UWM Settings", "key":"usLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}usLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
 		  {"header":"Topics Settings", "key":"tLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}tLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"Bot Settings", "key":"cLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}cLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
 		  {"header":"Share Settings", "key":"sLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}sLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'}
 	  ]
     });
   });
+		  //{"header":"TSet", "key":"tSource", "template":'<img src=\'{{"{{"}}tSource{{"}}"}}\' width=32 height=32>'},
+		  //{"header":"IsShared", "key":"isShared", "template":'<img src=\'{{"{{"}}isShared{{"}}"}}\' width=32 height=32>'},
 
   //populate existing desktops
 	document.getElementById("desktops").innerHTML = "";
@@ -52734,14 +52969,40 @@ func queueWgetUrl(w http.ResponseWriter, r *http.Request) {
 	}
 	return
 }
- 
+//D0066
+//process taskqueue to stream mirror to UWM 
+func queueStreamMirrorToUwm(w http.ResponseWriter, r *http.Request) {
+	c := appengine.NewContext(r)
+	c.Infof("queueStreamMirrorToUwm")
+	MSU_FUNC := r.FormValue("MSU_FUNC")
+	uid := r.FormValue("UID")
+	STRUWM := r.FormValue("STRUWM")
+	//TYP := r.FormValue("TYP")
+	SRC := r.FormValue("SRC")
+	CAPTION := r.FormValue("TITLE")
+	//edwinxxx
+	switch MSU_FUNC {
+		case "STRUWM-IMAGE":
+			UID := ""
+			if _, err := strconv.Atoi(STRUWM); err != nil {
+				UID = uid
+			} else {
+				UID = fmt.Sprintf("%v---%v", uid, STRUWM)
+			}
+			data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_MIRROR@888@%v@888@%v", SRC, CAPTION)
+			c.Infof("%v", data)
+			sendChannelMessage(w,r,UID,data)
+			dummyCmd(w,r,uid)
+
+	}
+}
+
 //process taskqueue to embed source to SIDs
 func queueAddToSid(w http.ResponseWriter, r *http.Request) {
- 
     c := appengine.NewContext(r)
 	ATS_FUNC := r.FormValue("ATS_FUNC")
 	UID := r.FormValue("UID")
-    SID := r.FormValue("SID")
+	SID := r.FormValue("SID")
 	TYP := r.FormValue("TYP")
 	SRC := r.FormValue("SRC")
 	CAPTION := r.FormValue("TITLE")
@@ -61594,8 +61855,9 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>WebcamJS Test Page - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<title>WebcamJS MirrorB - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
+	<link rel="stylesheet" href="/lib/css/buttons/buttons.css">
 	<style type="text/css">
 		body { font-family: Helvetica, sans-serif; }
 		h2, h3 { margin-top:0; }
@@ -61622,17 +61884,42 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 	</script>
 	
 	<div id="note"></div>
-		<button onClick="take_snapshot()"><img src="/img/num1.jpg" width=60 height=60/ title="Take Snapshot"></button>
+		<!--button onClick="take_snapshot()"><img src="/img/num1.jpg" width=60 height=60/ title="Take Snapshot"></button>
 		<button onClick="setTimeout(function() { take_snapshot10s(); }, 10000);"><img src="/img/num2.png" width=60 height=60 title="Take Snapshot after 10s"/></button>
 		<button onClick="take_snapshot10s1m();"><img src="/img/num3.jpg" width=60 height=60 title="Take Snapshot every 10s for 1m"/></button>
 		<button onClick="take_snapshot1m1h();"><img src="/img/num4.png" width=60 height=60 title="Take Snapshot every 1m for 1h"/></button>
-		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button>
+		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button-->
 		<form>
-		<input type=button value="1-Take Snapshot" onClick="take_snapshot()">
-		<input type=button value="2-Take Snapshot after 10s" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);">
-		<input type=button value="3-Take Snapshot every 10s for 1m" onClick="take_snapshot10s1m();">
-		<input type=button value="4-Take Snapshot every 1m for 1h" onClick="take_snapshot1m1h();">
-		<input type=button value="5-Take Snapshot every 30m for 12h" onClick="take_snapshot30m12h();">
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-highlight">1-Take Snapshot</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-highlight">2-Take Snapshot after 10s</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot10s1m();" class="button button-pill button-raised button-highlight">3-Take Snapshot every 10s for 1m</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m1h();" class="button button-pill button-raised button-highlight">4-Take Snapshot every 1m for 1h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m12h();" class="button button-pill button-raised button-highlight">5.1-Take Snapshot every 1m for 12h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot30m12h();" class="button button-pill button-raised button-highlight">5.2-Take Snapshot every 30m for 12h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m24h();" class="button button-pill button-raised button-highlight">6.1-Take Snapshot every 1m for 24h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot30m24h();" class="button button-pill button-raised button-highlight">6.2-Take Snapshot every 30m for 24h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m1y();" class="button button-pill button-raised button-highlight">7.1-Take Snapshot every 1m for 1year</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
+		</span>
 		<a href="/tools?FUNC=MIRROR">Big Mirror</a>
 	</form>
  
@@ -61640,7 +61927,8 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 	
 	<div id="target">
 		Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
-		Add caption or title<input type="text" name="title" id="title" value="" maxlength=500>
+		<br>Add caption or title<input type="text" name="title" id="title" value="" maxlength=500>
+		<br>Stream as wallpapers in UWM:<input type="text" name="uwm" id="uwm" value="" maxlength=50>
 	</div>
 	<div id="results">Your captured image will appear here...</div>
 	<div id="imgdata"></div>
@@ -61658,8 +61946,9 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>WebcamJS Test Page - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+	<title>WebcamJS MirrorS - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
 	<link rel="shortcut icon" href="/img/favicon.ico"/>
+	<link rel="stylesheet" href="/lib/css/buttons/buttons.css">
 	<style type="text/css">
 		body { font-family: Helvetica, sans-serif; }
 		h2, h3 { margin-top:0; }
@@ -61686,25 +61975,52 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 	</script>
 	
 	<div id="note"></div>
-		<button onClick="take_snapshot()"><img src="/img/num1.jpg" width=60 height=60/ title="Take Snapshot"></button>
+		<!--button onClick="take_snapshot()"><img src="/img/num1.jpg" width=60 height=60/ title="Take Snapshot"></button>
 		<button onClick="setTimeout(function() { take_snapshot10s(); }, 10000);"><img src="/img/num2.png" width=60 height=60 title="Take Snapshot after 10s"/></button>
 		<button onClick="take_snapshot10s1m();"><img src="/img/num3.jpg" width=60 height=60 title="Take Snapshot every 10s for 1m"/></button>
 		<button onClick="take_snapshot1m1h();"><img src="/img/num4.png" width=60 height=60 title="Take Snapshot every 1m for 1h"/></button>
-		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button>
+		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button-->
 		<form>
-		<input type=button value="1-Take Snapshot" onClick="take_snapshot()">
-		<input type=button value="2-Take Snapshot after 10s" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);">
-		<input type=button value="3-Take Snapshot every 10s for 1m" onClick="take_snapshot10s1m();">
-		<input type=button value="4-Take Snapshot every 1m for 1h" onClick="take_snapshot1m1h();">
-		<input type=button value="5-Take Snapshot every 30m for 12h" onClick="take_snapshot30m12h();">
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-highlight">1-Take Snapshot</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-highlight">2-Take Snapshot after 10s</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot10s1m();" class="button button-pill button-raised button-highlight">3-Take Snapshot every 10s for 1m</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m1h();" class="button button-pill button-raised button-highlight">4-Take Snapshot every 1m for 1h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m12h();" class="button button-pill button-raised button-highlight">5.1-Take Snapshot every 1m for 12h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot30m12h();" class="button button-pill button-raised button-highlight">5.2-Take Snapshot every 30m for 12h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m24h();" class="button button-pill button-raised button-highlight">6.1-Take Snapshot every 1m for 24h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot30m24h();" class="button button-pill button-raised button-highlight">6.2-Take Snapshot every 30m for 24h</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot1m1y();" class="button button-pill button-raised button-highlight">7.1-Take Snapshot every 1m for 1year</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
+		</span>
 		<a href="/tools?FUNC=MIRROR">Big Mirror</a>
 	</form>
 	
-	<script type="text/javascript" src="/js/html-mirror2.js"></script>
+	<!--script type="text/javascript" src="/js/html-mirror2.js"></script-->
+	<script type="text/javascript" src="/js/html-mirror.js"></script>
 	
 	<div id="target">
 		Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
-		Add caption or title<input type="text" name="title" id="title" value="" maxlength=500>
+		<br>Add caption or title<input type="text" name="title" id="title" value="" maxlength=500>
+		<br>Stream as wallpapers in UWM:<input type="text" name="uwm" id="uwm" value="" maxlength=50>
 	</div>
 	<div id="results">Your captured image will appear here...</div>
 	<div id="imgdata"></div>
@@ -62524,7 +62840,7 @@ var desktopBody2Template = template.Must(template.New("desktopBody2Template").Pa
 		<li class="here" id="stm-logout"><a href="/logout" title="Logout {{.STR_FILLER5}}"><img src="/img/logout-mini.png" width="20" height="20" title="Logout {{.STR_FILLER5}}"></a></li>
 		
 		<li class="here" id="stm-alldesks">
-			<input type="hidden" value="'/tools?FUNC=ALL_DESKTOPS', 500, 300, 'left', 'top', {title: 'All Desktops', icon: '/img/jswm-web.png'}" size="60" id="alldesks" />
+			<input type="hidden" value="'/tools?FUNC=ALL_DESKTOPS&u={{.STR_FILLER6}}', 500, 300, 'left', 'top', {title: 'All Desktops', icon: '/img/jswm-web.png'}" size="60" id="alldesks" />
 			<a href="#page" onclick="eval('windowManager.openURI(' + $('alldesks').value + ');');">
 				<img src="/img/desktop.png" width="20" height="20" title="Desktops">
 				</img>
@@ -62880,7 +63196,7 @@ var desktopBody2TemplateNoSticky = template.Must(template.New("desktopBody2Templ
 		<li class="here" id="stm-logout"><a href="/logout" title="Logout {{.STR_FILLER3}}"><img src="/img/logout-mini.png" width="20" height="20" title="Logout {{.STR_FILLER5}}"></a></li>
 		
 		<li class="here" id="stm-alldesks">
-			<input type="hidden" value="'/tools?FUNC=ALL_DESKTOPS', 500, 300, 'left', 'top', {title: 'All Desktops', icon: '/img/jswm-web.png'}" size="60" id="alldesks" />
+			<input type="hidden" value="'/tools?FUNC=ALL_DESKTOPS&u={{.STR_FILLER6}}', 500, 300, 'left', 'top', {title: 'All Desktops', icon: '/img/jswm-web.png'}" size="60" id="alldesks" />
 			<a href="#page" onclick="eval('windowManager.openURI(' + $('alldesks').value + ');');">
 				<img src="/img/desktop.png" width="20" height="20" title="Desktops">
 				</img>
@@ -67134,6 +67450,10 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		EMBED_R := r.FormValue("EMBED")
 		EMBED_R2 := strings.Replace(EMBED_R, "[", "", -1)
 		EMBED := strings.Replace(EMBED_R2, "]", "", -1)
+		//edwinxxx
+		STRUWM_R := r.FormValue("STRUWM")
+		STRUWM_R2 := strings.Replace(STRUWM_R, "[", "", -1)
+		STRUWM := strings.Replace(STRUWM_R2, "]", "", -1)
 		OPT_R := r.FormValue("OPT")
 		OPT_R2 := strings.Replace(OPT_R, "[", "", -1)
 		OPT := strings.Replace(OPT_R2, "]", "", -1)		
@@ -67473,19 +67793,21 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		
 		//if EMBED is populated; add image to target slide
 		if strings.TrimSpace(EMBED) != "" && DATA_TYPE == "image" {
- 
 			laterAddToDefaultSid.Call(c, "ATS-IMAGE", uid, EMBED, DATA_TYPE, thisURL, TITLE)
-			
 		} else {
 			if nStat == "OK" && nMediaID > 0 {
 				//send to default slide
 				EMBED := fmt.Sprintf("TDSSLIDE-%v", nMediaID)
 				TITLE := thisIdxKey
- 
 				laterAddToDefaultSid.Call(c, "ATS-IMAGE", uid, EMBED, DATA_TYPE, thisURL, TITLE)
 			}
 		}
-		
+		//D0066
+		//edwinxxx
+		//if stream mirror images to uwm?
+		if strings.TrimSpace(STRUWM) != "" && DATA_TYPE == "image" {
+			laterMirrorStreamUwm.Call(c, "STRUWM-IMAGE", uid, STRUWM, DATA_TYPE, thisURL, TITLE)
+		}
 		//abort if target is encrypted
 		if isEncrypted(w,r,EMBED) == true {
 			panic(fmt.Errorf("cannot append to encrypted file..."))
@@ -69490,11 +69812,13 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			FL_ADD_WP := pVals["FL_ADD_WP"]
 			DOC_STAT := pVals["DOC_STAT"]
 			EMBED := pVals["EMBED"]
+			//D0066
+			STRUWM := pVals["STRUWM"]
 
 			OPT := pVals["OPT"]
 			//DESKTOP := pVals["DESKTOP"]
 			bKey := string(file[0].BlobKey)
-			reqStr := fmt.Sprintf("/serve-media/?DATA_TYPE=%s&TITLE=%s&DESC=%s&CATEGORY=%s&blobKey5=%v&FL_SHARED=%v&FILE_NAME=%v&MIME_TYPE=%v&FL_ADD_WP=%v&UID=%v&DOC_STAT=%v&EMBED=%v&OPT=%v", TYPE, TITLE, DESC, CATEGORY, bKey, FL_SHARED, FILE_NAME, MIME_TYPE, FL_ADD_WP, UID, DOC_STAT, EMBED, OPT)
+			reqStr := fmt.Sprintf("/serve-media/?DATA_TYPE=%s&TITLE=%s&DESC=%s&CATEGORY=%s&blobKey5=%v&FL_SHARED=%v&FILE_NAME=%v&MIME_TYPE=%v&FL_ADD_WP=%v&UID=%v&DOC_STAT=%v&EMBED=%v&OPT=%v&STRUWM=%v", TYPE, TITLE, DESC, CATEGORY, bKey, FL_SHARED, FILE_NAME, MIME_TYPE, FL_ADD_WP, UID, DOC_STAT, EMBED, OPT, STRUWM)
 			http.Redirect(w, r, reqStr, http.StatusFound)
 	
 	}
@@ -75287,7 +75611,8 @@ func API_utube(w http.ResponseWriter, r *http.Request) {
 					case "youtube#video":
  
 							//videos[item.Id.VideoId] = item.Snippet.Title
-							thisDetail := fmt.Sprintf("<img src=\"%v\" align=\"middle\"> %v", item.Snippet.Thumbnails.Default.Url, item.Snippet.Title)
+							//thisDetail := fmt.Sprintf("<img src=\"%v\" align=\"middle\"> %v", item.Snippet.Thumbnails.Default.Url, item.Snippet.Title)
+							thisDetail := item.Snippet.Title
 							videos[item.Id.VideoId] = thisDetail
 							
 					//case "youtube#channel":
@@ -75296,18 +75621,19 @@ func API_utube(w http.ResponseWriter, r *http.Request) {
 					case "youtube#playlist":
  
 							//playlists[item.Id.PlaylistId] = item.Snippet.Title
-							thisDetail := fmt.Sprintf("<img src=\"%v\" align=\"middle\"> %v", item.Snippet.Thumbnails.Default.Url, item.Snippet.Title)
+							//thisDetail := fmt.Sprintf("<img src=\"%v\" align=\"middle\"> %v", item.Snippet.Thumbnails.Default.Url, item.Snippet.Title)
+							thisDetail := item.Snippet.Title
 							playlists[item.Id.PlaylistId] = thisDetail
 					}
 			}
-			fmt.Fprintf(w, "<ul class=\"able-playlist\" data-player=\"video1\" data-embedded>")
+			//fmt.Fprintf(w, "<ul class=\"able-playlist\" data-player=\"video1\" data-embedded>")
 			for id, title := range videos {
-					//fmt.Printf("[%v] %v\n", id, title)
- 
-					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/watch?v=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"/media?FUNC_CODE=YVP&YID=%v&SEARCH_KEY=\">%v (VID)</a></li>", id, id, title)
+					//fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/watch?v=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"/media?FUNC_CODE=YVP&YID=%v&SEARCH_KEY=\">%v (VID)</a></li>", id, id, title)
+					fmt.Fprintf(w, "<iframe src=\"https://www.youtube.com/embed/%v\"></iframe><br><a href=\"https://www.youtube.com/embed/%v?autoplay=1\" title=\"%v\">VID</a><br>", id, id, title)
 			}
 			for id, title := range playlists {
-					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/embed/videoseries?list=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"https://www.youtube.com/embed/videoseries?list=%v\">%v (PL)</a></li>", id, id, title)
+					//fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/embed/videoseries?list=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"https://www.youtube.com/embed/videoseries?list=%v\">%v (PL)</a></li>", id, id, title)
+					fmt.Fprintf(w, "<iframe src=\"https://www.youtube.com/embed/videoseries?list=%v\"></iframe><br><a href=\"https://www.youtube.com/embed/videoseries?list=%v&autoplay=1\" title=\"%v\">PL</a><br>", id, id, title)
 			}
 			
 		case "3":

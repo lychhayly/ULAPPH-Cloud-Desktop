@@ -250,6 +250,19 @@ function procMessage(obj) {
 				}
 				break;
 				
+			//D0066
+			case "SYS_STRUWM_MIRROR":
+				console.log("SYS_STRUWM_MIRROR");
+				var src = cmdata[3];
+				//var cap = cmdata[4];
+				console.log(src);
+				if (ValidURL(bgImgUrl) == true) {
+                                	document.getElementById('page').style.backgroundImage = "url(" + src + ")";
+					var rn = document.getElementById("ranid")
+					rn.value = "pause";
+                        	}
+				break;
+
 			case "SYS_GOOGLE_SEARCH":
 				var kw = cmdata[3];
 				//var uid = cmdata[4];
@@ -649,6 +662,8 @@ function newJSWMWindow() {
 	var us = tgt.toUpperCase();
 	var sb = us.indexOf("SETBG ");
 	var su = us.indexOf("SETUWM ");
+	//D0066
+	var sa = us.indexOf("SETBOT ");
 	var st = us.indexOf("SETTOPIC ");
 	var st2 = us.indexOf("SETTOPICS ");
 	var st3 = us.indexOf("SETNAME ");
@@ -681,7 +696,7 @@ function newJSWMWindow() {
 			setuwm(SPS[1]);
 			return;
 		} else {
-			alertify.success("ERROR: Example format: setuwm TDSMEDIA-1"); 
+			alertify.error("ERROR: Example format: setuwm TDSMEDIA-1"); 
 			return;
 		}
 		return;
@@ -699,7 +714,25 @@ function newJSWMWindow() {
 			settopic(SPS[1]);
 			return;
 		} else {
-			alertify.success("ERROR: Example format: settopic TDSMEDIA-1"); 
+			alertify.error("ERROR: Example format: settopic TDSMEDIA-1"); 
+			return;
+		}
+		return;
+	}
+	//D0066
+	//setbot
+	if (sa >= 0) {
+		//set media as bot source
+		if (uwms.value == "") {
+			alertify.success("ERROR: Operation not allowed."); 
+			return;			
+		}
+		var SPS = us.split(" ");
+		if (SPS[0] == "SETBOT" && SPS[1] != "") {
+			setbot(SPS[1]);
+			return;
+		} else {
+			alertify.error("ERROR: Example format: setbot TDSMEDIA-1"); 
 			return;
 		}
 		return;
@@ -1003,6 +1036,34 @@ function setuwm(sid) {
 	  }
 	  
 	var seturl = '/people?PEOPLE_FUNC=SETUWM&u=' + urlParams["u"] + '&UID=' + aUser.value + '&SID=' + sid;
+	xmlhttpset.open("GET",seturl,true);
+	xmlhttpset.send();
+	 xmlhttpset.onreadystatechange=function()
+	  {
+	  if (xmlhttpset.readyState==4 && xmlhttpset.status==200)
+		{
+		var currVal = xmlhttpset.responseText;
+			if (currVal != "") {
+				alertify.success(currVal); 
+				return;
+			}
+		return;
+		}
+	 }
+	 return;
+};
+//D0066
+function setbot(sid) {
+	if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xmlhttpset=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xmlhttpset=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  }
+	  
+	var seturl = '/people?PEOPLE_FUNC=SETBOT&u=' + urlParams["u"] + '&UID=' + aUser.value + '&SID=' + sid;
 	xmlhttpset.open("GET",seturl,true);
 	xmlhttpset.send();
 	 xmlhttpset.onreadystatechange=function()
