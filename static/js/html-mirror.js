@@ -11,7 +11,7 @@ function take_snapshot() {
 	Webcam.snap( function(data_uri) {
 		// display results in page
 		document.getElementById('results').innerHTML =
-			'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
+			'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=5"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
 			'<img src="'+data_uri+'"/>';
 		//ulapph
 		document.getElementById('imgdata').value = data_uri;
@@ -29,7 +29,7 @@ function take_snapshot10s() {
 	Webcam.snap( function(data_uri) {
 		// display results in page
 		document.getElementById('results').innerHTML =
-			'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
+			'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=5"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
 			'<img src="'+data_uri+'"/>';
 		//ulapph
 		document.getElementById('imgdata').value = data_uri;
@@ -83,6 +83,96 @@ function take_snapshot30m12h() {
 		take_snapshot();
 		if( seconds > 0 ) {
 			setTimeout(tick, 1800000);
+		} else {
+			//alert("Done taking pics!");
+			document.body.style.background = "white";
+		}
+	}
+	tick();
+};
+
+function take_snapshot1m12h() {
+	var seconds = 720;
+	function tick() {
+		var counter = document.getElementById("counter");
+		seconds--;
+		//counter.innerHTML = '<h1>' + "0:" + (seconds < 10 ? "0" : "") + String(seconds) + '</h1>';
+		//alert("hi edwin!");
+		take_snapshot();
+		if( seconds > 0 ) {
+			setTimeout(tick, 60000);
+		} else {
+			//alert("Done taking pics!");
+			document.body.style.background = "white";
+		}
+	}
+	tick();
+};
+
+function take_snapshot30m24h() {
+	var seconds = 48;
+	function tick() {
+		var counter = document.getElementById("counter");
+		seconds--;
+		//counter.innerHTML = '<h1>' + "0:" + (seconds < 10 ? "0" : "") + String(seconds) + '</h1>';
+		//alert("hi edwin!");
+		take_snapshot();
+		if( seconds > 0 ) {
+			setTimeout(tick, 1800000);
+		} else {
+			//alert("Done taking pics!");
+			document.body.style.background = "white";
+		}
+	}
+	tick();
+};
+
+function take_snapshot1m24h() {
+	var seconds = 1440;
+	function tick() {
+		var counter = document.getElementById("counter");
+		seconds--;
+		//counter.innerHTML = '<h1>' + "0:" + (seconds < 10 ? "0" : "") + String(seconds) + '</h1>';
+		//alert("hi edwin!");
+		take_snapshot();
+		if( seconds > 0 ) {
+			setTimeout(tick, 60000);
+		} else {
+			//alert("Done taking pics!");
+			document.body.style.background = "white";
+		}
+	}
+	tick();
+};
+
+function take_snapshot30m1y() {
+	var seconds = 262800;
+	function tick() {
+		var counter = document.getElementById("counter");
+		seconds--;
+		//counter.innerHTML = '<h1>' + "0:" + (seconds < 10 ? "0" : "") + String(seconds) + '</h1>';
+		//alert("hi edwin!");
+		take_snapshot();
+		if( seconds > 0 ) {
+			setTimeout(tick, 1800000);
+		} else {
+			//alert("Done taking pics!");
+			document.body.style.background = "white";
+		}
+	}
+	tick();
+};
+
+function take_snapshot1m1y() {
+	var seconds = 525600;
+	function tick() {
+		var counter = document.getElementById("counter");
+		seconds--;
+		//counter.innerHTML = '<h1>' + "0:" + (seconds < 10 ? "0" : "") + String(seconds) + '</h1>';
+		//alert("hi edwin!");
+		take_snapshot();
+		if( seconds > 0 ) {
+			setTimeout(tick, 60000);
 		} else {
 			//alert("Done taking pics!");
 			document.body.style.background = "white";

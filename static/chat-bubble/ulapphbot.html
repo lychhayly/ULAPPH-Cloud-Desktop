@@ -162,6 +162,10 @@ var convo = {
 	    {
 	      question: "Show Random",
 	      answer: "showRandoms"
+	    },
+	    {
+	      question: "Open Webapp",
+	      answer: "showWebapp"
 	    }
 	  ]
 	},
@@ -257,7 +261,7 @@ showTopicNews = function () {
 	while (match = search.exec(query))
 	   urlParams[decode(match[1])] = decode(match[2]);
    
-    var msg = "<a href=\"/stream?STR_FUNC=RUN_TOPICS&u=" + urlParams["u"] + "\" target=\"topicNews\">Run UWM Topics Search</a>";
+    var msg = "<a href=\"/stream?STR_FUNC=RUN_TOPICS&u=" + urlParams["u"] + "\" target=\"topicNews\">Run UWM" + urlParams["u"] + " Topics Search</a>";
 	  chatWindow.talk(
 	    {
 	      "showTopicNewsRes": {
@@ -646,6 +650,10 @@ function blankDesktop() {
 	} else {
 		alert("Please enter desktop name");
 	}
+}
+
+function showWebapp() {
+	window.open("/webapp/", "_blank");
 }
 
 function reloadPage() {
