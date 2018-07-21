@@ -217,8 +217,11 @@ handlers:
   
 - url: /people-edit
   script: _go_app
-  
-- url: /invitation
+
+#D0068  
+#- url: /invitation
+#  script: _go_app
+- url: /orgchart
   script: _go_app
 
 - url: /advertisement

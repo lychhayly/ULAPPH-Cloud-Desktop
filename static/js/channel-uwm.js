@@ -692,7 +692,7 @@ function newJSWMWindow() {
 			return;			
 		}
 		var SPS = us.split(" ");
-		if (SPS[0] == "SETUWM" && SPS[1] != "") {
+		if (SPS[0] == "SETUWM" && SPS[1] != "" && SPS[1] != "SETUWM") {
 			setuwm(SPS[1]);
 			return;
 		} else {
