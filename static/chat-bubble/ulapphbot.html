@@ -166,29 +166,65 @@ var convo = {
 	    {
 	      question: "Open Webapp",
 	      answer: "showWebapp"
-	    }
+	    },
+		{
+	      question: "content shortcuts",
+	      answer: "content-functions"
+	    }	
 	  ]
 	},
   "iceListFunctions": {
     says: ["Here are some text you can type:",
-    			"<i>view the slide num 3</i>",
-    			"<i>view the article num 3</i>",
-    			"<i>view the media num 3</i>",
-    			"<i>update the slide num 3</i>",
-    			"<i>update the article num 3</i>",
-    			"<i>update the media num 3</i>",
-    			"<i>motd</i>",
-    			"<i>search internal keyword</i>",
-    			"<i>search external keyword</i>",
-    			"<i>open the webapp</i>",
-    			"<i>open the slides with music</i>",
-    			"<i>open the articles with music</i>",
-    			"<i>open the wallpapers</i>",
-    			"<i>recent in slides, articles or media</i>",
-    			"<i>recent in comments</i>",
-    		"You can type your text below...",
+    			"<i>view/update/edit the slide num X</i>",
+    			"<i>view/update/edit the article num X</i>",
+    			"<i>view/update/edit the media num X</i>",
+    			"<i>search internal/external keyword</i>",
+    		"You can also select from below..."
     	],
-    reply: []
+    reply: [
+		{
+	      question: "content shortcuts",
+	      answer: "content-functions"
+	    }			
+		]
+  },
+  "content-functions": {
+    says: ["Click below content functions!"
+    	],
+    reply: [
+		{
+	      question: "open the slides with music",
+	      answer: "funcCallNlpBackend1"
+	    },
+		{
+	      question: "open the articles with music",
+	      answer: "funcCallNlpBackend2"
+	    },
+		{
+	      question: "open the webapp",
+	      answer: "funcCallNlpBackend3"
+	    },	
+		{
+	      question: "open the wallpapers",
+	      answer: "funcCallNlpBackend4"
+	    },
+		{
+	      question: "recent in slides",
+	      answer: "funcCallNlpBackend5"
+	    },	
+		{
+	      question: "recent in articles",
+	      answer: "funcCallNlpBackend6"
+	    },
+		{
+	      question: "recent in media",
+	      answer: "funcCallNlpBackend7"
+	    },
+		{
+	      question: "recent in comments",
+	      answer: "funcCallNlpBackend8"
+	    }			
+		]
   },
   "showRandoms": {
 	  says: ["Great! You'll enjoy this.", "What would like to do?"],
@@ -225,6 +261,10 @@ var convo = {
 	    {
 	      question: "Open Search Widget",
 	      answer: "nlpSucceedsOpenSearchWidget"
+	    },
+	    {
+	      question: "List functions",
+	      answer: "iceListFunctions"
 	    },
 	    {
 	      question: "Start Over",
@@ -456,6 +496,97 @@ funcRandomTips = function () {
 				},
 				"randome-tips"
 			)
+			return;
+		}
+	  }
+}
+
+//D0068
+funcCallNlpBackend1 = function () {
+	var msg = "open the slides with music";
+	funcCallNlpBackendNow(msg);
+}
+
+funcCallNlpBackend2 = function () {
+	var msg = "open the articles with music";
+	funcCallNlpBackendNow(msg);
+}
+
+funcCallNlpBackend3 = function () {
+	var msg = "open the webapp";
+	funcCallNlpBackendNow(msg);
+}
+
+funcCallNlpBackend4 = function () {
+	var msg = "open the wallpapers";
+	funcCallNlpBackendNow(msg);
+}
+
+funcCallNlpBackend5 = function () {
+	var msg = "recent in slides";
+	funcCallNlpBackendNow(msg);
+}
+
+funcCallNlpBackend6 = function () {
+	var msg = "recent in articles";
+	funcCallNlpBackendNow(msg);
+}
+
+funcCallNlpBackend7 = function () {
+	var msg = "recent in media";
+	funcCallNlpBackendNow(msg);
+}	
+
+funcCallNlpBackend8 = function () {
+	var msg = "recent in comments";
+	funcCallNlpBackendNow(msg);
+}
+
+
+funcCallNlpBackend7 = function () {
+	var msg = "open the slides with music";
+	funcCallNlpBackendNow(msg);
+}
+
+funcCallNlpBackendNow = function (msg) {
+	//call nlp
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr3=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr3=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Calling nlp backend...");
+	xhr3.open("POST","/nlp?p=" + msg, true); 
+	xhr3.send();
+	
+	 xhr3.onreadystatechange=function(convo)
+	  {
+	  if (xhr3.readyState==4 && xhr3.status==200)
+		{
+		var currVal = xhr3.responseText;
+			console.log(currVal);
+			switch (currVal) {
+				case "nlp-success-invalid-function":
+					chatWindow.talk(convo, currVal);
+					break;
+				case "nlp-failed":
+					chatWindow.talk(convo, currVal);
+					break;
+				default:
+				  chatWindow.talk(
+				    {
+				      "i-dont-get-it": {
+				        says: [currVal],
+				        //reply: o.convo[o.standingAnswer].reply
+				        reply: []
+				      }
+				    },
+				    "i-dont-get-it"
+				  )
+			}
 			return;
 		}
 	  }

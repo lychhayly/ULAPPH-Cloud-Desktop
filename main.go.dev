@@ -1,12 +1,12 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#15/07/2018 05:03:59 PM PST
+//LAST_UPGRADE#21/07/2018 07:26:59 PM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ULAPPH CLOUD DESKTOP SYSTEM
 // ULAPPH Cloud Desktop is a web-based desktop that runs on Google cloud platform and accessible via browsers on different PC and mobile devices.
 // COPYRIGHT (c) 2014-2018 Edwin D. Vinas, Ulapph Cloud Desktop System
-// COPYRIGHT (c) 2017-2018 Accenture, Opensource Version
+// COPYRIGHT (c) 2017-2018 Accenture, ULAPPH Cloud Desktop, Opensource Version
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0001
 //REV DATE: 	2014-Sep-02
@@ -342,6 +342,16 @@
 //REV ID: 		D0066
 //REV DATE: 		2018-July-15
 //REV DESC:	  	Added bot settings per uwm 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0067
+//REV DATE: 		2018-July-21
+//REV DESC:	  	Added desktop category/group 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0068
+//REV DATE: 		2018-July-21
+//REV DESC:	  	Added GoJS Org Chart 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1152,6 +1162,8 @@ type Desktops struct {
 	//D0066
 	BLink string `json:"bLink"`
 	CLink string `json:"cLink"`
+	//D0067
+	DGrp string `json:"cGrp"`
 }
 
 //icons
@@ -1970,6 +1982,8 @@ var (
 		".htmlHeaderBodyToken": parsePresentTemplate("htmlHeaderBodyToken.txt"),
 		".ui-tree": parsePresentTemplate("angular-ui-tree.txt"),
 		".turnjs": parsePresentTemplate2("turnjs-template.html"),
+		//D0068
+		".orgchart": parsePresentTemplate2("gojs-orgchart.html"),
 	}
 	contactEmail      = "demo.ulapph@gmail.com"
 	gitHubCredentials = ""
@@ -2076,6 +2090,8 @@ type TDSCATS struct {
 	CAT_DESC string
 	CAT_SHARED string
 	CAT_PASS string
+	//D0067
+	CAT_GRP string
 }
 //Channel datastore
 type Channelstore struct {
@@ -2905,7 +2921,9 @@ func init() {
 		http.HandleFunc("/people-edit", peopleEdit)
 		http.HandleFunc("/contact-us", contactUs)
 		http.HandleFunc("/registration", registration)
-		http.HandleFunc("/invitation", invitation)
+		//D0067
+		//http.HandleFunc("/invitation", invitation)
+		http.HandleFunc("/orgchart", orgchart)
 		http.HandleFunc("/advertisement", advertisement)
 		http.HandleFunc("/create-channel", createChannel)
 		http.HandleFunc("/message-channel", channelMessageHandler)
@@ -5845,8 +5863,8 @@ func sysmsg(w http.ResponseWriter, r *http.Request) {
 	return
 }
  
- 
-func invitation(w http.ResponseWriter, r *http.Request) {
+//D0068 
+/*func invitation(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 	checkReferrer(w,r)
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
@@ -5896,7 +5914,55 @@ func invitation(w http.ResponseWriter, r *http.Request) {
    }
  
 }
- 
+*/
+//D0068 
+//Added GoJS Org chart
+func orgchart(w http.ResponseWriter, r *http.Request) {
+	//c := appengine.NewContext(r)
+	t := presentTemplates[path.Ext(".orgchart")]
+	if t == nil {
+		panic(t)
+	}
+
+	doc := new(TEMPSTRUCT)
+	//doc.STR_FILLER1	= d
+	//doc.STR_FILLER2	= n
+	//doc.STR_FILLER3	= uid
+	//doc.BOOL_FILLER1 = true
+	//get cache
+	//cKeyAll2 := fmt.Sprintf("STARTWIN_CACHE_%v", uid)
+	//mens := getBytMemcacheValueByKey(w,r,cKeyAll2)
+	//if mens == nil {
+	//	//force refresh
+	//	doc.BOOL_FILLER1 = false
+	//}
+	//doc.HTM_FILLER1 = template.HTML(string(mens))
+	data := struct {
+		*TEMPSTRUCT
+		Template    *template.Template
+	}{
+		doc,
+		t,
+	}
+	//fmt.Fprintf(w, "%v", data)
+	//t.Execute(w, &data)
+	buf := &bytes.Buffer{}
+	err := t.Execute(buf, &data)
+	if err != nil {
+		// Send back error message, for example:
+		msgDtl := url.QueryEscape(fmt.Sprintf("[U00202] Template error: %v", err))
+		msgTyp := "error"
+		action := "U00202"
+		sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, "", action)
+		http.Redirect(w, r, sysReq, http.StatusFound)
+		return
+	} else {
+		// No error, send the content, HTTP 200 response status implied
+		buf.WriteTo(w)
+	}
+
+}
+
 func advertisement(w http.ResponseWriter, r *http.Request) {
     c := appengine.NewContext(r)
 	//var buffer3 bytes.Buffer
@@ -7008,9 +7074,25 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				s := bufio.NewScanner(reader)
 				
 				//secCtr := 0
+				//D0067
+				thisGrp := ""
 				for s.Scan() {
 					if len(s.Text()) > 0 {
+						//c.Infof("%v", s.Text())
 						thisStr := fmt.Sprintf("%v", s.Text())
+						//D0067
+						if len(thisStr) > 3 {
+						if string(thisStr[0]) == "#" && string(thisStr[1]) == "<" && string(thisStr[2]) != "/" && thisGrp == "" {
+							//start group
+							//#<Basic Desktops>
+							thisStr := fmt.Sprintf("%v", strings.TrimSpace(s.Text()))
+							thisGrp = thisStr[2:len(thisStr)-1]
+						}
+						if string(thisStr[0]) == "#" && string(thisStr[1]) == "<" && string(thisStr[2]) == "/" {
+							//close group
+							thisGrp = ""
+						}
+						}
 						if string(thisStr[0]) != "#" {
 						
 							//fmt.Fprintf(w, "%v", s.Text())
@@ -7044,6 +7126,8 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 												CAT_DESC: thisDesc,
 												CAT_SHARED: x.CAT_SHARED,
 												CAT_PASS: x.CAT_PASS,
+												//D0067
+												CAT_GRP: thisGrp,
 										}
 										
 										desktopKey := fmt.Sprintf("%v", thisName)
@@ -7062,6 +7146,8 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 											CAT_DESC: thisDesc,
 											CAT_SHARED: "N",
 											CAT_PASS: "",
+											//D0067
+											CAT_GRP: "",
 									}
 									
 									desktopKey := fmt.Sprintf("%v", thisName)
@@ -25408,9 +25494,28 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 			reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 			s := bufio.NewScanner(reader)
 			//buf2.WriteString(fmt.Sprintf("<center>\n"))
+			//D0067
+			thisGrp := ""
 			for s.Scan() {
 				if len(s.Text()) > 0 {
+					//c.Infof("%v", s.Text())
 					thisStr := fmt.Sprintf("%v", s.Text())
+					//D0067
+					//c.Infof("len: %v", len(thisStr))
+					if len(thisStr) > 3 { 
+					if string(thisStr[0]) == "#" && string(thisStr[1]) == "<" && string(thisStr[2]) != "/" && thisGrp == "" {
+						//start group
+						//#<Basic Desktops>
+						//c.Infof("start")
+						thisStr := fmt.Sprintf("%v", strings.TrimSpace(s.Text()))
+						thisGrp = thisStr[2:len(thisStr)-1]
+					}
+					if string(thisStr[0]) == "#" && string(thisStr[1]) == "<" && string(thisStr[2]) == "/" {
+						//close group
+						//c.Infof("end")
+						thisGrp = ""
+					}
+					}
 					if string(thisStr[0]) != "#" {
 						SPL := strings.Split(s.Text(),">")
 						SPL2 := strings.Split(SPL[1],"<")
@@ -25456,7 +25561,6 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 									DSLink: 		"/settings?q=desktop0",
 									ULink: 			"/uwm?u=0",
 									USLink: 		"/people-edit?EditPeopleFunc=EDIT_WINDOWS_SUBUWM&u=0",
-									//edwinxxx
 									//TSource:		tImage,
 									//IsShared:		isShared,
 									//TLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_TOPICS_SUBUWM&u=0&TOPIC=%v", topicsource),
@@ -25466,6 +25570,8 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 									BLink: 			"/bot?bFunc=bchat&u=0",
 									CLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_BOT_SUBUWM&u=0"),
 									SLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_SHARING_SUBUWM&u=0"),
+									//D0067
+									DGrp: 			thisGrp,
 								}
 								dks = append(dks, p)
 							} else {
@@ -25486,6 +25592,8 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 									BLink: 			fmt.Sprintf("/bot?bFunc=bchat&u=%v", thisNum),
 									CLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_BOT_SUBUWM&u=%v", thisNum),
 									SLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_SHARING_SUBUWM&u=%v", thisNum),
+									//D0067
+									DGrp: 			thisGrp,
 								}
 								dks = append(dks, p)
 							}
@@ -29645,7 +29753,6 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 			queueRatings(w,r)
 		case "queue-add-to-default-sid":
 			queueAddToSid(w,r)
-		//edwinxxx
 		case "queue-stream-mirror-uwm":
 			queueStreamMirrorToUwm(w,r)
 		case "queue-wget-url":
@@ -32093,6 +32200,8 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 						CAT_DESC: x.CAT_DESC,
 						CAT_SHARED: shared,
 						CAT_PASS: pass,
+						//D0067x
+						CAT_GRP: x.CAT_GRP,
 				}
 				_, err := datastore.Put(c, getKeyDesktop(c,desktopKey), &g)
 				//c.Errorf("[S0021]")
@@ -32355,7 +32464,6 @@ func peopleEdit(w http.ResponseWriter, r *http.Request) {
 		}
 		return
 	//D0066
-	//edwinxxx
 	case "EDIT_BOT_SUBUWM":
 		botsource := ""
 		docID := 0
@@ -38516,12 +38624,14 @@ func ulapphNlp(w http.ResponseWriter, r *http.Request) {
 	if nr, ok := s.(*ulapphBotNlpRes); ok {
 		c.Infof("Success")
 		c.Infof("%#v\n", nr)
+		//D0068
+		SPL := strings.Split(inpStr, " ")
 		switch {
 			case strings.ToLower(nr.FuncType) == "motd":
 				resp = nlpQuote(w,r,nr)
-			case strings.ToLower(nr.FuncType) == "view":
+			case strings.ToLower(nr.FuncType) == "view" && len(SPL) > 4:
 				resp = nlpView(w,r,nr)
-			case strings.ToLower(nr.FuncType) == "update":
+			case (strings.ToLower(nr.FuncType) == "update" || strings.ToLower(nr.FuncType) == "edit") && len(SPL) > 4:
 				resp = nlpUpdate(w,r,nr)
 			case strings.ToLower(nr.FuncType) == "open":
 				resp = nlpOpen(w,r,nr.ContentType)
@@ -38555,7 +38665,7 @@ func nlpRecent(w http.ResponseWriter, r *http.Request, target string) (string) {
 	switch strings.ToLower(target) {
 	case "slides":
 		rmsg := fmt.Sprintf("<a href=\"/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0&VIEW=RECENT&LAST=2\" target=\"recent\">Latest 2 slides</a>")
-		rmsg = fmt.Sprintf("%v<a href=\"/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0&VIEW=RECENT&LAST=5\" target=\"recent\">Latest 5 slides</a>", rmsg)
+		rmsg = fmt.Sprintf("%v<br><a href=\"/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0&VIEW=RECENT&LAST=5\" target=\"recent\">Latest 5 slides</a>", rmsg)
 		rmsg = fmt.Sprintf("%v<br><a href=\"/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0&VIEW=RECENT&LAST=10\" target=\"recent\">Latest 10 slides</a>", rmsg)
 		rmsg = fmt.Sprintf("%v<br><a href=\"/infodb?DB_FUNC=SLIDES&CATEGORY=desktop0&VIEW=RECENT&LAST=50\" target=\"recent\">Latest 50 slides</a>", rmsg)
 		return rmsg
@@ -38672,7 +38782,6 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 		uwm := r.FormValue("u")
 		c.Infof("uwm: %v", uwm) 
 		//D0066
-		//edwinxxx
 		botsource := ""
 		//docID := 0
 		//SID := ""
@@ -38691,7 +38800,6 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 		}
 		if botsource != "" {
 			//D0066
-			//edwinxxx
 			//redURL := fmt.Sprintf("/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v", docID, docID)
 			//http.Redirect(w, r, redURL, http.StatusFound)
 			//get bot script
@@ -41011,7 +41119,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										}
 																									
 									}
-									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree/?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ] [ <a href=\"/editor?EDIT_FUNC=DRAW&SID=TDSMEDIA-%v\">View Drawing</a> ]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid, p.MEDIA_ID)
+									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ] [ <a href=\"/editor?EDIT_FUNC=DRAW&SID=TDSMEDIA-%v\">View Drawing</a> ] [ <a href=\"/orgchart?SID=TDSMEDIA-%v\">View OrgChart</a>]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid, p.MEDIA_ID, p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Set As UWM:</b> setuwm TDSMEDIA-%v<br>", p.MEDIA_ID)
@@ -42103,7 +42211,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 	}
 }
 //D0066
-//edwinxxx
 var htmlBotHdr = template.Must(template.New("htmlBotHdr").Parse(htmlBotHdrA))
 const htmlBotHdrA = `
 <html lang="en">
@@ -43099,7 +43206,6 @@ const htmlDriveJSONtoTableA = `
 
 //D0033
 //D0066
-//edwinxxx
 var htmlDesktopsJSONtoTable = template.Must(template.New("htmlDesktopsJSONtoTable").Parse(htmlDesktopsJSONtoTableA))
  
 const htmlDesktopsJSONtoTableA = `
@@ -43129,6 +43235,7 @@ const htmlDesktopsJSONtoTableA = `
 	  schema: [
 		  {"header":"Icon", "key":"iconLink", "template":'<img src="{{"{{"}}iconLink{{"}}"}}" width=32 height=32/>'},
 		  {"header":"ID", "key":"id"},
+		  {"header":"Group", "key":"cGrp"},
 		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"openDesktop(\'{{"{{"}}uLink{{"}}"}}\', \'UWM-{{"{{"}}name{{"}}"}}\', \'{{"{{"}}id{{"}}"}}\'); return false;\" target=\'UWM-{{"{{"}}name{{"}}"}}\' title=\'Open UWM in new tab\'>{{"{{"}}name{{"}}"}}</a>'},
 		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
 		  {"header":"Run Bot", "key":"bLink", "template":'<a href=\'{{"{{"}}bLink{{"}}"}}\' target=\'B-{{"{{"}}name{{"}}"}}\' title=\'Click to bot for this desktop\'><img src=\'/img/robot.png\' width=32 height=32></a>'},
@@ -52980,7 +53087,6 @@ func queueStreamMirrorToUwm(w http.ResponseWriter, r *http.Request) {
 	//TYP := r.FormValue("TYP")
 	SRC := r.FormValue("SRC")
 	CAPTION := r.FormValue("TITLE")
-	//edwinxxx
 	switch MSU_FUNC {
 		case "STRUWM-IMAGE":
 			UID := ""
@@ -67450,7 +67556,6 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		EMBED_R := r.FormValue("EMBED")
 		EMBED_R2 := strings.Replace(EMBED_R, "[", "", -1)
 		EMBED := strings.Replace(EMBED_R2, "]", "", -1)
-		//edwinxxx
 		STRUWM_R := r.FormValue("STRUWM")
 		STRUWM_R2 := strings.Replace(STRUWM_R, "[", "", -1)
 		STRUWM := strings.Replace(STRUWM_R2, "]", "", -1)
@@ -67803,7 +67908,6 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 		//D0066
-		//edwinxxx
 		//if stream mirror images to uwm?
 		if strings.TrimSpace(STRUWM) != "" && DATA_TYPE == "image" {
 			laterMirrorStreamUwm.Call(c, "STRUWM-IMAGE", uid, STRUWM, DATA_TYPE, thisURL, TITLE)
@@ -70504,7 +70608,6 @@ func renderButtonLink(w http.ResponseWriter, r *http.Request, name, turl, title 
 //this template handles how we add new windows in a uwm desktop 
 func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d string) {
 	//c := appengine.NewContext(r)
-	
 	t := presentTemplates[path.Ext(name)]
 	if t == nil {
 		panic(t)
@@ -70521,14 +70624,12 @@ func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d st
 	if mens == nil {
 		//force refresh
 		doc.BOOL_FILLER1 = false
-	}	
+	}
 	doc.HTM_FILLER1 = template.HTML(string(mens))
-		
 	data := struct {
-		
 		*TEMPSTRUCT
 		Template    *template.Template
-	}{	
+	}{
 		doc,
 		t,
 	}
@@ -70548,7 +70649,6 @@ func renderAddUWMPage(w http.ResponseWriter, r *http.Request, name, uid, n, d st
 		// No error, send the content, HTTP 200 response status implied
 		buf.WriteTo(w)
 	}
-	
 }
 
 //D0044
