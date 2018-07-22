@@ -38697,7 +38697,6 @@ func nlpAcbSearch(w http.ResponseWriter, r *http.Request, uid, target string) (s
 	if ACB_BLOB != "" {
 		c.Infof("get blob content")
 		blobChan := make(chan []byte)
-		//edwinxxx
 		//blobChan := make(chan string)
 		//go getBlobTextChan(w,r,blobChan,ACB_BLOB)
 		go getBlobByteChan(w, r,blobChan, ACB_BLOB)
@@ -38708,14 +38707,26 @@ func nlpAcbSearch(w http.ResponseWriter, r *http.Request, uid, target string) (s
 			//resp = "Found acb blob"
 			SPL := strings.Split(string(thisCont), "},")
 			for i:=0;i<len(SPL);i++ {
-				if strings.Index(SPL[i], target) != -1 {
+				//edwinxxx
+				if strings.Index(strings.ToUpper(SPL[i]), strings.ToUpper(target)) != -1 {
 					SPL2 := strings.Split(SPL[i], "'")
 					ctr++
-					if ctr == 1 {
-						resp = fmt.Sprintf("<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\">%v</a>", SPL2[3], SPL2[1], SPL2[1])
+					//if TDSMEDA- type
+					if strings.Index(SPL2[3], "IMG_URL=") != -1 && strings.Index(SPL2[3], "MEDIA_ID=") != -1 {
+						if ctr == 1 {
+							resp = fmt.Sprintf("<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\"><img src=\"%v\"></a>", SPL2[3], SPL2[1], SPL2[1], getImgFromUrl(w,r,SPL2[3]))
+
+						} else {
+							resp = fmt.Sprintf("%v<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\"><img src=\"%v\"></a>", resp, SPL2[3], SPL2[1], SPL2[1], getImgFromUrl(w,r,SPL2[3]))
+						}
 
 					} else {
-						resp = fmt.Sprintf("%v<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\">%v</a>", resp, SPL2[3], SPL2[1], SPL2[1])
+						if ctr == 1 {
+							resp = fmt.Sprintf("<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\">%v</a>", SPL2[3], SPL2[1], SPL2[1], SPL2[1])
+
+						} else {
+							resp = fmt.Sprintf("%v<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\">%v</a>", resp, SPL2[3], SPL2[1], SPL2[1], SPL2[1])
+						}
 					}
 					if ctr > 50 {
 						break
@@ -49797,6 +49808,21 @@ func getRefUwm(w http.ResponseWriter, r *http.Request) (refUwm string) {
 		refUwm = m["u"][0]
 	}
 	return refUwm
+}
+//D0068
+//gets the IMG_URL from TDSMEDIA link 
+func getImgFromUrl(w http.ResponseWriter, r *http.Request, turl string) (img string) {
+	z, err := url.Parse(turl)
+	if err != nil {
+		panic(err)
+	}
+	//path := z.Path
+	m, _ := url.ParseQuery(z.RawQuery)
+	if _, ok := m["IMG_URL"]; ok {
+		//do something here
+		img = m["IMG_URL"][0]
+	}
+	return img
 }
 
 //updates if the user if current active
