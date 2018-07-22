@@ -67,7 +67,23 @@ function launchAS() {
 	//var tdesk = prompt("Please enter desktop name", "TempDesktop");
 	//if (tdesk != null) {
 	//window.open("/uwm?u=" + tdesk, "_blank");
-	window.open("/chat-bubble/ulapphbot.html", "_blank");
+	//window.open("/chat-bubble/ulapphbot.html", "_blank");
+	var url = "";
+	var aUser = document.getElementById("aUser").value;
+	var sa = aUser.indexOf("---");
+	var UID = "";
+	if (sa > 0) {
+		var SPS = us.split("---");
+		UID = SPS[0];
+	} else {
+		UID = aUser;
+	}
+	if (urlParams["u"] != "") {
+		url = "/chat-bubble/ulapphbot.html"+"?u="+urlParams["u"] +"&UID="+UID;
+	} else {
+		url = "/chat-bubble/ulapphbot.html"+"?UID="+UID;
+	}
+	window.open(url, "_blank");
 	/*var jswmstr = "'" + "/uwm?u=" + tdesk + "', 500, 300, 'middle', 'middle', {title: '" + "Mirror" + "', icon: '/img/jswm-web.png'}";
 	eval('windowManager.openURI(' + jswmstr + ');');
 	

@@ -65,10 +65,20 @@ function dispSearch() {
 
 	//var url = "/tools?t=QUICK_SEARCH";
 	//var url = "https://console.dialogflow.com/api-client/demo/embedded/d601df4c-e725-459a-a030-9885e225388c";
-	if (urlParams["u"] != "") {
-		var url = "/chat-bubble/ulapphbot.html"+"?u="+urlParams["u"];
+	var url = "";
+	var aUser = document.getElementById("aUser").value;
+	var sa = aUser.indexOf("---");
+	var UID = "";
+	if (sa > 0) {
+		var SPS = us.split("---");
+		UID = SPS[0];
 	} else {
-		var url = "/chat-bubble/ulapphbot.html";
+		UID = aUser;
+	}
+	if (urlParams["u"] != "") {
+		url = "/chat-bubble/ulapphbot.html"+"?u="+urlParams["u"] +"&UID="+UID;
+	} else {
+		url = "/chat-bubble/ulapphbot.html"+"?UID="+UID;
 	}
 	//alertify.set({ delay: 59000 });
 	//alertify.set({ delay: 300000 });

@@ -6804,26 +6804,30 @@ func displayEchartsBar(w http.ResponseWriter, r *http.Request, TARGET, NAME, div
 //saves a cache of the ACB data 
 func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb []byte) {
 	c := appengine.NewContext(r)
-	
-	if uid == "general" {
-		return
-	}
+	c.Infof("saveAutoCompsBlob")
+	c.Infof("uid: %v", uid)
+	//D0068
+	//if r.FormValue("API_KEY") == CMD_GEN_KEY {
+	//	//proceed
+	//} else {
+		if uid == "general" {
+			return
+		}
+	//}
 	//check if cnfg exists
 	FL_ACB := false
 	var g TDSCNFG
 	thisKey := fmt.Sprintf("SYSTEM_ACB_%v", uid)
 	key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
-	if err := datastore.Get(c, key, &g); err != nil {			
+	if err := datastore.Get(c, key, &g); err != nil {
+		panic(err)
 		//return
 	}
- 
 	if g.TXT_VAL != "" {
- 
 		FL_ACB = true
 	}
-					
 	if FL_ACB == false {
- 
+		c.Infof("FL_ACB = false")
 		thisKey := fmt.Sprintf("SYSTEM_ACB_%v", uid)
 		g := TDSCNFG{
 				SYS_VER: 1,
@@ -6841,9 +6845,12 @@ func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb [
 				//return
 		}
 		//c.Errorf("[S0016]")
-	} else {
- 
+	}
+	//D0068
+	//} else {
+		c.Infof("FL_ACB = true")
 		//upload to blobstore
+		c.Infof("upload to blobstore")
 		csn2 := getUpUrlString(w,r,"/upload-media")
 		u, err := blobstore.UploadURL(c, csn2, nil)
 		if err != nil {
@@ -6861,6 +6868,9 @@ func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb [
 		}
  
 		_ = fw.WriteField("FUNC_CODE", "ACB")
+		//D0068
+		_ = fw.WriteField("API_KEY", CMD_GEN_KEY)
+		_ = fw.WriteField("UID", uid)
  
 		fw.Close()
  
@@ -6879,7 +6889,7 @@ func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb [
 		if res.StatusCode != http.StatusCreated {
 			return
 		}
-	}
+	//}
 }
  
 
@@ -6895,6 +6905,13 @@ func loginGoogle(w http.ResponseWriter, r *http.Request, urlStr string) {
 	w.Header().Set("Location", url)
 	w.WriteHeader(http.StatusFound)
 	return
+}
+
+//D0068
+func isJSON(s string) bool {
+    var js map[string]interface{}
+    return json.Unmarshal([]byte(s), &js) == nil
+
 }
 
 //checks if IP address is blocked 
@@ -12892,38 +12909,28 @@ func showPersonalMenuMobile(w http.ResponseWriter, r *http.Request, uid string) 
 		
 	}
 }
- 
 
 //parses the cached ACB entries 
 func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
- 
 	_, uid := checkSession(w,r)
-	
 	if uid == "" {
 		uid = "general"
-		
 	}
-	
 	fmt.Fprintf(w, "<input type=\"hidden\" id=\"scheme\" value=\"%v\">\n", getScheme(w,r))
-					
 	//overall autocomp cache
 	cKeyAll := fmt.Sprintf("AUTOCOMP_CACHE_%v", uid)
 	cKeyAll2 := fmt.Sprintf("STARTWIN_CACHE_%v", uid)
 	AUTOCOMP_CACHE := ""
 	if item, err := memcache.Get(c, cKeyAll); err == memcache.ErrCacheMiss {
- 
 	} else if err != nil {
 		//c.Errorf("error getting item: %v", err)
 	} else {
- 
 		AUTOCOMP_CACHE = fmt.Sprintf("%s", item.Value)
-		
 		if strings.Index(AUTOCOMP_CACHE, "ERROR: ") != -1 || strings.Index(AUTOCOMP_CACHE, "urlfetch: DEADLINE_EXCEEDED") != -1 {
 			AUTOCOMP_CACHE = ""
 			putStrToMemcacheWithoutExp(w,r,cKeyAll,"")
-		}	
- 
+		}
 		if AUTOCOMP_CACHE != "" {
 			fmt.Fprintf(w, "<script>\n")
 			fmt.Fprintf(w, "\n")
@@ -12955,32 +12962,30 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-	
 	if AUTOCOMP_CACHE == "" {
- 
 		//get from temp blob
+		c.Infof("get from temp blob")
 		cKeyACB := fmt.Sprintf("ACB_BLOB_%v", uid)
 		ACB_BLOB := ""
 		ACB_BLOB = getStrMemcacheValueByKey(w,r,cKeyACB)
-		
 		if ACB_BLOB == "" {
+			c.Infof("get from config blob")
 			var g TDSCNFG
 			thisKey := fmt.Sprintf("SYSTEM_ACB_%v", uid)
 			key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
-			if err := datastore.Get(c, key, &g); err != nil {			
+			if err := datastore.Get(c, key, &g); err != nil {
 				//return
 			}
-			
 			ACB_BLOB = g.TXT_VAL
 			putStrToMemcacheWithoutExp(w,r,cKeyACB,ACB_BLOB)
 		}
- 
 		if strings.Index(ACB_BLOB, "ERROR: ") != -1 || strings.Index(ACB_BLOB, "urlfetch: DEADLINE_EXCEEDED") != -1 {
 			ACB_BLOB = ""
 			putStrToMemcacheWithoutExp(w,r,cKeyACB,"")
 		}
-		
+		c.Infof("ACB_BLOB: %v", ACB_BLOB)
 		if ACB_BLOB != "" {
+			c.Infof("get blob content")
 			blobChan := make(chan []byte)
 			go getBlobByteChan(w, r,blobChan, ACB_BLOB)
 			thisCont := <- blobChan
@@ -13346,6 +13351,7 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	w.Write(buf.Bytes())
 	
 	saveAutoCompsBlob(w,r,uid,buf.Bytes())
+	c.Infof("saveAutoCompsBlob")
 	fmt.Fprintf(w, "  ];\n")
 	fmt.Fprintf(w, "  // setup autocomplete function pulling from currencies[] array\n")
 	fmt.Fprintf(w, "  $('#autocomplete').autocomplete({\n")
@@ -38617,6 +38623,7 @@ func ulapphNlp(w http.ResponseWriter, r *http.Request) {
 	//s := nl.P("hello sir can you pleeeeeease play King by Lauren Aquilina") 
 	c := appengine.NewContext(r)
 	inpStr := r.FormValue("p")
+	uid := r.FormValue("UID")
 	c.Infof("inpStr: %v", inpStr)
 	s := nl.P(inpStr)
 	c.Infof("s: %v", s)
@@ -38645,8 +38652,12 @@ func ulapphNlp(w http.ResponseWriter, r *http.Request) {
 					resp = nlpSearch(w,r,"e",nr.SearchKey)
 				}
 			default:
-				//resp = fmt.Sprintf("%v is an invalid request...", nr.FuncType)
-				resp = "nlp-success-invalid-function"
+				//D0068
+				//search ACB blob
+				resp = nlpAcbSearch(w,r,uid,inpStr) 
+				if resp == "" {
+					resp = "nlp-success-invalid-function"
+				}
 		}
 	} else {
 		c.Infof("Failed")
@@ -38656,6 +38667,64 @@ func ulapphNlp(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(200)
 	w.Write([]byte(resp))
 	return
+}
+//D0068
+func nlpAcbSearch(w http.ResponseWriter, r *http.Request, uid, target string) (string) {
+	c := appengine.NewContext(r)
+	c.Infof("nlpSearchAcb: %v", target)
+	c.Infof("uid: %v", uid)
+	resp := ""
+
+	cKeyACB := fmt.Sprintf("ACB_BLOB_%v", uid)
+	ACB_BLOB := ""
+	ACB_BLOB = getStrMemcacheValueByKey(w,r,cKeyACB)
+	if ACB_BLOB == "" {
+		c.Infof("get from config blob")
+		var g TDSCNFG
+		thisKey := fmt.Sprintf("SYSTEM_ACB_%v", uid)
+		key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+		if err := datastore.Get(c, key, &g); err != nil {
+			//return
+		}
+		ACB_BLOB = g.TXT_VAL
+		putStrToMemcacheWithoutExp(w,r,cKeyACB,ACB_BLOB)
+	}
+	c.Infof("ACB_BLOB: %v", ACB_BLOB)
+	if strings.Index(ACB_BLOB, "ERROR: ") != -1 || strings.Index(ACB_BLOB, "urlfetch: DEADLINE_EXCEEDED") != -1 {
+		ACB_BLOB = ""
+		putStrToMemcacheWithoutExp(w,r,cKeyACB,"")
+	}
+	if ACB_BLOB != "" {
+		c.Infof("get blob content")
+		blobChan := make(chan []byte)
+		//edwinxxx
+		//blobChan := make(chan string)
+		//go getBlobTextChan(w,r,blobChan,ACB_BLOB)
+		go getBlobByteChan(w, r,blobChan, ACB_BLOB)
+		thisCont := <- blobChan
+		ctr := 0
+		if thisCont != nil {
+			c.Infof("thisCont: %v", len(thisCont))
+			//resp = "Found acb blob"
+			SPL := strings.Split(string(thisCont), "},")
+			for i:=0;i<len(SPL);i++ {
+				if strings.Index(SPL[i], target) != -1 {
+					SPL2 := strings.Split(SPL[i], "'")
+					ctr++
+					if ctr == 1 {
+						resp = fmt.Sprintf("<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\">%v</a>", SPL2[3], SPL2[1], SPL2[1])
+
+					} else {
+						resp = fmt.Sprintf("%v<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\">%v</a>", resp, SPL2[3], SPL2[1], SPL2[1])
+					}
+					if ctr > 50 {
+						break
+					}
+				}
+			}
+		}
+	}
+	return resp
 }
 
 //D0065
@@ -40619,14 +40688,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 									SPL := strings.Split(MIME_TYPE, "/")
 									if len(SPL) > 0 {
 										thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", SPL[1])
-										p.IMG_URL = thisURL								
+										p.IMG_URL = thisURL
 									}else {
 										thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
-										p.IMG_URL = thisURL								
+										p.IMG_URL = thisURL
 									}
 								} else {
 									thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
-									p.IMG_URL = thisURL								
+									p.IMG_URL = thisURL
 								}
 							} else {
 								if IMG_URL != "" {
@@ -69157,6 +69226,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 	if FL_PROC_OK := checkQuotaSystem(w, r); FL_PROC_OK != true {return}
 	
 	c := appengine.NewContext(r)
+	c.Infof("handleUploadMedia")
 	u := user.Current(c)
 	uid := ""
 	if u != nil {
@@ -69182,6 +69252,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 	
 	blobs, pVals, err := blobstore.ParseUpload(r)
 	if err != nil {
+			c.Infof("blobstore.ParseUpload")
 			serveError(c, w, err)
 			return
 	}
@@ -69194,14 +69265,26 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 	FUNC_CODE_R := fmt.Sprintf("%v", pVals["FUNC_CODE"])
 	FUNC_CODE_R2 := strings.Replace(FUNC_CODE_R, "[", "", -1)
 	FUNC_CODE := strings.Replace(FUNC_CODE_R2, "]", "", -1)
- 
-	
+	//D0068
+	API_KEY_R := fmt.Sprintf("%v", pVals["API_KEY"])
+        API_KEY_R2 := strings.Replace(API_KEY_R, "[", "", -1)
+        API_KEY := strings.Replace(API_KEY_R2, "]", "", -1)
+	//D0068
+        UID_R := fmt.Sprintf("%v", pVals["UID"])
+        UID_R2 := strings.Replace(UID_R, "[", "", -1)
+        UID := strings.Replace(UID_R2, "]", "", -1)
+
 	switch FUNC_CODE {
-		
-		
 		case "ACB":
 			//delete existing blob
-			
+			c.Infof("ACB")
+			//D0068
+			if API_KEY != CMD_GEN_KEY {
+				c.Infof("Invalid api key")
+				return
+			}
+			uid = UID
+
 			cKeyACB := fmt.Sprintf("ACB_BLOB_%v", uid)
 			ACB_BLOB := ""
 			var g TDSCNFG
@@ -69214,13 +69297,14 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 				}
 				ACB_BLOB = g.TXT_VAL
 			}
- 
+			c.Infof("ACB_BLOB: %v", ACB_BLOB)
 			if ACB_BLOB != "" {
 				blobstore.Delete(c, appengine.BlobKey(ACB_BLOB))
 			}
 			//edwixxx
- 
 			blobkey := string(file[0].BlobKey)	
+			c.Infof("blobkey: %v", blobkey)
+			c.Infof("uid: %v", uid)
 			thisKey := fmt.Sprintf("SYSTEM_ACB_%v", uid)
 			g = TDSCNFG{
 					SYS_VER: 1,
@@ -69232,33 +69316,27 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					CFG_DESC: "Set via code",
 			}
 			key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
- 
 			if _, err := datastore.Put(c, key, &g); err != nil {
 					panic(err)
 					//return
 			}
 			//c.Errorf("[S0607]")
-			
 			putStrToMemcacheWithoutExp(w,r,cKeyACB,blobkey)
-			
+			c.Infof("acb saved")
 			return
- 
 		//for external clouds
 		case "UPD-FROM-EDITOR2":
 			//GITHUB_CONTENT@888@%v@888@%v@888@%v@888@%v
 			blobkey := string(file[0].BlobKey)
-			
 			SID_R := fmt.Sprintf("%v", pVals["SID"])
 			SID_R2 := strings.Replace(SID_R, "[", "", -1)
 			SID := strings.Replace(SID_R2, "]", "", -1)
-			
 			DESC_R := fmt.Sprintf("%v", pVals["DESC"])
 			DESC_R2 := strings.Replace(DESC_R, "[", "", -1)
 			DESC := strings.Replace(DESC_R2, "]", "", -1)
 			if DESC == "" {
 				DESC = "-- Updated from ULAPPH Cloud Desktop by "+uid
 			}
-				
 			//commit to cloud
 			switch {
 				case strings.Index(SID, "GITHUB_CONTENT@888@") != -1:
@@ -69266,14 +69344,12 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					SPL := strings.Split(SID, "@888@")
 					if len(SPL) == 7 {
 						guid := SPL[1]
-						
 						//get github user
 						GITHUB_USER_NAME, err := getGithubUser(w,r)
 						if err != nil {
 							fmt.Fprintf(w, "[Authorization Error] No github user set")
-							return		
+							return
 						}
-	
 						if guid != GITHUB_USER_NAME {
 							fmt.Fprintf(w,"Unauthorized operation")
 							return
@@ -69297,9 +69373,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			
 		//for media
 		case "UPD-FROM-EDITOR":
- 
 			blobkey := string(file[0].BlobKey)
-			
 			SID_R := fmt.Sprintf("%v", pVals["SID"])
 			SID_R2 := strings.Replace(SID_R, "[", "", -1)
 			SID := strings.Replace(SID_R2, "]", "", -1)
@@ -69318,29 +69392,60 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 				//TARGET := SPL[0]
 				MEDIA_nn := SPL[1]
 				MEDIA_ID = str2int(MEDIA_nn)
- 
+
 				dsKey := fmt.Sprintf("%d", MEDIA_ID)
 				key := datastore.NewKey(c, "TDSMEDIA", dsKey, 0, nil)
 				q := datastore.NewQuery("TDSMEDIA").Filter("__key__ =", key)
 				//c.Errorf("[S0608]")
- 
+
 				media := make([]TDSMEDIA, 0, 1)
 				if _, err := q.GetAll(c, &media); err != nil {
 					 panic(err)
 					//return
 				  }
-				
 				//thisID := 0
 				for _, p := range media{
 					oldBlob := p.BLOB_KEY
 					p.BLOB_KEY = blobkey
 					p.AUTHOR = uid
-					
 					//t := time.Now().Local()
 					//tstamp := t.Format("20060102150405")
 					tstamp := getTimestamp()
 					p.DT_UPLOAD = tstamp
-					
+					//D0068
+					thisCont := ""
+					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
+					DESC := strings.Replace(p.DESC, "_", " ", -1)
+					if p.DATA_TYPE == "text" {
+						blobChan := make(chan string)
+						go getBlobTextChan(w, r,blobChan, p.BLOB_KEY)
+						thisCont = <- blobChan
+						if p.SYS_VER == 777 {
+							cStr := encrypter2(w,r,thisCont,ENCRYPTION_KEY)
+							thisCont = string(cStr)
+						}
+						//check mime type
+						if p.MIME_TYPE == "" {
+							if isJSON(thisCont) == true {
+								p.MIME_TYPE = "application/json"
+							} else {
+								p.MIME_TYPE = http.DetectContentType([]byte(thisCont))
+							}
+						}
+						if p.IMG_URL == "/img/text-icon.gif" || p.IMG_URL == "/img/unknown.png" {
+							SPL := strings.Split(p.MIME_TYPE, "/")
+							if len(SPL) > 0 {
+								thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", SPL[1])
+								p.IMG_URL = thisURL
+							}else {
+								thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", p.DATA_TYPE)
+								p.IMG_URL = thisURL
+							}
+						}
+
+					} else {
+						thisCont = fmt.Sprintf("%v - %v", TITLE, DESC)
+					}
 					thisKey := fmt.Sprintf("%d", p.MEDIA_ID)
 					key := datastore.NewKey(c, "TDSMEDIA", thisKey, 0, nil)
 					_, err := datastore.Put(c, key, &p)
@@ -69349,43 +69454,19 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 						//return
 					}
 					//c.Errorf("[S0609]")
- 
 					//delete old blob
 					blobstore.Delete(c, appengine.BlobKey(oldBlob))
-					
 					//clear media cache
 					cKey := fmt.Sprintf("TDSMEDIA_MEDID_CACHE_%v", MEDIA_ID)
 					putStrToMemcacheWithoutExp(w,r,cKey,"")
-					
 					//clear template cache if any
 					cKey = fmt.Sprintf("GO_TEMPLATE_TDSMEDIA-%v", MEDIA_ID)
 					_ = memcache.Delete(c,cKey)
-					
 					//t := time.Now().Local()
 					//tstamp := t.Format("20060102150405")
 					//insert media into search idx
 					thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
 					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
-					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
-					DESC := strings.Replace(p.DESC, "_", " ", -1)
-					//thisCont := fmt.Sprintf("%v - %v", TITLE, DESC)
-					thisCont := ""
-					if p.DATA_TYPE == "text" {
-						//thisCont = getBlobText(w, r, p.BLOB_KEY)
-						
-						blobChan := make(chan string)
-						go getBlobTextChan(w, r,blobChan, p.BLOB_KEY)
-						thisCont = <- blobChan
-					
-						//if p.SYS_VER == 666 {
-						if p.SYS_VER == 777 {
-							cStr := encrypter2(w,r,thisCont,ENCRYPTION_KEY)
-							thisCont = string(cStr)
-						}
-						
-					} else {
-						thisCont = fmt.Sprintf("%v - %v", TITLE, DESC)
-					}
 					searchIdx := &IDX_TDSMEDIA{
 						DOC_KEY: 			thisIdxKey,
 						SEARCH_TYPE: 		"MEDIA",
@@ -69413,11 +69494,9 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 						DATE_ADDED: 		tstamp,
 						DATE_UPDATED: 		tstamp,
 					}
- 
 					putSearchIndexM(w,r,"IDX_TDSMEDIA",thisIdxKey,searchIdx)
 					//determine if this media is a config setting
 					switch SPC_OPT {
-					
 						case "EDIT_TOP_LIST_MENU_MINE":
 							//SPC_OPT to /people-edit?EditPeopleFunc=SET_TOP_LIST_MENU_MINE_SOURCE&MEDIA_ID=787				
 							sysReq := fmt.Sprintf("/people-edit?EditPeopleFunc=SET_TOP_LIST_MENU_MINE_SOURCE&MEDIA_ID=%v", MEDIA_ID)	
@@ -69427,26 +69506,22 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 							//SPC_OPT to /people-edit?EditPeopleFunc=SET_WINDOWS_MINE_SOURCE&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/people-edit?EditPeopleFunc=SET_WINDOWS_MINE_SOURCE&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						case "UpdateURLFETCHList":
 							//SPC_OPT to /media?FUNC_CODE=SET_URLFETCH_LIST&MEDIA_ID=nn
 							sysReq := fmt.Sprintf("/media?FUNC_CODE=SET_URLFETCH_LIST&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-						
 						//newconfigtemplate
 						case "EDIT_CONTACTS_LIST":
 							//SPC_OPT to /media?FUNC_CODE=SET_CONTACTS_LIST&MEDIA_ID=nn
 							//sysReq := fmt.Sprintf("/media?FUNC_CODE=SET_CONTACTS_LIST&MEDIA_ID=%v", MEDIA_ID)	
 							sysReq := fmt.Sprintf("/people-edit?EditPeopleFunc=SET_CONTACTS_LIST&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						//newconfigtemplate	
 						case "EDIT_PUB_WP_LIST":
 							//SPC_OPT to /media?FUNC_CODE=SET_CONTACTS_LIST&MEDIA_ID=nn
 							//sysReq := fmt.Sprintf("/media?FUNC_CODE=SET_CONTACTS_LIST&MEDIA_ID=%v", MEDIA_ID)	
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_PUBWP_LIST&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-						
 						//newconfigtemplate
 						case "EDIT_PUB_UWM":
 							//SPC_OPT to /media?FUNC_CODE=SET_CONTACTS_LIST&MEDIA_ID=nn
@@ -69458,37 +69533,30 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 							//SPC_OPT to /admin-setup?ADMIN_FUNC=SET_TABZILLA_SOURCE&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_TABZILLA_SOURCE&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						case "EDIT_LEFT_MENU_SOURCE":
 							//SPC_OPT to /admin-setup?ADMIN_FUNC=SET_LEFT_MENU_SOURCE&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_LEFT_MENU_SOURCE&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						case "EDIT_CATEGORY_LIST":
 							//SPC_OPT to /admin-setup?ADMIN_FUNC=SET_CATEGORY_LIST&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_CATEGORY_LIST&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						case "EDIT_TOP_LIST_MENU":
 							//SPC_OPT to /admin-setup?ADMIN_FUNC=SET_TOP_LIST_MENU_SOURCE&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_TOP_LIST_MENU_SOURCE&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						case "EDIT_SEARCH_HOST_LIST":
 							//SPC_OPT to /admin-setup?ADMIN_FUNC=SET_HOST_LIST&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_HOST_LIST&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						case "EDIT_USERS_HOST_LIST":
 							//SPC_OPT to /admin-setup?ADMIN_FUNC=SET_HOST_LIST2&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_HOST_LIST2&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						case "EDIT_ADS_SLOTS_LIST":
 							//SPC_OPT to /admin-setup?ADMIN_FUNC=SET_ADS_TS&MEDIA_ID=787
 							sysReq := fmt.Sprintf("/admin-setup?ADMIN_FUNC=SET_ADS_TS&MEDIA_ID=%v", MEDIA_ID)	
 							fmt.Fprintf(w, "%v", sysReq)
-							
 						default:
 							sysReq := fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%d&DATA_TYPE=%s&TITLE=%v&BLOB_KEY=%v&IMG_URL=%v", MEDIA_ID, p.DATA_TYPE, p.TITLE, blobkey, p.IMG_URL)	
 							fmt.Fprintf(w, "%v", sysReq)
@@ -69558,8 +69626,40 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					p.LIKED_BY = ""
 					p.COMMENTS_BY = ""
 					p.NUM_VIEWS = 0
-					p.MIME_TYPE = ""
-					
+					//p.MIME_TYPE = ""
+					thisCont := ""
+					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
+					DESC := strings.Replace(p.DESC, "_", " ", -1)
+					if p.DATA_TYPE == "text" {
+						blobChan := make(chan string)
+						go getBlobTextChan(w, r,blobChan, p.BLOB_KEY)
+						thisCont = <- blobChan
+						if p.SYS_VER == 777 {
+							cStr := encrypter2(w,r,thisCont,ENCRYPTION_KEY)
+							thisCont = string(cStr)
+						}
+						//check mime type
+						if p.MIME_TYPE == "" {
+							if isJSON(thisCont) == true {
+								p.MIME_TYPE = "application/json"
+							} else {
+								p.MIME_TYPE = http.DetectContentType([]byte(thisCont))
+							}
+						}
+						if p.IMG_URL == "/img/text-icon.gif" || p.IMG_URL == "/img/unknown.png" {
+							SPL := strings.Split(p.MIME_TYPE, "/")
+							if len(SPL) > 0 {
+								thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", SPL[1])
+								p.IMG_URL = thisURL
+							}else {
+								thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", p.DATA_TYPE)
+								p.IMG_URL = thisURL
+							}
+						}
+
+					} else {
+						thisCont = fmt.Sprintf("%v - %v", TITLE, DESC)
+					}
 					thisKey := fmt.Sprintf("%d", p.MEDIA_ID)
 					key := datastore.NewKey(c, "TDSMEDIA", thisKey, 0, nil)
 					_, err := datastore.Put(c, key, &p)
@@ -69568,18 +69668,15 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 						//return
 					}
 					//c.Errorf("[S0611]")
- 
-					
 					//clear media cache
 					cKey := fmt.Sprintf("TDSMEDIA_MEDID_CACHE_%v", p.MEDIA_ID)
- 
 					putStrToMemcacheWithoutExp(w,r,cKey,"")
 					thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
 					thisIdxURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", p.MEDIA_ID, p.IMG_URL)
-					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
-					DESC := strings.Replace(p.DESC, "_", " ", -1)
+					//TITLE := strings.Replace(p.TITLE, "_", " ", -1)
+					//DESC := strings.Replace(p.DESC, "_", " ", -1)
 					//thisCont := fmt.Sprintf("%v - %v", TITLE, DESC)
-					thisCont := ""
+					/*thisCont := ""
 					if p.DATA_TYPE == "text" {
 						//thisCont = getBlobText(w, r, p.BLOB_KEY)
 						blobChan := make(chan string)
@@ -69593,7 +69690,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 						
 					} else {
 						thisCont = fmt.Sprintf("%v - %v", TITLE, DESC)
-					}
+					}*/
 					searchIdx := &IDX_TDSMEDIA{
 						DOC_KEY: 			thisIdxKey,
 						SEARCH_TYPE: 		"MEDIA",
