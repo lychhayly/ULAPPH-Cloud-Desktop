@@ -34,6 +34,17 @@
 <!-- import the JavaScript file -->
 <script src="/lib/js/chat-bubble/Bubbles.js"></script>
 <script>
+var urlParams;
+var match,
+		pl     = /\+/g,  // Regex for replacing addition symbol with a space
+		search = /([^&=]+)=?([^&]*)/g,
+		decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+		query  = window.location.search.substring(1);
+
+urlParams = {};
+while (match = search.exec(query))
+   urlParams[decode(match[1])] = decode(match[2]);
+
 // initialize by constructing a named function...
 // ...and add text processing plugin:
 var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
@@ -59,7 +70,7 @@ var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
 	  xhr=new ActiveXObject('MSXML2.XMLHTTP.3.0');
 	  } 
 	console.log(o);
-	xhr.open("POST","/nlp?p=" + o.input, true); 
+	xhr.open("POST","/nlp?p=" + o.input + "&UID=" +urlParams["UID"], true); 
 	xhr.send();
 	
 	 xhr.onreadystatechange=function()
@@ -68,6 +79,7 @@ var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
 		{
 		var currVal = xhr.responseText;
 			console.log(currVal);
+			
 			switch (currVal) {
 				case "nlp-success-invalid-function":
 					chatWindow.talk(convo, currVal);
@@ -120,7 +132,10 @@ var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
 var botUrl = window.location.href;
 var convo = {
   ice: {
-    says: ["Hi, I'm ULAPPH Bot!", "<a href=\"" + botUrl + "\" title=\"Click to restart ULAPPH bot!\"><img src=\"/chat-bubble/bot.gif\"></a>"],
+    says: ["Hi, I'm ULAPPH Bot!", 
+    		"<a href=\"" + botUrl + "\" title=\"Click to restart ULAPPH bot!\"><img src=\"/chat-bubble/bot.gif\"></a>", 
+    		"Type any text or click button below."
+    	],
 	  reply: [
 	    {
 	      question: "Find out more...",
@@ -168,7 +183,7 @@ var convo = {
 	      answer: "showWebapp"
 	    },
 		{
-	      question: "content shortcuts",
+	      question: "Content Shortcuts",
 	      answer: "content-functions"
 	    }	
 	  ]
@@ -183,7 +198,7 @@ var convo = {
     	],
     reply: [
 		{
-	      question: "content shortcuts",
+	      question: "Content Shortcuts",
 	      answer: "content-functions"
 	    }			
 		]
@@ -290,17 +305,6 @@ var convo = {
 showTopicNews = function () {
 	//get desktop number
 	//parse URL values
-	var urlParams;
-	var match,
-			pl     = /\+/g,  // Regex for replacing addition symbol with a space
-			search = /([^&=]+)=?([^&]*)/g,
-			decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-			query  = window.location.search.substring(1);
-
-	urlParams = {};
-	while (match = search.exec(query))
-	   urlParams[decode(match[1])] = decode(match[2]);
-   
     var msg = "<a href=\"/stream?STR_FUNC=RUN_TOPICS&u=" + urlParams["u"] + "\" target=\"topicNews\">Run UWM" + urlParams["u"] + " Topics Search</a>";
 	  chatWindow.talk(
 	    {
@@ -459,7 +463,7 @@ funcRandomTips = function () {
 	  xhr3=new ActiveXObject('MSXML2.XMLHTTP.3.0');
 	  } 
 	console.log("Calling random tips...");
-	xhr3.open("POST","/nlp?p=" + "motd", true); 
+	xhr3.open("POST","/nlp?p=" + "motd" + "&UID=" +urlParams["UID"], true); 
 	xhr3.send();
 	
 	 xhr3.onreadystatechange=function(convo)
@@ -559,7 +563,7 @@ funcCallNlpBackendNow = function (msg) {
 	  xhr3=new ActiveXObject('MSXML2.XMLHTTP.3.0');
 	  } 
 	console.log("Calling nlp backend...");
-	xhr3.open("POST","/nlp?p=" + msg, true); 
+	xhr3.open("POST","/nlp?p=" + msg + "&UID=" +urlParams["UID"], true); 
 	xhr3.send();
 	
 	 xhr3.onreadystatechange=function(convo)
