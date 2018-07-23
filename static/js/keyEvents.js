@@ -70,7 +70,7 @@ function dispSearch() {
 	var sa = aUser.indexOf("---");
 	var UID = "";
 	if (sa > 0) {
-		var SPS = us.split("---");
+		var SPS = aUser.split("---");
 		UID = SPS[0];
 	} else {
 		UID = aUser;
