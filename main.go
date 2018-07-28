@@ -38707,7 +38707,6 @@ func nlpAcbSearch(w http.ResponseWriter, r *http.Request, uid, target string) (s
 			//resp = "Found acb blob"
 			SPL := strings.Split(string(thisCont), "},")
 			for i:=0;i<len(SPL);i++ {
-				//edwinxxx
 				if strings.Index(strings.ToUpper(SPL[i]), strings.ToUpper(target)) != -1 {
 					SPL2 := strings.Split(SPL[i], "'")
 					ctr++
@@ -42006,7 +42005,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 					//also notify all users about this
 					msgDtl3 := fmt.Sprintf("UID:%v %v has accessed Music Player! %v", getGeoString(w,r), uid, getAccessString(w,r,""))
 					sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,"/media?FUNC_CODE=UMP",""),"")
-				
 					FILTER := r.FormValue("FILTER")
 					if err := mediaMusicPlayerA.Execute(w, ""); err != nil {
 						panic(err)
@@ -42028,17 +42026,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if _, err := q.GetAll(c, &media); err != nil {
 							 panic(err)
 						}
-						
 						if err := mediaDispTemplateUMP.Execute(w, media); err != nil {
 							 panic(err)
 						}
 						fmt.Fprintf(w, "</ul>")
-						
 						//display tags
 						cKey := fmt.Sprintf("UMP_CACHE_MUSIC_%s", uid)
 						UMP_CACHE := ""
 						UMP_CACHE = getStrMemcacheValueByKey(w,r,cKey)
-						
 						if UMP_CACHE == "" {
 							var buf bytes.Buffer
 							for _, p := range media{
@@ -42050,8 +42045,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 							fmt.Fprintf(w, "%v", UMP_CACHE)
 						}
 						//sort & display
-						
-							
 					} else {
 						q := datastore.NewQuery("TDSMEDIA").Filter("DATA_TYPE =", "music")
 						//c.Errorf("[S0378]")
@@ -42060,6 +42053,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if _, err := q.GetAll(c, &media); err != nil {
 							 panic(err)
 						}
+						//edwinxxx
+						// Sort by DESC 
+						sort.SliceStable(media, func(i, j int) bool {
+							    return media[i].DESC < media[j].DESC
+						})
 						for _, p := range media{
 								i := strings.Index(strings.ToLower(p.TITLE), strings.ToLower(FILTER))
 								j := strings.Index(strings.ToLower(p.DESC), strings.ToLower(FILTER))
@@ -42069,27 +42067,26 @@ func media(w http.ResponseWriter, r *http.Request) {
 									}
 								}
 						}
-						
 						fmt.Fprintf(w, "</ul>")
-						
 						cKey := fmt.Sprintf("UMP_CACHE_MUSIC_%s", uid)
 						UMP_CACHE := ""
 						UMP_CACHE = getStrMemcacheValueByKey(w,r,cKey)
-						
 						if UMP_CACHE == "" {
-							//
+							var buf bytes.Buffer
+							for _, p := range media{
+								buf.WriteString(fmt.Sprintf("%v %v", p.TITLE, p.DESC))
+							}
+							//UMP_CACHE = buf.String()
+							display_music_tags(w,r,uid,count_words(get_words_from(buf.String())))
 						} else {
 							fmt.Fprintf(w, "%v", UMP_CACHE)
 						}
-							
 						if err := umpFooterTemplate.Execute(w, "MUSIC"); err != nil {
 							panic(err)
 						}
-						
 					}
  
 					return
-					
 				//midi player
 				case "MDP":
 					updateUserActiveData(w, r, c, uid, "/media(mdp)")
@@ -42225,12 +42222,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 					//list all videos
 					if SEARCH_KEY != "" {
 						//print search results here
-						urlStr := fmt.Sprintf("%vutube?YT_FUNC=2&SEARCH_KEY=%v&order=%v&duration=%v", getSchemeUrl(w,r), SEARCH_KEY, order, duration)
+						urlStr := fmt.Sprintf("%vutube?YT_FUNC=3&SEARCH_KEY=%v&order=%v&duration=%v", getSchemeUrl(w,r), SEARCH_KEY, order, duration)
 						client := urlfetch.Client(c)
 						if err := r.ParseForm(); err != nil {
 							panic(err)
 						}
-						
 						resp, err := client.Get(urlStr)
 						if err != nil {
 							panic(err)
