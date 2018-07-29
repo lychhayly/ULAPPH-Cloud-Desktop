@@ -616,6 +616,7 @@
 	<input type="hidden" id="autosl2art" value="{{.AutoSlide2Article}}">
     <input type="hidden" id="mstat" value="auto">	
 	<input type="hidden" id="feedbackMail" value="{{.FeedbackMail}}">
+	<input type="hidden" name="SID" value="{{.SID}}">
     <section class='slides layout-widescreen'> 
       <article>
         <h1>{{.Title}}</h1>

@@ -354,6 +354,11 @@
 //REV DESC:	  	Added GoJS Org Chart 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0069
+//REV DATE: 		2018-July-29
+//REV DESC:	  	Added education modules 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------
 //List of firebase channels
@@ -1336,6 +1341,43 @@ type field struct {
 	kind  interface{}
 }
 var nl = nlp.New() 
+
+//D0069
+//education modules
+type StudentRecord struct {
+	Student string `json:"student"`
+	School string `json:"school"`
+	OverallGrade string `json:"overallGrade"`
+	Levels []LevelsData `json:"levels"`
+}
+
+//D0069
+type LevelsData struct {
+	Level string `json:"level"`
+	Status string `json:"status"`
+	LevelGrade string `json:"levelGrade"`
+	EnrollDate string `json:"enrollDate"`
+	CompletionDate string `json:"compDate"`
+	SyllabusURL string `json:"syllabus"`
+	ExamURL string `json:"exam"`
+	//Lessons []LessonsData `json:"lessons"`
+}
+//D0069
+type MasterSyllabus struct {
+	Level string `json:"level"`
+	LessonURL string `json:"lessonURL"`
+	ExamURL string `json:"examURL"`
+}
+//D0069
+/*type LessonsData struct {
+	LessonSID string `json:"lessonSID`
+	LessonTitle string `json:"lessonTitle`
+	Score string `json:"score`
+	StartDate string `json:"startDate"`
+	FinishDate string `json:"compDate"`
+	ExamDate string `json:"examDate"`
+}*/
+
 
 ///////////////////////////////////////////////////////////////	
 ///////////////////////////////////////////////////////////////
@@ -6862,36 +6904,29 @@ func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb [
 		if err != nil {
 			return
 		}
- 
 		if _, err = file.Write(acb); err != nil {
 			return
 		}
- 
 		_ = fw.WriteField("FUNC_CODE", "ACB")
 		//D0068
 		_ = fw.WriteField("API_KEY", CMD_GEN_KEY)
 		_ = fw.WriteField("UID", uid)
- 
 		fw.Close()
- 
 		req, err := http.NewRequest("POST", u.String(), &m)
 		if err != nil {
 			return
 		}
 		req.Header.Set("Content-Type", fw.FormDataContentType())
- 
 		client := urlfetch.Client(c)
 		res, err := client.Do(req)
 		if err != nil {
 			return
 		}
- 
 		if res.StatusCode != http.StatusCreated {
 			return
 		}
 	//}
 }
- 
 
 //redirects to Google login 
 func loginGoogle(w http.ResponseWriter, r *http.Request, urlStr string) {
@@ -8704,6 +8739,12 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-large\">System Status</a>")
 					fmt.Fprintf(w, "<ul>")
 					fmt.Fprintf(w, "<li>Build Version: %v", UCD_BUILD_STR)
+					SPL := strings.Split(UCD_BUILD_STR,"_")
+					TS := ""
+					if len(SPL) > 0 {
+						TS = strings.Replace(SPL[1], "-", "", -1)
+					}
+					fmt.Fprintf(w, "<li>Last Upgrade: %v", stmpHumanize(TS))
 					fmt.Fprintf(w, "<li>")
 					fmt.Fprintf(w, "<a href=\"/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-LOG&SID=ULAPPH-NOTIFICATIONS-LOG\">Notifications Logs</a>")
 					fmt.Fprintf(w, "<li>")
@@ -27053,6 +27094,7 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 			}
 			return
 
+
 		default:
 			//c.Infof("/comments index!")
 			return
@@ -38707,7 +38749,6 @@ func nlpAcbSearch(w http.ResponseWriter, r *http.Request, uid, target string) (s
 			//resp = "Found acb blob"
 			SPL := strings.Split(string(thisCont), "},")
 			for i:=0;i<len(SPL);i++ {
-				//edwinxxx
 				if strings.Index(strings.ToUpper(SPL[i]), strings.ToUpper(target)) != -1 {
 					SPL2 := strings.Split(SPL[i], "'")
 					ctr++
@@ -38839,6 +38880,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	checkReferrer(w,r)
+	_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
 	_, uid := checkSession(w,r)
 	//c.Infof("%v", r)
 	//D0066
@@ -38866,7 +38908,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 		//docID := 0
 		//SID := ""
 		if uwm == "" {
-			botsource = ""
+			botsource = r.FormValue("SID")
 		} else {
 			botsource = getBotSource(w,r,uid,uwm)
 			/*if botsource != "" {
@@ -38889,7 +38931,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			thisCont := <- blobChan
 
 			g := TEMPSTRUCT {
-				STR_FILLER1: "",
+				STR_FILLER1: uid,
 			}
 			if err := htmlBotHdr.Execute(w, &g); err != nil {
 			  panic(err)
@@ -38903,6 +38945,36 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "No custom bot source has been set for UWM%v. Please check documentation on how to set the bot source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>. You may also proceed with the <a href=\"/chat-bubble/ulapphbot.html?u=%v\">default bot</a>.", r.FormValue("u"), r.FormValue("u"))
 		}
 		return
+		
+		//D0069
+		case "school":
+			sFunc := r.FormValue("sFunc")
+			sLevel := r.FormValue("sLevel")
+			mSID := r.FormValue("sMaster")
+			resp := ""
+			switch sFunc {
+				case "enroll":
+					c.Infof("enroll...")
+					resp = educEnroll(w,r,mSID,uid,sLevel)
+				case "enroll-check":
+					c.Infof("enroll-check...")
+					resp = checkEnroll(w,r,mSID,uid)
+				case "enroll-cancel":
+					c.Infof("enroll-cancel...")
+					resp = cancelEnroll(w,r,mSID,uid,sLevel)
+				case "score-update":
+					c.Infof("score-update...")
+					resp = updateScores(w,r,mSID,uid)
+				case "student":
+					resp = fmt.Sprintf("student: level %v", sLevel) 
+				case "course":
+					resp = fmt.Sprintf("course: level %v", sLevel) 
+				case "drop-out":
+					resp = fmt.Sprintf("drop-out: level %v", sLevel) 
+			}
+			w.WriteHeader(200)
+			w.Write([]byte(resp))
+			return
 		/*
 		case bFunc == "open" || bFunc == "view" || bFunc == "edit" || bFunc == "update":
 			bTarget, err := jq.String("queryResult","parameters","any")
@@ -39075,6 +39147,334 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			}
 		*/
 	}
+}
+
+//D0069
+func educEnroll(w http.ResponseWriter, r *http.Request, mSID, uid, level string) (string) {
+	c := appengine.NewContext(r)
+	//check if there is student record
+	c.Infof("educEnroll")
+	resp := ""
+	EDUC_BLOB := ""
+	FL_EN := false
+	var g TDSCNFG
+	thisKey := fmt.Sprintf("STUDENT_REC_%v", uid)
+	c.Infof("thisKey: %v", thisKey)
+	key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+	if err := datastore.Get(c, key, &g); err != nil {
+		//panic(err)
+		//return
+	}
+	if g.TXT_VAL != "" {
+		c.Infof("g.TXT_VAL empty")
+		EDUC_BLOB = g.TXT_VAL 
+		FL_EN = true
+	}
+	if FL_EN == false {
+		c.Infof("Insert TDSCNFG")
+		g := TDSCNFG{
+				SYS_VER: 1,
+				USER: uid,
+				CFG_ID: thisKey,
+				DAT_TYP: "TXT",
+				NUM_VAL: 0,
+				TXT_VAL: "",
+				CFG_DESC: "Set via code",
+		}
+		key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+		if _, err := datastore.Put(c, key, &g); err != nil {
+				panic(err)
+				//return
+		}
+	}
+	educData := []byte("")
+	if EDUC_BLOB == "" {
+		c.Infof("EDUC_BLOB = empty")
+		//construct from initial data
+		dks := StudentRecord{}
+		dks.Student = uid
+		dks.School = SYS_SERVER_NAME
+		ld := LevelsData{}
+		ld.Level = level
+		ld.Status = "ENROLLED"
+		timestamp := getTimestamp()
+		ld.EnrollDate = timestamp 
+		ld.SyllabusURL, ld.ExamURL = getSyllabus(w,r,mSID,level) 
+		dks.Levels = append(dks.Levels, ld)
+
+		educData,_ = json.Marshal(dks)
+		c.Infof("educDate: %v", educData)
+		saveStudentRecord(w,r,uid,educData)
+		resp = "saved new student record"
+	} else {
+		//read from blob
+		blobByte := getBlobByte(w, r, EDUC_BLOB)	
+		//c.Infof("config: %v", string(blobByte ))
+		dks := StudentRecord{}
+		err := json.Unmarshal(blobByte, &dks)
+		if err != nil {
+			panic(err)
+		}
+		//make sure it doesn't exist
+		for i:=0;i<len(dks.Levels);i++ {
+			if dks.Levels[i].Level == level {
+				resp = "update failed; record exists"
+				return resp
+				break
+			}
+		}
+		ld := LevelsData{}
+		ld.Level = level
+		ld.Status = "ENROLLED"
+		timestamp := getTimestamp()
+		ld.EnrollDate = timestamp 
+		ld.SyllabusURL, ld.ExamURL = getSyllabus(w,r,mSID,level) 
+		dks.Levels = append(dks.Levels, ld)
+
+		educData,_ = json.Marshal(dks)
+		c.Infof("educDate: %v", educData)
+		saveStudentRecord(w,r,uid,educData)
+		resp = "updated existing student record"
+	}
+	c.Infof("resp: %v", resp)
+	return resp
+
+}
+//D0069
+func getSyllabus(w http.ResponseWriter, r *http.Request, mSID, level string) (string, string) {
+	c := appengine.NewContext(r)
+	c.Infof("getSyllabus")
+	c.Infof("mSID: %v", mSID)
+
+	BLOB_KEY := contentCheckSid(w,r,mSID)
+	c.Infof("BLOB_KEY: %v", BLOB_KEY)
+	blobByte := getBlobByte(w, r, BLOB_KEY)	
+	msyl := []MasterSyllabus{}
+	err := json.Unmarshal(blobByte, &msyl)
+	c.Infof("ERROR: %v", err)
+	if err != nil {
+		panic(err)
+	}
+	//get level syllabus and exam
+	for i:=0;i<len(msyl);i++ {
+		if msyl[i].Level == level {
+			 return msyl[i].LessonURL, msyl[i].ExamURL
+			 break
+		}
+	}
+	return "", ""
+
+}
+
+//D0069
+func checkEnroll(w http.ResponseWriter, r *http.Request, mSID, uid string) (string) {
+	c := appengine.NewContext(r)
+	//check if there is student record
+	c.Infof("checkEnroll")
+	resp := ""
+	EDUC_BLOB := ""
+	FL_EN := false
+	var g TDSCNFG
+	thisKey := fmt.Sprintf("STUDENT_REC_%v", uid)
+	c.Infof("thisKey: %v", thisKey)
+	key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+	if err := datastore.Get(c, key, &g); err != nil {
+		//panic(err)
+		//return
+	}
+	if g.TXT_VAL != "" {
+		c.Infof("g.TXT_VAL empty")
+		EDUC_BLOB = g.TXT_VAL 
+		FL_EN = true
+	}
+	if FL_EN == false {
+		c.Infof("Insert TDSCNFG")
+		g := TDSCNFG{
+				SYS_VER: 1,
+				USER: uid,
+				CFG_ID: thisKey,
+				DAT_TYP: "TXT",
+				NUM_VAL: 0,
+				TXT_VAL: "",
+				CFG_DESC: "Set via code",
+		}
+		key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+		if _, err := datastore.Put(c, key, &g); err != nil {
+				panic(err)
+				//return
+		}
+	}
+	if EDUC_BLOB == "" {
+		resp = "not enrolled yet"
+	} else {
+		//read from blob
+		//resp = "updated existing student record"
+		blobByte := getBlobByte(w, r, EDUC_BLOB)	
+		//c.Infof("config: %v", string(blobByte ))
+		sturec := StudentRecord{}
+		err := json.Unmarshal(blobByte, &sturec)
+		if err != nil {
+			panic(err)
+		}
+		data,_ := json.MarshalIndent(sturec.Levels, "", "  ")
+		if data != nil {
+			resp = fmt.Sprintf("%v", string(data))
+		} else {
+			resp = "no enrollments"
+		}
+
+	}
+	c.Infof("resp: %v", resp)
+	return resp
+}
+
+//D0069
+func cancelEnroll(w http.ResponseWriter, r *http.Request, mSID, uid, sLevel string) (string) {
+	c := appengine.NewContext(r)
+	//check if there is student record
+	c.Infof("cancelEnroll")
+	resp := ""
+	EDUC_BLOB := ""
+	var g TDSCNFG
+	thisKey := fmt.Sprintf("STUDENT_REC_%v", uid)
+	c.Infof("thisKey: %v", thisKey)
+	key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+	if err := datastore.Get(c, key, &g); err != nil {
+		//panic(err)
+		//return
+	}
+	if g.TXT_VAL != "" {
+		c.Infof("g.TXT_VAL empty")
+		EDUC_BLOB = g.TXT_VAL 
+	}
+	if EDUC_BLOB == "" {
+		resp = "not enrolled yet"
+	} else {
+		//read from blob
+		//resp = "updated existing student record"
+		blobByte := getBlobByte(w, r, EDUC_BLOB)	
+		//c.Infof("config: %v", string(blobByte ))
+		sturec := StudentRecord{}
+		err := json.Unmarshal(blobByte, &sturec)
+		if err != nil {
+			panic(err)
+		}
+		//store to temp
+		ld := []LevelsData{}
+		for i:=0;i<len(sturec.Levels);i++ {
+			if sturec.Levels[i].Level != sLevel {
+				ld = append(ld, sturec.Levels[i])
+			}
+		}
+		sturec.Levels = ld
+		data,_ := json.MarshalIndent(sturec.Levels, "", "  ")
+		resp = fmt.Sprintf("%v", string(data))
+		//save it
+		educData,_ := json.Marshal(sturec)
+		saveStudentRecord(w,r,uid,educData)
+
+	}
+	c.Infof("resp: %v", resp)
+	return resp
+}
+//edwinxxx
+//D0069
+func updateScores(w http.ResponseWriter, r *http.Request, mSID, uid string) (string) {
+	c := appengine.NewContext(r)
+	c.Infof("updateScores")
+	resp := ""
+	EDUC_BLOB := ""
+	var g TDSCNFG
+	thisKey := fmt.Sprintf("STUDENT_REC_%v", uid)
+	c.Infof("thisKey: %v", thisKey)
+	key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+	if err := datastore.Get(c, key, &g); err != nil {
+		//panic(err)
+		//return
+	}
+	if g.TXT_VAL != "" {
+		c.Infof("g.TXT_VAL empty")
+		EDUC_BLOB = g.TXT_VAL 
+	}
+	if EDUC_BLOB == "" {
+		resp = "not enrolled yet"
+	} else {
+		//read from blob
+		//resp = "updated existing student record"
+		blobByte := getBlobByte(w, r, EDUC_BLOB)	
+		//c.Infof("config: %v", string(blobByte ))
+		sturec := StudentRecord{}
+		err := json.Unmarshal(blobByte, &sturec)
+		if err != nil {
+			panic(err)
+		}
+		//store to temp
+		for i:=0;i<len(sturec.Levels);i++ {
+			c.Infof("examURL: %v", sturec.Levels[i].ExamURL)
+			if sturec.Levels[i].LevelGrade == "" || sturec.Levels[i].LevelGrade == "0" && sturec.Levels[i].ExamURL != "" {
+				//edwinxxx
+				//get SID from examURL
+				SID, _ := getRefDoc(w,r,sturec.Levels[i].ExamURL)
+				c.Infof("SID: %v", SID)
+				score, err := getScoreFromComments(w,r,SID,uid)
+				c.Infof("score: %v", score)
+				if err != nil {
+					fmt.Fprintf(w,"Error extracting score from comments: %v", err)
+				} else {
+					sturec.Levels[i].LevelGrade = fmt.Sprintf("%v", score)
+				}
+			}
+		}
+		data,_ := json.MarshalIndent(sturec.Levels, "", "  ")
+		resp = fmt.Sprintf("%v", string(data))
+		//save it
+		educData,_ := json.Marshal(sturec)
+		saveStudentRecord(w,r,uid,educData)
+
+	}
+	c.Infof("resp: %v", resp)
+	return resp
+}
+
+//D0069
+func saveStudentRecord(w http.ResponseWriter, r *http.Request, uid string, educData []byte) {
+	c := appengine.NewContext(r)
+	//upload to blobstore
+	c.Infof("saveStudentRecord")
+	c.Infof("upload to blobstore")
+	csn2 := getUpUrlString(w,r,"/upload-media")
+	u, err := blobstore.UploadURL(c, csn2, nil)
+	if err != nil {
+		return
+	}
+	var m bytes.Buffer
+	fw := multipart.NewWriter(&m)
+	file, err := fw.CreateFormFile("file", "EDUC")
+	if err != nil {
+		return
+	}
+	if _, err = file.Write(educData); err != nil {
+		return
+	}
+	_ = fw.WriteField("FUNC_CODE", "EDUC")
+	//D0068
+	_ = fw.WriteField("API_KEY", CMD_GEN_KEY)
+	_ = fw.WriteField("UID", uid)
+	fw.Close()
+	req, err := http.NewRequest("POST", u.String(), &m)
+	if err != nil {
+		return
+	}
+	req.Header.Set("Content-Type", fw.FormDataContentType())
+	client := urlfetch.Client(c)
+	res, err := client.Do(req)
+	if err != nil {
+		return
+	}
+	if res.StatusCode != http.StatusCreated {
+		return
+	}
+
 }
 
 //D0028
@@ -41199,7 +41599,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										}
 																									
 									}
-									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ] [ <a href=\"/editor?EDIT_FUNC=DRAW&SID=TDSMEDIA-%v\">View Drawing</a> ] [ <a href=\"/orgchart?SID=TDSMEDIA-%v\">View OrgChart</a>]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid, p.MEDIA_ID, p.MEDIA_ID)
+									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ] [ <a href=\"/editor?EDIT_FUNC=DRAW&SID=TDSMEDIA-%v\">View Drawing</a> ] [ <a href=\"/orgchart?SID=TDSMEDIA-%v\">View OrgChart</a>] [ <a href=\"/bot?bFunc=bchat&SID=TDSMEDIA-%v\">View Bot</a>]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Set As UWM:</b> setuwm TDSMEDIA-%v<br>", p.MEDIA_ID)
@@ -42006,7 +42406,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 					//also notify all users about this
 					msgDtl3 := fmt.Sprintf("UID:%v %v has accessed Music Player! %v", getGeoString(w,r), uid, getAccessString(w,r,""))
 					sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,"/media?FUNC_CODE=UMP",""),"")
-				
 					FILTER := r.FormValue("FILTER")
 					if err := mediaMusicPlayerA.Execute(w, ""); err != nil {
 						panic(err)
@@ -42028,17 +42427,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if _, err := q.GetAll(c, &media); err != nil {
 							 panic(err)
 						}
-						
 						if err := mediaDispTemplateUMP.Execute(w, media); err != nil {
 							 panic(err)
 						}
 						fmt.Fprintf(w, "</ul>")
-						
 						//display tags
 						cKey := fmt.Sprintf("UMP_CACHE_MUSIC_%s", uid)
 						UMP_CACHE := ""
 						UMP_CACHE = getStrMemcacheValueByKey(w,r,cKey)
-						
 						if UMP_CACHE == "" {
 							var buf bytes.Buffer
 							for _, p := range media{
@@ -42050,8 +42446,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 							fmt.Fprintf(w, "%v", UMP_CACHE)
 						}
 						//sort & display
-						
-							
 					} else {
 						q := datastore.NewQuery("TDSMEDIA").Filter("DATA_TYPE =", "music")
 						//c.Errorf("[S0378]")
@@ -42060,6 +42454,10 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if _, err := q.GetAll(c, &media); err != nil {
 							 panic(err)
 						}
+						// Sort by DESC 
+						sort.SliceStable(media, func(i, j int) bool {
+							    return media[i].DESC < media[j].DESC
+						})
 						for _, p := range media{
 								i := strings.Index(strings.ToLower(p.TITLE), strings.ToLower(FILTER))
 								j := strings.Index(strings.ToLower(p.DESC), strings.ToLower(FILTER))
@@ -42069,27 +42467,26 @@ func media(w http.ResponseWriter, r *http.Request) {
 									}
 								}
 						}
-						
 						fmt.Fprintf(w, "</ul>")
-						
 						cKey := fmt.Sprintf("UMP_CACHE_MUSIC_%s", uid)
 						UMP_CACHE := ""
 						UMP_CACHE = getStrMemcacheValueByKey(w,r,cKey)
-						
 						if UMP_CACHE == "" {
-							//
+							var buf bytes.Buffer
+							for _, p := range media{
+								buf.WriteString(fmt.Sprintf("%v %v", p.TITLE, p.DESC))
+							}
+							//UMP_CACHE = buf.String()
+							display_music_tags(w,r,uid,count_words(get_words_from(buf.String())))
 						} else {
 							fmt.Fprintf(w, "%v", UMP_CACHE)
 						}
-							
 						if err := umpFooterTemplate.Execute(w, "MUSIC"); err != nil {
 							panic(err)
 						}
-						
 					}
  
 					return
-					
 				//midi player
 				case "MDP":
 					updateUserActiveData(w, r, c, uid, "/media(mdp)")
@@ -42225,12 +42622,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 					//list all videos
 					if SEARCH_KEY != "" {
 						//print search results here
-						urlStr := fmt.Sprintf("%vutube?YT_FUNC=2&SEARCH_KEY=%v&order=%v&duration=%v", getSchemeUrl(w,r), SEARCH_KEY, order, duration)
+						urlStr := fmt.Sprintf("%vutube?YT_FUNC=3&SEARCH_KEY=%v&order=%v&duration=%v", getSchemeUrl(w,r), SEARCH_KEY, order, duration)
 						client := urlfetch.Client(c)
 						if err := r.ParseForm(); err != nil {
 							panic(err)
 						}
-						
 						resp, err := client.Get(urlStr)
 						if err != nil {
 							panic(err)
@@ -42324,6 +42720,7 @@ const htmlBotHdrA = `
 
 <!-- container element for chat window -->
 <div id="chat"></div>
+<input type="hidden" id="uid" value="{{.STR_FILLER1}}">
 
 <!-- import the JavaScript file -->
 <script src="/lib/js/chat-bubble/Bubbles.js"></script>
@@ -69301,6 +69698,54 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
         UID := strings.Replace(UID_R2, "]", "", -1)
 
 	switch FUNC_CODE {
+		case "EDUC":
+			//delete existing blob
+			c.Infof("EDUC")
+			//D0068
+			if API_KEY != CMD_GEN_KEY {
+				c.Infof("Invalid api key")
+				return
+			}
+			uid = UID
+
+			cKeySR := fmt.Sprintf("STUDENT_REC_BLOB_%v", uid)
+			SR_BLOB := ""
+			var g TDSCNFG
+			SR_BLOB = getStrMemcacheValueByKey(w,r,cKeySR)
+			thisKey := fmt.Sprintf("STUDENT_REC_%v", uid)
+			if SR_BLOB == "" {
+				key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+				if err := datastore.Get(c, key, &g); err != nil {			
+					//return
+				}
+				SR_BLOB = g.TXT_VAL
+			}
+			c.Infof("SR_BLOB: %v", SR_BLOB)
+			if SR_BLOB != "" {
+				blobstore.Delete(c, appengine.BlobKey(SR_BLOB))
+			}
+			//edwixxx
+			blobkey := string(file[0].BlobKey)
+			c.Infof("blobkey: %v", blobkey)
+			c.Infof("uid: %v", uid)
+			g = TDSCNFG{
+					SYS_VER: 1,
+					USER: uid,
+					CFG_ID: thisKey,
+					DAT_TYP: "TXT",
+					NUM_VAL: 0,
+					TXT_VAL: blobkey,
+					CFG_DESC: "Set via code",
+			}
+			key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+			if _, err := datastore.Put(c, key, &g); err != nil {
+					panic(err)
+					//return
+			}
+			//c.Errorf("[S0607]")
+			putStrToMemcacheWithoutExp(w,r,cKeySR,blobkey)
+			c.Infof("student rec saved")
+
 		case "ACB":
 			//delete existing blob
 			c.Infof("ACB")
@@ -70190,7 +70635,8 @@ func getSlidesTemplate(w http.ResponseWriter, r *http.Request) string {
 			break
 		}
 	}
-	if isDemo == true || templ == "" {
+	//D0069
+	if stemp != "" && (isDemo == true || templ == "") {
 		sid := "TDSMEDIA-"+stemp
  
 		BLOB_KEY := contentCheckSid(w,r,sid)
@@ -70242,7 +70688,7 @@ func getArticlesTemplate(w http.ResponseWriter, r *http.Request) string {
 			break
 		}
 	}
-	if isDemo == true || templ == "" {
+	if atemp != "" && (isDemo == true || templ == "") {
 		sid := "TDSMEDIA-"+atemp
  
 		BLOB_KEY := contentCheckSid(w,r,sid)
@@ -70382,20 +70828,29 @@ func parseCustomTemplateReg(tempt string) *template.Template {
 //it automatically renders data given the slide/article templates 
 func renderPresentation(w http.ResponseWriter, r *http.Request, y io.Writer, fname string, doc *Doc, sl_tmp string) error {
 	c := appengine.NewContext(r)
-	
 	t := Template()
-	//c.Infof("sl_tmp: %v", sl_tmp)
+	c.Infof("renderPresentation")
+	c.Infof("sl_tmp: %v", sl_tmp)
 	if sl_tmp != "" && SYS_ENABLE_TEMPLATES == true {
+		c.Infof("SYS_ENABLE_TEMPLATES")
 		tempt := ""
 		switch sl_tmp {
 			case "S":
+				c.Infof("getSlidesTemplate")
 				tempt = getSlidesTemplate(w,r)
 			case "A":
+				c.Infof("getArticlesTemplate")
 				tempt = getArticlesTemplate(w,r)
 		}
-		//c.Infof("tempt: %v", tempt)
-		t = parseCustomTemplatePres(tempt)
+		if tempt != "" {
+			c.Infof("tempt: %v", tempt)
+			t = parseCustomTemplatePres(tempt)
+		} else {
+			c.Infof("fname: %v", fname)
+			t = presentTemplates[path.Ext(fname)]
+		}
 	} else {
+		c.Infof("fname: %v", fname)
 		t = presentTemplates[path.Ext(fname)]
 	}
 	if t == nil {
@@ -72774,6 +73229,7 @@ func servePresentation(w http.ResponseWriter, r *http.Request, TYPE string, MODE
 			http.Redirect(w, r, sysReq, http.StatusFound)
 			return err
 		}
+		c.Infof("renderPresentation()")
 		switch TYPE {
 			case "SLIDE":
 				title2 = fmt.Sprintf("%v.slide", TITLE)
@@ -79046,9 +79502,35 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 	file.Write(w)
 	return err
 }
+//D0069
+//get score from comments
+func getScoreFromComments(w http.ResponseWriter, r *http.Request, SID, UID string) (sValue float64, err error) {
+	c := appengine.NewContext(r)
+	c.Infof("getScoreFromComments()")
+	c.Infof("SID: %v",SID)
+	c.Infof("UID: %v",UID)
+
+	q := datastore.NewQuery("TDSCOMMENT").Filter("SID =", SID)
+	recCount,_ := q.Count(c)
+	cmts := make([]TDSCOMMENT, 0, recCount)
+	if _, err := q.GetAll(c, &cmts); err != nil {
+		 panic(err)
+	}
+	if recCount > 0 {
+		for _, p := range cmts{
+			if p.UID == UID || p.NAME == UID {
+				sValue, _ = strconv.ParseFloat(p.SVAL, 64)
+				return sValue, err
+				break
+			}
+		}
+	}
+	return float64(0), err
+}
 
 //D0061
 //Extract comments 
+//edwinxxx
 func extractComments(w http.ResponseWriter, r *http.Request, SID, TITLE string) (err error) {
 	c := appengine.NewContext(r)
 
