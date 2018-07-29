@@ -8704,7 +8704,6 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-large\">System Status</a>")
 					fmt.Fprintf(w, "<ul>")
 					fmt.Fprintf(w, "<li>Build Version: %v", UCD_BUILD_STR)
-					//edwinxxx
 					SPL := strings.Split(UCD_BUILD_STR,"_")
 					TS := ""
 					if len(SPL) > 0 {
@@ -38845,6 +38844,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
 	checkReferrer(w,r)
+	_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
 	_, uid := checkSession(w,r)
 	//c.Infof("%v", r)
 	//D0066
@@ -38895,7 +38895,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			thisCont := <- blobChan
 
 			g := TEMPSTRUCT {
-				STR_FILLER1: "",
+				STR_FILLER1: uid,
 			}
 			if err := htmlBotHdr.Execute(w, &g); err != nil {
 			  panic(err)
@@ -42326,6 +42326,7 @@ const htmlBotHdrA = `
 
 <!-- container element for chat window -->
 <div id="chat"></div>
+<input type="hidden" id="uid" value="{{.STR_FILLER1}}">
 
 <!-- import the JavaScript file -->
 <script src="/lib/js/chat-bubble/Bubbles.js"></script>
