@@ -354,6 +354,11 @@
 //REV DESC:	  	Added GoJS Org Chart 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0069
+//REV DATE: 		2018-July-29
+//REV DESC:	  	Added education modules 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------
 //List of firebase channels
@@ -38909,6 +38914,22 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "No custom bot source has been set for UWM%v. Please check documentation on how to set the bot source. You may <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0\">Create Initial Text File</a>. You may also proceed with the <a href=\"/chat-bubble/ulapphbot.html?u=%v\">default bot</a>.", r.FormValue("u"), r.FormValue("u"))
 		}
 		return
+		
+		//D0069
+		//edwinxxx
+		case "school":
+			sFunc := r.FormValue("sFunc")
+			sLevel := r.FormValue("sLevel")
+			resp := ""
+			switch sFunc {
+				case "enroll":
+					resp = fmt.Sprintf("enroll: level %v", sLevel) 
+				case "enroll-check":
+					resp = fmt.Sprintf("enroll-check: level %v", sLevel) 
+			}
+			w.WriteHeader(200)
+			w.Write([]byte(resp))
+			return
 		/*
 		case bFunc == "open" || bFunc == "view" || bFunc == "edit" || bFunc == "update":
 			bTarget, err := jq.String("queryResult","parameters","any")
