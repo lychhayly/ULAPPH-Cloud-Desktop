@@ -443,6 +443,7 @@
         {{end}}{{/* of Section block */}}
 
 		<input type="hidden" id="feedbackMail" value="{{.FeedbackMail}}">
+                <input type="hidden" name="SID" value="{{.SID}}">
 		<div onscroll="myFunction()"></div>
 		<h3>Comments</h3>
 		<a href="/social?SID={{.SID}}&SO_FUNC=SO_VIEW&TITLE={{.Title}}" target="{{.SID}}-comments"><img src="/img/social_icon.png" title="Click to view comments" width=50 height=50></a>
