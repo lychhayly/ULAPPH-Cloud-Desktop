@@ -8704,6 +8704,13 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-large\">System Status</a>")
 					fmt.Fprintf(w, "<ul>")
 					fmt.Fprintf(w, "<li>Build Version: %v", UCD_BUILD_STR)
+					//edwinxxx
+					SPL := strings.Split(UCD_BUILD_STR,"_")
+					TS := ""
+					if len(SPL) > 0 {
+						TS = strings.Replace(SPL[1], "-", "", -1)
+					}
+					fmt.Fprintf(w, "<li>Last Upgrade: %v", stmpHumanize(TS))
 					fmt.Fprintf(w, "<li>")
 					fmt.Fprintf(w, "<a href=\"/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-LOG&SID=ULAPPH-NOTIFICATIONS-LOG\">Notifications Logs</a>")
 					fmt.Fprintf(w, "<li>")
@@ -38865,7 +38872,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 		//docID := 0
 		//SID := ""
 		if uwm == "" {
-			botsource = ""
+			botsource = r.FormValue("SID")
 		} else {
 			botsource = getBotSource(w,r,uid,uwm)
 			/*if botsource != "" {
@@ -41198,7 +41205,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										}
 																									
 									}
-									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ] [ <a href=\"/editor?EDIT_FUNC=DRAW&SID=TDSMEDIA-%v\">View Drawing</a> ] [ <a href=\"/orgchart?SID=TDSMEDIA-%v\">View OrgChart</a>]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid, p.MEDIA_ID, p.MEDIA_ID)
+									fmt.Fprintf(w, "<b>Edit:</b> [ <a href=\"/editor?MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor1</a> ] [ <a href=\"/editor?EDIT_FUNC=READER&MEDIA_ID=%v&SID=TDSMEDIA-%v&CATEGORY=%v\">Text Editor2</a> ] [ <a href=\"/media?FUNC_CODE=RAWTEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw Text</a> ] [ <a href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Original Text</a> ] [ <a href=\"/media?FUNC_CODE=GET_MEDIA&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Hyperlink</a> ] [ <a download=\"TDSMEDIA-%v-%v.doc\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Doc File</a> ] [ <a download=\"TDSMEDIA-%v-%v.txt\" href=\"/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v\">Download Text File</a> ] [ <a href=\"/media?FUNC_CODE=RAWJSON&MEDIA_ID=%v&SID=TDSMEDIA-%v\">View Raw JSON</a> ] [ <a href=\"/editor?EDIT_FUNC=TIMELINE&SID=TDSMEDIA-%v\">View Timeline</a> ] [ <a href=\"/mindmaps/?SID=TDSMEDIA-%v&UID=%v\">View Mindmap</a> ] [ <a href=\"/tree?SID=TDSMEDIA-%v&UID=%v\">View Tree</a> ] [ <a href=\"/editor?EDIT_FUNC=DRAW&SID=TDSMEDIA-%v\">View Drawing</a> ] [ <a href=\"/orgchart?SID=TDSMEDIA-%v\">View OrgChart</a>] [ <a href=\"/bot?bFunc=bchat&SID=TDSMEDIA-%v\">View Bot</a>]<br>", p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.CATEGORY, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, TITLE, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID, uid, p.MEDIA_ID, uid, p.MEDIA_ID, p.MEDIA_ID, p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Media ID:</b> %v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>SID:</b> TDSMEDIA-%v<br>", p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Set As UWM:</b> setuwm TDSMEDIA-%v<br>", p.MEDIA_ID)
@@ -42053,7 +42060,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if _, err := q.GetAll(c, &media); err != nil {
 							 panic(err)
 						}
-						//edwinxxx
 						// Sort by DESC 
 						sort.SliceStable(media, func(i, j int) bool {
 							    return media[i].DESC < media[j].DESC

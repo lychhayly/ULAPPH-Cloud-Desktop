@@ -8704,6 +8704,13 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintf(w, "<a href=\"#\" class=\"button button-block button-rounded button-large\">System Status</a>")
 					fmt.Fprintf(w, "<ul>")
 					fmt.Fprintf(w, "<li>Build Version: %v", UCD_BUILD_STR)
+					//edwinxxx
+					SPL := strings.Split(UCD_BUILD_STR,"_")
+					TS := ""
+					if len(SPL) > 0 {
+						TS = strings.Replace(SPL[1], "-", "", -1)
+					}
+					fmt.Fprintf(w, "<li>Last Upgrade: %v", stmpHumanize(TS))
 					fmt.Fprintf(w, "<li>")
 					fmt.Fprintf(w, "<a href=\"/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-LOG&SID=ULAPPH-NOTIFICATIONS-LOG\">Notifications Logs</a>")
 					fmt.Fprintf(w, "<li>")
@@ -38865,7 +38872,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 		//docID := 0
 		//SID := ""
 		if uwm == "" {
-			botsource = ""
+			botsource = r.FormValue("SID")
 		} else {
 			botsource = getBotSource(w,r,uid,uwm)
 			/*if botsource != "" {
@@ -42053,7 +42060,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if _, err := q.GetAll(c, &media); err != nil {
 							 panic(err)
 						}
-						//edwinxxx
 						// Sort by DESC 
 						sort.SliceStable(media, func(i, j int) bool {
 							    return media[i].DESC < media[j].DESC
