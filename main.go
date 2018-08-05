@@ -7099,7 +7099,6 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 			case "SET_CATEGORY_LIST":
 				MEDIA_ID2 := r.FormValue("MEDIA_ID")
 				MEDIA_ID := str2int(MEDIA_ID2)
-						
 				g := TDSCNFG{
 						SYS_VER: 1,
 						USER: uid,
@@ -7110,7 +7109,6 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 						CFG_DESC: "Set via Media Gallery",
 				}
 				key := datastore.NewKey(c, "TDSCNFG", "SYSTEM_Category_List_Media_ID", 0, nil)
- 
 				if _, err := datastore.Put(c, key, &g); err != nil {
 						panic(err)
 						//return
@@ -7118,16 +7116,15 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				//c.Errorf("[S0020]")
 				//update cache
 				BLOB_KEY := ""
-				BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, MEDIA_ID)	
-				
- 
+				BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, MEDIA_ID)
 				var buf bytes.Buffer
 				reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 				s := bufio.NewScanner(reader)
-				
 				//secCtr := 0
 				//D0067
 				thisGrp := ""
+				//edwinxxx
+				var isUwm = map[string]bool{}
 				for s.Scan() {
 					if len(s.Text()) > 0 {
 						//c.Infof("%v", s.Text())
@@ -7146,7 +7143,6 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 						}
 						}
 						if string(thisStr[0]) != "#" {
-						
 							//fmt.Fprintf(w, "%v", s.Text())
 							buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 							//update TDSCATS
@@ -7157,6 +7153,14 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 								thisNum := str2int(SPL3[0])
 								thisName := fmt.Sprintf("desktop%v", thisNum)
 								thisDesc := SPL3[1]
+								//check uwm number exists
+								if isUwm[thisName] == true {
+									w.WriteHeader(200)
+									fmt.Fprintf(w, "<font color=\"red\">ERROR: Duplicate desktop numbers for %v. Please remove the duplicates to proceed.</font>", thisName)
+									return
+									break 
+								}
+								isUwm[thisName] = true
 
 								//should check if row exists
 								desktopKey := fmt.Sprintf("%v", thisName)
@@ -7181,7 +7185,6 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 												//D0067
 												CAT_GRP: thisGrp,
 										}
-										
 										desktopKey := fmt.Sprintf("%v", thisName)
 										_, err := datastore.Put(c, getKeyDesktop(c,desktopKey), &g)
 										//c.Errorf("[S0021]")
@@ -7190,7 +7193,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 												//return
 										}
 										break
-									}	
+									}
 								} else {
 									g := TDSCATS{
 											CAT_NUM: thisNum,
@@ -7201,26 +7204,20 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 											//D0067
 											CAT_GRP: "",
 									}
-									
 									desktopKey := fmt.Sprintf("%v", thisName)
 									_, err := datastore.Put(c, getKeyDesktop(c,desktopKey), &g)
 									//c.Errorf("[S0021]")
 									if err != nil {
 											panic(err)
 											//return
-									}	
+									}
 								}
-							
-							}	
-						
+							}
 						}
 					}
-					
 				}
-				
 				cKey := "CATEGORY_LIST"
 				putBytesToMemcacheWithoutExp(w,r,cKey,buf.Bytes())
-				
 				//clear desktop menu
 				cKey = "DESKTOPS_LIST"
 				putStrToMemcacheWithoutExp(w,r,cKey,"")
@@ -7231,7 +7228,6 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				redURL := fmt.Sprintf("/tools?FUNC=ALL_DESKTOPS")
 				http.Redirect(w, r, redURL, http.StatusFound)
 				return
-			
 			case "SET_HOST_LIST":
 				MEDIA_ID2 := r.FormValue("MEDIA_ID")
 				MEDIA_ID := str2int(MEDIA_ID2)
@@ -38755,10 +38751,10 @@ func nlpAcbSearch(w http.ResponseWriter, r *http.Request, uid, target string) (s
 					//if TDSMEDA- type
 					if strings.Index(SPL2[3], "IMG_URL=") != -1 && strings.Index(SPL2[3], "MEDIA_ID=") != -1 {
 						if ctr == 1 {
-							resp = fmt.Sprintf("<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\"><img src=\"%v\"></a>", SPL2[3], SPL2[1], SPL2[1], getImgFromUrl(w,r,SPL2[3]))
+							resp = fmt.Sprintf("<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\"><img src=\"%v\">%v</a>", SPL2[3], SPL2[1], SPL2[1], getImgFromUrl(w,r,SPL2[3]), SPL2[1])
 
 						} else {
-							resp = fmt.Sprintf("%v<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\"><img src=\"%v\"></a>", resp, SPL2[3], SPL2[1], SPL2[1], getImgFromUrl(w,r,SPL2[3]))
+							resp = fmt.Sprintf("%v<img src=\"/img/divider-line.png\"><a href=\"%v\" target=\"%v\" title=\"%v\"><img src=\"%v\">%v</a>", resp, SPL2[3], SPL2[1], SPL2[1], getImgFromUrl(w,r,SPL2[3]), SPL2[1])
 						}
 
 					} else {
@@ -39377,7 +39373,6 @@ func cancelEnroll(w http.ResponseWriter, r *http.Request, mSID, uid, sLevel stri
 	c.Infof("resp: %v", resp)
 	return resp
 }
-//edwinxxx
 //D0069
 func updateScores(w http.ResponseWriter, r *http.Request, mSID, uid string) (string) {
 	c := appengine.NewContext(r)
@@ -39412,7 +39407,6 @@ func updateScores(w http.ResponseWriter, r *http.Request, mSID, uid string) (str
 		for i:=0;i<len(sturec.Levels);i++ {
 			c.Infof("examURL: %v", sturec.Levels[i].ExamURL)
 			if sturec.Levels[i].LevelGrade == "" || sturec.Levels[i].LevelGrade == "0" && sturec.Levels[i].ExamURL != "" {
-				//edwinxxx
 				//get SID from examURL
 				SID, _ := getRefDoc(w,r,sturec.Levels[i].ExamURL)
 				c.Infof("SID: %v", SID)
@@ -69844,6 +69838,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			
 		//for media
 		case "UPD-FROM-EDITOR":
+			c.Infof("UPD-FROM-EDITOR")
 			blobkey := string(file[0].BlobKey)
 			SID_R := fmt.Sprintf("%v", pVals["SID"])
 			SID_R2 := strings.Replace(SID_R, "[", "", -1)
@@ -69888,6 +69883,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
 					DESC := strings.Replace(p.DESC, "_", " ", -1)
 					if p.DATA_TYPE == "text" {
+						c.Infof("text")
 						blobChan := make(chan string)
 						go getBlobTextChan(w, r,blobChan, p.BLOB_KEY)
 						thisCont = <- blobChan
@@ -69897,13 +69893,16 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 						}
 						//check mime type
 						if p.MIME_TYPE == "" {
+							c.Infof("p.MIME_TYPE = blank")
 							if isJSON(thisCont) == true {
 								p.MIME_TYPE = "application/json"
 							} else {
 								p.MIME_TYPE = http.DetectContentType([]byte(thisCont))
 							}
 						}
-						if p.IMG_URL == "/img/text-icon.gif" || p.IMG_URL == "/img/unknown.png" {
+						c.Infof("p.MIME_TYPE = %v", p.MIME_TYPE)
+						nT1 := strings.Index(p.MIME_TYPE, "image/jpeg")
+						if p.IMG_URL == "/img/text-icon.gif" || p.IMG_URL == "/img/unknown.png" && p.MIME_TYPE != "" && nT1 == -1 {
 							SPL := strings.Split(p.MIME_TYPE, "/")
 							if len(SPL) > 0 {
 								thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", SPL[1])
@@ -69913,6 +69912,10 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 								p.IMG_URL = thisURL
 							}
 						}
+						if p.IMG_URL == "" || nT1 != -1 {
+							p.IMG_URL = "/img/text-icon.gif"
+						}
+						c.Infof("p.IMG_URL = %v", p.IMG_URL)
 
 					} else {
 						thisCont = fmt.Sprintf("%v - %v", TITLE, DESC)
@@ -70117,7 +70120,9 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 								p.MIME_TYPE = http.DetectContentType([]byte(thisCont))
 							}
 						}
-						if p.IMG_URL == "/img/text-icon.gif" || p.IMG_URL == "/img/unknown.png" {
+						c.Infof("p.MIME_TYPE = %v", p.MIME_TYPE)
+						nT1 := strings.Index(p.MIME_TYPE, "image/jpeg")
+						if p.IMG_URL == "/img/text-icon.gif" || p.IMG_URL == "/img/unknown.png" && nT1 == -1 {
 							SPL := strings.Split(p.MIME_TYPE, "/")
 							if len(SPL) > 0 {
 								thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", SPL[1])
@@ -70127,10 +70132,14 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 								p.IMG_URL = thisURL
 							}
 						}
+						if p.IMG_URL == "" || nT1 != -1 {
+							p.IMG_URL = "/img/text-icon.gif"
+						}
 
 					} else {
 						thisCont = fmt.Sprintf("%v - %v", TITLE, DESC)
 					}
+					c.Infof("p.IMG_URL = %v", p.IMG_URL)
 					thisKey := fmt.Sprintf("%d", p.MEDIA_ID)
 					key := datastore.NewKey(c, "TDSMEDIA", thisKey, 0, nil)
 					_, err := datastore.Put(c, key, &p)
@@ -79530,7 +79539,6 @@ func getScoreFromComments(w http.ResponseWriter, r *http.Request, SID, UID strin
 
 //D0061
 //Extract comments 
-//edwinxxx
 func extractComments(w http.ResponseWriter, r *http.Request, SID, TITLE string) (err error) {
 	c := appengine.NewContext(r)
 
