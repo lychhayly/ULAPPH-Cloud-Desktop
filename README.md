@@ -54,8 +54,7 @@ Overview
 --------------
 **ULAPPH Cloud Desktop is an online cloud desktop written in Golang!**
 
-**ULAPPH Cloud Desktop** is a cloud desktop that runs in a browser such as Chrome, Opera and Firefox! It contains Javascript windowing system which displays contents in multiple **Windows**. [Click here](https://ulapph-portal.appspot.com/media?FUNC_CODE=RAWTEXT&MEDIA_ID=23&SID=TDSMEDIA-23) to explore the architecture of ULAPPH Cloud Desktop. 
-
+**ULAPPH Cloud Desktop** is a cloud desktop that runs in a browser such as Chrome, Opera and Firefox! It contains Javascript windowing system which displays contents in multiple **Windows**.  
 - The cloud desktop can be configured to contain **unlimited desktops** so you can organize your work, your personal, business and any information. 
 - It automatically generates contents into **slides**, **articles**, and **media** which are automatically saved in the Google cloud.
 - It can be used by programmers to **develop Javascript applications** using native JS or Otto JS interpreter or execute **Golang** codes by modifying main.go
