@@ -22,9 +22,9 @@ Automatic Text to TurnJS Formatting (you type in text editor and it creates the 
 ----------------
 ![Text to Turnjs Converter](https://lh3.googleusercontent.com/RL8DJrDID1YpUyARSvqlbKCzyOGpoW-clTGtsP59ds7eq8-LcxpPGp7ArwepL0wXGgdaSRxJARaebQox09hEfJFypBJVIw=s1200 "Text to Turnjs Converter")
 
-Integrate an Artificial Intelligence Bot (using Google Dialogflow)
+Integrate an Artificial Intelligence Bot (using Built-in NLP)
 ----------------
-![Machine Learning - Google DialogFlow](https://lh3.googleusercontent.com/6-YiTLEFiWE2C5-LdD7NKIwFVh2tnBT-_fhxNhyr2AyuI-f42mZCObzPZwJCF9o2ZLVgmNfJnm1HH-3sPymSVXjVXbE3M8A=s1200 "Machine Learning - Google DialogFlow")
+![Machine Learning - Built-in NLP](https://lh3.googleusercontent.com/xmbLb2Kc0wz1RdE6VI6IiEW4-2Sw2XlSrvcEunk7GJy89j63RkxjSbvSDdmjotjihMM1u6t2PeTdGpk7QXUqA8DhvdD6EQ=s1200 "Machine Learning - Built-in NLP")
 
 Organize your stuff into different desktops and push a button to search the latest about the topic
 ----------------
@@ -54,9 +54,8 @@ Overview
 --------------
 **ULAPPH Cloud Desktop is an online cloud desktop written in Golang!**
 
-
 **ULAPPH Cloud Desktop** is a cloud desktop that runs in a browser such as Chrome, Opera and Firefox! It contains Javascript windowing system which displays contents in multiple **Windows**.  
-- The cloud desktop can be configured to contain up to **1000 desktop categories** so you can organize your work, your personal, business and any information. 
+- The cloud desktop can be configured to contain **unlimited desktops** so you can organize your work, your personal, business and any information. 
 - It automatically generates contents into **slides**, **articles**, and **media** which are automatically saved in the Google cloud.
 - It can be used by programmers to **develop Javascript applications** using native JS or Otto JS interpreter or execute **Golang** codes by modifying main.go
 - It saves data in the cloud which means your cloud desktop is available **anytime, anywhere and any device**. 
@@ -77,23 +76,19 @@ Use Cases (Developers)
 - Can be used as a fast private or public web server
 - Uses Google Cloud Shell for development (no need to install local IDEs or tools)
 - Organize training courses using Angular JS UI Tree, Mindmaps, etc
+- Utilize the built-in artificial intelligence with NLP
 
-Use Cases (Regular Users)
+Use Cases (General)
 ---------
 - Organize your slides, articles, media, links into categorized desktops
 - Use built-in productivity applications (see Start Menu)
 - Use entertainment tools such as Youtube, music, video, and midi players
 - Use your photos as random desktop wallpapers
-- Use messaging tools such as SMS, Guestbook, chat, and channels
+- Use messaging tools such as SMS, Guestbook, chat with firebase
 - Publish blogs or articles/slides either private or public
 - Minimize tabs by opening them in small windows
 - Make yourself organized and more productive!
-
-Other Use Cases
----------
-- Create an extract tool to extract tasks from Microsoft Planner Office 365 into Excel spreadhsheet
-- Organize courses/trainings using D3.js, UI tree, automated quizzes etc.
-- Machine learning AI bots using Google DialogFlow
+- Use the AI chatbot to accomplish your tasks
 
 Documentations
 ----------------
