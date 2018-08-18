@@ -141,7 +141,11 @@ angular.module('myApp', ['ui.tree'])
 		var ele = document.getElementById(res);
 		ele.style.setProperty("text-decoration", "line-through");
 		//also set background
-		ele.style.backgroundColor = "yellow";
+		if (localStorage[str] == "x") {
+			ele.style.backgroundColor = "yellow";
+		} else {
+			ele.style.backgroundColor = "cyan";
+		}
 
 	  }
 	}
@@ -207,19 +211,35 @@ angular.module('myApp', ['ui.tree'])
 		//window.open(nodeData.url, nodeData.url);
 		var root = location.protocol + '//' + location.host;
 		var str = nodeData.url;
-		var n = str.indexOf(location.host);
-		if (n > 0) {
-			parent.postMessage('ULAPPH-SYS-UPD@888@'+ nodeData.title +'@888@' + nodeData.url, root); 
+		var thisColor = "cyan";
+		var thisChar = "x";
+		if (str == "" || str == undefined) {
+			alert("No link!");
+			thisChar = "y";
+			//return;
 		} else {
-			window.open(nodeData.url, "_blank");
+			var n = str.indexOf(location.host);
+			if (n > 0) {
+			    var r = confirm("Press OK to open in window. Press Cancel to open new tab!");
+			    if (r == true) {
+			        parent.postMessage('ULAPPH-SYS-UPD@888@'+ nodeData.title +'@888@' + nodeData.url, root); 
+			    } else {
+			        window.open(nodeData.url, "_blank");
+			    }
+			} else {
+				window.open(nodeData.url, "_blank");
+			}
+			thisColor = "yellow";
 		}
+
 		//also strikethrough
 		var ele = document.getElementById("node-" + nodeData.id);
 		ele.style.setProperty("text-decoration", "line-through");
 		//also set background
-		ele.style.backgroundColor = "yellow";
+		ele.style.backgroundColor = thisColor;
 		//save status in localstorage
-		localStorage["{{.STR_FILLER1}}-node-" + nodeData.id] = "x";
+		//localStorage["{{.STR_FILLER1}}-node-" + nodeData.id] = "x";
+		localStorage["{{.STR_FILLER1}}-node-" + nodeData.id] = thisChar;
 
 		return false;
     };
@@ -334,7 +354,7 @@ angular.module('myApp', ['ui.tree'])
         <button ng-click="saveAll()">Save all</button>
         <button ng-click="showHideJSON()">Show/Hide JSON</button>
         <button ng-click="loadStatus()">Load Status</button>
-	<button ng-click="refresh()">Refresh</button>
+		<button ng-click="refresh()">Refresh</button>
       </div>
     </div>
 	
@@ -369,7 +389,6 @@ angular.module('myApp', ['ui.tree'])
   </div> 
 
 </div>
-
 </body>
 
 </html>

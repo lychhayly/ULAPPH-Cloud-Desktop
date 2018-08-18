@@ -185,6 +185,18 @@ var convo = {
 		{
 	      question: "Content Shortcuts",
 	      answer: "content-functions"
+	    },
+		{
+	      question: "Chat",
+	      answer: "join-chats"
+	    },
+		{
+	      question: "Tools",
+	      answer: "funcShowTools"
+	    },
+		{
+	      question: "Lotto",
+	      answer: "funcGamesLotto"
 	    }	
 	  ]
 	},
@@ -201,6 +213,106 @@ var convo = {
 	      question: "Content Shortcuts",
 	      answer: "content-functions"
 	    }			
+		]
+  },
+  "funcShowTools": {
+    says: ["Click below tools!"
+    	],
+    reply: [
+		{
+	      question: "myWebsite",
+	      answer: "toolsOpenWebsite"
+	    },
+		{
+	      question: "Photos",
+	      answer: "toolsOpenPhotos"
+	    },
+		{
+	      question: "Music Player",
+	      answer: "toolsMusicPlayer"
+	    },	
+		{
+	      question: "Youtube Player",
+	      answer: "toolsYoutubePlayer"
+	    },
+		{
+	      question: "Video Player",
+	      answer: "toolsVideoPlayer"
+	    },	
+		{
+	      question: "New Article",
+	      answer: "toolsNewArticle"
+	    },
+		{
+	      question: "New Slide",
+	      answer: "toolsNewSlide"
+	    },
+		{
+	      question: "New Text",
+	      answer: "toolsNewText"
+	    },
+		{
+	      question: "Uploader",
+	      answer: "toolsUploader"
+	    },
+		{
+	      question: "Recents",
+	      answer: "toolsRecents"
+	    },
+		{
+	      question: "People",
+	      answer: "toolsPeople"
+	    },
+		{
+	      question: "Guestbook",
+	      answer: "toolsGuestbook"
+	    },
+		{
+	      question: "TODOs",
+	      answer: "toolsTodos"
+	    },
+		{
+	      question: "Countdown",
+	      answer: "toolsCountdown"
+	    },
+		{
+	      question: "Clock Calendar",
+	      answer: "toolsClockCal"
+	    },
+		{
+	      question: "Calendar",
+	      answer: "toolsCalendar"
+	    },
+		{
+	      question: "Admin",
+	      answer: "toolsAdmin"
+	    }
+		]
+  },
+  "funcGamesLotto": {
+    says: ["Click below type!"
+    	],
+    reply: [
+		{
+	      question: "Grand Lotto 6/55",
+	      answer: "funcLotto655"
+	    },
+		{
+	      question: "Lotto 6/42",
+	      answer: "funcLotto642"
+	    },
+		{
+	      question: "Mega Lotto 6/45",
+	      answer: "funcLotto645"
+	    },	
+		{
+	      question: "Super Lotto 6/49",
+	      answer: "funcLotto649"
+	    },	
+		{
+	      question: "Ultra Lotto 6/58",
+	      answer: "funcLotto658"
+	    }
 		]
   },
   "content-functions": {
@@ -238,6 +350,32 @@ var convo = {
 		{
 	      question: "recent in comments",
 	      answer: "funcCallNlpBackend8"
+	    }			
+		]
+  },
+  "join-chats": {
+    says: ["Click below chat rooms!"
+    	],
+    reply: [
+		{
+	      question: "Chat Worldwide",
+	      answer: "funcChatWorldwide"
+	    },
+		{
+	      question: "Chat Country",
+	      answer: "funcChatCountry"
+	    },
+		{
+	      question: "Chat Site",
+	      answer: "funcChatSite"
+	    },
+		{
+	      question: "Private Chat - New",
+	      answer: "funcChatPrivate"
+	    },
+		{
+	      question: "Private Chat - Join",
+	      answer: "funcChatPrivateJoin"
 	    }			
 		]
   },
@@ -317,6 +455,76 @@ showTopicNews = function () {
 	  )
 
 }
+
+funcChatWorldwide = function () {
+    var msg = "<a href=\"/chat?pubchan=worldwide\">Worldwide Chat - Join</a>";
+	  chatWindow.talk(
+	    {
+	      "showChatLink": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "showChatLink"
+	  )
+}
+
+funcChatCountry = function () {
+    var msg = "<a href=\"/chat?pubchan=country\">Country Chat - Join</a>";
+	  chatWindow.talk(
+	    {
+	      "showChatLink": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "showChatLink"
+	  )
+
+}
+
+funcChatSite = function () {
+    var msg = "<a href=\"/chat?pubchan=public\">Site Chat - Join</a>";
+	  chatWindow.talk(
+	    {
+	      "showChatLink": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "showChatLink"
+	  )
+
+}
+
+funcChatPrivate = function () {
+    var msg = "<a href=\"/chat?CHAT_FUNC=newChatRoom\">Private Chat - New</a>";
+	  chatWindow.talk(
+	    {
+	      "showChatLink": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "showChatLink"
+	  )
+
+}
+
+funcChatPrivateJoin = function () {
+    var msg = "<a href=\"/chat?CHAT_FUNC=connectChatRoom\">Private Chat - Join</a>";
+	  chatWindow.talk(
+	    {
+	      "showChatLink": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "showChatLink"
+	  )
+
+}
+
 
 nlpSucceedsOpenSearchWidget = function () {
     //chatWindow.talk(convo, "<a href=\"/tools?FUNC=WIDGET&t=MiniBrowserGet\" target=\"searchwidget\">Open Search Widget</a>"); // Continue conversation
@@ -773,6 +981,87 @@ funcRandomYoutube = function () {
 	  }
 }
 
+funcLotto655 = function() {
+	funcGenerateLotto("6/55");
+}
+
+funcLotto642 = function() {
+	funcGenerateLotto("6/42");
+}
+
+funcLotto645 = function() {
+	funcGenerateLotto("6/45");
+}
+
+funcLotto649 = function() {
+	funcGenerateLotto("6/49");
+}
+
+funcLotto658 = function() {
+	funcGenerateLotto("6/58");
+}
+
+funcGenerateLotto = function (lotto) {
+	//call nlp
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr5=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr5=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Calling lotto generator...");
+	var tickets = prompt("How many tickets?", 1);
+	if (tickets == "") {
+		tickets = 1;
+	}
+	xhr5.open("POST","/rcg?RAN_FUNC=LG&tickets=" + tickets +"&lg=" + lotto, true); 
+	xhr5.send();
+	
+	 xhr5.onreadystatechange=function(convo)
+	  {
+	  if (xhr5.readyState==4 && xhr5.status==200)
+		{
+		var currVal = xhr5.responseText;
+			console.log(currVal);
+			  if (currVal != "") {
+				  chatWindow.talk(
+					{
+					  "random-lotto": {
+					  says: [currVal],
+						reply: [	    		{
+						      question: "Grand Lotto 6/55",
+						      answer: "funcLotto655"
+						    },
+							{
+						      question: "Lotto 6/42",
+						      answer: "funcLotto642"
+						    },
+							{
+						      question: "Mega Lotto 6/45",
+						      answer: "funcLotto645"
+						    },	
+							{
+						      question: "Super Lotto 6/49",
+						      answer: "funcLotto649"
+						    },	
+							{
+						      question: "Ultra Lotto 6/58",
+						      answer: "funcLotto658"
+						    }
+							]
+					  }
+					},
+					"random-lotto"
+				)
+			}
+			return;
+		}
+	  }
+}
+
+
 function ValidURL(textval) {
     var urlregex = /^(https?|ftp):\/\/([a-zA-Z0-9.-]+(:[a-zA-Z0-9.&%$-]+)*@)*((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9][0-9]?)(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}|([a-zA-Z0-9-]+\.)*[a-zA-Z0-9-]+\.(com|edu|gov|int|mil|net|org|biz|arpa|info|name|pro|aero|coop|museum|[a-zA-Z]{2}))(:[0-9]+)*(\/($|[a-zA-Z0-9.,?'\\+&%$#=~_-]+))*$/;
     return urlregex.test(textval);
@@ -790,6 +1079,59 @@ function blankDesktop() {
 function showWebapp() {
 	window.open("/webapp/", "_blank");
 }
+
+function toolsOpenWebsite() {
+	location.href="/contents?q=home";
+}
+function toolsOpenPhotos() {
+	location.href="/media?FUNC_CODE=VIEW_THUMBS";
+}
+function toolsMusicPlayer() {
+	location.href="/media?FUNC_CODE=UMP";
+}
+function toolsYoutubePlayer() {
+	location.href="/media?FUNC_CODE=YVP";
+}
+function toolsVideoPlayer() {
+	location.href="/media?FUNC_CODE=UVP";
+}
+function toolsNewArticle() {
+	location.href="/editor?EDIT_FUNC=READER&DOC_ID=0&SID=NEWARTICLE&CATEGORY=desktop0";
+}
+function toolsNewSlide() {
+	location.href="/editor?EDIT_FUNC=READER&DOC_ID=0&SID=NEWSLIDE&CATEGORY=desktop0";
+}
+function toolsNewText() {
+	location.href="/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0";
+}
+function toolsUploader() {
+	location.href="/media?FUNC_CODE=SET_MULTI_IMAGE_UPLOAD";
+}
+function toolsRecents() {
+	location.href="/tools?FUNC=ALL_RECENT";
+}
+function toolsPeople() {
+	location.href="/people?PEOPLE_FUNC=QUICK-VIEW";
+}
+function toolsGuestbook() {
+	location.href="/guestbook?GB_FUNC=GB_OWNER";
+}
+function toolsTodos() {
+	location.href="/tools?FUNC=WIDGET&t=TODO";
+}
+function toolsCountdown() {
+	location.href="/tools?FUNC=WIDGET&t=CountDownGet";
+}
+function toolsClockCal() {
+	location.href="/tools?FUNC=WIDGET&t=AnalogClockWidget";
+}
+function toolsCalendar() {
+	location.href="https://scientific-calculator.appspot.com/";
+}
+function toolsAdmin() {
+	location.href="/admin-setup";
+}
+
 
 function reloadPage() {
     location.reload();
