@@ -7123,7 +7123,6 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				//secCtr := 0
 				//D0067
 				thisGrp := ""
-				//edwinxxx
 				var isUwm = map[string]bool{}
 				for s.Scan() {
 					if len(s.Text()) > 0 {
@@ -7156,7 +7155,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 								//check uwm number exists
 								if isUwm[thisName] == true {
 									w.WriteHeader(200)
-									fmt.Fprintf(w, "ERROR: Duplicate desktop numbers for %v", thisName)
+									fmt.Fprintf(w, "<font color=\"red\">ERROR: Duplicate desktop numbers for %v. Please remove the duplicates to proceed.</font>", thisName)
 									return
 									break 
 								}
@@ -14372,14 +14371,75 @@ func settings(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
- 
+
+//edwinxxx 
 //generate random contents which displays random tips inside the desktop
+func ranLotto(w http.ResponseWriter, r *http.Request) (string) {
+	tickets := r.FormValue("tickets")
+	numTickets, _ := strconv.Atoi(tickets)
+	lgame := r.FormValue("lg")
+	resp := ""
+	for i:=0; i<numTickets; i++ {
+	msg := ""
+	switch lgame {
+		case "6/55":
+			rnum := randNum(1,55)
+			msg = fmt.Sprintf("<b>%v</b>", rnum)
+			for i:=0; i<5; i++ {
+			rnum := randNum(1,55)
+			msg = fmt.Sprintf("<b>%v</b>-<b>%v</b>", msg, rnum)
+			}
+
+		case "6/42":
+			rnum := randNum(1,42)
+			msg = fmt.Sprintf("<b>%v</b>", rnum)
+			for i:=0; i<5; i++ {
+			rnum := randNum(1,42)
+			msg = fmt.Sprintf("<b>%v</b>-<b>%v</b>", msg, rnum)
+			}
+
+		case "6/45":
+			rnum := randNum(1,45)
+			msg = fmt.Sprintf("<b>%v</b>", rnum)
+			for i:=0; i<5; i++ {
+			rnum := randNum(1,45)
+			msg = fmt.Sprintf("<b>%v</b>-<b>%v</b>", msg, rnum)
+			}
+
+		case "6/49":
+			rnum := randNum(1,49)
+			msg = fmt.Sprintf("<b>%v</b>", rnum)
+			for i:=0; i<5; i++ {
+			rnum := randNum(1,49)
+			msg = fmt.Sprintf("<b>%v</b>-<b>%v</b>", msg, rnum)
+			}
+
+		case "6/58":
+			rnum := randNum(1,58)
+			msg = fmt.Sprintf("<b>%v</b>", rnum)
+			for i:=0; i<5; i++ {
+			rnum := randNum(1,58)
+			msg = fmt.Sprintf("<b>%v</b>-<b>%v</b>", msg, rnum)
+			}
+	}
+	resp = fmt.Sprintf("%v<br>%v", resp, msg)
+	}
+	return resp 
+}
+
+//enerate random contents which displays random tips inside the desktop
 func ranConGen(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
-	
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
+	//edwinxxx
+	RAN_FUNC := r.FormValue("RAN_FUNC")
+	if RAN_FUNC == "LG" {
+		resp := ranLotto(w,r)
+		w.WriteHeader(200)
+		w.Write([]byte(resp))
+		return
+	}
 	checkReferrer(w,r)
- 
 	timestamp := getTimestamp()
 	//D0065
 	if SYS_DISP_ADS_CONTENT  == true {
@@ -27059,11 +27119,12 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 				result.render(w)
 				return
 			}
-
-			_, uid := checkSession(w,r)
+			//edwinxxx
+			/*_, uid := checkSession(w,r)
 			if uid == "" {
 				uid = getGeoString(w,r)
-			}
+			}*/
+			uid := name
 			//D0061
 			err = createComment(w,r,r.FormValue("url"), name, res, uid, comment, latlon, parent)
 			if err != nil {
@@ -27528,13 +27589,12 @@ func social(w http.ResponseWriter, r *http.Request) {
 						//Post data to server
 						//URL := fmt.Sprintf("%v/social?SO_FUNC=proc-broadcast-contents&encMsg=%v", SEARCH_SERVER, encMsg)
 						req, err := http.NewRequest("POST", comUrl, nil)
-				 
 						client := urlfetch.Client(c)
 						_, err = client.Do(req)
 						if err != nil {
 							panic(err)
 						}
-						fmt.Fprintf(w, "Thank you for your feedback!")
+						//fmt.Fprintf(w, "Thank you for your feedback!")
 						//http.Redirect(w, r, comUrl, http.StatusFound)
 						if nameOk == true && fromOk == true {
 							subj := fmt.Sprintf("[QUIZ][%v][%v][%v][%v]", SID, name, from, res)
@@ -27543,18 +27603,18 @@ func social(w http.ResponseWriter, r *http.Request) {
 							msg := fmt.Sprintf("[%v] %v<br>%v <br><br>--submitted by [%v] [%v] <br>--no-reply <br>--geo [%v] <br>--via [%v]",SID, title, content, name, from, geoStr, geoAcc)
 							to := FDBKMAIL
 							SENDGENEMAIL(c, subj, to, from, msg)
-							fmt.Fprintf(w, "SUCCESS: Message sent!")	
+							//fmt.Fprintf(w, "SUCCESS: Message sent!")	
+							redURL := fmt.Sprintf("/captcha?CC_FUNC=DISP&R=COMMENT&SID=%v&TITLE=%v", SID, title)
+							http.Redirect(w, r, redURL, http.StatusFound)
 						}
-						return		
+						return
 					} else {
 						w.WriteHeader(200)
 						fmt.Fprintf(w, "[ERROR] %v", err)
 					}
 					return
 			}
- 
 			return
-		
 		//D0040 -- remove???
 		//social
 		case "SIGN":
@@ -62940,22 +63000,22 @@ var mobileBodyTemplateContentA = template.Must(template.New("mobileBodyTemplateC
                 <img src="/img/ulapph-icons-login.png" title="Login" height="40" width="40"/>
             </a>
         </li>
-		<li id="Logout">
-		 <a href="/logout">
-			 <em><span>Logout</span></em><br>
-				<img src="/img/ulapph-icons-logout.png" title="Logout" height="40" width="40"/>
-			</a>
-		</li>
-        <li id="Admin">
-         <a href="/admin-setup">
-             <em><span>Admin</span></em><br>
-                <img src="/img/admin-icon.png" title="Admin" height="40" width="40"/>
-            </a>
-        </li>
+	<li id="Logout">
+	 <a href="/logout">
+		 <em><span>Logout</span></em><br>
+			<img src="/img/ulapph-icons-logout.png" title="Logout" height="40" width="40"/>
+		</a>
+	</li>
         <li id="API">
          <a href="/api-doc/">
              <em><span>API</span></em><br>
                 <img src="/img/ulapph-icons-api.png" title="API" height="40" width="40"/>
+            </a>
+        </li>
+        <li id="Bot">
+         <a href="/chat-bubble/ulapphbot.html">
+             <em><span>ChatBot</span></em><br>
+                <img src="/img/bot.png" title="Chatbot" height="40" width="40"/>
             </a>
         </li>
         <li id="LS">
@@ -62968,6 +63028,12 @@ var mobileBodyTemplateContentA = template.Must(template.New("mobileBodyTemplateC
          <a href="/directory?DIR_FUNC=sites">
              <em><span>Directory</span></em><br>
                 <img src="/img/directory.png" title="Directory" height="40" width="40"/>
+            </a>
+        </li>
+        <li id="Admin">
+         <a href="/admin-setup">
+             <em><span>Admin</span></em><br>
+                <img src="/img/admin-icon.png" title="Admin" height="40" width="40"/>
             </a>
         </li>
         <li id="Help">
@@ -72882,7 +72948,7 @@ func presenter(w http.ResponseWriter, r *http.Request) {
 			if auth == "p" && validatePasscode(w,r,"slides",SHARED_TO, pc) == true {
 				//ok
 			} else if (uid != AUTHOR) {
-				msgDtl := fmt.Sprintf("[U00149] ERROR: This document (%s) is accessible only to select individuals. Kindly request access from author (%v).", SID, AUTHOR)
+				msgDtl := fmt.Sprintf("[U00149b] ERROR: This document (%s) is accessible only to select individuals. Kindly request access from author (%v).", SID, AUTHOR)
 				//msgURL := fmt.Sprintf("/infodb?DB_FUNC=SLIDES&CATEGORY=")
 				msgURL := r.URL.String()
 				msgTyp := "error"
@@ -79529,12 +79595,13 @@ func getScoreFromComments(w http.ResponseWriter, r *http.Request, SID, UID strin
 		for _, p := range cmts{
 			if p.UID == UID || p.NAME == UID {
 				sValue, _ = strconv.ParseFloat(p.SVAL, 64)
-				return sValue, err
-				break
+				//return sValue, err
+				//break
 			}
 		}
 	}
-	return float64(0), err
+	//return float64(0), err
+	return sValue, err
 }
 
 //D0061
@@ -79587,11 +79654,28 @@ func extractComments(w http.ResponseWriter, r *http.Request, SID, TITLE string) 
 	}
 	if recCount > 0 {
 		for _, p := range cmts{
+			if p.DEPTH != 1 {
+				continue
+			}
+			sValue := float64(0)
+			thisName := p.NAME
+			SPL := strings.Split(p.COMMENT, " got a score of ")
+			if p.SVAL != "" {
+				sValue, _ = strconv.ParseFloat(p.SVAL, 64)
+				if len(SPL) > 0 {
+					thisName = SPL[0]
+				}
+			} else {
+				//old enteries parsing
+				if len(SPL) > 0 {
+					sValue, _ = strconv.ParseFloat(SPL[1], 64)
+					thisName = SPL[0]
+				}
+			}
 			row = sheet.AddRow()
 			cell = row.AddCell()
-			cell.Value = p.NAME
+			cell.Value = thisName
 			cell = row.AddCell()
-			sValue, _ := strconv.ParseFloat(p.SVAL, 64)
 			cell.SetFloat(sValue)
 			cell = row.AddCell()
 			cell.Value = p.SID

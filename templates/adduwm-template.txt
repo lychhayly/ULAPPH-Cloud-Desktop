@@ -19,7 +19,7 @@
 {{if ne .STR_FILLER2 ""}}
 <span class="button-wrap">
 <a href="#" onclick="editTopicSettings({{.STR_FILLER2}}); return false;" class="button button-pill button-raised button-caution">Edit Topics: {{.STR_FILLER1}}</a>
-</span>
+</span><a href="/stream?STR_FUNC=RUN_TOPICS&u={{.STR_FILLER2}}" target="{{.STR_FILLER1}}" title="Click to run topics search"><img src="/img/run.png" width="32" height="32"></a>
 {{end}}
 {{if ne .STR_FILLER2 ""}}
 <span class="button-wrap">

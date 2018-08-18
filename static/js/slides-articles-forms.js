@@ -102,12 +102,14 @@ function submitData(name, mode,ans) {
 	  {// code for IE6, IE5
 	  xmlhttsd=new ActiveXObject('MSXML2.XMLHTTP.3.0');
 	  }
-	  
+	  	
 	var sid = document.getElementsByName("SID")[0].value
 	//chk_url = '/social?SO_FUNC=QUIZ&ANS=' + ans + '&SID=' + sid + '&mode=' + mode + '&name=' + name;
 	chk_url = '/social?SO_FUNC=QUIZ&ANS=' + ans + '&SID=' + sid + '&mode=' + mode;
 	console.log(chk_url);
-	xmlhttsd.open("GET",chk_url,true);
+	location.href=chk_url;
+	
+	/*xmlhttsd.open("GET",chk_url,true);
 	xmlhttsd.send();
 
 	 xmlhttsd.onreadystatechange=function()
@@ -136,6 +138,6 @@ function submitData(name, mode,ans) {
 				return;
 			}
 		}
-	 }
+	 }*/
 	 return;
 };
