@@ -1,14 +1,13 @@
 ULAPPH Cloud Desktop - Your web-based cloud desktop!
 ====================
+ULAPPH Window Manager gives you a feel of a desktop...
+----------------
+![ULAPPH Desktop Demo](https://lh3.googleusercontent.com/AJBWaOVmclUEqZA9TJIAvR1X6j0VuUrmpzj6RwqWcSS5WbnyDfv1fxyybpQ1yqaaA6iimhZgLNNp5aiWjjyD_y5MbF1Zjw=s1200 "ULAPPH Desktop Demo")
 
 Use Google Cloud Shell to install to Google Cloud...
 ----------------
 
 ![ULAPPH Installation Demo](https://lh3.googleusercontent.com/G_obRdz4_ySYr2qyoLhPpmtF9Qcv-bpLFjV44yIBdKCuVNr_TYiVu5oGtHzBqp1lOtPeb9a6Y9Q4mXOeE8DSQOVRcjYZVeA=s1200 "ULAPPH Installation Demo")
-
-ULAPPH Window Manager gives you a feel of a desktop...
-----------------
-![ULAPPH Desktop Demo](https://lh3.googleusercontent.com/AJBWaOVmclUEqZA9TJIAvR1X6j0VuUrmpzj6RwqWcSS5WbnyDfv1fxyybpQ1yqaaA6iimhZgLNNp5aiWjjyD_y5MbF1Zjw=s1200 "ULAPPH Desktop Demo")
 
 Automatic Text to Slides Formatting (you type in text editor and it creates the slides)
 ----------------
