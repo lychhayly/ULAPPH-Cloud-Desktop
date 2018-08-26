@@ -102,6 +102,14 @@ indexes:
   ancestor: yes
   properties:
   - name: MEDIA_ID
+  - name: YEAR
+  - name: DT_UPLOAD
+    direction: asc
+
+- kind: TDSMEDIA
+  ancestor: yes
+  properties:
+  - name: MEDIA_ID
   - name: DOC_ID
   - name: DATA_TYPE
   - name: TITLE
@@ -154,11 +162,27 @@ indexes:
   - name: GET_NEXT
   - name: MUSIC_ID
     direction: asc
+
+- kind: TDSSLIDE
+  ancestor: yes
+  properties:
+  - name: MEDIA_ID
+  - name: YEAR
+  - name: DT_UPLOAD
+    direction: asc
     
 - kind: TDSARTL
   ancestor: yes
   properties:
   - name: MUSIC_ID
+    direction: asc
+
+- kind: TDSARTL
+  ancestor: yes
+  properties:
+  - name: MEDIA_ID
+  - name: YEAR
+  - name: DT_UPLOAD
     direction: asc
 
 - kind: TDSSTATS

@@ -197,6 +197,10 @@ var convo = {
 		{
 	      question: "Lotto",
 	      answer: "funcGamesLotto"
+	    },
+		{
+	      question: "TimelineJS",
+	      answer: "funcTimelineJS"
 	    }	
 	  ]
 	},
@@ -577,6 +581,19 @@ funcAllPeople = function () {
 	      }
 	    },
 	    "funcAllPeopleRes"
+	  )
+}
+
+funcTimelineJS = function () {
+    var msg = "<a href=\"/editor?EDIT_FUNC=TIMELINE&SID=GEN\" target=\"timelines\">TimelineJS Generator</a>";
+	  chatWindow.talk(
+	    {
+	      "funcTimelineJSRes": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "funcTimelineJSRes"
 	  )
 }
 

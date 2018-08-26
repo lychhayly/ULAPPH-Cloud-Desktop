@@ -1,0 +1,214 @@
+{/* This is the timelinejs genrator template.*/}
+
+{{define "root"}}
+<!doctype html>
+<html style="padding-right: 0px;"><head>
+    <meta charset="utf-8">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta name="author" content="ULAPPH Cloud Desktop">
+<meta name="viewport" content="width=device-width">
+<meta name="description" content="ULAPPH Cloud Desktop is a TimelineJS tool.">
+<title>TimelineJS - ULAPPH Cloud Desktop</title>
+<link rel="shortcut icon" href="/lib/js/pickadate.js/images/favicon.ico">
+<link rel="stylesheet" href="/lib/css/pickadate.js/main.css">
+<link rel="stylesheet" href="/lib/css/pickadate.js/themes/default.css" id="theme_base">
+<link rel="stylesheet" href="/lib/css/pickadate.js/themes/default.date.css" id="theme_date">
+<link rel="stylesheet" href="/lib/css/pickadate.js/themes/default.time.css" id="theme_time">
+<style>
+.button {
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+</style>
+<style>
+/*the container must be positioned relative:*/
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+.select-selected {
+  background-color: DodgerBlue;
+}
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+/*style the items (options), including the selected item:*/
+.select-items div,.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+</style>
+<body>
+     
+<section class="section">
+  <div class="section__block section__block--scoped">
+    <h2 class="heading heading--one heading--divide heading--divide-first"><span class="heading__text">ULAPPH TimelineJS</span></h2>
+    <fieldset class="fieldset"><div class="fieldset__wrapper"><input class="fieldset__input js__datepicker picker__input" type="text" placeholder="Start Date" readonly="" id="start_date" aria-haspopup="true" aria-expanded="false" aria-readonly="false" aria-owns="P2061350087_root"><div class="picker" id="P2061350087_root" aria-hidden="true"><div class="picker__holder" tabindex="-1"><div class="picker__frame"><div class="picker__wrap"><div class="picker__box"><div class="picker__header"><div class="picker__month">August</div><div class="picker__year">2018</div><div class="picker__nav--prev" data-nav="-1" role="button" aria-controls="P2061350087_table" title="Previous month"> </div><div class="picker__nav--next" data-nav="1" role="button" aria-controls="P2061350087_table" title="Next month"> </div></div><table class="picker__table" id="P2061350087_table" role="grid" aria-controls="P2061350087" aria-readonly="true"><thead><tr><th class="picker__weekday" scope="col" title="Sunday">Sun</th><th class="picker__weekday" scope="col" title="Monday">Mon</th><th class="picker__weekday" scope="col" title="Tuesday">Tue</th><th class="picker__weekday" scope="col" title="Wednesday">Wed</th><th class="picker__weekday" scope="col" title="Thursday">Thu</th><th class="picker__weekday" scope="col" title="Friday">Fri</th><th class="picker__weekday" scope="col" title="Saturday">Sat</th></tr></thead><tbody><tr><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1532793600000" role="gridcell" aria-label="29 July, 2018">29</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1532880000000" role="gridcell" aria-label="30 July, 2018">30</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1532966400000" role="gridcell" aria-label="31 July, 2018">31</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533052800000" role="gridcell" aria-label="1 August, 2018">1</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533139200000" role="gridcell" aria-label="2 August, 2018">2</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533225600000" role="gridcell" aria-label="3 August, 2018">3</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533312000000" role="gridcell" aria-label="4 August, 2018">4</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533398400000" role="gridcell" aria-label="5 August, 2018">5</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533484800000" role="gridcell" aria-label="6 August, 2018">6</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533571200000" role="gridcell" aria-label="7 August, 2018">7</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533657600000" role="gridcell" aria-label="8 August, 2018">8</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533744000000" role="gridcell" aria-label="9 August, 2018">9</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533830400000" role="gridcell" aria-label="10 August, 2018">10</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533916800000" role="gridcell" aria-label="11 August, 2018">11</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534003200000" role="gridcell" aria-label="12 August, 2018">12</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534089600000" role="gridcell" aria-label="13 August, 2018">13</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534176000000" role="gridcell" aria-label="14 August, 2018">14</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534262400000" role="gridcell" aria-label="15 August, 2018">15</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534348800000" role="gridcell" aria-label="16 August, 2018">16</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534435200000" role="gridcell" aria-label="17 August, 2018">17</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534521600000" role="gridcell" aria-label="18 August, 2018">18</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534608000000" role="gridcell" aria-label="19 August, 2018">19</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534694400000" role="gridcell" aria-label="20 August, 2018">20</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534780800000" role="gridcell" aria-label="21 August, 2018">21</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534867200000" role="gridcell" aria-label="22 August, 2018">22</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534953600000" role="gridcell" aria-label="23 August, 2018">23</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535040000000" role="gridcell" aria-label="24 August, 2018">24</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535126400000" role="gridcell" aria-label="25 August, 2018">25</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus picker__day--today picker__day--highlighted" data-pick="1535212800000" role="gridcell" aria-label="26 August, 2018" aria-activedescendant="true">26</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535299200000" role="gridcell" aria-label="27 August, 2018">27</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535385600000" role="gridcell" aria-label="28 August, 2018">28</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535472000000" role="gridcell" aria-label="29 August, 2018">29</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535558400000" role="gridcell" aria-label="30 August, 2018">30</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535644800000" role="gridcell" aria-label="31 August, 2018">31</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535731200000" role="gridcell" aria-label="1 September, 2018">1</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535817600000" role="gridcell" aria-label="2 September, 2018">2</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535904000000" role="gridcell" aria-label="3 September, 2018">3</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535990400000" role="gridcell" aria-label="4 September, 2018">4</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536076800000" role="gridcell" aria-label="5 September, 2018">5</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536163200000" role="gridcell" aria-label="6 September, 2018">6</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536249600000" role="gridcell" aria-label="7 September, 2018">7</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536336000000" role="gridcell" aria-label="8 September, 2018">8</div></td></tr></tbody></table><div class="picker__footer"><button class="picker__button--today" type="button" data-pick="1535212800000" disabled="" aria-controls="P2061350087">Today</button><button class="picker__button--clear" type="button" data-clear="1" disabled="" aria-controls="P2061350087">Clear</button><button class="picker__button--close" type="button" data-close="true" disabled="" aria-controls="P2061350087">Close</button></div></div></div></div></div></div></div></fieldset>
+    <fieldset class="fieldset"><div class="fieldset__wrapper"><input class="fieldset__input js__timepicker picker__input" type="text" placeholder="Start Time" readonly="" id="start_time" aria-haspopup="true" aria-expanded="false" aria-readonly="false" aria-owns="P1310861089_root"><div class="picker picker--time" id="P1310861089_root" aria-hidden="true"><div class="picker__holder" tabindex="-1" style=""><div class="picker__frame"><div class="picker__wrap"><div class="picker__box"><ul class="picker__list" role="listbox" aria-controls="P1310861089"><li class="picker__list-item" data-pick="0" role="option" aria-label="12:00 AM">12:00 AM</li><li class="picker__list-item" data-pick="30" role="option" aria-label="12:30 AM">12:30 AM</li><li class="picker__list-item" data-pick="60" role="option" aria-label="1:00 AM">1:00 AM</li><li class="picker__list-item" data-pick="90" role="option" aria-label="1:30 AM">1:30 AM</li><li class="picker__list-item" data-pick="120" role="option" aria-label="2:00 AM">2:00 AM</li><li class="picker__list-item" data-pick="150" role="option" aria-label="2:30 AM">2:30 AM</li><li class="picker__list-item" data-pick="180" role="option" aria-label="3:00 AM">3:00 AM</li><li class="picker__list-item" data-pick="210" role="option" aria-label="3:30 AM">3:30 AM</li><li class="picker__list-item" data-pick="240" role="option" aria-label="4:00 AM">4:00 AM</li><li class="picker__list-item" data-pick="270" role="option" aria-label="4:30 AM">4:30 AM</li><li class="picker__list-item" data-pick="300" role="option" aria-label="5:00 AM">5:00 AM</li><li class="picker__list-item" data-pick="330" role="option" aria-label="5:30 AM">5:30 AM</li><li class="picker__list-item" data-pick="360" role="option" aria-label="6:00 AM">6:00 AM</li><li class="picker__list-item" data-pick="390" role="option" aria-label="6:30 AM">6:30 AM</li><li class="picker__list-item" data-pick="420" role="option" aria-label="7:00 AM">7:00 AM</li><li class="picker__list-item" data-pick="450" role="option" aria-label="7:30 AM">7:30 AM</li><li class="picker__list-item" data-pick="480" role="option" aria-label="8:00 AM">8:00 AM</li><li class="picker__list-item" data-pick="510" role="option" aria-label="8:30 AM">8:30 AM</li><li class="picker__list-item" data-pick="540" role="option" aria-label="9:00 AM">9:00 AM</li><li class="picker__list-item" data-pick="570" role="option" aria-label="9:30 AM">9:30 AM</li><li class="picker__list-item" data-pick="600" role="option" aria-label="10:00 AM">10:00 AM</li><li class="picker__list-item" data-pick="630" role="option" aria-label="10:30 AM">10:30 AM</li><li class="picker__list-item" data-pick="660" role="option" aria-label="11:00 AM">11:00 AM</li><li class="picker__list-item" data-pick="690" role="option" aria-label="11:30 AM">11:30 AM</li><li class="picker__list-item" data-pick="720" role="option" aria-label="12:00 PM">12:00 PM</li><li class="picker__list-item" data-pick="750" role="option" aria-label="12:30 PM">12:30 PM</li><li class="picker__list-item" data-pick="780" role="option" aria-label="1:00 PM">1:00 PM</li><li class="picker__list-item" data-pick="810" role="option" aria-label="1:30 PM">1:30 PM</li><li class="picker__list-item" data-pick="840" role="option" aria-label="2:00 PM">2:00 PM</li><li class="picker__list-item picker__list-item--highlighted picker__list-item--viewset" data-pick="870" role="option" aria-label="2:30 PM" aria-activedescendant="true">2:30 PM</li><li class="picker__list-item" data-pick="900" role="option" aria-label="3:00 PM">3:00 PM</li><li class="picker__list-item" data-pick="930" role="option" aria-label="3:30 PM">3:30 PM</li><li class="picker__list-item" data-pick="960" role="option" aria-label="4:00 PM">4:00 PM</li><li class="picker__list-item" data-pick="990" role="option" aria-label="4:30 PM">4:30 PM</li><li class="picker__list-item" data-pick="1020" role="option" aria-label="5:00 PM">5:00 PM</li><li class="picker__list-item" data-pick="1050" role="option" aria-label="5:30 PM">5:30 PM</li><li class="picker__list-item" data-pick="1080" role="option" aria-label="6:00 PM">6:00 PM</li><li class="picker__list-item" data-pick="1110" role="option" aria-label="6:30 PM">6:30 PM</li><li class="picker__list-item" data-pick="1140" role="option" aria-label="7:00 PM">7:00 PM</li><li class="picker__list-item" data-pick="1170" role="option" aria-label="7:30 PM">7:30 PM</li><li class="picker__list-item" data-pick="1200" role="option" aria-label="8:00 PM">8:00 PM</li><li class="picker__list-item" data-pick="1230" role="option" aria-label="8:30 PM">8:30 PM</li><li class="picker__list-item" data-pick="1260" role="option" aria-label="9:00 PM">9:00 PM</li><li class="picker__list-item" data-pick="1290" role="option" aria-label="9:30 PM">9:30 PM</li><li class="picker__list-item" data-pick="1320" role="option" aria-label="10:00 PM">10:00 PM</li><li class="picker__list-item" data-pick="1350" role="option" aria-label="10:30 PM">10:30 PM</li><li class="picker__list-item" data-pick="1380" role="option" aria-label="11:00 PM">11:00 PM</li><li class="picker__list-item" data-pick="1410" role="option" aria-label="11:30 PM">11:30 PM</li><li role="presentation"><button class="picker__button--clear" type="button" data-clear="1" disabled="" aria-controls="P1310861089">Clear</button></li></ul></div></div></div></div></div></div></fieldset>
+    <fieldset class="fieldset"><div class="fieldset__wrapper"><input class="fieldset__input js__datepicker picker__input" type="text" placeholder="End Date" readonly="" id="end_date" aria-haspopup="true" aria-expanded="false" aria-readonly="false" aria-owns="P2061350087_root"><div class="picker" id="P2061350087_root" aria-hidden="true"><div class="picker__holder" tabindex="-1"><div class="picker__frame"><div class="picker__wrap"><div class="picker__box"><div class="picker__header"><div class="picker__month">August</div><div class="picker__year">2018</div><div class="picker__nav--prev" data-nav="-1" role="button" aria-controls="P2061350087_table" title="Previous month"> </div><div class="picker__nav--next" data-nav="1" role="button" aria-controls="P2061350087_table" title="Next month"> </div></div><table class="picker__table" id="P2061350087_table" role="grid" aria-controls="P2061350087" aria-readonly="true"><thead><tr><th class="picker__weekday" scope="col" title="Sunday">Sun</th><th class="picker__weekday" scope="col" title="Monday">Mon</th><th class="picker__weekday" scope="col" title="Tuesday">Tue</th><th class="picker__weekday" scope="col" title="Wednesday">Wed</th><th class="picker__weekday" scope="col" title="Thursday">Thu</th><th class="picker__weekday" scope="col" title="Friday">Fri</th><th class="picker__weekday" scope="col" title="Saturday">Sat</th></tr></thead><tbody><tr><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1532793600000" role="gridcell" aria-label="29 July, 2018">29</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1532880000000" role="gridcell" aria-label="30 July, 2018">30</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1532966400000" role="gridcell" aria-label="31 July, 2018">31</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533052800000" role="gridcell" aria-label="1 August, 2018">1</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533139200000" role="gridcell" aria-label="2 August, 2018">2</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533225600000" role="gridcell" aria-label="3 August, 2018">3</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533312000000" role="gridcell" aria-label="4 August, 2018">4</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533398400000" role="gridcell" aria-label="5 August, 2018">5</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533484800000" role="gridcell" aria-label="6 August, 2018">6</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533571200000" role="gridcell" aria-label="7 August, 2018">7</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533657600000" role="gridcell" aria-label="8 August, 2018">8</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533744000000" role="gridcell" aria-label="9 August, 2018">9</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533830400000" role="gridcell" aria-label="10 August, 2018">10</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1533916800000" role="gridcell" aria-label="11 August, 2018">11</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534003200000" role="gridcell" aria-label="12 August, 2018">12</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534089600000" role="gridcell" aria-label="13 August, 2018">13</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534176000000" role="gridcell" aria-label="14 August, 2018">14</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534262400000" role="gridcell" aria-label="15 August, 2018">15</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534348800000" role="gridcell" aria-label="16 August, 2018">16</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534435200000" role="gridcell" aria-label="17 August, 2018">17</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534521600000" role="gridcell" aria-label="18 August, 2018">18</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534608000000" role="gridcell" aria-label="19 August, 2018">19</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534694400000" role="gridcell" aria-label="20 August, 2018">20</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534780800000" role="gridcell" aria-label="21 August, 2018">21</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534867200000" role="gridcell" aria-label="22 August, 2018">22</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1534953600000" role="gridcell" aria-label="23 August, 2018">23</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535040000000" role="gridcell" aria-label="24 August, 2018">24</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535126400000" role="gridcell" aria-label="25 August, 2018">25</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--infocus picker__day--today picker__day--highlighted" data-pick="1535212800000" role="gridcell" aria-label="26 August, 2018" aria-activedescendant="true">26</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535299200000" role="gridcell" aria-label="27 August, 2018">27</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535385600000" role="gridcell" aria-label="28 August, 2018">28</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535472000000" role="gridcell" aria-label="29 August, 2018">29</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535558400000" role="gridcell" aria-label="30 August, 2018">30</div></td><td role="presentation"><div class="picker__day picker__day--infocus" data-pick="1535644800000" role="gridcell" aria-label="31 August, 2018">31</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535731200000" role="gridcell" aria-label="1 September, 2018">1</div></td></tr><tr><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535817600000" role="gridcell" aria-label="2 September, 2018">2</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535904000000" role="gridcell" aria-label="3 September, 2018">3</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1535990400000" role="gridcell" aria-label="4 September, 2018">4</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536076800000" role="gridcell" aria-label="5 September, 2018">5</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536163200000" role="gridcell" aria-label="6 September, 2018">6</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536249600000" role="gridcell" aria-label="7 September, 2018">7</div></td><td role="presentation"><div class="picker__day picker__day--outfocus" data-pick="1536336000000" role="gridcell" aria-label="8 September, 2018">8</div></td></tr></tbody></table><div class="picker__footer"><button class="picker__button--today" type="button" data-pick="1535212800000" disabled="" aria-controls="P2061350087">Today</button><button class="picker__button--clear" type="button" data-clear="1" disabled="" aria-controls="P2061350087">Clear</button><button class="picker__button--close" type="button" data-close="true" disabled="" aria-controls="P2061350087">Close</button></div></div></div></div></div></div></div></fieldset>
+    <fieldset class="fieldset"><div class="fieldset__wrapper"><input class="fieldset__input js__timepicker picker__input" type="text" placeholder="End Time" readonly="" id="end_time" aria-haspopup="true" aria-expanded="false" aria-readonly="false" aria-owns="P1310861089_root"><div class="picker picker--time" id="P1310861089_root" aria-hidden="true"><div class="picker__holder" tabindex="-1" style=""><div class="picker__frame"><div class="picker__wrap"><div class="picker__box"><ul class="picker__list" role="listbox" aria-controls="P1310861089"><li class="picker__list-item" data-pick="0" role="option" aria-label="12:00 AM">12:00 AM</li><li class="picker__list-item" data-pick="30" role="option" aria-label="12:30 AM">12:30 AM</li><li class="picker__list-item" data-pick="60" role="option" aria-label="1:00 AM">1:00 AM</li><li class="picker__list-item" data-pick="90" role="option" aria-label="1:30 AM">1:30 AM</li><li class="picker__list-item" data-pick="120" role="option" aria-label="2:00 AM">2:00 AM</li><li class="picker__list-item" data-pick="150" role="option" aria-label="2:30 AM">2:30 AM</li><li class="picker__list-item" data-pick="180" role="option" aria-label="3:00 AM">3:00 AM</li><li class="picker__list-item" data-pick="210" role="option" aria-label="3:30 AM">3:30 AM</li><li class="picker__list-item" data-pick="240" role="option" aria-label="4:00 AM">4:00 AM</li><li class="picker__list-item" data-pick="270" role="option" aria-label="4:30 AM">4:30 AM</li><li class="picker__list-item" data-pick="300" role="option" aria-label="5:00 AM">5:00 AM</li><li class="picker__list-item" data-pick="330" role="option" aria-label="5:30 AM">5:30 AM</li><li class="picker__list-item" data-pick="360" role="option" aria-label="6:00 AM">6:00 AM</li><li class="picker__list-item" data-pick="390" role="option" aria-label="6:30 AM">6:30 AM</li><li class="picker__list-item" data-pick="420" role="option" aria-label="7:00 AM">7:00 AM</li><li class="picker__list-item" data-pick="450" role="option" aria-label="7:30 AM">7:30 AM</li><li class="picker__list-item" data-pick="480" role="option" aria-label="8:00 AM">8:00 AM</li><li class="picker__list-item" data-pick="510" role="option" aria-label="8:30 AM">8:30 AM</li><li class="picker__list-item" data-pick="540" role="option" aria-label="9:00 AM">9:00 AM</li><li class="picker__list-item" data-pick="570" role="option" aria-label="9:30 AM">9:30 AM</li><li class="picker__list-item" data-pick="600" role="option" aria-label="10:00 AM">10:00 AM</li><li class="picker__list-item" data-pick="630" role="option" aria-label="10:30 AM">10:30 AM</li><li class="picker__list-item" data-pick="660" role="option" aria-label="11:00 AM">11:00 AM</li><li class="picker__list-item" data-pick="690" role="option" aria-label="11:30 AM">11:30 AM</li><li class="picker__list-item" data-pick="720" role="option" aria-label="12:00 PM">12:00 PM</li><li class="picker__list-item" data-pick="750" role="option" aria-label="12:30 PM">12:30 PM</li><li class="picker__list-item" data-pick="780" role="option" aria-label="1:00 PM">1:00 PM</li><li class="picker__list-item" data-pick="810" role="option" aria-label="1:30 PM">1:30 PM</li><li class="picker__list-item" data-pick="840" role="option" aria-label="2:00 PM">2:00 PM</li><li class="picker__list-item picker__list-item--highlighted picker__list-item--viewset" data-pick="870" role="option" aria-label="2:30 PM" aria-activedescendant="true">2:30 PM</li><li class="picker__list-item" data-pick="900" role="option" aria-label="3:00 PM">3:00 PM</li><li class="picker__list-item" data-pick="930" role="option" aria-label="3:30 PM">3:30 PM</li><li class="picker__list-item" data-pick="960" role="option" aria-label="4:00 PM">4:00 PM</li><li class="picker__list-item" data-pick="990" role="option" aria-label="4:30 PM">4:30 PM</li><li class="picker__list-item" data-pick="1020" role="option" aria-label="5:00 PM">5:00 PM</li><li class="picker__list-item" data-pick="1050" role="option" aria-label="5:30 PM">5:30 PM</li><li class="picker__list-item" data-pick="1080" role="option" aria-label="6:00 PM">6:00 PM</li><li class="picker__list-item" data-pick="1110" role="option" aria-label="6:30 PM">6:30 PM</li><li class="picker__list-item" data-pick="1140" role="option" aria-label="7:00 PM">7:00 PM</li><li class="picker__list-item" data-pick="1170" role="option" aria-label="7:30 PM">7:30 PM</li><li class="picker__list-item" data-pick="1200" role="option" aria-label="8:00 PM">8:00 PM</li><li class="picker__list-item" data-pick="1230" role="option" aria-label="8:30 PM">8:30 PM</li><li class="picker__list-item" data-pick="1260" role="option" aria-label="9:00 PM">9:00 PM</li><li class="picker__list-item" data-pick="1290" role="option" aria-label="9:30 PM">9:30 PM</li><li class="picker__list-item" data-pick="1320" role="option" aria-label="10:00 PM">10:00 PM</li><li class="picker__list-item" data-pick="1350" role="option" aria-label="10:30 PM">10:30 PM</li><li class="picker__list-item" data-pick="1380" role="option" aria-label="11:00 PM">11:00 PM</li><li class="picker__list-item" data-pick="1410" role="option" aria-label="11:30 PM">11:30 PM</li><li role="presentation"><button class="picker__button--clear" type="button" data-clear="1" disabled="" aria-controls="P1310861089">Clear</button></li></ul></div></div></div></div></div></div></fieldset>
+	<div class="custom-select" style="width:300px;">
+		<select id="TYPE">
+			<option value="">Select Type</option>
+			<option value="TDSMEDIA">Media Contents</option>
+			<option value="TDSSLIDE">Slide Contents</option>
+			<option value="TDSARTL">Article Contents</option>
+		</select>
+	</div>
+	<div class="custom-select" style="width:300px;">
+		<select id="CATEGORY">
+			<option value="">Select Category</option>
+		{{.HTM_FILLER1}}
+		</select>
+	</div>
+	<input type="submit" class="button" onclick="generateTimeJS()" value="Submit">
+  </div>
+</section>
+<script src="/js/jquery-1.11.1.min.js"></script>
+<script src="/lib/js/pickadate.js/picker.js"></script>
+<script src="/lib/js/pickadate.js/picker.date.js"></script>
+<script src="/lib/js/pickadate.js/picker.time.js"></script>
+<script src="/lib/js/pickadate.js/legacy.js"></script>
+<script src="/lib/js/pickadate.js/main.js"></script>
+<script src="/lib/js/pickadate.js/rainbow.js"></script>
+<script>
+	function generateTimeJS() {
+		//alert("Hello world!");
+		var start_date = document.getElementById("start_date").value;
+		var start_time = document.getElementById("start_time").value;
+		var end_date = document.getElementById("end_date").value;
+		var end_time = document.getElementById("end_time").value;
+		var contType = document.getElementById("TYPE").value;
+		var contCat = document.getElementById("CATEGORY").value;
+		if (start_date == "" || start_time == "" || end_date == "" || end_time == "") {
+			alert("Please populate all fields!");
+			return;
+		}
+		var genLink = "/editor?EDIT_FUNC=TIMELINE&SID=GEN2" + "&start_date=" + start_date + "&start_time=" + start_time + "&end_date=" + end_date + "&end_time=" + end_time + "&cont_type=" + contType + "&cont_cat=" + contCat;
+		console.log("genLink: "+genLink);
+		location.href=genLink;
+	}	
+	
+</script>
+<script>
+	var x, i, j, selElmnt, a, b, c;
+	/*look for any elements with the class "custom-select":*/
+	x = document.getElementsByClassName("custom-select");
+	for (i = 0; i < x.length; i++) {
+	  selElmnt = x[i].getElementsByTagName("select")[0];
+	  /*for each element, create a new DIV that will act as the selected item:*/
+	  a = document.createElement("DIV");
+	  a.setAttribute("class", "select-selected");
+	  a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+	  x[i].appendChild(a);
+	  /*for each element, create a new DIV that will contain the option list:*/
+	  b = document.createElement("DIV");
+	  b.setAttribute("class", "select-items select-hide");
+	  for (j = 0; j < selElmnt.length; j++) {
+	    /*for each option in the original select element,
+	    create a new DIV that will act as an option item:*/
+	    c = document.createElement("DIV");
+	    c.innerHTML = selElmnt.options[j].innerHTML;
+	    c.addEventListener("click", function(e) {
+	        /*when an item is clicked, update the original select box,
+	        and the selected item:*/
+	        var y, i, k, s, h;
+	        s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+	        h = this.parentNode.previousSibling;
+	        for (i = 0; i < s.length; i++) {
+	          if (s.options[i].innerHTML == this.innerHTML) {
+	            s.selectedIndex = i;
+	            h.innerHTML = this.innerHTML;
+	            y = this.parentNode.getElementsByClassName("same-as-selected");
+	            for (k = 0; k < y.length; k++) {
+	              y[k].removeAttribute("class");
+	            }
+	            this.setAttribute("class", "same-as-selected");
+	            break;
+	          }
+	        }
+	        h.click();
+	    });
+	    b.appendChild(c);
+	  }
+	  x[i].appendChild(b);
+	  a.addEventListener("click", function(e) {
+	      /*when the select box is clicked, close any other select boxes,
+	      and open/close the current select box:*/
+	      e.stopPropagation();
+	      closeAllSelect(this);
+	      this.nextSibling.classList.toggle("select-hide");
+	      this.classList.toggle("select-arrow-active");
+	    });
+	}
+	function closeAllSelect(elmnt) {
+	  /*a function that will close all select boxes in the document,
+	  except the current select box:*/
+	  var x, y, i, arrNo = [];
+	  x = document.getElementsByClassName("select-items");
+	  y = document.getElementsByClassName("select-selected");
+	  for (i = 0; i < y.length; i++) {
+	    if (elmnt == y[i]) {
+	      arrNo.push(i)
+	    } else {
+	      y[i].classList.remove("select-arrow-active");
+	    }
+	  }
+	  for (i = 0; i < x.length; i++) {
+	    if (arrNo.indexOf(i)) {
+	      x[i].classList.add("select-hide");
+	    }
+	  }
+	}
+	/*if the user clicks anywhere outside the select box,
+	then close all select boxes:*/
+	document.addEventListener("click", closeAllSelect);
+</script>
+</body></html>
+{{end}}
