@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#21/07/2018 07:26:59 PM PST
+//LAST_UPGRADE#26/08/2018 04:16:59 AM PST
 //TOTAL_LINES#77000
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -357,6 +357,11 @@
 //REV ID: 		D0069
 //REV DATE: 		2018-July-29
 //REV DESC:	  	Added education modules 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0070
+//REV DATE: 		2018-Aug-26
+//REV DESC:	  	Added timelineJS generator 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -960,6 +965,60 @@ var (
 	SERVICE_ACCOUNT_EMAIL                 = ""
 	PRIVATE_KEY          *rsa.PrivateKey = nil
 )
+//D0070
+type Timelinejs struct {
+	Title TimelineTitle `json:"title"`
+	AllEvents []TimelineEvent `json:"events"`
+}
+//D0070
+type TimelineEvent struct {
+	StartDate TimelineStartDate `json:"start_date"`
+	EndDate TimelineEndDate `json:"end_date"`
+	Media TimelineEventMedia `json:"media"`
+	Text TimelineText `json:"text"`
+}
+//D0070
+type TimelineStartDate struct {
+	Year string `json:"year"`
+	Month string `json:"month"`
+	Day string `json:"day"`
+	Hour string `json:"hour"`
+	Minute string `json:"minute"`
+	Second string `json:"second"`
+}
+//D0070
+type TimelineEndDate struct {
+	Year string `json:"year"`
+	Month string `json:"month"`
+	Day string `json:"day"`
+	Hour string `json:"hour"`
+	Minute string `json:"minute"`
+	Second string `json:"second"`
+}
+//D0070
+type TimelineEventMedia struct {
+	Caption string `json:"caption"`
+	Credit string `json:"credit"`
+	Link string `json:"link"`
+	URL string `json:"url"`
+}
+//D0070
+type TimelineMedia struct {
+	Caption string `json:"caption"`
+	Credit string `json:"credit"`
+	Link string `json:"link"`
+	URL string `json:"url"`
+}
+//D0070
+type TimelineText struct {
+	Headline string `json:"headline"`
+	Text string `json:"text"`
+}
+//D0070
+type TimelineTitle struct {
+	Media TimelineMedia  `json:"media"`
+	Text TimelineText  `json:"text"`
+}
 //D0059
 //extract planner
 //config options
@@ -2026,6 +2085,8 @@ var (
 		".turnjs": parsePresentTemplate2("turnjs-template.html"),
 		//D0068
 		".orgchart": parsePresentTemplate2("gojs-orgchart.html"),
+		//D0070
+		".timelinejs-gen": parsePresentTemplate2("timelinejs-generator.html"),
 	}
 	contactEmail      = "demo.ulapph@gmail.com"
 	gitHubCredentials = ""
@@ -13654,6 +13715,38 @@ func showLeftMenu(w http.ResponseWriter, r *http.Request) {
 	}
  
 }
+//D0070
+func getCategoriesBytes(w http.ResponseWriter, r *http.Request) ([]byte){
+	c := appengine.NewContext(r)
+	cKey := "CATEGORY_LIST"
+	CATEGORY_LIST := ""
+	CATEGORY_LIST = getStrMemcacheValueByKey(w,r,cKey)
+	if CATEGORY_LIST == "" {
+		//get config id
+		docID := 0
+		cfgName := "SYSTEM_Category_List_Media_ID"
+		_, docID = getTDSCNFG(w,r,1,cfgName)
+		BLOB_KEY := ""
+		BLOB_KEY, _, _, _, _, _, _, _, _, _, _ = getTDSMEDIABlobKey(w, r, docID)
+		var buf bytes.Buffer
+		reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
+		s := bufio.NewScanner(reader)
+		//secCtr := 0
+		for s.Scan() {
+			buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
+		}
+		//update cache
+		putBytesToMemcacheWithoutExp(w,r,cKey,buf.Bytes())
+		//writeHTMLHeader(w, 200)
+		//w.Write(buf.Bytes())
+		return buf.Bytes()
+	} else {
+		//writeHTMLHeader(w, 200)
+		return []byte(CATEGORY_LIST)
+	}
+	return nil
+}
+
 
 //gets the categories list from media file
 //connected to how the all desktops are listed 
@@ -14372,7 +14465,6 @@ func settings(w http.ResponseWriter, r *http.Request) {
  
 }
 
-//edwinxxx 
 //generate random contents which displays random tips inside the desktop
 func ranLotto(w http.ResponseWriter, r *http.Request) (string) {
 	tickets := r.FormValue("tickets")
@@ -14431,7 +14523,6 @@ func ranLotto(w http.ResponseWriter, r *http.Request) (string) {
 func ranConGen(w http.ResponseWriter, r *http.Request) {
 	c := appengine.NewContext(r)
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
-	//edwinxxx
 	RAN_FUNC := r.FormValue("RAN_FUNC")
 	if RAN_FUNC == "LG" {
 		resp := ranLotto(w,r)
@@ -17801,23 +17892,20 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				CSS := r.FormValue("CSS-TYPE")
 				CALI := r.FormValue("CSS-ALIGN")
 				TEXT := r.FormValue("TEXT")
- 
 				t := presentTemplates[path.Ext(CSS)]
 				if t == nil {
 					panic(t)
 				}
-				
 				doc := new(TEMPSTRUCT2)
 				doc.STR_FILLER1	= TEXT
 				doc.STR_FILLER2	= CALI
 				if CSS == ".starwars" {
 					doc.HTM_FILLER1 = template.HTML(TEXT)
 				}
-					
 				data := struct {
 					*TEMPSTRUCT2
 					Template    *template.Template
-				}{	
+				}{
 					doc,
 					t,
 				}
@@ -17825,10 +17913,8 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				t.Execute(w, &data)
 			}
 			return
- 
 		case "DRAW":
 			SRC := r.FormValue("SID")
-			
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
 			if err := textDrawBody.Execute(w, SRC); err != nil {
 			  panic(err)
@@ -17838,16 +17924,134 @@ func editor(w http.ResponseWriter, r *http.Request) {
 		case "TIMELINE":
 			SID := r.FormValue("SID")
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
-			srcURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=RAWJSON&SID=%v", SID)
-			if err := textTimelineBody.Execute(w, srcURL); err != nil {
-			  panic(err)
+			//D0070
+			switch {
+			case SID == "GEN":
+				//show timelinejs form
+				thisCats := getCategoriesBytes(w,r)
+				renderTimelineJSPage(w,r,".timelinejs-gen", thisCats)
+				return
+			case SID == "GEN2":
+				_, uid := checkSession(w,r)
+				start_date := r.FormValue("start_date")
+				start_time := r.FormValue("start_time")
+				end_date := r.FormValue("end_date")
+				end_time := r.FormValue("end_time")
+				contType := r.FormValue("cont_type")
+				contCat := r.FormValue("cont_cat")
+				//get year
+				SPL := strings.Split(start_date, ", ")
+				start_year := SPL[1]
+				//c.Infof("start_year: %v", start_year)
+				//c.Infof("start_date: %v", start_date)
+				//c.Infof("start_time: %v", start_time)
+				//c.Infof("end_date: %v", end_date)
+				//c.Infof("end_time: %v", end_time)
+				//c.Infof("contType: %v", contType)
+				//c.Infof("contCat: %v", contCat)
+				//compose timestamp
+				start_tstmp := fmt.Sprintf("%v %v", start_date, start_time)
+				end_tstmp := fmt.Sprintf("%v %v", end_date, end_time)
+				//c.Infof("start_tstmp: %v", start_tstmp)
+				//c.Infof("end_tstmp: %v", end_tstmp)
+				rt1, _ := time.Parse("_2 January, 2006 3:04 PM", start_tstmp)
+				start_rt1 := fmt.Sprintf("%v", rt1.Format("20060102150405"))
+				rt2, _ := time.Parse("_2 January, 2006 3:04 PM", end_tstmp)
+				start_rt2 := fmt.Sprintf("%v", rt2.Format("20060102150405"))
+				//c.Infof("start_rt1: %v", start_rt1)
+				//c.Infof("start_rt2: %v", start_rt2)
+				start := str2int(start_rt1)
+				end := str2int(start_rt2)
+				tjs := Timelinejs{}
+				titm := TimelineMedia{}
+					titm.Caption = "TimelineJS generator"
+					titm.Credit = "ULAPPH Cloud Desktop"
+					titm.URL = "/timelines/img/timeline-header.png"
+				titt := TimelineText{}
+					titt.Headline = "Autogenerated TimelineJS"
+					titt.Text = "Here is an autogenerated timeline via ULAPPH Cloud Desktop"
+				tjst := TimelineTitle{}
+					tjst.Media = titm
+					tjst.Text = titt
+				tjs.Title = tjst
+				switch contType {
+				case "TDSSLIDE":
+					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year)
+					recCount,_ := q.Count(c)
+					slide := make([]TDSSLIDE, 0, recCount)
+					if _, err := q.GetAll(c, &slide); err != nil {
+						 panic(err)
+					}
+					for _, p := range slide{
+						timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+					}
+				case "TDSARTL":
+					q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year)
+					recCount,_ := q.Count(c)
+					article := make([]TDSARTL, 0, recCount)
+					if _, err := q.GetAll(c, &article); err != nil {
+						 panic(err)
+					}
+					for _, p := range article{
+						timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+					}
+				case "TDSMEDIA":
+					q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year)
+					recCount,_ := q.Count(c)
+					media := make([]TDSMEDIA, 0, recCount)
+					if _, err := q.GetAll(c, &media); err != nil {
+						 panic(err)
+					}
+					for _, p := range media{
+						timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+					}
+				default:
+					//slides
+					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year)
+					recCount,_ := q.Count(c)
+					slide := make([]TDSSLIDE, 0, recCount)
+					if _, err := q.GetAll(c, &slide); err != nil {
+						 panic(err)
+					}
+					for _, p := range slide{
+						timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+					}
+					//articles
+					q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year)
+					recCount,_ = q1.Count(c)
+					article := make([]TDSARTL, 0, recCount)
+					if _, err := q1.GetAll(c, &article); err != nil {
+						 panic(err)
+					}
+					for _, p := range article{
+						timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+					}
+					//media
+					q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year)
+					recCount,_ = q2.Count(c)
+					media := make([]TDSMEDIA, 0, recCount)
+					if _, err := q2.GetAll(c, &media); err != nil {
+						 panic(err)
+					}
+					for _, p := range media{
+						timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+					}
+
+				}
+				if err := textTimelineBodyRaw.Execute(w, tjs); err != nil {
+				  panic(err)
+				}
+				return
+			default:
+				srcURL := fmt.Sprintf("https://ulapph-public-1.appspot.com/media?FUNC_CODE=RAWJSON&SID=%v", SID)
+				if err := textTimelineBody.Execute(w, srcURL); err != nil {
+				  panic(err)
+				}
 			}
-			return			
-			
+			return
 		case "MERMAID":
 			renderStaticTemplates(w,r,".mermaid")
 			return
- 
 		case "CRYPTO":
 			//c.Infof("CRYPTO")
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
@@ -17866,7 +18070,6 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				cStr := []byte("")
 				fileName := ""
 				//c.Infof("EDIT_MODE=OK")
-				
 				if sid != "" {
 					fileName = sid
 					BLOB_KEY := contentCheckSid(w,r,sid)
@@ -17877,16 +18080,13 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						return
 					}
 				}
-				
 				if len(key) != 16 {
 					key = ENCRYPTION_KEY
 				}
-				
 				if mode == "" {
 					fmt.Fprintf(w, "ERROR: Select encrypt or decrypt mode.")
-					return					
+					return
 				}
-				
 				if r.FormValue("remote") == "Y" {
 					//c.Infof("remote")
 					url := r.FormValue("url")
@@ -17899,41 +18099,32 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					file, handler, err := r.FormFile("file")
 					if err != nil {
 						IS_FILE_OK = false
-	 
 					}
 					if IS_FILE_OK == true {
 						defer file.Close()
-					
 						data, err := ioutil.ReadAll(file)
 						if err != nil {
 							IS_FILE_OK = false
-	 
 						}
-						
 						if string(data) != "" && IS_FILE_OK == true {
 							text = string(data)
 							fileName = handler.Filename+".txt"
 						}
-					}	
+					}
 				}
-				
 				FL_BASE64 := IsBase64(text)
-				
 				if mode == "d" && FL_BASE64 == false {
 					fmt.Fprintf(w, "ERROR: Cannot decrypt an un-encrypted data.")
-					return						
+					return
 				}
-				
 				if mode == "e" && FL_BASE64 == true {
 					fmt.Fprintf(w, "ERROR: Data is already encrypted.")
-					return						
+					return
 				}
-		
 				if text == "" {
 					fmt.Fprintf(w, "ERROR: Enter text or upload text file.")
-					return					
+					return
 				}
-				
 				//c.Infof("mode: %v", mode)
 				if mode == "v" {
 					cStr = []byte(text)
@@ -17943,16 +18134,12 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						//encrypt
 						cStr = encrypter2(w,r,text,key)
 						fileName = fileName+"(encrypted).txt"
-	 
-						
 					} else {
 						//decrypt
 						cStr = decrypter2(w,r,text,key)
 						fileName = fileName+"(decrypted).txt"
-	 
-					}					
+					}
 				}
-				
 				if mode == "d" || mode == "v" {
 					switch {
 						case dview == "d":
@@ -17971,13 +18158,11 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							for s.Scan() {
 								lines = append(lines, fmt.Sprintf("%v", s.Text()))
 							}
-							
 							doc, err := Parse4(w, r, &Lines{0, lines}, "ULAPPH-CRYPTO", 0)
 							if err != nil {
 								panic(err)
 							}
 							var buf bytes.Buffer
-							
 							title2 := ""
 							SL_TMP := ""
 							if dview == "s" {
@@ -17987,10 +18172,9 @@ func editor(w http.ResponseWriter, r *http.Request) {
 								title2 = fmt.Sprintf("%v.article", "ULAPPH-CRYPTO")
 								SL_TMP = "A"
 							}
-							
 							if err := renderPresentation(w,r,&buf, title2, doc, SL_TMP); err != nil {
 								panic(err)
-							}		
+							}
 							//if redirect
 							if r.FormValue("redirect") == "Y" {
 								//c.Infof("redirect...")
@@ -17999,7 +18183,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 								putBytesToMemcacheWithExp(w,r,cKey,buf.Bytes(),GEN_CONTENT_EXPIRES)
 								redURL := ""
 								if SL_TMP == "S" {
-									redURL = fmt.Sprintf("%vsearch?f=get-auto-content2&cKey=%v&PARM=LOOP&TYPE=SLIDE&SECS=8&API_KEY=%v", domRefMatchS, cKey, CMD_API_KEY)	
+									redURL = fmt.Sprintf("%vsearch?f=get-auto-content2&cKey=%v&PARM=LOOP&TYPE=SLIDE&SECS=8&API_KEY=%v", domRefMatchS, cKey, CMD_API_KEY)
 								} else {
 									redURL = fmt.Sprintf("%vsearch?f=get-auto-content2&cKey=%v&TYPE=ARTICLE&API_KEY=%v", domRefMatchS, cKey, CMD_API_KEY)	
 								}
@@ -18008,13 +18192,11 @@ func editor(w http.ResponseWriter, r *http.Request) {
 								//c.Infof("redURL: %v", redURL)
 								//c.Infof("sendChannelMessage()")
 								return
-								
 							}
 							//display slides
 							writeHTMLHeader(w, 200)
 							w.Write(buf.Bytes())
 							return
-														
 						case dview == "t":
 							//c.Infof("dview=t")
 							//fmt.Fprintf(w, "Preparing text...")
@@ -18035,10 +18217,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				}
 			}
 			return
-			
-		
 		case "TEXT-TO-SPEECH":
-			
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
 			CONTENT := r.FormValue("CONTENT")
 			if CONTENT == "" {
@@ -18046,30 +18225,23 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				  panic(err)
 				}
 			} else {
-				
 				CONTENT_TEXT := ""
 				BLOB_KEY := contentCheckSid(w,r,CONTENT)
 				if BLOB_KEY != "" {
 					CONTENT_TEXT = getBlobText(w, r, BLOB_KEY)
 				} else {
-					
 					if err := textToSpeechBody.Execute(w, "Invalid content format. Only SID format is allowed."); err != nil {
 					  panic(err)
 					}
 				}
 				if err := textToSpeechBody.Execute(w, CONTENT_TEXT); err != nil {
 				  panic(err)
-				}		
+				}
 			}
 			return
-		
 		case "COMPILE":
 			CODE := r.FormValue("CODE")
-			decoded_str, err := base64.StdEncoding.DecodeString(CODE)
-			if err != nil {
- 
-			}
- 
+			decoded_str, _ := base64.StdEncoding.DecodeString(CODE)
 			if err := playGoBody.Execute(w, string(decoded_str)); err != nil {
 			  panic(err)
 			}
@@ -18077,17 +18249,13 @@ func editor(w http.ResponseWriter, r *http.Request) {
 
 		case "JSOTTO":
 			CODE := r.FormValue("CODE")
-			decoded_str, err := base64.StdEncoding.DecodeString(CODE)
-			if err != nil {
- 
-			}
- 
+			decoded_str, _ := base64.StdEncoding.DecodeString(CODE)
 			//if err := playGoBody.Execute(w, string(decoded_str)); err != nil {
 			//  panic(err)
 			//}
 			fmt.Fprintf(w,"%v", decoded_str)
 			vm := otto.New()
-			_, err = vm.Run(decoded_str)
+			_, err := vm.Run(decoded_str)
 			if err != nil {
 				fmt.Fprintf(w,"ERROR: %v", err)
 				return 
@@ -18116,13 +18284,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							w.Header().Set("Access-Control-Allow-Origin", "*")
 							w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT")
 							writeHTMLHeader(w, 200)
- 
 							fmt.Fprintf(w, "%v",uploadURL3)	
 							return
 				}
-				
 				switch SID {
-				
 					case "NEWTEXT":
 						csn2 := getUpUrlString(w,r,"/upload-media")
 						uploadURL3, err := blobstore.UploadURL(c, csn2, nil)
@@ -18134,7 +18299,6 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT")
 						writeHTMLHeader(w, 200)
 						fmt.Fprintf(w, "%v",uploadURL3)	
-						
 					case "NEWSLIDE":
 						csn2 := getUpUrlString(w,r,"/upload-slides")
 						uploadURL3, err := blobstore.UploadURL(c, csn2, nil)
@@ -18146,7 +18310,6 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT")
 						writeHTMLHeader(w, 200)
 						fmt.Fprintf(w, "%v",uploadURL3)	
-						
 					case "NEWARTICLE":
 						csn2 := getUpUrlString(w,r,"/upload-articles")
 						uploadURL3, err := blobstore.UploadURL(c, csn2, nil)
@@ -18158,7 +18321,6 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						w.Header().Set("Access-Control-Allow-Methods", "GET, POST, PUT")
 						writeHTMLHeader(w, 200)
 						fmt.Fprintf(w, "%v",uploadURL3)
-					
 					default:
 						SPL := strings.Split(SID,"-")
 						if len(SPL[0]) > 1 {
@@ -18934,7 +19096,174 @@ func editor(w http.ResponseWriter, r *http.Request) {
 	
 	}
 }
+//D0070
+func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSMEDIA) {
+	dks := TimelineEvent{}
+	sd := TimelineStartDate{}
+	ed := TimelineEndDate{}
+	tm := TimelineEventMedia{}
+	tt := TimelineText{}
+	thisDU := str2int(p.DT_UPLOAD)
+	if thisDU >= start && thisDU <= end && p.FL_SHARED != "N" && p.AUTHOR == uid {
+		//fmt.Fprintf(w, "%v\n", p)
+		//split DT_UPLOAD
+		//20180824124749
+		STR := fmt.Sprintf("%v", p.DT_UPLOAD)
+		year := STR[0:4] //2018
+		month := STR[4:6] //08
+		day := STR[6:8] //24
+		hour := STR[8:10] //12 
+		minute := STR[10:12] //47
+		sec := STR[12:14] //49
+		sd.Year = year
+		sd.Month = month
+		sd.Day = day
+		sd.Hour = hour
+		sd.Minute = minute
+		sd.Second = sec
+		ed.Year = year
+		ed.Month = month
+		ed.Day = day
+		ed.Hour = hour
+		ed.Minute = minute
+		ed.Second = sec
+		tm.URL = p.IMG_URL
+		reqStr := fmt.Sprintf("/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", p.MEDIA_ID, p.MEDIA_ID)
+		tm.Link = reqStr 
+		tm.Caption = fmt.Sprintf("TDSMEDIA-%v/%v/%v", p.MEDIA_ID, p.DATA_TYPE, p.MIME_TYPE)
+		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
+		//tm.URL = p.TAGS
+		tt.Headline = p.TITLE
+		///search?f=TDSMEDIA-UPD&q=50
+		tt.Text = fmt.Sprintf("%v<br>[ TDSMEDIA-%v ][ <a href=\"/search?f=TDSMEDIA-UPD&q=%v\" target=\"tjs\">Update</a> ][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.MEDIA_ID, p.MEDIA_ID, reqStr)
+		dks.StartDate = sd
+		dks.EndDate = ed
+		dks.Media = tm
+		dks.Text = tt
+		if contCat == "" {
+			tjs.AllEvents = append(tjs.AllEvents, dks) 
+		}else {
+			if p.CATEGORY == contCat {
+				//fmt.Fprintf(w, "%v\n", p)
+				tjs.AllEvents = append(tjs.AllEvents, dks) 
+			}
 
+		}
+	}
+}
+//D0070
+func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) {
+	dks := TimelineEvent{}
+	sd := TimelineStartDate{}
+	ed := TimelineEndDate{}
+	tm := TimelineEventMedia{}
+	tt := TimelineText{}
+	thisDU := str2int(p.DT_UPLOAD)
+	if thisDU >= start && thisDU <= end && p.FL_SHARED != "N" && p.AUTHOR == uid {
+		//fmt.Fprintf(w, "%v\n", p)
+		//split DT_UPLOAD
+		//20180824124749
+		STR := fmt.Sprintf("%v", p.DT_UPLOAD)
+		year := STR[0:4] //2018
+		month := STR[4:6] //08
+		day := STR[6:8] //24
+		hour := STR[8:10] //12 
+		minute := STR[10:12] //47
+		sec := STR[12:14] //49
+		sd.Year = year
+		sd.Month = month
+		sd.Day = day
+		sd.Hour = hour
+		sd.Minute = minute
+		sd.Second = sec
+		ed.Year = year
+		ed.Month = month
+		ed.Day = day
+		ed.Hour = hour
+		ed.Minute = minute
+		ed.Second = sec
+		//tm.URL = p.IMG_URL
+		tm.URL = p.TAGS
+		tt.Headline = p.TITLE
+		///search?f=TDSMEDIA-UPD&q=50
+		reqStr2 := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.FL_COUNTRY_SPECIFIC)
+		tm.Link = reqStr2
+		tm.Caption = fmt.Sprintf("TDSARTL-%v/%v/%v", p.DOC_ID, "article", "format")
+		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
+		tt.Text = fmt.Sprintf("%v<br>[ TDSARTL-%v ][ <a href=\"/search?f=TDSARTL-UPD&q=%v\" target=\"tjs\">Open</a>][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr2)
+		dks.StartDate = sd
+		dks.EndDate = ed
+		dks.Media = tm
+		dks.Text = tt
+		if contCat == "" {
+			tjs.AllEvents = append(tjs.AllEvents, dks) 
+		}else {
+			if p.CATEGORY == contCat {
+				//fmt.Fprintf(w, "%v\n", p)
+				tjs.AllEvents = append(tjs.AllEvents, dks) 
+			}
+
+		}
+	}
+
+}
+
+//D0070
+func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSSLIDE) {
+
+	dks := TimelineEvent{}
+	sd := TimelineStartDate{}
+	ed := TimelineEndDate{}
+	tm := TimelineEventMedia{}
+	tt := TimelineText{}
+	thisDU := str2int(p.DT_UPLOAD)
+	if thisDU >= start && thisDU <= end && p.FL_SHARED != "N" && p.AUTHOR == uid {
+		//fmt.Fprintf(w, "%v\n", p)
+		//split DT_UPLOAD
+		//20180824124749
+		STR := fmt.Sprintf("%v", p.DT_UPLOAD)
+		year := STR[0:4] //2018
+		month := STR[4:6] //08
+		day := STR[6:8] //24
+		hour := STR[8:10] //12 
+		minute := STR[10:12] //47
+		sec := STR[12:14] //49
+		sd.Year = year
+		sd.Month = month
+		sd.Day = day
+		sd.Hour = hour
+		sd.Minute = minute
+		sd.Second = sec
+		ed.Year = year
+		ed.Month = month
+		ed.Day = day
+		ed.Hour = hour
+		ed.Minute = minute
+		ed.Second = sec
+		//tm.URL = p.IMG_URL
+		tm.URL = p.TAGS
+		tt.Headline = p.TITLE
+		///search?f=TDSMEDIA-UPD&q=50
+		reqStr := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET, p.FL_COUNTRY_SPECIFIC)
+		tm.Link = reqStr
+		tm.Caption = fmt.Sprintf("TDSSLIDE-%v/%v/%v", p.DOC_ID, "slide", "format")
+		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
+		tt.Text = fmt.Sprintf("%v<br>[ TDSSLIDE-%v ][ <a href=\"/search?f=TDSSLIDE-UPD&q=%v\" target=\"tjs\">Update</a> ][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr)
+		dks.StartDate = sd
+		dks.EndDate = ed
+		dks.Media = tm
+		dks.Text = tt
+		if contCat == "" {
+			tjs.AllEvents = append(tjs.AllEvents, dks) 
+		}else {
+			if p.CATEGORY == contCat {
+				//fmt.Fprintf(w, "%v\n", p)
+				tjs.AllEvents = append(tjs.AllEvents, dks) 
+			}
+
+		}
+	}
+}
 //prints semaphore footer 
 func printSemaFooter(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<hr><a href=\"/editor?EDIT_FUNC=SEMAPHORE\">Home</a> | <a href=\"/editor?EDIT_FUNC=SEMAPHORE-STAT\">Check Balance</a> | <a href=\"/editor?EDIT_FUNC=SEMAPHORE-MSG\">Messages</a> | <a href=\"http://semaphore.co/payments\">Buy Credits</a> | <a href=\"/people-edit?EditPeopleFunc=EDIT_CONTACTS_LIST&UID=\">Contacts</a>")
@@ -27119,11 +27448,6 @@ func ulapphComments(w http.ResponseWriter, r *http.Request) {
 				result.render(w)
 				return
 			}
-			//edwinxxx
-			/*_, uid := checkSession(w,r)
-			if uid == "" {
-				uid = getGeoString(w,r)
-			}*/
 			uid := name
 			//D0061
 			err = createComment(w,r,r.FormValue("url"), name, res, uid, comment, latlon, parent)
@@ -62047,6 +62371,50 @@ var textCryptoBody = template.Must(template.New("textCryptoBody").Parse(`
 </html>
 `))
 
+//D0070
+var textTimelineBodyRaw = template.Must(template.New("textDrawBodyRaw").Parse(`
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>ULAPPH Timeline::ulapph-public-1.appspot.com - ULAPPH OPO - ULAPPH Cloud Desktop Website</title>
+    <meta charset="utf-8">
+    <meta name="description" content="TimelineJS Embed">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- CSS-->
+    <link rel="stylesheet" href="/timelines/css/timeline.css?v1">
+    <!--FONT-->
+    <link rel="stylesheet" href="/timelines/css/fonts/font.default.css?v1">
+    <!-- Style-->
+    <style>
+      html, body {
+	height:100%;
+	width:100%;
+	padding: 0px;
+	margin: 0px;
+      }
+      .tl-timeline {
+      }
+    </style>
+    <!-- HTML5 shim, for IE6-8 support of HTML elements-->
+    <!--if lt IE 9
+    script(src='https://html5shim.googlecode.com/svn/trunk/html5.js')
+    -->
+  </head>
+  <body>
+    <div id="timeline"></div>
+    <!-- JavaScript-->
+    <script src="/timelines/js/timeline.js"></script>
+    <script>
+      var dataObject = {{.}};  
+      var timeline = new TL.Timeline('timeline', dataObject, {
+      });
+    </script>
+  </body>
+</html>
+`))
+
 var textTimelineBody = template.Must(template.New("textDrawBody").Parse(`
 <!DOCTYPE html>
 <html lang="en">
@@ -62064,20 +62432,17 @@ var textTimelineBody = template.Must(template.New("textDrawBody").Parse(`
     <!-- Style-->
     <style>
       html, body {
-      	height:100%;
-      	width:100%;
-      	padding: 0px;
-      	margin: 0px;
+	height:100%;
+	width:100%;
+	padding: 0px;
+	margin: 0px;
       }
       .tl-timeline {
-      
       }
-      
     </style>
     <!-- HTML5 shim, for IE6-8 support of HTML elements-->
     <!--if lt IE 9
     script(src='https://html5shim.googlecode.com/svn/trunk/html5.js')
-    
     -->
   </head>
   <body>
@@ -69726,6 +70091,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
         if err := recover(); err != nil { //catch
             fmt.Fprintf(os.Stderr, "Exception: %v\n", err)
 			//send panic message in desktop
+			c.Infof("ERROR: %v", err)
 			geoStr := getGeoString(w,r)
 			contentMsg := fmt.Sprintf("[ULAPPH] ERROR in handleUploadMedia(): %v >>> %v from %v", uid, getSchemeUrl(w,r), geoStr)
 			laterNotifyGB.Call(c, "autoNotifyPeopleGB", ADMMAIL, contentMsg, uid)
@@ -71255,6 +71621,39 @@ func renderButtonLink(w http.ResponseWriter, r *http.Request, name, turl, title 
 		buf.WriteTo(w)
 	}
 	
+}
+
+//D0070
+//this template handles how we generate timelines 
+func renderTimelineJSPage(w http.ResponseWriter, r *http.Request, name string, cats []byte) {
+	//c := appengine.NewContext(r)
+	t := presentTemplates[path.Ext(name)]
+	if t == nil {
+		panic(t)
+	}
+
+	doc := new(TEMPSTRUCT)
+	doc.HTM_FILLER1 = template.HTML(string(cats))
+	data := struct {
+		*TEMPSTRUCT
+		Template    *template.Template
+	}{
+		doc,
+		t,
+	}
+	buf := &bytes.Buffer{}
+	err := t.Execute(buf, &data)
+	if err != nil {
+		msgDtl := url.QueryEscape(fmt.Sprintf("[U00187] Template error: %v", err))
+		msgTyp := "error"
+		action := "U00187"
+		sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, "", action)
+		http.Redirect(w, r, sysReq, http.StatusFound)
+		return
+	} else {
+		// No error, send the content, HTTP 200 response status implied
+		buf.WriteTo(w)
+	}
 }
 
 //renders add to uwm page

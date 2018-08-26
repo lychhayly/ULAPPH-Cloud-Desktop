@@ -12282,7 +12282,11 @@ env.saveData = function(mode) {
 			var thisLineTxtRaw = String(session.getLines(0,0));
 			var thisLineTxt = thisLineTxtRaw.replace(/[^A-Z0-9]/ig, "_");
 			var thisLineTxt_m = thisLineTxt.replace(/&/g, 'and');
-			formData.append("TITLE", thisLineTxt_m);
+			//limit title length to avoid panic error
+			var length = 500;
+			var thisLineTxt_t = thisLineTxt_m.substring(0, length);
+
+			formData.append("TITLE", thisLineTxt_t);
 			thisLineTxtRaw = String(session.getLines(1,1));
 			var thisLineTxtRaw_m = thisLineTxtRaw.replace(/&/g, 'and');
 			
