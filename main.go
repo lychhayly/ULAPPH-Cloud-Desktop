@@ -17939,6 +17939,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				end_time := r.FormValue("end_time")
 				contType := r.FormValue("cont_type")
 				contCat := r.FormValue("cont_cat")
+				kword := r.FormValue("kword")
 				//get year
 				SPL := strings.Split(start_date, ", ")
 				start_year := SPL[1]
@@ -17983,7 +17984,17 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					for _, p := range slide{
-						timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+						//edwinxxx
+						if kword != "" {
+							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+							if i != -1 || j != -1 {
+								timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+							}
+
+						} else {
+							timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+						}
 					}
 				case "TDSARTL":
 					q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year)
@@ -17993,7 +18004,16 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					for _, p := range article{
-						timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+						if kword != "" {
+							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+							if i != -1 || j != -1 {
+								timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+							}
+
+						} else {
+							timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+						}
 					}
 				case "TDSMEDIA":
 					q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year)
@@ -18003,7 +18023,16 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					for _, p := range media{
-						timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+						if kword != "" {
+							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+							if i != -1 || j != -1 {
+								timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+							}
+
+						} else {
+							timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+						}
 					}
 				default:
 					//slides
@@ -18014,7 +18043,16 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					for _, p := range slide{
-						timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+						if kword != "" {
+							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+							if i != -1 || j != -1 {
+								timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+							}
+
+						} else {
+							timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+						}
 					}
 					//articles
 					q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year)
@@ -18024,7 +18062,16 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					for _, p := range article{
-						timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+						if kword != "" {
+							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+							if i != -1 || j != -1 {
+								timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+							}
+
+						} else {
+							timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+						}
 					}
 					//media
 					q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year)
@@ -18034,7 +18081,16 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						 panic(err)
 					}
 					for _, p := range media{
-						timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+						if kword != "" {
+							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+							if i != -1 || j != -1 {
+								timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+							}
+
+						} else {
+							timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+						}
 					}
 
 				}
@@ -19104,7 +19160,7 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 	tm := TimelineEventMedia{}
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
-	if thisDU >= start && thisDU <= end && p.FL_SHARED != "N" && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
@@ -19159,7 +19215,7 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 	tm := TimelineEventMedia{}
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
-	if thisDU >= start && thisDU <= end && p.FL_SHARED != "N" && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
@@ -19217,7 +19273,7 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat 
 	tm := TimelineEventMedia{}
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
-	if thisDU >= start && thisDU <= end && p.FL_SHARED != "N" && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
