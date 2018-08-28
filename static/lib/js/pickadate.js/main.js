@@ -80,10 +80,21 @@ $( '#date_demo__accessibility-labels' ).pickadate({
     labelMonthSelect: 'Pick a month from the dropdown',
     labelYearSelect: 'Pick a year from the dropdown',
     selectMonths: true,
-    selectYears: true
+    selectYears: true,
+	min: [2000,1,1],
+  	max: [2020,12,30]
 })
 
-
+$( '#date_demo__accessibility-labels2' ).pickadate({
+    labelMonthNext: 'Go to the next month',
+    labelMonthPrev: 'Go to the previous month',
+    labelMonthSelect: 'Pick a month from the dropdown',
+    labelYearSelect: 'Pick a year from the dropdown',
+    selectMonths: true,
+    selectYears: true,
+	min: [2000,1,1],
+  	max: [2020,12,30]
+})
 
 /**
  * Formats

@@ -1778,10 +1778,15 @@ var net = require("ace/lib/net");
 var modelist = require("ace/ext/modelist");
 var fileCache = {};
 
-function loadEditorData(keyData, path, doc){
+function loadEditorData(keyData, tempSID, path, doc){
 	
 	//load saved data if it exists
-	var localStorageKey =  location.host + "-ace-" + keyData;
+	var localStorageKey =  "";
+	if (tempSID != "" && tempSID != undefined) {
+		localStorageKey =  location.host + "-ace-" + tempSID;
+	} else {
+		localStorageKey =  location.host + "-ace-" + keyData;
+	}
 	var content = localStorage.getItem(localStorageKey);
     if (content != "" && content != undefined) {
 		//console.log("load from local storage! -> "+localStorageKey);
@@ -1808,7 +1813,11 @@ function loadEditorData(keyData, path, doc){
 
 	var editor_url = "";
 	var root = location.protocol + '//' + location.host;
-	editor_url = root + '/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=' + keyData;
+	if (tempSID != "" && tempSID != undefined) {
+		editor_url = root + '/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=' + keyData + '&TEMPLATE_SID=' + tempSID;
+	} else {
+		editor_url = root + '/editor?EDIT_FUNC=GET_TEXT&KEY_TEXT=' + keyData;
+	}
 	xmlhttp.open("POST",editor_url,true);
 	xmlhttp.send();
 
@@ -1848,7 +1857,7 @@ function initDoc(file, path, doc) {
 	if (sid.indexOf("GITHUB_CONTENT@888@") !== -1) {
 		e.src = "/img/cloud-save-github.png";
 	}	
-	loadEditorData(urlParams["SID"], path, doc);
+	loadEditorData(urlParams["SID"], urlParams["TEMPLATE_SID"], path, doc);
 	
 	//set interval to auto-save editor data
 	setInterval(function() {
