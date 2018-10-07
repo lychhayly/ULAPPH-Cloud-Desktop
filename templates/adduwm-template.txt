@@ -76,6 +76,7 @@
 	</script>
   {{end}}
   Auto-open: <input type="checkbox" id="auto"><br>
+  Auto-open-confirm: <input type="checkbox" id="open_confirm"><br>
   Show Button Only: <input type="checkbox" id="button"><br>
   Tile windows: <input type="checkbox" id="tile"><br>
   Wallpaper: <input type="text" id="wallp" maxlength=500><br><br>
@@ -126,6 +127,8 @@ function copyToUWM() {
 	var mid = makeid();
 	
 	if (document.getElementById('auto').checked) {
+		e.innerHTML = currHTML + "&lt;!--" + title + "--&gt;" + "<br>" + "&lt;script type=\"text/javascript\"&gt;windowManager.openWindow('" + link2 + "','" + title + "');&lt;/script&gt;" + "<br>" + "<br>";
+	} else if (document.getElementById('open_confirm').checked) {
 		e.innerHTML = currHTML + "&lt;!--" + title + "--&gt;" + "<br>" + "&lt;script type=\"text/javascript\"&gt;if (confirm('Open new window for " + title + "?') == true){windowManager.openWindow('" + link2 + "','" + title + "');}&lt;/script&gt;" + "<br>" + "<br>";
 	} else if (document.getElementById('button').checked) {
 		var res = encodeURIComponent(link);
