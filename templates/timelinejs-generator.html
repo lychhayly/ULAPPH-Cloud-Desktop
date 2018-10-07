@@ -16,6 +16,9 @@
 <link rel="stylesheet" href="/lib/css/pickadate.js/themes/default.css" id="theme_base">
 <link rel="stylesheet" href="/lib/css/pickadate.js/themes/default.date.css" id="theme_date">
 <link rel="stylesheet" href="/lib/css/pickadate.js/themes/default.time.css" id="theme_time">
+<script src="/js/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="/lib/css/sol/sol.css">
+<script type="text/javascript" src="/lib/js/sol/sol.js"></script>
 <style>
 .button {
     background-color: #4CAF50;
@@ -106,7 +109,7 @@
 	      name="start_time"
 	      class="fieldset__input js__timepicker"
 	      type="text"
-	      placeholder="Start Time..."
+	      value="12:00 AM"
 	      >
 	  </div>
 	</fieldset>
@@ -128,7 +131,7 @@
 	      name="end_time"
 	      class="fieldset__input js__timepicker"
 	      type="text"
-	      placeholder="End Time..."
+	      value="11:59 PM"
 	      >
 	  </div>
 	</fieldset>
@@ -140,17 +143,23 @@
 			<option value="TDSARTL">Article Contents</option>
 		</select>
 	</div>
-	<div class="custom-select" style="width:300px;">
-		<select id="CATEGORY">
-			<option value="">Select Category</option>
+	<!--div class="custom-select" style="width:300px;"-->
+	<div style="width:300px;">
+		<select id="CATEGORY" name="category">
+			<option value="Select Category">Select Category</option>
 		{{.HTM_FILLER1}}
 		</select>
+		<script type="text/javascript">
+		    $(function() {
+		        // initialize sol
+		        $('#CATEGORY').searchableOptionList();
+		    });
+		</script>
 	</div>
 	<input type="text" id="kword" placeholder="Enter keyword filter..." maxlength=200>
 	<input type="submit" class="button" onclick="generateTimeJS()" value="Submit">
   </div>
 </section>
-<script src="/js/jquery-1.11.1.min.js"></script>
 <script src="/lib/js/pickadate.js/picker.js"></script>
 <script src="/lib/js/pickadate.js/picker.date.js"></script>
 <script src="/lib/js/pickadate.js/picker.time.js"></script>

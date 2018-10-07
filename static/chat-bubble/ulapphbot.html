@@ -1,3 +1,4 @@
+dev
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -290,6 +291,10 @@ var convo = {
 		{
 	      question: "Admin",
 	      answer: "toolsAdmin"
+	    },
+		{
+	      question: "CCTV",
+	      answer: "toolsCCTV"
 	    }
 		]
   },
@@ -1148,7 +1153,9 @@ function toolsCalendar() {
 function toolsAdmin() {
 	location.href="/admin-setup";
 }
-
+function toolsCCTV() {
+	location.href="/tools?FUNC=MIRROR";
+}
 
 function reloadPage() {
     location.reload();

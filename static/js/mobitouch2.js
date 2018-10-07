@@ -135,6 +135,7 @@ function upload_ulapph() {
 			}
 			fd.append("TITLE", caption);
 			fd.append("STRUWM", streamUwm);
+			fd.append("CATEGORY", "desktop"+streamUwm);
 			
 			fd.append("DESC", "ulapphMirrorImage");
 			fd.append("DATA_TYPE", "image");
