@@ -79,7 +79,8 @@
   Auto-open-confirm: <input type="checkbox" id="open_confirm"><br>
   Show Button Only: <input type="checkbox" id="button"><br>
   Tile windows: <input type="checkbox" id="tile"><br>
-  Wallpaper: <input type="text" id="wallp" maxlength=500><br><br>
+  Fixed Wallpaper: <input type="text" id="wallp" maxlength=500><br><br>
+  Show UWM Random Wallpapers Only: <input type="checkbox" id="uwmranw"><br>
   <input type="button" onclick="copyToUWM()" value="Generate HTML Codes"> Or [<a href="/admin-icons">Choose from Icons</a>]
   <br>
   <br>
@@ -197,8 +198,10 @@ function appendUWMSettings(desktop) {
     }
     //set wallpaper
 	var wpurl = document.getElementById("wallp").value;
+	var wpuwmonly = document.getElementById("uwmranw").checked;
 	console.log("wpurl: "+wpurl);
-    formData.append("WALLP", wpurl);
+    	formData.append("WALLP", wpurl);
+    	formData.append("WPUWMONLY", wpuwmonly);
 	var thisContent = document.getElementById("text-area").innerText;
 	if (thisContent == "" || thisContent == undefined) {
 		alert("Error! No data to save!");

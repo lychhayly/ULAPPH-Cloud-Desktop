@@ -262,21 +262,44 @@ function procMessage(obj) {
 					rn.value = "pause";
                         	}
 				break;
+			//D0071
+			case "SYS_STRUWM_ALARM":
+			console.log("SYS_STRUWM_ALARM");
+			//data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_ALARM@888@%v@888@%v", CAPTION, MESSAGE
+				var caption = cmdata[3];
+				var message = cmdata[4];
+                                alertify.set({ delay: 300000 });
+                                alertify.error(caption);
+                                alertify.error(message);
+
+                                speakMessage(caption);
+
+                                var aSound = document.createElement('audio');
+                                if (isEdge == true || isIE == true || isSafari == true) {
+                                        soundManager.createSound({
+                                                id: 'mySoundCctv',
+                                                volume: 75,
+                                                url: root + "/audio/industrialAlarm.mp3"
+                                        });
+                                } else {
+                                        soundManager.createSound({
+                                                id: 'mySoundCctv',
+                                                volume: 75,
+                                                url: root + "/audio/industrialAlarm.ogg"
+                                        });
+                                }
+
+                                playSound('mySoundCctv');
+                                document.getElementById("ping-res").innerHTML = "<img src='/img/sysinf.gif' width='20' height='20' align='middle'></img>Alert";
+                                titleBlink("Alert",caption);
+                                return;
 
 			case "SYS_GOOGLE_SEARCH":
 				var kw = cmdata[3];
-				//var uid = cmdata[4];
 				var tgt = 'https://www.google.com.ph/search?q=' + kw + '&source=lnt&tbs=qdr:d&sa=X&&biw=1366&bih=700';
-				//var duwm = uid.indexOf("---");
-				//if (duwm <= 0) {
-				//	console.log("opening window in main UWM...");
-					openWindowNow(tgt, 'SEARCH: '+kw);
-				//} else {
-				//	console.log("should open in sub uwm...");
-				//	console.log(tgt);
-					//localStorage[uid] = tgt;
-				//	localStorage.setItem(uid, tgt);
-				//}
+				openWindowNow(tgt, 'SEARCH: '+kw);
+				var tgi = 'https://www.google.com.ph/search?q=' + kw + '&rlz=1C1GGRV_enPH754PH754&source=lnms&tbm=isch&sa=X&biw=1280&bih=610';
+				openWindowNow(tgi, 'SEARCH: '+kw);
 				break;
 				
 			case "SYS_UPDATE_TLM":

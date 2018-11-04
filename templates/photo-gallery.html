@@ -1,4 +1,4 @@
-{/* This is the timelinejs genrator template.*/}
+{/* This is the photo gallery template.*/}
 
 {{define "root"}}
 <!doctype html>
@@ -10,7 +10,7 @@
 <meta name="author" content="ULAPPH Cloud Desktop">
 <meta name="viewport" content="width=device-width">
 <meta name="description" content="ULAPPH Cloud Desktop is a TimelineJS tool.">
-<title>TimelineJS - ULAPPH Cloud Desktop</title>
+<title>Photo Gallery - ULAPPH Cloud Desktop</title>
 <link rel="shortcut icon" href="/lib/js/pickadate.js/images/favicon.ico">
 <link rel="stylesheet" href="/lib/css/pickadate.js/main.css">
 <link rel="stylesheet" href="/lib/css/pickadate.js/themes/default.css" id="theme_base">
@@ -137,10 +137,10 @@
 	</fieldset>
 	<div class="custom-select" style="width:300px;">
 		<select id="TYPE">
-			<option value="">Select Type</option>
+			<!--option value="">Select Type</option-->
 			<option value="TDSMEDIA">Media Contents</option>
-			<option value="TDSSLIDE">Slide Contents</option>
-			<option value="TDSARTL">Article Contents</option>
+			<!--option value="TDSSLIDE">Slide Contents</option>
+			<option value="TDSARTL">Article Contents</option-->
 		</select>
 	</div>
 	<!--div class="custom-select" style="width:300px;"-->
@@ -177,11 +177,15 @@
 		var contType = document.getElementById("TYPE").value;
 		var contCat = document.getElementById("CATEGORY").value;
 		var kword = document.getElementById("kword").value;
+		if (contType == "") {
+			alert("Please populate the content type!");
+			return;
+		}
 		if (start_date == "" || start_time == "" || end_date == "" || end_time == "") {
 			alert("Please populate all fields!");
 			return;
 		}
-		var genLink = "/editor?EDIT_FUNC=TIMELINE&SID=GEN2" + "&start_date=" + start_date + "&start_time=" + start_time + "&end_date=" + end_date + "&end_time=" + end_time + "&cont_type=" + contType + "&cont_cat=" + contCat + "&kword=" + kword;
+		var genLink = "/media?FUNC_CODE=VIEW_THUMBS&PROC=Y" + "&start_date=" + start_date + "&start_time=" + start_time + "&end_date=" + end_date + "&end_time=" + end_time + "&cont_type=" + contType + "&cont_cat=" + contCat + "&kword=" + kword;
 		console.log("genLink: "+genLink);
 		location.href=genLink;
 	}	

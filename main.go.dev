@@ -1,6 +1,6 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#26/08/2018 04:16:59 AM PST
-//TOTAL_LINES#77000
+//LAST_UPGRADE#05/11/2018 02:48:59 AM PST
+//TOTAL_LINES#80740
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ULAPPH CLOUD DESKTOP SYSTEM
@@ -364,6 +364,16 @@
 //REV DESC:	  	Added timelineJS generator 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0071
+//REV DATE: 		2018-Oct-17
+//REV DESC:	  	Image comparison logic for cctv
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0072
+//REV DATE: 		2018-Nov-05
+//REV DESC:	  	Upgrade photo gallery with camera capture & refined search features
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------
 //List of firebase channels
@@ -419,7 +429,7 @@ import (
 	//appengine
 	"appengine/datastore"
 	"appengine/blobstore"
-	"appengine/image"
+	imageApi "appengine/image"
 	"appengine/memcache"
 	"appengine"
 	"appengine/user"
@@ -491,6 +501,11 @@ import (
 	//D0065
 	"github.com/shixzie/nlp"
 	"github.com/cdipaolo/goml/text"
+	//D0071
+	//"github.com/disintegration/imaging"
+	"github.com/umahmood/perceptive"
+	"image"
+	//"image/png"
 )
 //contants configs
 const (
@@ -1451,6 +1466,9 @@ var mapNumbers = []rune("1234567890")
 ///////////////////////////////////////////////////////////////
 // ACCOUNTS & QUOTAS
 ///////////////////////////////////////////////////////////////
+//D0071
+var FL_CHECK_SAM_QUOTA = false
+
 //List of Accounts and Quotas
 //Free Account
 var freeAccess = map[string]int{"QUOTA_SLIDES":5,"QUOTA_ARTICLES":5,"QUOTA_MEDIA":50,"QUOTA_MSG_IN":100,"QUOTA_MSG_OUT":100,}
@@ -1459,7 +1477,9 @@ var bronzeAccess = map[string]int{"QUOTA_SLIDES":50,"QUOTA_ARTICLES":50,"QUOTA_M
 //Silver
 var silverAccess = map[string]int{"QUOTA_SLIDES":500,"QUOTA_ARTICLES":500,"QUOTA_MEDIA":1000,"QUOTA_MSG_IN":1000,"QUOTA_MSG_OUT":1000,}
 //Gold
-var goldAccess = map[string]int{"QUOTA_SLIDES":5000,"QUOTA_ARTICLES":5000,"QUOTA_MEDIA":10000,"QUOTA_MSG_IN":10000,"QUOTA_MSG_OUT":10000,}
+//D0071
+//var goldAccess = map[string]int{"QUOTA_SLIDES":5000,"QUOTA_ARTICLES":5000,"QUOTA_MEDIA":10000,"QUOTA_MSG_IN":10000,"QUOTA_MSG_OUT":10000,}
+var goldAccess = map[string]int{"QUOTA_SLIDES":5000,"QUOTA_ARTICLES":5000,"QUOTA_MEDIA":1000000,"QUOTA_MSG_IN":1000000,"QUOTA_MSG_OUT":1000000,}
 ///////////////////////////////////////////////////////////////
 // BROWSERS
 ///////////////////////////////////////////////////////////////
@@ -2087,6 +2107,7 @@ var (
 		".orgchart": parsePresentTemplate2("gojs-orgchart.html"),
 		//D0070
 		".timelinejs-gen": parsePresentTemplate2("timelinejs-generator.html"),
+		".photo-gallery": parsePresentTemplate2("photo-gallery.html"),
 	}
 	contactEmail      = "demo.ulapph@gmail.com"
 	gitHubCredentials = ""
@@ -2764,14 +2785,24 @@ var laterAddToDefaultSid = delay.Func("laterAddToDefaultSid", func(c appengine.C
 		panic(err)
 	}
 })
-//D0066 
+//D0066/D0071 
 // Exec later - Stream image to UWM
-var laterMirrorStreamUwm = delay.Func("laterMirrorStreamUwm", func(c appengine.Context, MSU_FUNC, UID, STRUWM, TYP, SRC, TITLE string) {
-	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-stream-mirror-uwm", map[string][]string{"MSU_FUNC": {MSU_FUNC}, "UID": {UID}, "STRUWM": {STRUWM}, "TYP": {TYP}, "SRC": {SRC}, "TITLE": {TITLE}})
+/*var laterMirrorStreamUwm = delay.Func("laterMirrorStreamUwm", func(c appengine.Context, MSU_FUNC, UID, STRUWM, TYP, SRC, TITLE, CATEGORY string) {
+	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-stream-mirror-uwm", map[string][]string{"MSU_FUNC": {MSU_FUNC}, "UID": {UID}, "STRUWM": {STRUWM}, "TYP": {TYP}, "SRC": {SRC}, "TITLE": {TITLE}, "CATEGORY": {CATEGORY}})
 	if _, err := taskqueue.Add(c, t, ""); err != nil {
 		panic(err)
 	}
 })
+*/
+//D0071
+//compare previous and current images
+/*var laterMirrorStreamPreviousCompare = delay.Func("laterMirrorStreamPreviousCompare", func(c appengine.Context, MSU_FUNC, UID, STRUWM, SRC, TITLE, CATEGORY, BLOB_KEY, MEDIA_ID string) {
+	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-struwm-previous-compare", map[string][]string{"MSU_FUNC": {MSU_FUNC}, "UID": {UID}, "STRUWM": {STRUWM}, "SRC": {SRC}, "TITLE": {TITLE}, "CATEGORY": {CATEGORY}, "BLOB_KEY": {BLOB_KEY}, "MEDIA_ID": {MEDIA_ID}})
+	if _, err := taskqueue.Add(c, t, ""); err != nil {
+		panic(err)
+	}
+})
+*/
 // Exec later - Ratings
 var laterQueueRatings = delay.Func("laterQueueRatings", func(c appengine.Context, RTG_FUNC, UID, uid string) {
 	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-ratings", map[string][]string{"RTG_FUNC": {RTG_FUNC}, "UID": {UID}, "FROM": {uid}})
@@ -9191,6 +9222,7 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 		STR_FILLER14: SYS_SERVER_NAME,
 		STR_FILLER15: getSitesServerName(w,r),
 		BOOL_FILLER1: checkMobile(w,r),
+		BOOL_FILLER2: checkWpUwmOnly(w,r,uid,TARGET_DESKTOP),
 	}
 	
 	if mode == "guest" {
@@ -9769,6 +9801,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					STR_FILLER14: SYS_SERVER_NAME,
 					STR_FILLER15: getSitesServerName(w,r),
 					BOOL_FILLER1: checkMobile(w,r),
+					BOOL_FILLER2: checkWpUwmOnly(w,r,uid,TARGET_UWM),
 				}
 				//firebase
 				if err := desktopBodyPTemplatejswm.Execute(w, &TEMPDATA); err != nil {
@@ -10848,6 +10881,23 @@ func getCountry(w http.ResponseWriter, r *http.Request) (geoCountry string) {
 	geoCountry = fmt.Sprintf("%s", xCountry)
 	
 	return geoCountry
+}
+//this returns the SID only
+func checkWpUwmOnly(w http.ResponseWriter, r *http.Request, uid, unum string) (FL_UWMWPONLY bool) {
+	c := appengine.NewContext(r)
+	c.Infof("checkWpUwmOnly()")
+	if unum != "" {
+		cfgName := fmt.Sprintf("SYSTEM_UWM_WALLP_WPUWMONLY_%v_%v", unum, uid)
+		c.Infof("cfgName: %v", cfgName)
+		cfgVal, _ := getTDSCNFG(w,r,0,cfgName)
+		c.Infof("cfgVal: %v", cfgVal)
+		if cfgVal == "true" {
+			FL_UWMWPONLY = true
+		} else {
+			FL_UWMWPONLY = false
+		}
+	}
+	return FL_UWMWPONLY
 }
 
 //gets the SID (TDSMEDIA-nn) where the UWM settings for the given UWM is stored
@@ -17920,7 +17970,6 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			  panic(err)
 			}
 			return
-
 		case "TIMELINE":
 			SID := r.FormValue("SID")
 			_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
@@ -17929,7 +17978,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 			case SID == "GEN":
 				//show timelinejs form
 				thisCats := getCategoriesBytes(w,r)
-				renderTimelineJSPage(w,r,".timelinejs-gen", thisCats)
+				renderTimelineForm(w,r,".timelinejs-gen", thisCats)
 				return
 			case SID == "GEN2":
 				_, uid := checkSession(w,r)
@@ -17982,7 +18031,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				tjs.Title = tjst
 				switch contType {
 				case "TDSSLIDE":
-					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year)
+					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
+					if contCat != "" {
+					q = datastore.NewQuery("TDSSLIDE").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
+					}
 					recCount,_ := q.Count(c)
 					slide := make([]TDSSLIDE, 0, recCount)
 					if _, err := q.GetAll(c, &slide); err != nil {
@@ -18001,7 +18053,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				case "TDSARTL":
-					q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year)
+					q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
+					if contCat != "" {
+					q = datastore.NewQuery("TDSARTL").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
+					}
 					recCount,_ := q.Count(c)
 					article := make([]TDSARTL, 0, recCount)
 					if _, err := q.GetAll(c, &article); err != nil {
@@ -18020,7 +18075,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				case "TDSMEDIA":
-					q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year)
+					q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+					if contCat != "" {
+					q = datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
+					}
 					recCount,_ := q.Count(c)
 					media := make([]TDSMEDIA, 0, recCount)
 					if _, err := q.GetAll(c, &media); err != nil {
@@ -18040,7 +18098,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					}
 				default:
 					//slides
-					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year)
+					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
 					recCount,_ := q.Count(c)
 					slide := make([]TDSSLIDE, 0, recCount)
 					if _, err := q.GetAll(c, &slide); err != nil {
@@ -18059,7 +18117,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 					//articles
-					q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year)
+					q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
 					recCount,_ = q1.Count(c)
 					article := make([]TDSARTL, 0, recCount)
 					if _, err := q1.GetAll(c, &article); err != nil {
@@ -18078,7 +18136,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 					//media
-					q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year)
+					q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
 					recCount,_ = q2.Count(c)
 					media := make([]TDSMEDIA, 0, recCount)
 					if _, err := q2.GetAll(c, &media); err != nil {
@@ -19222,6 +19280,33 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 		}
 	}
 }
+//D0072
+func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSMEDIA) {
+	thisDU := str2int(p.DT_UPLOAD)
+	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+		var buffer3 bytes.Buffer
+		imgAlt := "img01"
+		buffer3.WriteString(fmt.Sprintf("<li>"))
+		if p.PROP != "big_wp" {
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
+		} else {
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
+		}
+		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1300\" data-min-width=\"1300\"></div>", p.IMG_URL))
+		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1000\" data-min-width=\"1000\"></div>", p.IMG_URL))
+		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s700\" data-min-width=\"700\"></div>", p.IMG_URL))
+		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s300\" data-min-width=\"300\"></div>", p.IMG_URL))
+		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s200\" data-min-width=\"200\"></div>", p.IMG_URL))
+		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s140\" data-min-width=\"140\"></div>", p.IMG_URL))
+		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v\"></div>", p.IMG_URL))
+		buffer3.WriteString(fmt.Sprintf("		<noscript>"))
+		buffer3.WriteString(fmt.Sprintf("			<img src=\"%v\" title=\"%v\"/>", p.IMG_URL, imgAlt))
+		buffer3.WriteString(fmt.Sprintf("		</noscript>"))
+		buffer3.WriteString(fmt.Sprintf("	</div>"))
+		buffer3.WriteString(fmt.Sprintf("</li>"))
+		w.Write(buffer3.Bytes())
+	}
+}
 //D0070
 func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) {
 	dks := TimelineEvent{}
@@ -19278,10 +19363,59 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 	}
 
 }
+//D0072
+func photoGalleryShowArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSARTL) {
+	thisDU := str2int(p.DT_UPLOAD)
+	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+		//fmt.Fprintf(w, "%v\n", p)
+		//split DT_UPLOAD
+		//20180824124749
+	/*	STR := fmt.Sprintf("%v", p.DT_UPLOAD)
+		year := STR[0:4] //2018
+		month := STR[4:6] //08
+		day := STR[6:8] //24
+		hour := STR[8:10] //12 
+		minute := STR[10:12] //47
+		sec := STR[12:14] //49
+		sd.Year = year
+		sd.Month = month
+		sd.Day = day
+		sd.Hour = hour
+		sd.Minute = minute
+		sd.Second = sec
+		ed.Year = year
+		ed.Month = month
+		ed.Day = day
+		ed.Hour = hour
+		ed.Minute = minute
+		ed.Second = sec
+		//tm.URL = p.IMG_URL
+		tm.URL = p.TAGS
+		tt.Headline = p.TITLE
+		///search?f=TDSMEDIA-UPD&q=50
+		reqStr2 := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.FL_COUNTRY_SPECIFIC)
+		tm.Link = reqStr2
+		tm.Caption = fmt.Sprintf("TDSARTL-%v/%v/%v", p.DOC_ID, "article", "format")
+		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
+		tt.Text = fmt.Sprintf("%v<br>[ TDSARTL-%v ][ <a href=\"/search?f=TDSARTL-UPD&q=%v\" target=\"tjs\">Open</a>][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr2)
+		dks.StartDate = sd
+		dks.EndDate = ed
+		dks.Media = tm
+		dks.Text = tt
+		if contCat == "" {
+			tjs.AllEvents = append(tjs.AllEvents, dks) 
+		}else {
+			if p.CATEGORY == contCat {
+				//fmt.Fprintf(w, "%v\n", p)
+				tjs.AllEvents = append(tjs.AllEvents, dks) 
+			}
 
+		}
+		*/
+	}
+}
 //D0070
 func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSSLIDE) {
-
 	dks := TimelineEvent{}
 	sd := TimelineStartDate{}
 	ed := TimelineEndDate{}
@@ -19333,6 +19467,57 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat 
 			}
 
 		}
+	}
+}
+//D0072
+func photoGalleryShowSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSSLIDE) {
+	thisDU := str2int(p.DT_UPLOAD)
+	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+		//fmt.Fprintf(w, "%v\n", p)
+		//split DT_UPLOAD
+		//20180824124749
+		/*STR := fmt.Sprintf("%v", p.DT_UPLOAD)
+		year := STR[0:4] //2018
+		month := STR[4:6] //08
+		day := STR[6:8] //24
+		hour := STR[8:10] //12 
+		minute := STR[10:12] //47
+		sec := STR[12:14] //49
+		sd.Year = year
+		sd.Month = month
+		sd.Day = day
+		sd.Hour = hour
+		sd.Minute = minute
+		sd.Second = sec
+		ed.Year = year
+		ed.Month = month
+		ed.Day = day
+		ed.Hour = hour
+		ed.Minute = minute
+		ed.Second = sec
+		//tm.URL = p.IMG_URL
+		tm.URL = p.TAGS
+		tt.Headline = p.TITLE
+		///search?f=TDSMEDIA-UPD&q=50
+		reqStr := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET, p.FL_COUNTRY_SPECIFIC)
+		tm.Link = reqStr
+		tm.Caption = fmt.Sprintf("TDSSLIDE-%v/%v/%v", p.DOC_ID, "slide", "format")
+		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
+		tt.Text = fmt.Sprintf("%v<br>[ TDSSLIDE-%v ][ <a href=\"/search?f=TDSSLIDE-UPD&q=%v\" target=\"tjs\">Update</a> ][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr)
+		dks.StartDate = sd
+		dks.EndDate = ed
+		dks.Media = tm
+		dks.Text = tt
+		if contCat == "" {
+			tjs.AllEvents = append(tjs.AllEvents, dks) 
+		}else {
+			if p.CATEGORY == contCat {
+				//fmt.Fprintf(w, "%v\n", p)
+				tjs.AllEvents = append(tjs.AllEvents, dks) 
+			}
+
+		}
+		*/
 	}
 }
 //prints semaphore footer 
@@ -30250,8 +30435,11 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 			queueRatings(w,r)
 		case "queue-add-to-default-sid":
 			queueAddToSid(w,r)
-		case "queue-stream-mirror-uwm":
-			queueStreamMirrorToUwm(w,r)
+		//case "queue-stream-mirror-uwm":
+		//	queueStreamMirrorToUwm(w,r)
+		//D0071
+		//case "queue-struwm-previous-compare":
+		//	queueStruwmPreviousCompare(w,r)
 		case "queue-wget-url":
 			queueWgetUrl(w,r)
 		case "queue-notify-gb":
@@ -40772,8 +40960,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 		SEQ := r.FormValue("SEQ")
 		mode := r.FormValue("mode")
 		intSeq := str2int(SEQ)
-		
- 
+		uwmwponly := r.FormValue("uwmwponly")
+		uwmDesk := r.FormValue("desktop")
+		uwmDesk = strings.Replace(uwmDesk, "uwm", "", -1)
+		//c.Infof("uwmwponly: %v", uwmwponly)
+		//c.Infof("uwmDesk: %v", uwmDesk)
 		cKey := ""
 		cKey2 := ""
 		if SYS_WALLP_ADMIN_ONLY == false {
@@ -40783,6 +40974,13 @@ func media(w http.ResponseWriter, r *http.Request) {
 			cKey = fmt.Sprintf("WALLPAPERS_LIST_%v", "admin")
 			cKey2 = fmt.Sprintf("WALLPAPERS_TOTAL_%v", "admin")		
 		}
+		if uwmwponly == "true" {
+			cKey = fmt.Sprintf("WALLPAPERS_LIST_%v_%v", uwmDesk, uid)
+			cKey2 = fmt.Sprintf("WALLPAPERS_TOTAL_%v_%v", uwmDesk, uid)
+		
+		}
+		//c.Infof("cKey: %v", cKey)
+		//c.Infof("cKey2: %v", cKey2)
 		WALLPAPERS_LIST_ARRAY := ""
 		WALLPAPERS_LIST_TOTAL := ""
 		
@@ -40801,37 +40999,53 @@ func media(w http.ResponseWriter, r *http.Request) {
 				recCtr := 0
 				WALLPAPERS_LIST_STR := ""
 				if SYS_WALLP_ADMIN_ONLY == false {
-					q := datastore.NewQuery("TDSMEDIA").Filter("PROP =", "big_wp").
-														Filter("AUTHOR =", uid)
-					//c.Errorf("[S0358]")
-					recCount,_ := q.Count(c)
- 
-					media := make([]TDSMEDIA, 0, recCount)
-					if _, err := q.GetAll(c, &media); err != nil {
-						panic(err)
-					}
-					
-					//randomize slice
-					Shuffle(media)
-					//WALLPAPERS_LIST_STR := ""
-					for _, p := range media{
-							
-							if p.DATA_TYPE == "image" && uid == p.AUTHOR {
-								recCtr++
-								WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
-							}
+					c.Infof("uwmwponly: %v", uwmwponly )
+					if uwmwponly == "true" {
+						thisCat := fmt.Sprintf("desktop%v", uwmDesk)
+						c.Infof("thisCat: %v", thisCat )
+						q := datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", thisCat).Limit(250)
+						//c.Errorf("[S0359]")
+						recCount,_ := q.Count(c)
+						c.Infof("recCount: %v", uwmwponly )
+						media := make([]TDSMEDIA, 0, recCount)
+						if _, err := q.GetAll(c, &media); err != nil {
+							panic(err)
+						}
+						//randomize slice
+						Shuffle(media)
+						for _, p := range media{
+								if p.DATA_TYPE == "image" {
+									recCtr++
+									WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
+								}
+						}
+					} else {
+						q := datastore.NewQuery("TDSMEDIA").Filter("PROP =", "big_wp").
+										    Filter("AUTHOR =", uid)
+						//c.Errorf("[S0358]")
+						recCount,_ := q.Count(c)
+						media := make([]TDSMEDIA, 0, recCount)
+						if _, err := q.GetAll(c, &media); err != nil {
+							panic(err)
+						}
+						//randomize slice
+						Shuffle(media)
+						//WALLPAPERS_LIST_STR := ""
+						for _, p := range media{
+								if p.DATA_TYPE == "image" && uid == p.AUTHOR {
+									recCtr++
+									WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
+								}
+						}
 					}
 				} else {
-				
 					q := datastore.NewQuery("TDSMEDIA").Filter("PROP =", "big_wp2")
 					//c.Errorf("[S0359]")
 					recCount,_ := q.Count(c)
- 
 					media := make([]TDSMEDIA, 0, recCount)
 					if _, err := q.GetAll(c, &media); err != nil {
 						panic(err)
 					}
-					
 					//randomize slice
 					Shuffle(media)
 					//WALLPAPERS_LIST_STR := ""
@@ -40841,15 +41055,12 @@ func media(w http.ResponseWriter, r *http.Request) {
 								WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
 							}
 					}
-				
 				}
-				
 				//store count
 				WALLPAPERS_TOTAL := fmt.Sprintf("%v", recCtr)
 				putStrToMemcacheWithoutExp(w,r,cKey2,WALLPAPERS_TOTAL)
 				//store list
 				putStrToMemcacheWithoutExp(w,r,cKey,WALLPAPERS_LIST_STR)
-				
 				WALLPAPERS_LIST_ARRAY = WALLPAPERS_LIST_STR
 				WALLPAPERS_LIST_TOTAL = WALLPAPERS_TOTAL
 			}
@@ -41520,7 +41731,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							//get the correct file icon
 							switch  {
 								case DATA_TYPE == "image":
-									sURL, _ := image.ServingURL(c, appengine.BlobKey(p.BLOB_KEY), nil)
+									sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(p.BLOB_KEY), nil)
 									thisURL := sURL.String()
 									thisURL = getSchemeNewUrl(w,r,thisURL)
 									p.IMG_URL = thisURL
@@ -42474,76 +42685,209 @@ func media(w http.ResponseWriter, r *http.Request) {
 					if err := rootTemplateMultiUploadForm.Execute(w, ""); err != nil {
 						panic(err)
 					}
-					
-					nMediaID := 0		
+					nMediaID := 0
 					cfgName := fmt.Sprintf("PERSONAL_Default_Slide_Media_ID_%v", uid)
 					_, nMediaID = getTDSCNFG(w,r,1,cfgName)
-					
 					if nMediaID == 0 {
 						//donothing
 					} else {
 						fmt.Fprintf(w, "<font color=red><b>Warning!</b> All uploads will be inserted to default slide %v. You may update this in your settings.</font>", nMediaID)
 					}
-						
 					if err := htmlFooterModal.Execute(w, ""); err != nil {
 						panic(err)
-					}	
-					
-				
+					}
 				case "VIEW_THUMBS":
-				
+					//D0070
+					c.Infof("VIEW_THUMBS")
+					PROC := r.FormValue("PROC")
 					updateUserActiveData(w, r, c, uid, "/media(photos)")
-					CATEGORY := r.FormValue("CATEGORY")
-					YEAR := r.FormValue("YEAR")
-					FILTER := r.FormValue("FILTER")
-					
-					cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, YEAR)
-					PA_CACHE := ""
-					PA_CACHE = getStrMemcacheValueByKey(w,r,cKey)
- 
-					if PA_CACHE != "" {
-						if err := mediaSimpleGalHeaderA.Execute(w, YEAR); err != nil {
-							panic(err)
-						}
-						if err := mediaSimpleGalHeaderB.Execute(w, CATEGORY); err != nil {
-							panic(err)
-						}
-						
-						w.Write([]byte(PA_CACHE))
-						
-						if err := mediaSimpleGalFooter.Execute(w, cKey); err != nil {
-							panic(err)
-						}
-						return						
-					}
-					
-					cKeyF := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, FILTER)
-					PF_CACHE := ""
-					PF_CACHE = getStrMemcacheValueByKey(w,r,cKeyF)
-					
-					if PF_CACHE != "" {
-						if err := mediaSimpleGalHeaderA.Execute(w, FILTER); err != nil {
-							panic(err)
-						}
-						if err := mediaSimpleGalHeaderB.Execute(w, CATEGORY); err != nil {
-							panic(err)
-						}
-						
-						w.Write([]byte(PF_CACHE))
-						
-						if err := mediaSimpleGalFooter.Execute(w, cKeyF); err != nil {
-							panic(err)
-						}
-						return						
-					}
-					
 					//also notify all users about this
 					msgDtl3 := fmt.Sprintf("UID:%v %v has accessed ULAPPH Photo Gallery! %v", getGeoString(w,r), uid, getAccessString(w,r,""))
 					sendMessage(w, r, ADMMAIL, "CH_MSG_NOTIFY_EVENTS", msgDtl3, "", getMapLink(w,r,uid,"/media?FUNC_CODE=VIEW_THUMBS",""),"")
-					
+					switch {
+					case PROC == "":
+						thisCats := getCategoriesBytes(w,r)
+						renderTimelineForm(w,r,".photo-gallery", thisCats)
+						return
+					case PROC == "Y":
+						_, uid := checkSession(w,r)
+						start_date := r.FormValue("start_date")
+						start_time := r.FormValue("start_time")
+						end_date := r.FormValue("end_date")
+						end_time := r.FormValue("end_time")
+						contType := r.FormValue("cont_type")
+						contCat := r.FormValue("cont_cat")
+						kword := r.FormValue("kword")
+						//get year
+						SPL := strings.Split(start_date, ", ")
+						start_year := SPL[1]
+						c.Infof("start_year: %v", start_year)
+						c.Infof("start_date: %v", start_date)
+						c.Infof("start_time: %v", start_time)
+						c.Infof("end_date: %v", end_date)
+						c.Infof("end_time: %v", end_time)
+						c.Infof("contType: %v", contType)
+						c.Infof("contCat: %v", contCat)
+						//compose timestamp
+						start_tstmp := fmt.Sprintf("%v %v", start_date, start_time)
+						end_tstmp := fmt.Sprintf("%v %v", end_date, end_time)
+						//c.Infof("start_tstmp: %v", start_tstmp)
+						//c.Infof("end_tstmp: %v", end_tstmp)
+						rt1, _ := time.Parse("_2 January, 2006 3:04 PM", start_tstmp)
+						start_rt1 := fmt.Sprintf("%v", rt1.Format("20060102150405"))
+						rt2, _ := time.Parse("_2 January, 2006 3:04 PM", end_tstmp)
+						start_rt2 := fmt.Sprintf("%v", rt2.Format("20060102150405"))
+						c.Infof("start_rt1: %v", start_rt1)
+						c.Infof("start_rt2: %v", start_rt2)
+						start := str2int(start_rt1)
+						end := str2int(start_rt2)
+						//if err := mediaSimpleGalHeaderA.Execute(w, start_year); err != nil {
+						pgtitle := deskNum2Name(w,r,contCat)
+						if err := mediaSimpleGalHeaderA.Execute(w, pgtitle); err != nil {
+							panic(err)
+						}
+						if err := mediaSimpleGalHeaderB.Execute(w, contCat); err != nil {
+							panic(err)
+						}
+						switch contType {
+						case "TDSSLIDE":
+							q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
+							if contCat != "" {
+							q = datastore.NewQuery("TDSSLIDE").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
+							}
+							recCount,_ := q.Count(c)
+							c.Infof("slides: %v", recCount)
+							slide := make([]TDSSLIDE, 0, recCount)
+							if _, err := q.GetAll(c, &slide); err != nil {
+								 panic(err)
+							}
+							for _, p := range slide{
+								if kword != "" {
+									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+									if i != -1 || j != -1 {
+										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+									}
+
+								} else {
+									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+								}
+							}
+						case "TDSARTL":
+							q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
+							if contCat != "" {
+							q = datastore.NewQuery("TDSARTL").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
+							}
+							recCount,_ := q.Count(c)
+							c.Infof("articles: %v", recCount)
+							article := make([]TDSARTL, 0, recCount)
+							if _, err := q.GetAll(c, &article); err != nil {
+								 panic(err)
+							}
+							for _, p := range article{
+								if kword != "" {
+									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+									if i != -1 || j != -1 {
+										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+									}
+
+								} else {
+									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+								}
+							}
+						case "TDSMEDIA":
+							q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+							if contCat != "" {
+							q = datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
+							}
+							recCount,_ := q.Count(c)
+							c.Infof("media: %v", recCount)
+							media := make([]TDSMEDIA, 0, recCount)
+							if _, err := q.GetAll(c, &media); err != nil {
+								 panic(err)
+							}
+							for _, p := range media{
+								if kword != "" {
+									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+									if i != -1 || j != -1 {
+										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+									}
+
+								} else {
+									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+								}
+							}
+						default:
+							//slides
+							q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
+							recCount,_ := q.Count(c)
+							slide := make([]TDSSLIDE, 0, recCount)
+							if _, err := q.GetAll(c, &slide); err != nil {
+								 panic(err)
+							}
+							for _, p := range slide{
+								if kword != "" {
+									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+									if i != -1 || j != -1 {
+										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+									}
+
+								} else {
+									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+								}
+							}
+							//articles
+							q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
+							recCount,_ = q1.Count(c)
+							article := make([]TDSARTL, 0, recCount)
+							if _, err := q1.GetAll(c, &article); err != nil {
+								 panic(err)
+							}
+							for _, p := range article{
+								if kword != "" {
+									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+									if i != -1 || j != -1 {
+										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+									}
+
+								} else {
+									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+								}
+							}
+							//media
+							q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+							recCount,_ = q2.Count(c)
+							media := make([]TDSMEDIA, 0, recCount)
+							if _, err := q2.GetAll(c, &media); err != nil {
+								 panic(err)
+							}
+							for _, p := range media{
+								if kword != "" {
+									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+									if i != -1 || j != -1 {
+										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+									}
+
+								} else {
+									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+								}
+							}
+
+						}
+						if err := mediaSimpleGalFooter.Execute(w, ""); err != nil {
+							panic(err)
+						}
+						return
+					}
+					/*
 					recCount := 0
-					
 					if CATEGORY == "" {
+						c.Infof("No category")
 						if err := mediaSimpleGalHeaderA.Execute(w, YEAR); err != nil {
 							panic(err)
 						}
@@ -42553,10 +42897,10 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if err := mediaSimpleGalHeaderB.Execute(w, CATEGORY); err != nil {
 							panic(err)
 						}
-						
 						if YEAR != "" {
+							c.Infof("Year populated")
 							//display media
-							q := datastore.NewQuery("TDSMEDIA").Filter("DATA_TYPE =", "image")
+							q := datastore.NewQuery("TDSMEDIA").Filter("DATA_TYPE =", "image").Limit(500)
 							//c.Errorf("[S0371]")
 							recCounts,_ := q.Count(c)
 							media := make([]TDSMEDIA, 0, recCounts)
@@ -42565,7 +42909,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 							}
 							var buffer3 bytes.Buffer
 							//FL_MAIN_OK := false
-							
 							for _, p := range media{
 								if (GROUP_ID == "GRP_ADMIN" || uid == p.AUTHOR) && p.YEAR == YEAR {
 									recCount++
@@ -42595,70 +42938,16 @@ func media(w http.ResponseWriter, r *http.Request) {
 							}
 							iconsHTML := buffer3.String()
 							w.Write([]byte(iconsHTML))
-							
 							cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, YEAR)
 							putBytesToMemcacheWithExp(w,r,cKey,buffer3.Bytes(),GEN_CONTENT_EXPIRES)
-							
 						}
-
-						if FILTER != "" {
-							//display media
-							q := datastore.NewQuery("TDSMEDIA").Filter("DATA_TYPE =", "image")
-							//c.Errorf("[S0371]")
-							recCounts,_ := q.Count(c)
-							media := make([]TDSMEDIA, 0, recCounts)
-							if _, err := q.GetAll(c, &media); err != nil {
-								panic(err)
-							}
-							var buffer3 bytes.Buffer
-							//FL_MAIN_OK := false
-							
-							for _, p := range media{
-								if (GROUP_ID == "GRP_ADMIN" || uid == p.AUTHOR) {
-									
-									i := strings.Index(strings.ToLower(p.TITLE), strings.ToLower(FILTER))
-									j := strings.Index(strings.ToLower(p.DESC), strings.ToLower(FILTER))
-									if i != -1 || j != -1 {
-										recCount++
-										imgAlt := "img01"
-										buffer3.WriteString(fmt.Sprintf("<li>"))
-										if p.PROP != "big_wp" {
-											buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
-										} else {
-											buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
-										}
-										buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1300\" data-min-width=\"1300\"></div>", p.IMG_URL))
-										buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1000\" data-min-width=\"1000\"></div>", p.IMG_URL))
-										buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s700\" data-min-width=\"700\"></div>", p.IMG_URL))
-										buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s300\" data-min-width=\"300\"></div>", p.IMG_URL))
-										buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s200\" data-min-width=\"200\"></div>", p.IMG_URL))
-										buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s140\" data-min-width=\"140\"></div>", p.IMG_URL))
-										buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v\"></div>", p.IMG_URL))
-										buffer3.WriteString(fmt.Sprintf("		<noscript>"))
-										buffer3.WriteString(fmt.Sprintf("			<img src=\"%v\" title=\"%v\"/>", p.IMG_URL, imgAlt))
-										buffer3.WriteString(fmt.Sprintf("		</noscript>"))
-										buffer3.WriteString(fmt.Sprintf("	</div>"))
-										buffer3.WriteString(fmt.Sprintf("</li>"))
-									}
-								}
-							}
-							if recCount == 0 {
-								buffer3.WriteString(fmt.Sprintf("No items found!"))
-							}
-							iconsHTML := buffer3.String()
-							w.Write([]byte(iconsHTML))
-							
-							cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, FILTER)
-							putBytesToMemcacheWithExp(w,r,cKey,buffer3.Bytes(),GEN_CONTENT_EXPIRES)
-						}
-						
 						if err := mediaSimpleGalFooter.Execute(w, fmt.Sprintf("%v(%v items)", cKey, recCount)); err != nil {
 							panic(err)
 						}
 						return
 					}
-					
-				case "ADD_REM_RAN_WP": 	
+					*/
+				case "ADD_REM_RAN_WP":
 					MEDIA_ID := r.FormValue("MEDIA_ID")
 					PROP := r.FormValue("PROP")
 					mediaID := str2int(MEDIA_ID)
@@ -42773,7 +43062,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							if p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" {						
 								if p.BLOB_KEY == BLOB_KEY {
 									//delete imageServing
-									err := image.DeleteServingURL(c, appengine.BlobKey(p.BLOB_KEY))
+									err := imageApi.DeleteServingURL(c, appengine.BlobKey(p.BLOB_KEY))
 									if err != nil {
  
 									}
@@ -46239,10 +46528,7 @@ const iconsSettingsTemplateHeaderHTML2 = `
 </tfoot>
 <tbody>
 `
- 
- 
 var mediaSimpleGalHeaderA = template.Must(template.New("mediaSimpleGalHeaderA").Parse(mediaSimpleGal1A))
- 
 const mediaSimpleGal1A = `
 <!DOCTYPE html>
 <html lang="en">
@@ -46262,33 +46548,21 @@ const mediaSimpleGal1A = `
     </head>
     <body>
         <div class="container">
-			
 			<div class="main">
 				<header class="clearfix">
-				
-					<h1>ULAPPH Photo Gallery {{.}}<span>
- 
- 
+					<h1>ULAPPH Photo Gallery - {{.}} [<a href="#" onclick="reloadPG()">Reload</a>]<span>
 `
- 
 var mediaSimpleGalHeaderB = template.Must(template.New("mediaSimpleGalHeaderB").Parse(mediaSimpleGal1B))
- 
 const mediaSimpleGal1B = `
 				</header>
-				
 				<div class="gamma-container gamma-loading" id="gamma-container">
- 
 					<ul class="gamma-gallery">
 `
- 
 var mediaSimpleGalFooter = template.Must(template.New("mediaSimpleGalFooter").Parse(mediaSimpleGal3))
- 
 const mediaSimpleGal3 = `
 					</ul>
- 
 					<div class="gamma-overlay"></div>
 				</div>
- 
 			</div><!--/main-->
 		</div>
 		<script src="/js/jquery.min.js"></script>
@@ -46298,13 +46572,16 @@ const mediaSimpleGal3 = `
 		<script src="/js/jquerypp.custom.js"></script>
 		<script src="/js/gamma.js"></script>
 		<script src="/js/gamma-settings.js"></script>
+		<script>
+		function reloadPG() {
+			window.location.reload(false);
+		}
+		</script>
 		<div>{{.}}</a>
 	</body>
 </html>
 `
- 
 var iconsSettingsTemplateSavedToolbars = template.Must(template.New("iconsSettingsTemplateSavedToolbars").Parse(iconsSettingsTemplateSavedToolbarsMenu))
- 
 const iconsSettingsTemplateSavedToolbarsMenu = `
 <hr>
 <h3>You may also reload previous desktop0 icons:</a></h3>
@@ -48255,12 +48532,6 @@ const rootTemplateMediaYearChoice = `
 					return				
 				};
 			</script>
-			<br>
-			Or Filter By Keyword:
-			<form action="/media?FUNC_CODE=VIEW_THUMBS" method="POST" enctype="multipart/form-data">
-			<input type="search" name="FILTER" value="" placeholder="Enter keyword..." />
-			<input type="submit" name="submit" value="Search"/>
-			</form>
 `
  
 var rootTemplateMediaCategoryC = template.Must(template.New("rootTemplateMediaCategoryC").Parse(rootTemplateMediaCategoryChoiceC))
@@ -54052,29 +54323,147 @@ func queueWgetUrl(w http.ResponseWriter, r *http.Request) {
 }
 //D0066
 //process taskqueue to stream mirror to UWM 
-func queueStreamMirrorToUwm(w http.ResponseWriter, r *http.Request) {
-	//c := appengine.NewContext(r)
-	//c.Infof("queueStreamMirrorToUwm")
-	MSU_FUNC := r.FormValue("MSU_FUNC")
+//func queueStreamMirrorToUwm(w http.ResponseWriter, r *http.Request) {
+func struwmStreamMirrorToUwm(w http.ResponseWriter, r *http.Request, uid, STRUWM, CATEGORY, SRC, CAPTION string) {
+	c := appengine.NewContext(r)
+	c.Infof("struwmStreamMirrorToUwm: %v", CATEGORY)
+	/*MSU_FUNC := r.FormValue("MSU_FUNC")
 	uid := r.FormValue("UID")
 	STRUWM := r.FormValue("STRUWM")
+	//D0071
+	CATEGORY := r.FormValue("CATEGORY")
 	//TYP := r.FormValue("TYP")
 	SRC := r.FormValue("SRC")
-	CAPTION := r.FormValue("TITLE")
-	switch MSU_FUNC {
-		case "STRUWM-IMAGE":
-			UID := ""
-			if _, err := strconv.Atoi(STRUWM); err != nil {
-				UID = uid
-			} else {
-				UID = fmt.Sprintf("%v---%v", uid, STRUWM)
-			}
-			data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_MIRROR@888@%v@888@%v", SRC, CAPTION)
-			//c.Infof("%v", data)
-			sendChannelMessage(w,r,UID,data)
-			dummyCmd(w,r,uid)
-
+	CAPTION := r.FormValue("TITLE")*/
+	UID := ""
+	if _, err := strconv.Atoi(STRUWM); err != nil {
+		UID = uid
+	} else {
+		UID = fmt.Sprintf("%v---%v", uid, STRUWM)
 	}
+	data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_MIRROR@888@%v@888@%v", SRC, CAPTION)
+	//c.Infof("%v", data)
+	sendChannelMessage(w,r,UID,data)
+	//also send to main uwm
+	sendChannelMessage(w,r,uid,data)
+	dummyCmd(w,r,uid)
+	//D0071
+	//save this image to memcache
+	//STRUWM-desktop123-previous = <url>
+	cKey := fmt.Sprintf("STRUWM-%v-previous-image", CATEGORY)
+	//c.Infof("cKey: %v", cKey)
+	putStrToMemcacheWithExp(w,r,cKey,SRC,GEN_CONTENT_EXPIRES)
+}
+//D0071
+//func queueStruwmPreviousCompare(w http.ResponseWriter, r *http.Request) {
+func struwmPreviousImageCompare(w http.ResponseWriter, r *http.Request, uid, STRUWM, CATEGORY, SRC, TITLE string) (bool) {
+	c := appengine.NewContext(r)
+	//get previous image
+	cKey := fmt.Sprintf("STRUWM-%v-previous-image", CATEGORY)
+	prevURL := getStrMemcacheValueByKey(w,r,cKey)
+	//c.Infof("prevURL: %v", prevURL)
+	//c.Infof("currURL: %v", SRC)
+	if prevURL == "" {
+		cKey := fmt.Sprintf("STRUWM-%v-previous-image", CATEGORY)
+		putStrToMemcacheWithExp(w,r,cKey,SRC,GEN_CONTENT_EXPIRES)
+		return false
+	}
+	//compare prevURL with SRC
+	imgA := openImageURL(w,r,prevURL)
+	imgB := openImageURL(w,r,SRC)
+
+
+	//c.Infof("imgA: %v", imgA)
+	//c.Infof("imgB: %v", imgB)
+	distance, err := perceptive.CompareImages(imgA, imgB, perceptive.Difference)
+	if err != nil {
+		panic(err)
+	}
+	//detect any intruder
+	FL_INTRUDER := false
+
+	if distance == 0 {
+		// images are likely the same
+		//c.Infof("distance[%v]: images are likely the same", distance)
+	} else if distance >= 1 && distance <= 10 {
+		// images are potentially a variation
+		//c.Infof("distance[%v]: images are potentially a variation", distance)
+		if distance > 1 {
+			FL_INTRUDER = true
+		}
+	} else {
+		// images are likely different
+		//c.Infof("distance[%v]: images are likely different", distance)
+		FL_INTRUDER = true
+	}
+
+	if FL_INTRUDER == true {
+		UID := ""
+		if _, err := strconv.Atoi(STRUWM); err != nil {
+			UID = uid
+		} else {
+			UID = fmt.Sprintf("%v---%v", uid, STRUWM)
+		}
+		CAPTION := fmt.Sprintf("Warning, intruder alert in the %v!", TITLE)
+		//onclick=\"openWindow('%vchat?CHAT_FUNC=newChatRoom&INVITE=%v','Presence'); return false\"
+		MESSAGE := fmt.Sprintf("<a href=\"#\" onclick=\"openWindow('%v','Previous'); return false\"><img src=\"%v\" width=\"100\" height=\"100\"></a><br>P[%v]", prevURL, prevURL,distance)
+		data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_ALARM@888@%v@888@%v", CAPTION, MESSAGE)
+		sendChannelMessage(w,r,UID,data)
+		//also send in the main desktop
+		sendChannelMessage(w,r,uid,data)
+
+		MESSAGE2 := fmt.Sprintf("<a href=\"#\" onclick=\"openWindow('%v','Current'); return false\"><img src=\"%v\" width=\"100\" height=\"100\"></a><br>C[%v]", SRC, SRC,distance)
+		data = fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_ALARM@888@%v@888@%v", CAPTION, MESSAGE2)
+		sendChannelMessage(w,r,UID,data)
+		//also send in the main desktop
+		sendChannelMessage(w,r,uid,data)
+		dummyCmd(w,r,uid)
+		//also send an email
+		subj := fmt.Sprintf("[CCTV][%v][%v][distance diff of %v]", CATEGORY, TITLE, distance)
+		msgDtl3 := fmt.Sprintf("[%v]>>> %v <br>%v<br>%v",CAPTION, subj, MESSAGE, MESSAGE2)
+		//to := FDBKMAIL
+		//from := ADMMAIL
+		//go SENDGENEMAIL(c, subj, to, from, msg)
+		//c.Infof("Sent GB msg!")
+		//dummy; hardcoded
+		FL_INTRUDER_NOTIFY := false
+		if FL_INTRUDER_NOTIFY == true {
+			laterNotifyGB.Call(c, "autoNotifyPeopleGB", uid, msgDtl3, ADMMAIL)
+		}
+	}
+	return FL_INTRUDER
+}
+
+//D0071
+//get image url and output imageApi.Image
+func openImageURL(w http.ResponseWriter, r *http.Request, imgURL string) image.Image {
+	c := appengine.NewContext(r)
+	//c.Infof("openImageURL...")
+	client := urlfetch.Client(c)
+	if err := r.ParseForm(); err != nil {
+		//panic(err)
+	}
+	resp, err := client.Get(imgURL)
+	if err != nil {
+		//panic(err)
+	}
+
+	defer resp.Body.Close()
+
+	img, _, err := image.Decode(resp.Body)
+	if err != nil {
+		//panic(err)
+	}
+
+	/*bodyBytes, _ := ioutil.ReadAll(resp.Body)
+	//scanner := bufio.NewScanner(bytes.NewReader(bodyBytes))
+	reader := bytes.NewReader(bodyBytes)
+	//img, _, err := imaging.Decode(scanner)
+	img, err := imaging.Decode(reader)
+	if err != nil {
+		panic(err)
+	}*/
+	return img
 }
 
 //process taskqueue to embed source to SIDs
@@ -54369,6 +54758,26 @@ func appendToSid(w http.ResponseWriter, r *http.Request, UID, FUNC, SID, TEXT st
 						NUM_VAL: 0,
 						TXT_VAL: wallp,
 						CFG_DESC: "Default Wallpaper",
+				}
+				if _, err := datastore.Put(c, key, &g); err != nil {
+						panic(err)
+				}
+			}
+			//set shown only uwm wallpapers
+			wpuwmonly := r.FormValue("WPUWMONLY")
+			UWM := r.FormValue("UWM")
+			if wpuwmonly == "true" || wpuwmonly == "false" {
+				//thisKey := fmt.Sprintf("SYSTEM_UWM_WALLP_WPUWMONLY_%v_%v", SID, UID)
+				thisKey := fmt.Sprintf("SYSTEM_UWM_WALLP_WPUWMONLY_%v_%v", UWM, UID)
+				key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+				g := TDSCNFG{
+						SYS_VER: 1,
+						USER: UID,
+						CFG_ID: thisKey,
+						DAT_TYP: "TXT",
+						NUM_VAL: 0,
+						TXT_VAL: wpuwmonly,
+						CFG_DESC: "Shown UWM Random Wallpaper",
 				}
 				if _, err := datastore.Put(c, key, &g); err != nil {
 						panic(err)
@@ -62986,7 +63395,7 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 	</style>
 	<link rel="stylesheet" media="screen,projection,tv" href="/css/mobitouch.css" />
 </head>
-<body>
+<body onload="loadSettings()">
 	<div id="page">
 	<div id="my_camera"></div>
 	</div>
@@ -63021,6 +63430,9 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		<a href="#" onClick="take_snapshot1m1h();" class="button button-pill button-raised button-highlight">4-Take Snapshot every 1m for 1h</a>
 		</span>
 		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot15s12h();" class="button button-pill button-raised button-highlight">5.0-Take Snapshot every 15s for 12h</a>
+		</span>
+		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot1m12h();" class="button button-pill button-raised button-highlight">5.1-Take Snapshot every 1m for 12h</a>
 		</span>
 		<span class="button-wrap">
@@ -63041,13 +63453,13 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		<a href="/tools?FUNC=MIRROR">Big Mirror</a>
 	</form>
  
-	<script type="text/javascript" src="/js/html-mirror.js"></script>
-	
 	<div id="target">
-		Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
-		<br>Add caption or title<input type="text" name="title" id="title" value="" maxlength=500>
+		Caption or title: <input type="text" name="title" id="title" value="" maxlength=500>
+		<br>Description: <input type="text" name="desc" id="desc" value="" maxlength=500>
 		<br>Stream as wallpapers in UWM:<input type="text" name="uwm" id="uwm" value="" maxlength=50>
+		<br>Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
 	</div>
+	<script type="text/javascript" src="/js/html-mirror.js"></script>
 	<div id="results">Your captured image will appear here...</div>
 	<div id="imgdata"></div>
 	<script src="/js/mobitouch2.js"></script>
@@ -63077,7 +63489,7 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 	</style>
 	<link rel="stylesheet" media="screen,projection,tv" href="/css/mobitouch.css" />
 </head>
-<body>
+<body onload="loadSettings()">
 	<div id="page">
 	<div id="my_camera"></div>
 	</div>
@@ -63112,6 +63524,9 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		<a href="#" onClick="take_snapshot1m1h();" class="button button-pill button-raised button-highlight">4-Take Snapshot every 1m for 1h</a>
 		</span>
 		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot15s12h();" class="button button-pill button-raised button-highlight">5.0-Take Snapshot every 15s for 12h</a>
+		</span>
+		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot1m12h();" class="button button-pill button-raised button-highlight">5.1-Take Snapshot every 1m for 12h</a>
 		</span>
 		<span class="button-wrap">
@@ -63132,14 +63547,15 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		<a href="/tools?FUNC=MIRROR">Big Mirror</a>
 	</form>
 	
-	<!--script type="text/javascript" src="/js/html-mirror2.js"></script-->
-	<script type="text/javascript" src="/js/html-mirror.js"></script>
 	
 	<div id="target">
-		Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
-		<br>Add caption or title<input type="text" name="title" id="title" value="" maxlength=500>
+		Add caption or title<input type="text" name="title" id="title" value="" maxlength=500>
+		<br>Description: <input type="text" name="desc" id="desc" value="" maxlength=500>
 		<br>Stream as wallpapers in UWM:<input type="text" name="uwm" id="uwm" value="" maxlength=50>
+		<br>Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
 	</div>
+	<!--script type="text/javascript" src="/js/html-mirror2.js"></script-->
+	<script type="text/javascript" src="/js/html-mirror.js"></script>
 	<div id="results">Your captured image will appear here...</div>
 	<div id="imgdata"></div>
 	<input type="hidden" value="true" id="proc_flag">
@@ -64201,9 +64617,9 @@ var desktopBody2Template = template.Must(template.New("desktopBody2Template").Pa
 		</li>
 		
 		<li class="here" id="stm-zones">
-			<input type="hidden" value="'/time/zone.html', 500, 300, 'left', 'top', {title: 'World Timezones', icon: '/img/jswm-web.png'}" size="60" id="world-tz" />
+			<input type="hidden" value="'/editor?EDIT_FUNC=TIMELINE&SID=GEN', 500, 300, 'left', 'top', {title: 'Timelinejs', icon: '/img/jswm-web.png'}" size="60" id="world-tz" />
 			<a href="#page" onclick="eval('windowManager.openURI(' + $('world-tz').value + ');');">
-				<img src="/img/timezone.png" width="20" height="20" title="World Timezones">
+				<img src="/img/timelinejs.png" width="20" height="20" title="Timelinejs">
 				</img>
 			</a>		
 		</li>
@@ -64554,9 +64970,9 @@ var desktopBody2TemplateNoSticky = template.Must(template.New("desktopBody2Templ
 		{{end}}
 		
 		<li class="here" id="stm-zones">
-			<input type="hidden" value="'/time/zone.html', 500, 300, 'left', 'top', {title: 'World Timezones', icon: '/img/jswm-web.png'}" size="60" id="world-tz" />
+			<input type="hidden" value="'/editor?EDIT_FUNC=TIMELINE&SID=GEN', 500, 300, 'left', 'top', {title: 'Timelinejs', icon: '/img/jswm-web.png'}" size="60" id="world-tz" />
 			<a href="#page" onclick="eval('windowManager.openURI(' + $('world-tz').value + ');');">
-				<img src="/img/timezone.png" width="20" height="20" title="World Timezones">
+				<img src="/img/timelinejs.png" width="20" height="20" title="Timelinejs">
 				</img>
 			</a>		
 		</li>
@@ -64861,9 +65277,8 @@ var desktopBody3TemplateRootAd3Mobile = template.Must(template.New("desktopBody3
 </div>
 `))
  
- 
-//firebase
 
+//firebase
 var desktopBodyPTemplate = template.Must(template.New("desktopBodyPTemplate").Parse(`
         <li id="Desktop">
 		 <input type="hidden" id="desktop" value="{{.STR_FILLER1}}">
@@ -64874,6 +65289,7 @@ var desktopBodyPTemplate = template.Must(template.New("desktopBodyPTemplate").Pa
 		 <input type="hidden" id="mode" value="{{.STR_FILLER5}}">
 		 <input type="hidden" id="ringtone" value="{{.STR_FILLER6}}">
 		 <input type="hidden" id="dispAds" value="{{.STR_FILLER8}}">
+		 <input type="hidden" id="uwmwponly" value="{{.BOOL_FILLER2}}">
 		 <!---//firebase-->
 		 <input type="hidden" id="jwt" value="{{.STR_FILLER10}}">
 		 <input type="hidden" id="aep" value="{{.STR_FILLER11}}">
@@ -64886,7 +65302,7 @@ var desktopBodyPTemplate = template.Must(template.New("desktopBodyPTemplate").Pa
 			</a>
         </li>
 `))
- 
+
 var desktopBodyPTemplatejswm = template.Must(template.New("desktopBodyPTemplatejswm").Parse(`
         <li id="Desktop">
 		 <input type="hidden" id="desktop" value="{{.STR_FILLER1}}">
@@ -64900,6 +65316,7 @@ var desktopBodyPTemplatejswm = template.Must(template.New("desktopBodyPTemplatej
 		 <input type="hidden" id="scheme" value="{{.STR_FILLER9}}">
 		 <input type="hidden" id="ushare" value="{{.STR_FILLER10}}">
 		 <input type="hidden" id="isMobile" value="{{.BOOL_FILLER1}}">
+		 <input type="hidden" id="uwmwponly" value="{{.BOOL_FILLER2}}">
 		 <input type="hidden" id="uwms" value="{{.STR_FILLER11}}">
 		 <input type="hidden" id="TITLE" value="{{.STR_FILLER12}}">
 		 <!--//firebase !!!!!!!!!!!!!!!!!!!!!!!-->
@@ -66851,6 +67268,9 @@ func checkQuotaSystem(w http.ResponseWriter, r *http.Request) (FL_PROC_OK bool) 
 //checks slides quota 
 func checkQuotaSlides(w http.ResponseWriter, r *http.Request, uid string) {
 	//c := appengine.NewContext(r)
+	if FL_CHECK_SAM_QUOTA == false {
+		return
+	}
 		
 	NUM_QUOTA := 0
 	//get acct type
@@ -66897,7 +67317,9 @@ func checkQuotaSlides(w http.ResponseWriter, r *http.Request, uid string) {
 //check articles quota 
 func checkQuotaArticles(w http.ResponseWriter, r *http.Request, uid string) {
 	//c := appengine.NewContext(r)
-		
+	if FL_CHECK_SAM_QUOTA == false {
+		return
+	}		
 	NUM_QUOTA := 0
 	//get acct type
 	FUNC_CODE := "GET_ACC_TYP"
@@ -66940,8 +67362,10 @@ func checkQuotaArticles(w http.ResponseWriter, r *http.Request, uid string) {
 
 //checks media quota 
 func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
-	//c := appengine.NewContext(r)
-		
+	c := appengine.NewContext(r)
+	if FL_CHECK_SAM_QUOTA == false {
+		return
+	}		
 	NUM_QUOTA := 0
 	//get acct type
 	FUNC_CODE := "GET_ACC_TYP"
@@ -66964,9 +67388,12 @@ func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
 		
 		//get current count
 		CURR_COUNT := countData(w, r, "MEDIA", uid)
+		c.Infof("NUM_QUOTA: %v", NUM_QUOTA)
+		c.Infof("CURR_COUNT: %v", CURR_COUNT)
 		
 		//validate
 		if CURR_COUNT > NUM_QUOTA {
+			c.Infof("CURR_COUNT > NUM_QUOTA")
 			//prevent operation
 			msgDtl := fmt.Sprintf("[U00116] ERROR: Quota for media has been reached. Please upgrade your account. USER_ACC_TYP: %v, NUM_QUOTA: %v, CURR_COUNT: %v", USER_ACC_TYP, NUM_QUOTA, CURR_COUNT)
 			//send message
@@ -66987,6 +67414,8 @@ func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
 func countData(w http.ResponseWriter, r *http.Request, TARGET, UID string) (CURR_COUNT int) {
  
 	c := appengine.NewContext(r)
+	c.Infof("countData...")
+	c.Infof("UID: %v", UID)
  
 	switch TARGET {
 		case "SLIDES":
@@ -67008,6 +67437,7 @@ func countData(w http.ResponseWriter, r *http.Request, TARGET, UID string) (CURR
 			//OPTIMIZE THIS
 			CURR_COUNT = 999999
 	}
+	c.Infof("CURR_COUNT: %v", CURR_COUNT)
 	return CURR_COUNT
 }
 
@@ -67598,7 +68028,7 @@ func handleServe(w http.ResponseWriter, r *http.Request) {
 		//uidO := uid
  
 		blobkey := r.FormValue("blobKey")
-		sURL, err := image.ServingURL(c, appengine.BlobKey(blobkey), nil)
+		sURL, err := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 		sURLs := fmt.Sprintf("%v", sURL)
 		updateUserActiveData(w, r, c, uid, sURLs)
         thisURL := sURL.String()
@@ -67860,8 +68290,8 @@ func handleServePeople(w http.ResponseWriter, r *http.Request) {
 		_, uid := checkSession(w,r)
  
 		blobkey := r.FormValue("blobKey3")
-		opts := image.ServingURLOptions{Secure: true}
-		sURL, err := image.ServingURL(c, appengine.BlobKey(blobkey), &opts)
+		opts := imageApi.ServingURLOptions{Secure: true}
+		sURL, err := imageApi.ServingURL(c, appengine.BlobKey(blobkey), &opts)
 		sURLs := fmt.Sprintf("%v", sURL)
 		updateUserActiveData(w, r, c, uid, sURLs)
         thisURL := sURL.String()
@@ -68041,7 +68471,7 @@ func handleServeAds(w http.ResponseWriter, r *http.Request) {
 	
 	
 	blobkey := r.FormValue("blobKey2")
-	sURL, err := image.ServingURL(c, appengine.BlobKey(blobkey), nil)
+	sURL, err := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 	sURLs := fmt.Sprintf("%v",sURL)
 	updateUserActiveData(w, r, c, uid, sURLs)
 	thisURL := sURL.String()
@@ -68580,14 +69010,44 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		OPT_R := r.FormValue("OPT")
 		OPT_R2 := strings.Replace(OPT_R, "[", "", -1)
 		OPT := strings.Replace(OPT_R2, "]", "", -1)		
- 
+		DESC_R := r.FormValue("DESC")
+		DESC_R2 := strings.Replace(DESC_R, "[", "", -1)
+		DESC := strings.Replace(DESC_R2, "]", "", -1)
+		CATEGORY_R := r.FormValue("CATEGORY")
+		CATEGORY_R2 := strings.Replace(CATEGORY_R, "[", "", -1)
+		CATEGORY := strings.Replace(CATEGORY_R2, "]", "", -1)
+		FL_SHARED_R := r.FormValue("FL_SHARED")
+		FL_SHARED_R2 := strings.Replace(FL_SHARED_R, "[", "", -1)
+		FL_SHARED := strings.Replace(FL_SHARED_R2, "]", "", -1)
+		DOC_STAT_R := r.FormValue("DOC_STAT")
+		DOC_STAT_R2 := strings.Replace(DOC_STAT_R, "[", "", -1)
+		DOC_STAT := strings.Replace(DOC_STAT_R2, "]", "", -1)
+
+		FL_IMAGE_CHANGED := false
+		if strings.TrimSpace(STRUWM) != "" && DATA_TYPE == "image" {
+			//c.Infof("Struwm checking...")
+			sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
+			thisURL := sURL.String()
+			thisURL = getSchemeNewUrl(w,r,thisURL)
+			FL_IMAGE_CHANGED = struwmPreviousImageCompare(w, r, uid, STRUWM, CATEGORY, thisURL, TITLE)
+			if FL_IMAGE_CHANGED ==  false {
+				//delete imageServing
+				err := imageApi.DeleteServingURL(c, appengine.BlobKey(blobkey))
+				if err != nil {
+				}
+				blobstore.Delete(c, appengine.BlobKey(blobkey))	
+				c.Infof("Image did not change. Deleted image. %v-%v", CATEGORY, TITLE)
+				return
+			}
+		}
+
 		
 		thisURL := ""
 		switch {
 			case DATA_TYPE == "auto":
 				
 				if strings.Index(MIME_TYPE, "image/") != -1 {
-					sURL, _ := image.ServingURL(c, appengine.BlobKey(blobkey), nil)
+					sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 					thisURL = sURL.String()
 					thisURL = getSchemeNewUrl(w,r,thisURL)
 					//DATA_TYPE = MIME_TYPE
@@ -68660,7 +69120,7 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
  
 						switch {
 							case strings.Index(MIME_TYPE, "image/") != -1:
-								sURL, _ := image.ServingURL(c, appengine.BlobKey(blobkey), nil)
+								sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 								thisURL = sURL.String()
 								thisURL = getSchemeNewUrl(w,r,thisURL)
 								//DATA_TYPE = MIME_TYPE
@@ -68707,7 +69167,7 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 				}
 				
 			case DATA_TYPE == "image":
-				sURL, _ := image.ServingURL(c, appengine.BlobKey(blobkey), nil)
+				sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 				thisURL = sURL.String()
 				thisURL = getSchemeNewUrl(w,r,thisURL)
 			case DATA_TYPE == "text":
@@ -68725,18 +69185,6 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 				DATA_TYPE = "unknown"
 		}
 
-		DESC_R := r.FormValue("DESC")
-	    DESC_R2 := strings.Replace(DESC_R, "[", "", -1)
-		DESC := strings.Replace(DESC_R2, "]", "", -1)
-        CATEGORY_R := r.FormValue("CATEGORY")
-		CATEGORY_R2 := strings.Replace(CATEGORY_R, "[", "", -1)
-		CATEGORY := strings.Replace(CATEGORY_R2, "]", "", -1)
-        FL_SHARED_R := r.FormValue("FL_SHARED")
-		FL_SHARED_R2 := strings.Replace(FL_SHARED_R, "[", "", -1)
-		FL_SHARED := strings.Replace(FL_SHARED_R2, "]", "", -1)
-		DOC_STAT_R := r.FormValue("DOC_STAT")
-		DOC_STAT_R2 := strings.Replace(DOC_STAT_R, "[", "", -1)
-		DOC_STAT := strings.Replace(DOC_STAT_R2, "]", "", -1)
 		
 		if TITLE == "" {
 			TITLE = "No title"
@@ -68927,8 +69375,14 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		}
 		//D0066
 		//if stream mirror images to uwm?
-		if strings.TrimSpace(STRUWM) != "" && DATA_TYPE == "image" {
-			laterMirrorStreamUwm.Call(c, "STRUWM-IMAGE", uid, STRUWM, DATA_TYPE, thisURL, TITLE)
+		if strings.TrimSpace(STRUWM) != "" && DATA_TYPE == "image" && FL_IMAGE_CHANGED == true {
+			//laterMirrorStreamUwm.Call(c, "STRUWM-IMAGE", uid, STRUWM, DATA_TYPE, thisURL, TITLE, CATEGORY)
+			struwmStreamMirrorToUwm(w, r, uid, STRUWM, CATEGORY, thisURL, TITLE)
+			//D0071
+			//check this image against the previous image (cctv feature usage)
+			//MEDIA_ID := fmt.Sprintf("%v", thisID)
+			//laterMirrorStreamPreviousCompare.Call(c, "STRUWM-COMPARE", uid, STRUWM, thisURL, TITLE, CATEGORY, blobkey, MEDIA_ID)
+			
 		}
 		//abort if target is encrypted
 		if isEncrypted(w,r,EMBED) == true {
@@ -70762,7 +71216,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			thisURL := ""
 			switch {
 				case DATA_TYPE == "image":
-					sURL, _ := image.ServingURL(c, appengine.BlobKey(blobkey), nil)
+					sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 					thisURL = sURL.String()
 					thisURL = getSchemeNewUrl(w,r,thisURL)
 				case DATA_TYPE == "text":
@@ -70909,7 +71363,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			
 			switch {
 				case DATA_TYPE == "image":
-					sURL, _ := image.ServingURL(c, appengine.BlobKey(blobkey), nil)
+					sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 					thisURL = sURL.String()
 					thisURL = getSchemeNewUrl(w,r,thisURL)
 				case DATA_TYPE == "text":
@@ -71705,10 +72159,9 @@ func renderButtonLink(w http.ResponseWriter, r *http.Request, name, turl, title 
 	}
 	
 }
-
 //D0070
 //this template handles how we generate timelines 
-func renderTimelineJSPage(w http.ResponseWriter, r *http.Request, name string, cats []byte) {
+func renderTimelineForm(w http.ResponseWriter, r *http.Request, name string, cats []byte) {
 	//c := appengine.NewContext(r)
 	t := presentTemplates[path.Ext(name)]
 	if t == nil {
@@ -71717,6 +72170,8 @@ func renderTimelineJSPage(w http.ResponseWriter, r *http.Request, name string, c
 
 	doc := new(TEMPSTRUCT)
 	doc.HTM_FILLER1 = template.HTML(string(cats))
+	tc := time.Now()
+	doc.STR_FILLER1 = fmt.Sprintf("%v", tc.Format("Mon Jan _2 15:04:05 2006")) 
 	data := struct {
 		*TEMPSTRUCT
 		Template    *template.Template
@@ -78409,7 +78864,6 @@ func downloadArticle(w http.ResponseWriter, r *http.Request, sid string) string 
 				ct := resp.Header.Get("Content-Type")
 				
 				enc := encode(bodyBytes)
- 
 				img64 := format(enc, ct)
 				repImg := strings.Replace(s.Text(), SPL[0], img64, -1)
 				bufc.WriteString(fmt.Sprintf("%v\n", repImg))

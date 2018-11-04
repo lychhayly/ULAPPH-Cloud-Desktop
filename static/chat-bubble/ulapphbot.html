@@ -1,4 +1,3 @@
-dev
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -294,7 +293,11 @@ var convo = {
 	    },
 		{
 	      question: "CCTV",
-	      answer: "toolsCCTV"
+	      answer: "funcToolsCCTV"
+	    },
+		{
+	      question: "Camera",
+	      answer: "funcToolsCamera"
 	    }
 		]
   },
@@ -1153,8 +1156,43 @@ function toolsCalendar() {
 function toolsAdmin() {
 	location.href="/admin-setup";
 }
-function toolsCCTV() {
-	location.href="/tools?FUNC=MIRROR";
+
+funcToolsCCTV = function () {
+    var ustr = makeid();
+    var msg = "<a href=\"/tools?FUNC=MIRROR2&v=" + ustr +"\" target=\"smallCCTV\">Small CCTV Camera</a><br><a href=\"/tools?FUNC=MIRROR&v=" + ustr + "\" target=\"bigCCTV\">Big CCTV Camera</a>";
+	  chatWindow.talk(
+	    {
+	      "funcToolsCctvRes": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "funcToolsCctvRes"
+	  )
+}
+
+funcToolsCamera = function () {
+    var ustr = makeid();
+    var msg = "<a href=\"/tools?FUNC=MIRROR2&camfunc=image-capture&v=" + ustr +"\" target=\"smallcamera\">Small Camera</a><br><a href=\"/tools?FUNC=MIRROR&camfunc=image-capture&v=" + ustr + "\" target=\"bigcamera\">Big Camera</a>";
+	  chatWindow.talk(
+	    {
+	      "funcToolsCameraRes": {
+	        says: [msg],
+	        reply: []
+	      }
+	    },
+	    "funcToolsCameraRes"
+	  )
+}
+
+function makeid() {
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for (var i = 0; i < 5; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
 }
 
 function reloadPage() {

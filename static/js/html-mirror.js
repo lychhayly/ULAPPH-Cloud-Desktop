@@ -3,6 +3,25 @@ var shutter = new Audio();
 shutter.autoplay = false;
 shutter.src = navigator.userAgent.match(/Firefox/) ? '/audio/shutter.ogg' : '/audio/shutter.ogg';
 
+function loadSettings() {
+	var sid = localStorage.getItem("mirror-sid");
+	document.getElementById("sid").vaue = sid;
+	var title = localStorage.getItem("mirror-title");
+	document.getElementById("title").vaue = title;
+	var uwm = localStorage.getItem("mirror-uwm");
+	document.getElementById("uwm").vaue = uwm;
+}
+
+function saveSettings() {
+	var sid = document.getElementById("sid").vaue;
+	localStorage.setItem("mirror-sid") = sid;
+	var title = document.getElementById("title").vaue;
+	localStorage.setItem("mirror-title") = title;
+	var uwm = document.getElementById("uwm").vaue;
+	localStorage.setItem("mirror-uwm") = uwm;
+}
+
+
 function take_snapshot() {
 	document.body.style.background = "blue";
 	// play sound effect
@@ -108,6 +127,24 @@ function take_snapshot1m12h() {
 	}
 	tick();
 };
+
+function take_snapshot15s12h() {
+	var seconds = 2880;
+	function tick() {
+		var counter = document.getElementById("counter");
+		seconds--;
+		//counter.innerHTML = '<h1>' + "0:" + (seconds < 10 ? "0" : "") + String(seconds) + '</h1>';
+		//alert("hi edwin!");
+		take_snapshot();
+		if( seconds > 0 ) {
+			setTimeout(tick, 15000);
+		} else {
+			//alert("Done taking pics!");
+			document.body.style.background = "white";
+		}
+	}
+	tick();
+}
 
 function take_snapshot30m24h() {
 	var seconds = 48;
