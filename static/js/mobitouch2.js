@@ -76,6 +76,7 @@ function dataURItoBlob(dataURI) {
 }
 
 function upload_ulapph() {
+	saveSettings();
 	var xmlhttp;
 
 	if (window.XMLHttpRequest)
@@ -106,10 +107,10 @@ function upload_ulapph() {
 			var tgt = document.getElementById("sid").value;
 			if (parseInt(tgt) > 0) {
 				sid = 'TDSSLIDE-' + tgt;
-				document.getElementById("note").innerHTML = "<h1>" + sid + "</h1>";
+				//document.getElementById("note").innerHTML = "<h1>" + sid + "</h1>";
 			} else {
 				sid = '';
-				document.getElementById("note").innerHTML = "<h1>No target slide!</h1>";
+				//document.getElementById("note").innerHTML = "<h1>No target slide!</h1>";
 			}
 			
 			fd.append("EMBED", sid);
@@ -118,26 +119,54 @@ function upload_ulapph() {
 			var ttl = document.getElementById("title").value;
 			if (ttl != "") {
 				caption = ttl;
-				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<h3>" + ttl + "</h3>";
+				//document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<h3>" + ttl + "</h3>";
 			} else {
 				caption = '';
-				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<b>No caption or title!</b>";
+				//document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<b>No caption or title!</b>";
 			}
 
 			var streamUwm = "";
 			var uwm = document.getElementById("uwm").value;
 			if (uwm != "") {
 				streamUwm = uwm;
-				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<h3>Streaming to UWM: " + streamUwm + "</h3>";
+				//document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<h3>Streaming to UWM: " + streamUwm + "</h3>";
 			} else {
-				streamUwm = '';
-				document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<b>No caption or title!</b>";
+				streamUwm = '0';
+				//document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<b>No caption or title!</b>";
+			}
+			if (caption == "") {
+				caption = "ulapphMirrorImage "+"desktop"+streamUwm;
+			}
+			//edwinxxx
+			var urlParams;
+			var match,
+					pl     = /\+/g,  // Regex for replacing addition symbol with a space
+					search = /([^&=]+)=?([^&]*)/g,
+					decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+					query  = window.location.search.substring(1);
+
+			urlParams = {};
+			while (match = search.exec(query))
+			   urlParams[decode(match[1])] = decode(match[2]);
+			if (urlParams["camfunc"] != "image-capture") {
+				fd.append("STRUWM", streamUwm);
 			}
 			fd.append("TITLE", caption);
-			fd.append("STRUWM", streamUwm);
 			fd.append("CATEGORY", "desktop"+streamUwm);
-			
-			fd.append("DESC", "ulapphMirrorImage");
+			var desc = document.getElementById("desc").value;
+			if (desc == "") {
+				//append date
+				var dateObj = new Date();
+				var month = dateObj.getUTCMonth() + 1; //months from 1-12
+				var day = dateObj.getUTCDate();
+				var year = dateObj.getUTCFullYear();
+
+				newdate = year + "" + month + "" + day;
+
+				fd.append("DESC", "ulapphMirrorImage "+newdate);
+			} else {
+				fd.append("DESC", desc);
+			}
 			fd.append("DATA_TYPE", "image");
 			fd.append("MIME_TYPE", "image/jpeg");
 			fd.append("FL_SHARED", "N");
@@ -173,3 +202,25 @@ node.addEventListener("mouseout", cancel);
 node.addEventListener("touchend", cancel);
 node.addEventListener("touchleave", cancel);
 node.addEventListener("touchcancel", cancel);
+
+function loadSettings() {
+        var sid = localStorage["mirror-sid"];
+        document.getElementById("sid").value = sid;
+        var title = localStorage["mirror-title"];
+        document.getElementById("title").value = title;
+        var uwm = localStorage["mirror-uwm"];
+        document.getElementById("uwm").value = uwm;
+        var desc = localStorage["mirror-desc"];
+        document.getElementById("desc").value = desc;
+}
+
+function saveSettings() {
+        var sid = document.getElementById("sid").value;
+        localStorage["mirror-sid"] = sid;
+        var title = document.getElementById("title").value;
+        localStorage["mirror-title"] = title;
+        var uwm = document.getElementById("uwm").value;
+        localStorage["mirror-uwm"] = uwm;
+        var desc = document.getElementById("desc").value;
+        localStorage["mirror-desc"] = desc;
+}

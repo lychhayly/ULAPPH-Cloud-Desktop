@@ -79,7 +79,9 @@ function changWP()
   }
 
   // construct an HTTP request
-  xhrn.open("GET", "/media?FUNC_CODE=GET_RAN_WP", true);
+  var desktop = document.getElementById("desktop").value;
+  var uwmwponly = document.getElementById("uwmwponly").value;
+  xhrn.open("GET", "/media?FUNC_CODE=GET_RAN_WP"+"&uwmwponly="+uwmwponly+"&desktop="+desktop, true);
   xhrn.setRequestHeader('Content-Type', 'text/plain; charset=UTF-8');
   //console.log("/media?FUNC_CODE=GET_RAN_WP");
   xhrn.send();
@@ -148,7 +150,9 @@ function nextWp() {
 
   // construct an HTTP request
   //xhsm.open("GET", "/media?FUNC_CODE=GET_RAN_WP&SEQ=" + ranVal, true);
-  xhsm.open("GET", "/media?FUNC_CODE=GET_RAN_WP&SEQ=" + ranVal + "&mode=" + urlParams["mode"], true);
+  var desktop = document.getElementById("desktop").value;
+  var uwmwponly = document.getElementById("uwmwponly").value;
+  xhsm.open("GET", "/media?FUNC_CODE=GET_RAN_WP&SEQ=" + ranVal + "&mode=" + urlParams["mode"]+"&uwmwponly="+uwmwponly+"&desktop="+desktop, true);
   xhsm.setRequestHeader('Content-Type', 'text/plain; charset=UTF-8');
   //console.log("/media?FUNC_CODE=GET_RAN_WP&SEQ=" + ranVal);
   xhsm.send();
