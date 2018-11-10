@@ -47,7 +47,7 @@ Automatically Generate TimelineJS of all your contents given time/date range
 
 Worry no more about what to wear -- you can organize/search your clothes easily!
 ----------------
-![Searching your clothes desktop](https://lh3.googleusercontent.com/pjTpqldf73lLCjvRbwfcKKj7cf7okVzdfZtdMTVz6i_zCw7uY_w3El5GU28wI_aH9VB33ANtbFe79aOtWOfyr4FBByBp9tg=s1000 "Searching your clothes desktop")
+![Searching your clothes desktop](https://lh3.googleusercontent.com/pjTpqldf73lLCjvRbwfcKKj7cf7okVzdfZtdMTVz6i_zCw7uY_w3El5GU28wI_aH9VB33ANtbFe79aOtWOfyr4FBByBp9tg=s1000  "Searching your clothes desktop")
 
 Just take pictures of your clothes and you can view them in Photo Gallery!
 ----------------
