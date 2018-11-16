@@ -188,6 +188,7 @@ function sendPingRequest(){
 			}
 		} else {
 			isSlow = false;
+			titleBlink("Fast Internet "+data+"ms","Fast internet with delay "+data+"ms");
 			document.getElementById("ping-res").innerHTML =  e + " " + data + "ms";
 		}
 	});

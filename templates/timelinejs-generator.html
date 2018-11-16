@@ -176,6 +176,9 @@
 		var end_time = document.getElementsByName("end_time")[0].value;
 		var contType = document.getElementById("TYPE").value;
 		var contCat = document.getElementById("CATEGORY").value;
+                if (contCat == "Select Category") {
+                        contCat = "";
+                }
 		var kword = document.getElementById("kword").value;
 		if (start_date == "" || start_time == "" || end_date == "" || end_time == "") {
 			alert("Please populate all fields!");

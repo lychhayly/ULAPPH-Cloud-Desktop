@@ -9371,6 +9371,7 @@ func webtop(w http.ResponseWriter, r *http.Request, aUser string, tUser string, 
 				STR_FILLER4: fmt.Sprintf("%v", checkMobile(w,r)),
 				STR_FILLER5: getSchemeUrl(w,r),
 				STR_FILLER6: TARGET_DESKTOP,
+				STR_FILLER7: "",
 				STR_FILLER9: getScheme(w,r),
 				//BOOL_FILLER1: checkMobile(w,r),
 			}
@@ -9717,6 +9718,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 					STR_FILLER4: fmt.Sprintf("%v", checkMobile(w,r)),
 					STR_FILLER5: getSchemeUrl(w,r),
 					STR_FILLER6: TARGET_UWM,
+					STR_FILLER7: deskName2,
 				}
 				if isNotesCapable[nameb] == true {
 					if err := desktopBody2Template.Execute(w, &TEMPDATA3); err != nil {
@@ -17992,24 +17994,24 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				//get year
 				SPL := strings.Split(start_date, ", ")
 				start_year := SPL[1]
-				//c.Infof("start_year: %v", start_year)
-				//c.Infof("start_date: %v", start_date)
-				//c.Infof("start_time: %v", start_time)
-				//c.Infof("end_date: %v", end_date)
-				//c.Infof("end_time: %v", end_time)
-				//c.Infof("contType: %v", contType)
-				//c.Infof("contCat: %v", contCat)
+				c.Infof("start_year: %v", start_year)
+				c.Infof("start_date: %v", start_date)
+				c.Infof("start_time: %v", start_time)
+				c.Infof("end_date: %v", end_date)
+				c.Infof("end_time: %v", end_time)
+				c.Infof("contType: %v", contType)
+				c.Infof("contCat: %v", contCat)
 				//compose timestamp
 				start_tstmp := fmt.Sprintf("%v %v", start_date, start_time)
 				end_tstmp := fmt.Sprintf("%v %v", end_date, end_time)
-				//c.Infof("start_tstmp: %v", start_tstmp)
-				//c.Infof("end_tstmp: %v", end_tstmp)
+				c.Infof("start_tstmp: %v", start_tstmp)
+				c.Infof("end_tstmp: %v", end_tstmp)
 				rt1, _ := time.Parse("_2 January, 2006 3:04 PM", start_tstmp)
 				start_rt1 := fmt.Sprintf("%v", rt1.Format("20060102150405"))
 				rt2, _ := time.Parse("_2 January, 2006 3:04 PM", end_tstmp)
 				start_rt2 := fmt.Sprintf("%v", rt2.Format("20060102150405"))
-				//c.Infof("start_rt1: %v", start_rt1)
-				//c.Infof("start_rt2: %v", start_rt2)
+				c.Infof("start_rt1: %v", start_rt1)
+				c.Infof("start_rt2: %v", start_rt2)
 				start := str2int(start_rt1)
 				end := str2int(start_rt2)
 				tjs := Timelinejs{}
@@ -18031,11 +18033,13 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				tjs.Title = tjst
 				switch contType {
 				case "TDSSLIDE":
-					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
+					//q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
+					q := datastore.NewQuery("TDSSLIDE").Order("-DOC_ID").Limit(500)
 					if contCat != "" {
 					q = datastore.NewQuery("TDSSLIDE").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 					}
 					recCount,_ := q.Count(c)
+					c.Infof("recCount: %v", recCount)
 					slide := make([]TDSSLIDE, 0, recCount)
 					if _, err := q.GetAll(c, &slide); err != nil {
 						 panic(err)
@@ -18053,11 +18057,13 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				case "TDSARTL":
-					q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
+					//q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
+					q := datastore.NewQuery("TDSARTL").Order("-DOC_ID").Limit(500)
 					if contCat != "" {
 					q = datastore.NewQuery("TDSARTL").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 					}
 					recCount,_ := q.Count(c)
+					c.Infof("recCount: %v", recCount)
 					article := make([]TDSARTL, 0, recCount)
 					if _, err := q.GetAll(c, &article); err != nil {
 						 panic(err)
@@ -18075,11 +18081,13 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 				case "TDSMEDIA":
-					q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+					//q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+					q := datastore.NewQuery("TDSMEDIA").Order("-MEDIA_ID").Limit(500)
 					if contCat != "" {
 					q = datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 					}
 					recCount,_ := q.Count(c)
+					c.Infof("recCount: %v", recCount)
 					media := make([]TDSMEDIA, 0, recCount)
 					if _, err := q.GetAll(c, &media); err != nil {
 						 panic(err)
@@ -18098,8 +18106,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					}
 				default:
 					//slides
-					q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
+					//q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
+					q := datastore.NewQuery("TDSSLIDE").Order("-DOC_ID").Limit(500)
 					recCount,_ := q.Count(c)
+					c.Infof("recCount: %v", recCount)
 					slide := make([]TDSSLIDE, 0, recCount)
 					if _, err := q.GetAll(c, &slide); err != nil {
 						 panic(err)
@@ -18117,8 +18127,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 					//articles
-					q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
+					//q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
+					q1 := datastore.NewQuery("TDSARTL").Order("-DOC_ID").Limit(500)
 					recCount,_ = q1.Count(c)
+					c.Infof("recCount: %v", recCount)
 					article := make([]TDSARTL, 0, recCount)
 					if _, err := q1.GetAll(c, &article); err != nil {
 						 panic(err)
@@ -18136,8 +18148,10 @@ func editor(w http.ResponseWriter, r *http.Request) {
 						}
 					}
 					//media
-					q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+					//q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+					q2 := datastore.NewQuery("TDSMEDIA").Order("-MEDIA_ID").Limit(500)
 					recCount,_ = q2.Count(c)
+					c.Infof("recCount: %v", recCount)
 					media := make([]TDSMEDIA, 0, recCount)
 					if _, err := q2.GetAll(c, &media); err != nil {
 						 panic(err)
@@ -19281,16 +19295,18 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 	}
 }
 //D0072
-func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSMEDIA) {
+func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSMEDIA) (recCtr int){
 	thisDU := str2int(p.DT_UPLOAD)
 	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+		recCtr++
 		var buffer3 bytes.Buffer
 		imgAlt := "img01"
 		buffer3.WriteString(fmt.Sprintf("<li>"))
+		adUrl := fmt.Sprintf("/media?FUNC_CODE=DELETE&MEDIA_ID=%v&BLOB_KEY=%v", p.MEDIA_ID, p.BLOB_KEY)
 		if p.PROP != "big_wp" {
-			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N) - %v [<a href='%v' target='%v'>EDIT</a>]</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete"))
 		} else {
-			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y) - %v [<a href='%v' target='%v'>EDIT</a>]</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete"))
 		}
 		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1300\" data-min-width=\"1300\"></div>", p.IMG_URL))
 		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1000\" data-min-width=\"1000\"></div>", p.IMG_URL))
@@ -19306,6 +19322,7 @@ func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 		buffer3.WriteString(fmt.Sprintf("</li>"))
 		w.Write(buffer3.Bytes())
 	}
+	return recCtr
 }
 //D0070
 func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) {
@@ -19364,9 +19381,10 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 
 }
 //D0072
-func photoGalleryShowArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSARTL) {
+/*func photoGalleryShowArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSARTL, recCtr int) {
 	thisDU := str2int(p.DT_UPLOAD)
 	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+		recCtr++*/
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
@@ -19412,8 +19430,9 @@ func photoGalleryShowArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 
 		}
 		*/
-	}
-}
+/*	}
+}*/
+
 //D0070
 func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSSLIDE) {
 	dks := TimelineEvent{}
@@ -19470,9 +19489,10 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat 
 	}
 }
 //D0072
-func photoGalleryShowSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSSLIDE) {
+/*func photoGalleryShowSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSSLIDE, recCtr int) {
 	thisDU := str2int(p.DT_UPLOAD)
 	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+		recCtr++*/
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
@@ -19518,8 +19538,9 @@ func photoGalleryShowSlide(w http.ResponseWriter, r *http.Request, uid, contCat 
 
 		}
 		*/
-	}
-}
+/*	}
+}*/
+
 //prints semaphore footer 
 func printSemaFooter(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<hr><a href=\"/editor?EDIT_FUNC=SEMAPHORE\">Home</a> | <a href=\"/editor?EDIT_FUNC=SEMAPHORE-STAT\">Check Balance</a> | <a href=\"/editor?EDIT_FUNC=SEMAPHORE-MSG\">Messages</a> | <a href=\"http://semaphore.co/payments\">Buy Credits</a> | <a href=\"/people-edit?EditPeopleFunc=EDIT_CONTACTS_LIST&UID=\">Contacts</a>")
@@ -42149,6 +42170,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Mime Type:</b> %v<br>", p.MIME_TYPE)
 									fmt.Fprintf(w, "<b>Title:</b> %v<br>", p.TITLE)
 									fmt.Fprintf(w, "<b>Desc:</b> %v<br>", p.DESC)
+									fmt.Fprintf(w, "<b>Timestamp:</b> %v<br>", p.DT_UPLOAD)
 									perURL := fmt.Sprintf("%vmedia?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", domRefMatchS, p.MEDIA_ID, p.MEDIA_ID)
 									fmt.Fprintf(w, "<b>Image URL (Permanent):</b><a href=\"%v\" id=\"murl\">%v</a><br>", getSchemeNewUrl(w,r,perURL), getSchemeNewUrl(w,r,perURL))
 									fmt.Fprintf(w, "<b>Image URL (Permanent-Short):</b><a href=\"%v\" id=\"murl\">%v</a><br>", ShortenUrl(w,r,perURL), ShortenUrl(w,r,perURL))
@@ -42721,6 +42743,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 						//get year
 						SPL := strings.Split(start_date, ", ")
 						start_year := SPL[1]
+						c.Infof("kword: %v", kword)
 						c.Infof("start_year: %v", start_year)
 						c.Infof("start_date: %v", start_date)
 						c.Infof("start_time: %v", start_time)
@@ -42749,8 +42772,10 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if err := mediaSimpleGalHeaderB.Execute(w, contCat); err != nil {
 							panic(err)
 						}
+						//count items
+						recCtr :=0
 						switch contType {
-						case "TDSSLIDE":
+						/*case "TDSSLIDE":
 							q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
 							if contCat != "" {
 							q = datastore.NewQuery("TDSSLIDE").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
@@ -42766,11 +42791,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 									if i != -1 || j != -1 {
-										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p, recCtr)
 									}
 
 								} else {
-									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p, recCtr)
 								}
 							}
 						case "TDSARTL":
@@ -42789,20 +42814,24 @@ func media(w http.ResponseWriter, r *http.Request) {
 									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 									if i != -1 || j != -1 {
-										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p, recCtr)
 									}
 
 								} else {
-									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p,recCtr)
 								}
 							}
+						*/
 						case "TDSMEDIA":
-							q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
+							//q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Order("-MEDIA_ID").Limit(500)
+							//q := datastore.NewQuery("TDSMEDIA").Order("-YEAR").Order("-MEDIA_ID").Filter("YEAR =", start_year).Limit(500)
+							q := datastore.NewQuery("TDSMEDIA").Order("-MEDIA_ID").Limit(500)
 							if contCat != "" {
 							q = datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 							}
 							recCount,_ := q.Count(c)
 							c.Infof("media: %v", recCount)
+							c.Infof("uid: %v", uid)
 							media := make([]TDSMEDIA, 0, recCount)
 							if _, err := q.GetAll(c, &media); err != nil {
 								 panic(err)
@@ -42812,14 +42841,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 									if i != -1 || j != -1 {
-										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+										recCtr = photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
 									}
 
 								} else {
-									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+									recCtr = photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
 								}
 							}
-						default:
+						/*default:
 							//slides
 							q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
 							recCount,_ := q.Count(c)
@@ -42832,11 +42861,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 									if i != -1 || j != -1 {
-										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p,recCtr)
 									}
 
 								} else {
-									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p)
+									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p,recCtr)
 								}
 							}
 							//articles
@@ -42851,11 +42880,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 									if i != -1 || j != -1 {
-										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p,recCtr)
 									}
 
 								} else {
-									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p)
+									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p,recCtr)
 								}
 							}
 							//media
@@ -42870,16 +42899,17 @@ func media(w http.ResponseWriter, r *http.Request) {
 									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 									if i != -1 || j != -1 {
-										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p,recCtr)
 									}
 
 								} else {
-									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p,recCtr)
 								}
 							}
-
+						*/
 						}
-						if err := mediaSimpleGalFooter.Execute(w, ""); err != nil {
+						c.Infof("reCtr: %v", recCtr)
+						if err := mediaSimpleGalFooter.Execute(w, recCtr); err != nil {
 							panic(err)
 						}
 						return
@@ -46565,6 +46595,8 @@ const mediaSimpleGal3 = `
 				</div>
 			</div><!--/main-->
 		</div>
+		<hr>
+		{{.}} item(s)
 		<script src="/js/jquery.min.js"></script>
 		<script src="/js/jquery.masonry.min.js"></script>
 		<script src="/js/jquery.history.js"></script>
@@ -46577,7 +46609,7 @@ const mediaSimpleGal3 = `
 			window.location.reload(false);
 		}
 		</script>
-		<div>{{.}}</a>
+		<!--div>{{.}}</a-->
 	</body>
 </html>
 `
@@ -48481,9 +48513,7 @@ var rootTemplateMediaCategory = template.Must(template.New("rootTemplateMediaCat
  
 const rootTemplateMediaCategoryChoice = `
 			Switch to Category: <select id="CATEGORY" onchange="selectCategory()"><option value="">Select</option></span></h1>
- 
 `
- 
 var rootTemplateMediaYear = template.Must(template.New("rootTemplateMediaYear").Parse(rootTemplateMediaYearChoice))
  
 const rootTemplateMediaYearChoice = `
@@ -64476,7 +64506,7 @@ var desktopBody2Template = template.Must(template.New("desktopBody2Template").Pa
 		</li>
 		
 		<li class="here" id="stm-phmini">
-			<input type="hidden" value="'/media?FUNC_CODE=VIEW_THUMBS', 500, 300, 'left', 'top', {title: 'Photo Gallery', icon: '/img/jswm-web.png'}" size="60" id="phmini" />
+			<input type="hidden" value="'/media?FUNC_CODE=VIEW_THUMBS&category={{.STR_FILLER7}}', 500, 300, 'left', 'top', {title: 'Photo Gallery', icon: '/img/jswm-web.png'}" size="60" id="phmini" />
 			<a href="#page" onclick="eval('windowManager.openURI(' + $('phmini').value + ');');">
 				<img src="/img/photo-mini.png" width="20" height="20" title="Photo Gallery">
 				</img>
@@ -64827,7 +64857,7 @@ var desktopBody2TemplateNoSticky = template.Must(template.New("desktopBody2Templ
 		</li>
 		
 		<li class="here" id="stm-phmini">
-			<input type="hidden" value="'/media?FUNC_CODE=VIEW_THUMBS', 500, 300, 'left', 'top', {title: 'Photo Gallery', icon: '/img/jswm-web.png'}" size="60" id="phmini" />
+			<input type="hidden" value="'/media?FUNC_CODE=VIEW_THUMBS&category={{.STR_FILLER7}}', 500, 300, 'left', 'top', {title: 'Photo Gallery', icon: '/img/jswm-web.png'}" size="60" id="phmini" />
 			<a href="#page" onclick="eval('windowManager.openURI(' + $('phmini').value + ');');">
 				<img src="/img/photo-mini.png" width="20" height="20" title="Photo Gallery">
 				</img>
@@ -69035,8 +69065,10 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 				err := imageApi.DeleteServingURL(c, appengine.BlobKey(blobkey))
 				if err != nil {
 				}
-				blobstore.Delete(c, appengine.BlobKey(blobkey))	
+				blobstore.Delete(c, appengine.BlobKey(blobkey))
 				c.Infof("Image did not change. Deleted image. %v-%v", CATEGORY, TITLE)
+				w.WriteHeader(200)
+				w.Write([]byte("false"))
 				return
 			}
 		}
@@ -69407,6 +69439,9 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		if OPT == "OpenScreenshots" {
 			w.WriteHeader(200)
 			w.Write([]byte(thisURL))
+		} else if (FL_IMAGE_CHANGED == true) {
+			w.WriteHeader(200)
+			w.Write([]byte("recapture"))
 		} else {
 			sysReq := fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", thisID, thisURL)	
 			http.Redirect(w, r, sysReq, http.StatusFound)	
