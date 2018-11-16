@@ -179,13 +179,18 @@ function upload_ulapph() {
 			  {
 			  if (request.readyState==4 && request.status==200)
 				{
-					var redirLink = request.responseText;
+					var respVal = request.responseText;
 					//alert("Image has been uploaded to Media Gallery!");
 					document.body.style.background = "green";
-					var upok = new Audio();
-					upok.autoplay = false;
-					upok.src = navigator.userAgent.match(/Firefox/) ? '/audio/kewl.ogg' : '/audio/kewl.ogg';
-					upok.play();
+					//var upok = new Audio();
+					//upok.autoplay = false;
+					//upok.src = navigator.userAgent.match(/Firefox/) ? '/audio/kewl.ogg' : '/audio/kewl.ogg';
+					//upok.play();
+					if (respVal == "recapture") {
+						//take another image now
+						console.log("new image captured!");
+						take_snapshot();
+					}
 					return;
 				}
 			 }
