@@ -43622,7 +43622,7 @@ const mediaDispTemplateHTMLUMP = `
 {{range .}}
 <li
 	  data-mp3="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}"
-		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ]</li>
+		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ] [ <a href="https://www.google.com/search?q={{.TITLE}} lyrics" target="ump-lyrics">Lyrics</a> ]</li>
 {{end}}
 `
  
@@ -43642,7 +43642,7 @@ var mediaDispTemplateUMPFiltered = template.Must(template.New("mediaDispTemplate
 const mediaDispTemplateHTMLUMPF = `
 <li
 	  data-mp3="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}"
-		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ]</li>
+		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ] [ <a href="https://www.google.com/search?q={{.TITLE}} lyrics" target="ump-lyrics">Lyrics</a> ]</li>
 `
  
 var mediaDispTemplateMDPFiltered = template.Must(template.New("mediaDispTemplateMDPFiltered").Parse(mediaDispTemplateHTMLMDPF))
