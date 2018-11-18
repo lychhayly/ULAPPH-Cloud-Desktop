@@ -93,6 +93,11 @@ Overview
 - It is being installed in your own Google AppEngine account so only you can access data so it is secured. 
 - In a nutshell, you will have an online cloud desktop that you can use as a cloud server, a website, a programming playground or as a cloud desktop that you can program and develop applications.
 
+What are the applications inside ULAPPH Cloud Desktop?
+----------------
+- Click below to view the list of applications inside ULAPPH Cloud Desktop
+https://github.com/edwindvinas/ULAPPH-Cloud-Desktop/blob/master/DOCS/Whats%20inside%20ULAPPH%20Cloud%20Desktop%3F.md
+
 Documentations
 ----------------
 - Click below to find some Github READMEs or documentations.
