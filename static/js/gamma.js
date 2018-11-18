@@ -163,7 +163,8 @@ var Gamma = (function() {
 			// default value for masonry column count
 			columns : 4,
 			// transition properties for the images in ms (transition to/from singleview)
-			speed : 300,
+			//speed : 300,
+			speed : 200,
 			easing : 'ease',
 			// if set to true the overlay's opacity will animate (transition to/from singleview)
 			overlayAnimated : true,
@@ -187,7 +188,8 @@ var Gamma = (function() {
 			keyboard : true,
 			swipe : true,
 			// slideshow interval (ms)
-			interval : 4000,
+			//interval : 4000,
+			interval : 2000,
 			// if History API is not supported this value will turn false
 			historyapi : true
 		},

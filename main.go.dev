@@ -19295,18 +19295,17 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 	}
 }
 //D0072
-func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSMEDIA) (recCtr int){
+func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSMEDIA) {
 	thisDU := str2int(p.DT_UPLOAD)
 	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
-		recCtr++
 		var buffer3 bytes.Buffer
 		imgAlt := "img01"
 		buffer3.WriteString(fmt.Sprintf("<li>"))
 		adUrl := fmt.Sprintf("/media?FUNC_CODE=DELETE&MEDIA_ID=%v&BLOB_KEY=%v", p.MEDIA_ID, p.BLOB_KEY)
 		if p.PROP != "big_wp" {
-			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N) - %v [<a href='%v' target='%v'>EDIT</a>]</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete"))
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N) - %v [<a href='%v' target='%v' title='delete'>X</a>] - %v</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete", stmpHumanize(p.DT_UPLOAD)))
 		} else {
-			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y) - %v [<a href='%v' target='%v'>EDIT</a>]</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete"))
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y) - %v [<a href='%v' target='%v' title='delete'>X</a>] - %v</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete", stmpHumanize(p.DT_UPLOAD)))
 		}
 		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1300\" data-min-width=\"1300\"></div>", p.IMG_URL))
 		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1000\" data-min-width=\"1000\"></div>", p.IMG_URL))
@@ -19322,7 +19321,6 @@ func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 		buffer3.WriteString(fmt.Sprintf("</li>"))
 		w.Write(buffer3.Bytes())
 	}
-	return recCtr
 }
 //D0070
 func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) {
@@ -42772,8 +42770,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 						if err := mediaSimpleGalHeaderB.Execute(w, contCat); err != nil {
 							panic(err)
 						}
-						//count items
-						recCtr :=0
 						switch contType {
 						/*case "TDSSLIDE":
 							q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
@@ -42841,11 +42837,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 									if i != -1 || j != -1 {
-										recCtr = photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
 									}
 
 								} else {
-									recCtr = photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
 								}
 							}
 						/*default:
@@ -42908,8 +42904,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 							}
 						*/
 						}
-						c.Infof("reCtr: %v", recCtr)
-						if err := mediaSimpleGalFooter.Execute(w, recCtr); err != nil {
+						if err := mediaSimpleGalFooter.Execute(w, ""); err != nil {
 							panic(err)
 						}
 						return
@@ -46595,8 +46590,6 @@ const mediaSimpleGal3 = `
 				</div>
 			</div><!--/main-->
 		</div>
-		<hr>
-		{{.}} item(s)
 		<script src="/js/jquery.min.js"></script>
 		<script src="/js/jquery.masonry.min.js"></script>
 		<script src="/js/jquery.history.js"></script>

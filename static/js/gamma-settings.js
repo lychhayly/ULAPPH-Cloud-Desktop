@@ -2,7 +2,10 @@
 
 				var GammaSettings = {
 						// order is important!
-						viewport : [ {
+						viewport : [{ 
+                                                        width : 1500,
+                                                        columns : 6 
+                                                }, {
 							width : 1200,
 							columns : 5
 						}, {

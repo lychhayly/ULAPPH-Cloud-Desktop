@@ -87,7 +87,7 @@
   background-color: rgba(0, 0, 0, 0.1);
 }
 </style>
-<body>
+<body onload="loadSettings()">
      
 <section class="section">
   <div class="section__block section__block--scoped">
@@ -226,6 +226,27 @@
 <script src="/lib/js/pickadate.js/main.js"></script>
 <script src="/lib/js/pickadate.js/rainbow.js"></script>
 <script>
+	function loadSettings() {
+
+		var start_date = localStorage["pg.start_date"];
+		document.getElementsByName("start_date")[0].value = start_date;
+
+		var start_time = localStorage["pg.start_time"];
+		document.getElementsByName("start_time")[0].value = start_time;
+
+		var end_date = localStorage["pg.end_date"];
+		document.getElementsByName("end_date")[0].value = end_date;
+
+		var end_time = localStorage["pg.end_time"];
+		document.getElementsByName("end_time")[0].value = end_time;
+
+		var contType = localStorage["pg.TYPE"];
+		document.getElementById("TYPE").value = contType;
+
+		var contCat = localStorage["pg.CATEGORY"];
+		document.getElementById("CATEGORY").value = contCat;
+	}
+
 	function generateTimeJS() {
 		//alert("Hello world!");
 		var start_date = document.getElementsByName("start_date")[0].value;
@@ -234,6 +255,14 @@
 		var end_time = document.getElementsByName("end_time")[0].value;
 		var contType = document.getElementById("TYPE").value;
 		var contCat = document.getElementById("CATEGORY").value;
+		//save localstorage
+		localStorage["pg.start_date"] = start_date;
+		localStorage["pg.start_time"] = start_time;
+		localStorage["pg.end_date"] = end_date;
+		localStorage["pg.end_time"] = end_time;
+		localStorage["pg.TYPE"] = contType;
+		localStorage["pg.CATEGORY"] = contCat;
+
 		if (contCat == "Select Category") {
 			contCat = "";
 		}
