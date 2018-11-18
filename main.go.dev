@@ -34024,6 +34024,24 @@ func getDefUwms(w http.ResponseWriter, r *http.Request) string {
                 buf.WriteString(fmt.Sprintf("   if (localStorage['chatbot'] != 'N' && document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('chatbot777').value + ');'); }"))
                 buf.WriteString(fmt.Sprintf("</script>"))
 
+                //display installers 
+                buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'https://ulapph-installer.appspot.com', 500, 300, 'left', 'top', {title: 'ULAPPH Installers', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"installer777\" />"))
+                buf.WriteString(fmt.Sprintf("<script type=\"text/javascript\">"))
+                buf.WriteString(fmt.Sprintf("   if (localStorage['installers'] != 'N' && document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('installer777').value + ');'); }"))
+                buf.WriteString(fmt.Sprintf("</script>"))
+
+                //display sites 
+                buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'https://ulapph-sites.appspot.com/directory?DIR_FUNC=sites', 500, 300, 'left', 'top', {title: 'ULAPPH Sites', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"sites777\" />"))
+                buf.WriteString(fmt.Sprintf("<script type=\"text/javascript\">"))
+                buf.WriteString(fmt.Sprintf("   if (localStorage['sites-list'] != 'N' && document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('sites777').value + ');'); }"))
+                buf.WriteString(fmt.Sprintf("</script>"))
+
+                //display trending 
+                buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'https://ulapph-sites.appspot.com/social?SO_FUNC=show-trending', 500, 300, 'left', 'top', {title: 'ULAPPH Trending', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"trending777\" />"))
+                buf.WriteString(fmt.Sprintf("<script type=\"text/javascript\">"))
+                buf.WriteString(fmt.Sprintf("   if (localStorage['trending'] != 'N' && document.getElementById('desktop').value == 'uwm') { eval('windowManager.openURI(' + $('trending777').value + ');'); }"))
+                buf.WriteString(fmt.Sprintf("</script>"))
+
 	} else {
 		/*
 		buf.WriteString(fmt.Sprintf("<input type=\"hidden\" value=\"'/tools?FUNC=WIDGET&t=TODO', 500, 300, 'right', 'top', {title: 'TODOs', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"todo777\" />"))
@@ -45646,7 +45664,7 @@ $(document).ready(function() {
 </head>
  
 <body>
-<h3><font color="blue">ULAPPH Overall Trending</font></h3>
+<h3><font color="blue">ULAPPH Overall Trending</font> [<a href="https://ulapph-sites.appspot.com/social?SO_FUNC=show-whats-new">Whats New</a>]</h3>
 <hr>
 `
  
