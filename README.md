@@ -71,6 +71,10 @@ Recently, I've used ULAPPH Cloud Desktop as CCTV to monitor our cat room and pro
 - Watch Video (no sound): https://www.youtube.com/watch?v=Yt4p6kYhQGw
 - Watch Video (with sound): https://www.youtube.com/watch?v=ksADPoLNh-0
 
+Lastly, it has Google Firebase integration which pushes realtime notifications to your cloud desktops (such as intruder alerts for CCTV app)!
+----------------
+![Realtime Firebase Messaging](https://lh3.googleusercontent.com/noyz3z9toE8E5tTKbCRigTRB1T8IpB9prV6UtpBPKQoGMQDVowMjQfRQJ2tHvDrSPfoASKPsZaqAUs9K1HZO2Z_3G-iy=s1000 "Realtime Firebase Messaging")
+
 ULAPPH Login
 ----------------
 * https://www.ulapph.net/
