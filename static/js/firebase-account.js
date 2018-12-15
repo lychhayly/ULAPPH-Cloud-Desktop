@@ -1,9 +1,11 @@
 // Initialize Firebase
-var config = {
-apiKey: "AIzaSyAkt_bI5EMlwO_9iMUK2vCRgtc1T3o5vAY",
-authDomain: "ulapph-firebase.firebaseapp.com",
-databaseURL: "https://ulapph-firebase.firebaseio.com",
-storageBucket: "ulapph-firebase.appspot.com",
-messagingSenderId: "827309600643"
-};
-firebase.initializeApp(config);
+  var config = {
+    apiKey: "AIzaSyCDJ7J54Nbt-LNCcA8q7avvuorZXMPQ7i4",
+    authDomain: "ulapph-firebase-78f65.firebaseapp.com",
+    databaseURL: "https://ulapph-firebase-78f65.firebaseio.com",
+    projectId: "ulapph-firebase-78f65",
+    storageBucket: "ulapph-firebase-78f65.appspot.com",
+    messagingSenderId: "114785673070"
+  };
+  firebase.initializeApp(config);
+

@@ -1,3 +1,4 @@
+//random wallpapers for UWM desktop
 changWP();
 
 setInterval(function(){

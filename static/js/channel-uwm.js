@@ -266,13 +266,15 @@ function procMessage(obj) {
 			case "SYS_STRUWM_ALARM":
 			console.log("SYS_STRUWM_ALARM");
 			//data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_ALARM@888@%v@888@%v", CAPTION, MESSAGE
-				var caption = cmdata[3];
+				//var caption = cmdata[3];
 				var message = cmdata[4];
-                                alertify.set({ delay: 300000 });
-                                alertify.error(caption);
-                                alertify.error(message);
+				if (document.getElementById("soundStat").value != "off") {
+					alertify.set({ delay: 300000 });
+					//alertify.error(caption);
+					alertify.error(message);
 
-                                speakMessage(caption);
+					//speakMessage(caption);
+				}
 
                                 var aSound = document.createElement('audio');
                                 if (isEdge == true || isIE == true || isSafari == true) {
@@ -291,7 +293,7 @@ function procMessage(obj) {
 
                                 playSound('mySoundCctv');
                                 document.getElementById("ping-res").innerHTML = "<img src='/img/sysinf.gif' width='20' height='20' align='middle'></img>Alert";
-                                titleBlink("Alert",caption);
+                                //titleBlink("Alert",caption);
                                 return;
 
 			case "SYS_GOOGLE_SEARCH":
@@ -883,6 +885,9 @@ function openWindowNow(tgt, ttl) {
 }
 
 function openWindow(tgt, ttl) {
+	if (ttl == "SYS_RC_YT_SEARCH" || ttl == "SYS_RC_YT_SEARCH_ID" || ttl == "SYS_RC_YT_SEARCH_ID2" || ttl == "SYS_STRUWM_CAPTURE") {
+		return;
+	}
 
 	var us = tgt.toUpperCase();
 	var SPL = us.split("-");

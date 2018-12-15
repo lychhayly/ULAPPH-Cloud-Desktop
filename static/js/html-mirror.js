@@ -4,21 +4,25 @@ shutter.autoplay = false;
 shutter.src = navigator.userAgent.match(/Firefox/) ? '/audio/shutter.ogg' : '/audio/shutter.ogg';
 
 function loadSettings() {
-	var sid = localStorage.getItem("mirror-sid");
-	document.getElementById("sid").vaue = sid;
-	var title = localStorage.getItem("mirror-title");
-	document.getElementById("title").vaue = title;
-	var uwm = localStorage.getItem("mirror-uwm");
-	document.getElementById("uwm").vaue = uwm;
+	var sid = localStorage["mirror-sid"];
+	document.getElementById("sid").value = sid;
+	var title = localStorage["mirror-title"];
+	document.getElementById("title").value = title;
+	var uwm = localStorage["mirror-uwm"];
+	document.getElementById("uwm").value = uwm;
+	var fcap = localStorage["mirror-fcap"];
+	document.getElementById("fixedcap").value = fcap;
 }
 
 function saveSettings() {
-	var sid = document.getElementById("sid").vaue;
-	localStorage.setItem("mirror-sid") = sid;
-	var title = document.getElementById("title").vaue;
-	localStorage.setItem("mirror-title") = title;
-	var uwm = document.getElementById("uwm").vaue;
-	localStorage.setItem("mirror-uwm") = uwm;
+	var sid = document.getElementById("sid").value;
+	localStorage["mirror-sid"] = sid;
+	var title = document.getElementById("title").value;
+	localStorage["mirror-title"] = title;
+	var uwm = document.getElementById("uwm").value;
+	localStorage["mirror-uwm"] = uwm;
+	var fcap = document.getElementById("fixedcap").value;
+	localStorage["mirror-fcap"] = fcap;
 }
 
 
