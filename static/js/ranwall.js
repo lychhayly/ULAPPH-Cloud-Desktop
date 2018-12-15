@@ -1,3 +1,4 @@
+//random images for html widget window
 var isActive = true;
 
 window.onfocus = function () { 
@@ -149,12 +150,10 @@ function nextWp() {
   }
 
   // construct an HTTP request
-  //xhsm.open("GET", "/media?FUNC_CODE=GET_RAN_WP&SEQ=" + ranVal, true);
   var desktop = document.getElementById("desktop").value;
   var uwmwponly = document.getElementById("uwmwponly").value;
   xhsm.open("GET", "/media?FUNC_CODE=GET_RAN_WP&SEQ=" + ranVal + "&mode=" + urlParams["mode"]+"&uwmwponly="+uwmwponly+"&desktop="+desktop, true);
   xhsm.setRequestHeader('Content-Type', 'text/plain; charset=UTF-8');
-  //console.log("/media?FUNC_CODE=GET_RAN_WP&SEQ=" + ranVal);
   xhsm.send();
 
  	xhsm.onreadystatechange = function(){

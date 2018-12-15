@@ -374,6 +374,16 @@
 //REV DESC:	  	Upgrade photo gallery with camera capture & refined search features
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0073
+//REV DATE: 		2018-Nov-25
+//REV DESC:	  	Update remote control & desktop stats
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0074
+//REV DATE: 		2018-Dec-09
+//REV DESC:	  	Update cctv real-time captures 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------
 //List of firebase channels
@@ -1243,6 +1253,10 @@ type Desktops struct {
 	CLink string `json:"cLink"`
 	//D0067
 	DGrp string `json:"cGrp"`
+	//D0073
+	SQLink string `json:"sqLink"`
+	AQLink string `json:"aqLink"`
+	MQLink string `json:"mqLink"`
 }
 
 //icons
@@ -1370,6 +1384,7 @@ type resultContainer struct {
 	Comments []Comment `json:"comments,omitempty"`
 }
 //D0065
+//nlp templates
 var ulapphBotNlp = []string{
 	"{FuncType} the {ContentType} num {DocID}", //view slide 21; can also be article, media
 	"{FuncType} the {ContentType} num {DocID}", //update slide 21
@@ -2107,6 +2122,7 @@ var (
 		".orgchart": parsePresentTemplate2("gojs-orgchart.html"),
 		//D0070
 		".timelinejs-gen": parsePresentTemplate2("timelinejs-generator.html"),
+		".timelinejs-rep": parsePresentTemplate2("timelinejs-report.html"),
 		".photo-gallery": parsePresentTemplate2("photo-gallery.html"),
 	}
 	contactEmail      = "demo.ulapph@gmail.com"
@@ -2785,24 +2801,6 @@ var laterAddToDefaultSid = delay.Func("laterAddToDefaultSid", func(c appengine.C
 		panic(err)
 	}
 })
-//D0066/D0071 
-// Exec later - Stream image to UWM
-/*var laterMirrorStreamUwm = delay.Func("laterMirrorStreamUwm", func(c appengine.Context, MSU_FUNC, UID, STRUWM, TYP, SRC, TITLE, CATEGORY string) {
-	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-stream-mirror-uwm", map[string][]string{"MSU_FUNC": {MSU_FUNC}, "UID": {UID}, "STRUWM": {STRUWM}, "TYP": {TYP}, "SRC": {SRC}, "TITLE": {TITLE}, "CATEGORY": {CATEGORY}})
-	if _, err := taskqueue.Add(c, t, ""); err != nil {
-		panic(err)
-	}
-})
-*/
-//D0071
-//compare previous and current images
-/*var laterMirrorStreamPreviousCompare = delay.Func("laterMirrorStreamPreviousCompare", func(c appengine.Context, MSU_FUNC, UID, STRUWM, SRC, TITLE, CATEGORY, BLOB_KEY, MEDIA_ID string) {
-	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-struwm-previous-compare", map[string][]string{"MSU_FUNC": {MSU_FUNC}, "UID": {UID}, "STRUWM": {STRUWM}, "SRC": {SRC}, "TITLE": {TITLE}, "CATEGORY": {CATEGORY}, "BLOB_KEY": {BLOB_KEY}, "MEDIA_ID": {MEDIA_ID}})
-	if _, err := taskqueue.Add(c, t, ""); err != nil {
-		panic(err)
-	}
-})
-*/
 // Exec later - Ratings
 var laterQueueRatings = delay.Func("laterQueueRatings", func(c appengine.Context, RTG_FUNC, UID, uid string) {
 	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-ratings", map[string][]string{"RTG_FUNC": {RTG_FUNC}, "UID": {UID}, "FROM": {uid}})
@@ -3009,7 +3007,22 @@ var laterQueueInsertUnknownRule = delay.Func("laterQueueInsertUnknownRule", func
 		panic(err)
 	}
 })
- 
+//D0074
+// Exec later - update cctv list
+var laterUpdateCctvList = delay.Func("laterUpdateCctvList", func(c appengine.Context, uid, desktop string) {
+	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-update-cctv-list", map[string][]string{"uid": {uid}, "desktop": {desktop}})
+	if _, err := taskqueue.Add(c, t, ""); err != nil {
+		panic(err)
+	}
+})
+//D0074
+// Exec later - delete cctv image from imageServingAPI
+var laterDeleteCctvImage = delay.Func("laterDeleteCctvImage", func(c appengine.Context, blobKey string) {
+	t := taskqueue.NewPOSTTask("/ulapph-router?RTR_FUNC=queue-delete-cctv-image", map[string][]string{"BLOB_KEY": {blobKey}})
+	if _, err := taskqueue.Add(c, t, ""); err != nil {
+		panic(err)
+	}
+})
 ///////////////////////////////////////////////////////////////
 // INIT / HANDLERS
 ///////////////////////////////////////////////////////////////
@@ -5170,7 +5183,7 @@ func channelMessageHandler(w http.ResponseWriter, r *http.Request) {
  
 func sendChannelMessage(w http.ResponseWriter, r *http.Request, recID string, msg string) {
 	//c := appengine.NewContext(r)
-	
+	//c.Infof("sendChannelMessag")
 	if recID == "" || msg == "" {
 		return
 	}
@@ -5203,6 +5216,8 @@ func sendChannelMessage(w http.ResponseWriter, r *http.Request, recID string, ms
 		_, token := createToken(w,r,recID,"")
 		topic = fmt.Sprintf("%v/%v/%v", SYS_SERVER_NAME, "channel", token)
 	}
+	//c.Infof("topic: %v", topic)
+	//c.Infof("data: %v", data)
 	sendChannelFirebase(w,r,topic,data)
 }
  
@@ -5256,8 +5271,9 @@ func sendChatPrivate(w http.ResponseWriter, r *http.Request, roomID string, msg 
 }
  
 func sendChannelFirebase(w http.ResponseWriter, r *http.Request, topic string, payload []byte) {
-	//c := appengine.NewContext(r)
- 
+	c := appengine.NewContext(r)
+	//c.Infof("sendChannelFirebase")
+
 	if topic == "" || payload == nil {
 		return
 	}
@@ -5266,14 +5282,14 @@ func sendChannelFirebase(w http.ResponseWriter, r *http.Request, topic string, p
 	rdr := strings.NewReader(FIREBASE_SERVER_JSON)		
 	FIREBASE_KEY_JSON, err := ioutil.ReadAll(rdr)
 	if err != nil {
-		////c.Errorf("[ioutil.ReadAll] ERROR: %v", err)
+		c.Errorf("[ioutil.ReadAll] ERROR: %v", err)
 		return
 	}
 	
 	ctx := newappengine.NewContext(r)
     conf, err := google.JWTConfigFromJSON(FIREBASE_KEY_JSON, "https://www.googleapis.com/auth/userinfo.email", "https://www.googleapis.com/auth/firebase.database")
     if err != nil {
-		////c.Errorf("[google.JWTConfigFromJSON] ERROR: %v", err)
+		c.Errorf("[google.JWTConfigFromJSON] ERROR: %v", err)
 		return
     }
     //client := conf.Client(oauth2.NoContext)
@@ -5281,7 +5297,11 @@ func sendChannelFirebase(w http.ResponseWriter, r *http.Request, topic string, p
 	fb := firego.New(FIREBASE_URL , client)
 	_, err = fb.Child(topic).Push(string(payload))
 	if err != nil {
-		////c.Errorf("[fb.ChildPush] ERROR: %v", err)
+		c.Errorf("[fb.ChildPush] ERROR: %v", err)
+	}
+	if err = fb.Remove(); err != nil {
+	    //log.Fatal(err)
+		c.Errorf("[fb.Remove] ERROR: %v", err)
 	}
 	return
 }
@@ -6938,8 +6958,8 @@ func displayEchartsBar(w http.ResponseWriter, r *http.Request, TARGET, NAME, div
 //saves a cache of the ACB data 
 func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb []byte) {
 	c := appengine.NewContext(r)
-	//c.Infof("saveAutoCompsBlob")
-	//c.Infof("uid: %v", uid)
+	c.Infof("saveAutoCompsBlob")
+	c.Infof("uid: %v", uid)
 	//D0068
 	//if r.FormValue("API_KEY") == CMD_GEN_KEY {
 	//	//proceed
@@ -6961,7 +6981,7 @@ func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb [
 		FL_ACB = true
 	}
 	if FL_ACB == false {
-		//c.Infof("FL_ACB = false")
+		c.Infof("FL_ACB = false")
 		thisKey := fmt.Sprintf("SYSTEM_ACB_%v", uid)
 		g := TDSCNFG{
 				SYS_VER: 1,
@@ -6982,9 +7002,9 @@ func saveAutoCompsBlob(w http.ResponseWriter, r *http.Request, uid string, acb [
 	}
 	//D0068
 	//} else {
-		//c.Infof("FL_ACB = true")
+		c.Infof("FL_ACB = true")
 		//upload to blobstore
-		//c.Infof("upload to blobstore")
+		c.Infof("upload to blobstore")
 		csn2 := getUpUrlString(w,r,"/upload-media")
 		u, err := blobstore.UploadURL(c, csn2, nil)
 		if err != nil {
@@ -7218,7 +7238,7 @@ func adminSetup(w http.ResponseWriter, r *http.Request) {
 				var isUwm = map[string]bool{}
 				for s.Scan() {
 					if len(s.Text()) > 0 {
-						//c.Infof("%v", s.Text())
+						c.Infof("%v", s.Text())
 						thisStr := fmt.Sprintf("%v", s.Text())
 						//D0067
 						if len(thisStr) > 3 {
@@ -9552,7 +9572,7 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 			recCount,_ := q.Count(c)
 			if recCount > 0 {
 				//exists
-				////c.Infof("shared desktop")
+				//c.Infof("shared desktop")
 				cats := make([]TDSCATS, 0, 1)
 				if _, err := q.GetAll(c, &cats); err != nil {
 					//panic(err)
@@ -9567,13 +9587,13 @@ func uwm(w http.ResponseWriter, r *http.Request) {
 		}
 		if FL_SHARED_OK == true {
 			//https://edwin-daen-vinas.appspot.com?q=ushare&SID=TDSMEDIA-4406&TITLE=test
-			////c.Infof("FL_SHARED_OK")
+			//c.Infof("FL_SHARED_OK")
 			SID := getUWMSource(w,r,user,TARGET_UWM)
 			if SID == "" {
 				fmt.Fprintf(w, "Invalid shared desktop settings!")
 				return
 			}
-			////c.Infof("redir ushare")
+			//c.Infof("redir ushare")
 			sysReq := fmt.Sprintf("/?q=ushare&SID=%v&TITLE=%v", SID, "Shared Desktop")
 			http.Redirect(w, r, sysReq, http.StatusFound)
 			return
@@ -11017,7 +11037,6 @@ func getPersonalWindows(w http.ResponseWriter, r *http.Request, uid, alFlag, SID
 	}
  
 }
- 
 //gets the TDSCNFG config given type and config name
 func getTDSCNFG(w http.ResponseWriter, r *http.Request, vtype int, cfgName string) (tval string, nval int) {
 	c := appengine.NewContext(r)
@@ -11034,7 +11053,6 @@ func getTDSCNFG(w http.ResponseWriter, r *http.Request, vtype int, cfgName strin
 				nval = x.NUM_VAL
 			default:
 				tval = x.TXT_VAL
-			
 		}
 		break
 	}
@@ -11282,18 +11300,18 @@ func checkHomepageSettings(w http.ResponseWriter, r *http.Request, redirectURL s
 			//get the media id containing the theme
 			cKey := fmt.Sprintf("CUSTOM_HOMEPAGE_THEME")
 			htemp := getStrMemcacheValueByKey(w,r,cKey)
-			//c.Infof("htemp: %v", htemp)
+			c.Infof("htemp: %v", htemp)
 			if strings.TrimSpace(htemp) == "" {
 				_, mid := getTDSCNFG(w,r,1,cKey)
-				//c.Infof("mid: %v", mid)
+				c.Infof("mid: %v", mid)
 				
 				if mid > 0 {
-					//c.Infof("mid > 0")
+					c.Infof("mid > 0")
 					_ = renderCustomTemplates(w,r,"gotId",cKey,"",fmt.Sprintf("%v",mid))				
 				}
 
 			} else {
-				//c.Infof("got htemp: %v", htemp)
+				c.Infof("got htemp: %v", htemp)
 				_ = renderCustomTemplates(w,r,"gotId",cKey,"",strings.TrimSpace(htemp))
 			}
 			updateUserActiveData(w, r, c, "", "homepage-custom")
@@ -13113,12 +13131,12 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	}
 	if AUTOCOMP_CACHE == "" {
 		//get from temp blob
-		//c.Infof("get from temp blob")
+		c.Infof("get from temp blob")
 		cKeyACB := fmt.Sprintf("ACB_BLOB_%v", uid)
 		ACB_BLOB := ""
 		ACB_BLOB = getStrMemcacheValueByKey(w,r,cKeyACB)
 		if ACB_BLOB == "" {
-			//c.Infof("get from config blob")
+			c.Infof("get from config blob")
 			var g TDSCNFG
 			thisKey := fmt.Sprintf("SYSTEM_ACB_%v", uid)
 			key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
@@ -13132,9 +13150,9 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 			ACB_BLOB = ""
 			putStrToMemcacheWithoutExp(w,r,cKeyACB,"")
 		}
-		//c.Infof("ACB_BLOB: %v", ACB_BLOB)
+		c.Infof("ACB_BLOB: %v", ACB_BLOB)
 		if ACB_BLOB != "" {
-			//c.Infof("get blob content")
+			c.Infof("get blob content")
 			blobChan := make(chan []byte)
 			go getBlobByteChan(w, r,blobChan, ACB_BLOB)
 			thisCont := <- blobChan
@@ -13500,7 +13518,7 @@ func parseAutocompEntries(w http.ResponseWriter, r *http.Request) {
 	w.Write(buf.Bytes())
 	
 	saveAutoCompsBlob(w,r,uid,buf.Bytes())
-	//c.Infof("saveAutoCompsBlob")
+	c.Infof("saveAutoCompsBlob")
 	fmt.Fprintf(w, "  ];\n")
 	fmt.Fprintf(w, "  // setup autocomplete function pulling from currencies[] array\n")
 	fmt.Fprintf(w, "  $('#autocomplete').autocomplete({\n")
@@ -16331,7 +16349,7 @@ const chatTemplateDispA2 = `
 	  </ul>
 	  <script src="/js/alertify.min.js"></script>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 	  <script src="/js/chat-main.js"></script>
 	  {{if eq .STR_FILLER7 "true" }}
@@ -16387,7 +16405,7 @@ const streamTemplateDispA3 = `
 		 <div id="channel-area"></div>
 		
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
  
 	  <script src="/js/alertify.min.js"></script>
@@ -17099,7 +17117,7 @@ func ulapphStream(w http.ResponseWriter, r *http.Request) {
 			}
 			refUwm := getRefUwm(w,r)
 			UWM := ""
-			c.Infof("refUwm: %v", refUwm)
+			//c.Infof("refUwm: %v", refUwm)
 			if refUwm != "" {
 				UWM = fmt.Sprintf("%v---%v", uid, refUwm)
 			} else {
@@ -17620,9 +17638,7 @@ func registerAccessCode(w http.ResponseWriter, r *http.Request, SID, accessCode 
 						//return
 						break
 					}
- 
 			}
-									
 	}
 }
 
@@ -17634,6 +17650,110 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 	//serve real people only
 	FL_IS_BOT := isBot(w,r)
 	switch DIR_FUNC {
+		//D0074
+		case "cctv-capture":
+			_, uid := checkSession(w,r)
+			if uid == "" {
+				//do nothing
+				w.WriteHeader(200)
+				w.Write([]byte("invalid operation"))
+				return
+			} else {
+				//D0074
+				//initiating cctv captures
+				//c.Infof("initiating cctv captures")
+				//send channel message to initiate capture
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				//c.Infof("cKey: %v", cKey)
+				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
+				if strings.TrimSpace(cctv_list) == "" {
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
+					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
+				}
+				//c.Infof("cctv_list: %v", cctv_list)
+				SPL := strings.Split(cctv_list, "@888@")
+				ctr := 0
+				wstr := ""
+				for i:=0;i<len(SPL);i++ {
+					if SPL[i] != "" {
+						cKeyTS := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", SPL[i])
+						catLastUpload := getStrMemcacheValueByKey(w,r,cKeyTS)
+						//c.Infof("catLastUpload: %v", catLastUpload)
+						timestamp := stmpHumanize(catLastUpload)
+						m := strings.Index(timestamp, "hour")
+						if m != -1 {
+							//cctv may be outdated
+							wstr = fmt.Sprintf("%v<br>%v", wstr, SPL[i])
+						} else {
+							ctr++
+							data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@SYS_STRUWM_CAPTURE@888@%v@888@%v", uid,SPL[i])
+							//c.Infof("Send capture signal: %v", SPL[i])
+							sendChannelMessage(w,r,uid,data)
+						}
+					}
+				}
+				w.WriteHeader(200)
+				if ctr > 0 {
+					w.Write([]byte(fmt.Sprintf("Sent cctv capture signal to %v cameras!", ctr)))
+					if wstr != "" {
+						w.Write([]byte(fmt.Sprintf("<br>Warning: These are not updated: %v", wstr)))
+					}
+				} else {
+					w.Write([]byte(fmt.Sprintf("No cameras available!")))
+				}
+				return
+			}
+		//D0074
+		case "cctv":
+			_, uid := checkSession(w,r)
+			if uid == "" {
+				//do nothing
+				w.WriteHeader(200)
+				w.Write([]byte("invalid operation"))
+				return
+			} else {
+				var buf bytes.Buffer
+				//get list of cctvs
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				//c.Infof("cKey: %v", cKey)
+				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
+				if strings.TrimSpace(cctv_list) == "" {
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
+					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
+				}
+				//c.Infof("cctv_list: %v", cctv_list)
+				SPL := strings.Split(cctv_list, "@888@")
+				ctr := 0
+				for i:=0;i<len(SPL);i++ {
+					if SPL[i] != "" {
+						ctr++
+						dCat := SPL[i]
+						//last image
+						cKeyLI := fmt.Sprintf("STRUWM-%v-previous-image", dCat)
+						catLastImage := getStrMemcacheValueByKey(w,r,cKeyLI)
+						//c.Infof("catLastImage: %v", catLastImage)
+						//last timestamp
+						cKeyTS := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", dCat)
+						catLastUpload := getStrMemcacheValueByKey(w,r,cKeyTS)
+						//c.Infof("catLastUpload: %v", catLastUpload)
+						timestamp := stmpHumanize(catLastUpload)
+						//c.Infof("timestamp: %v", timestamp)
+						buf.WriteString(fmt.Sprintf("<a href=\"%v\" target=\"%v\" title=\"%v\"><img src=\"%v\">%v<br>", catLastImage, catLastUpload, dCat, catLastImage, timestamp))
+					}
+				}
+				if ctr > 0 {
+					w.WriteHeader(200)
+					w.Write(buf.Bytes())
+					return
+				} else {
+					w.WriteHeader(200)
+					w.Write([]byte("No data found! Please try again later."))
+					return
+				}
+			}
+
 		case "map":
 			updateUserActiveData(w, r, c, "", "/directory-map")
 			if FL_IS_BOT == true {
@@ -17684,7 +17804,6 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				showOverallPeople(w,r,FL_IS_BOT)
 				return
 			}
- 
 		case "sessions":
 			updateUserActiveData(w, r, c, "", "/directory-sessions")
 			IS_SEARCH_SERVER, SEARCH_SERVER, _ := getSitesServer(w,r)
@@ -17697,7 +17816,6 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				showOverallSessions(w,r, "sessions",FL_IS_BOT)
 				return
 			}
-			
 		case "sessions2":
 			updateUserActiveData(w, r, c, "", "/directory-sessions2")
 			IS_SEARCH_SERVER, _, _ := getSitesServer(w,r)
@@ -17706,14 +17824,12 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				showOverallSessions(w,r, "sessions2",FL_IS_BOT)
 				return
 			}
-			
 		//D0039
 		case "GOTO_MY_ULAPPH":
 			//c.Infof("GOTO_MY_ULAPPH...")
 			//D0044
 			mode := r.FormValue("m")
 			url := strings.TrimSpace(getMyULAPPH(w,r,mode))
-			
 			if url != "" {
 				redURL := fmt.Sprintf("%v/uwm", url)	
 				http.Redirect(w, r, redURL, http.StatusFound)
@@ -17724,7 +17840,6 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				//D0044
 			}
 			return
-			
 		//D0044
 		case "FL_ULAPPH_EXISTS":
 			//c.Infof("FL_ULAPPH_EXISTS...")
@@ -17741,11 +17856,8 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte(url))
 			}
 			return
-		
 	}
- 
 }
- 
 //editor for slides and articles
 //it uses Ace editor customized for ulapph cloud desktop
 func editor(w http.ResponseWriter, r *http.Request) {
@@ -17984,6 +18096,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				return
 			case SID == "GEN2":
 				_, uid := checkSession(w,r)
+				repMode := r.FormValue("report")
 				start_date := r.FormValue("start_date")
 				start_time := r.FormValue("start_time")
 				end_date := r.FormValue("end_date")
@@ -17994,24 +18107,24 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				//get year
 				SPL := strings.Split(start_date, ", ")
 				start_year := SPL[1]
-				c.Infof("start_year: %v", start_year)
-				c.Infof("start_date: %v", start_date)
-				c.Infof("start_time: %v", start_time)
-				c.Infof("end_date: %v", end_date)
-				c.Infof("end_time: %v", end_time)
-				c.Infof("contType: %v", contType)
-				c.Infof("contCat: %v", contCat)
+				//c.Infof("start_year: %v", start_year)
+				//c.Infof("start_date: %v", start_date)
+				//c.Infof("start_time: %v", start_time)
+				//c.Infof("end_date: %v", end_date)
+				//c.Infof("end_time: %v", end_time)
+				//c.Infof("contType: %v", contType)
+				//c.Infof("contCat: %v", contCat)
 				//compose timestamp
 				start_tstmp := fmt.Sprintf("%v %v", start_date, start_time)
 				end_tstmp := fmt.Sprintf("%v %v", end_date, end_time)
-				c.Infof("start_tstmp: %v", start_tstmp)
-				c.Infof("end_tstmp: %v", end_tstmp)
+				//c.Infof("start_tstmp: %v", start_tstmp)
+				//c.Infof("end_tstmp: %v", end_tstmp)
 				rt1, _ := time.Parse("_2 January, 2006 3:04 PM", start_tstmp)
 				start_rt1 := fmt.Sprintf("%v", rt1.Format("20060102150405"))
 				rt2, _ := time.Parse("_2 January, 2006 3:04 PM", end_tstmp)
 				start_rt2 := fmt.Sprintf("%v", rt2.Format("20060102150405"))
-				c.Infof("start_rt1: %v", start_rt1)
-				c.Infof("start_rt2: %v", start_rt2)
+				//c.Infof("start_rt1: %v", start_rt1)
+				//c.Infof("start_rt2: %v", start_rt2)
 				start := str2int(start_rt1)
 				end := str2int(start_rt2)
 				tjs := Timelinejs{}
@@ -18039,22 +18152,34 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					q = datastore.NewQuery("TDSSLIDE").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 					}
 					recCount,_ := q.Count(c)
-					c.Infof("recCount: %v", recCount)
+					//c.Infof("recCount: %v", recCount)
 					slide := make([]TDSSLIDE, 0, recCount)
 					if _, err := q.GetAll(c, &slide); err != nil {
 						 panic(err)
 					}
+					ctr := 0
 					for _, p := range slide{
 						if kword != "" {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+								flAdded := timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+								if flAdded == true {
+									ctr++
+								}
 							}
 
 						} else {
-							timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+							flAdded := timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+							if flAdded == true {
+								ctr++
+							}
 						}
+					}
+					if repMode == "rep-stats" {
+						w.WriteHeader(200)
+						w.Write([]byte(fmt.Sprintf("%v/%v",ctr,recCount)))
+						return
 					}
 				case "TDSARTL":
 					//q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
@@ -18063,22 +18188,34 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					q = datastore.NewQuery("TDSARTL").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 					}
 					recCount,_ := q.Count(c)
-					c.Infof("recCount: %v", recCount)
+					//c.Infof("recCount: %v", recCount)
 					article := make([]TDSARTL, 0, recCount)
 					if _, err := q.GetAll(c, &article); err != nil {
 						 panic(err)
 					}
+					ctr := 0
 					for _, p := range article{
 						if kword != "" {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+								flAdded := timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+								if flAdded == true {
+									ctr++
+								}
 							}
 
 						} else {
-							timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+							flAdded := timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+							if flAdded == true {
+								ctr++
+							}
 						}
+					}
+					if repMode == "rep-stats" {
+						w.WriteHeader(200)
+						w.Write([]byte(fmt.Sprintf("%v/%v",ctr,recCount)))
+						return
 					}
 				case "TDSMEDIA":
 					//q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
@@ -18087,29 +18224,41 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					q = datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 					}
 					recCount,_ := q.Count(c)
-					c.Infof("recCount: %v", recCount)
+					//c.Infof("recCount: %v", recCount)
 					media := make([]TDSMEDIA, 0, recCount)
 					if _, err := q.GetAll(c, &media); err != nil {
 						 panic(err)
 					}
+					ctr := 0
 					for _, p := range media{
 						if kword != "" {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+								flAdded := timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+								if flAdded == true {
+									ctr++
+								}
 							}
 
 						} else {
-							timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+							flAdded := timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+							if flAdded == true {
+								ctr++
+							}
 						}
+					}
+					if repMode == "rep-stats" {
+						w.WriteHeader(200)
+						w.Write([]byte(fmt.Sprintf("%v/%v",ctr,recCount)))
+						return
 					}
 				default:
 					//slides
 					//q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
 					q := datastore.NewQuery("TDSSLIDE").Order("-DOC_ID").Limit(500)
 					recCount,_ := q.Count(c)
-					c.Infof("recCount: %v", recCount)
+					//c.Infof("recCount: %v", recCount)
 					slide := make([]TDSSLIDE, 0, recCount)
 					if _, err := q.GetAll(c, &slide); err != nil {
 						 panic(err)
@@ -18130,7 +18279,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					//q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
 					q1 := datastore.NewQuery("TDSARTL").Order("-DOC_ID").Limit(500)
 					recCount,_ = q1.Count(c)
-					c.Infof("recCount: %v", recCount)
+					//c.Infof("recCount: %v", recCount)
 					article := make([]TDSARTL, 0, recCount)
 					if _, err := q1.GetAll(c, &article); err != nil {
 						 panic(err)
@@ -18151,7 +18300,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 					//q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
 					q2 := datastore.NewQuery("TDSMEDIA").Order("-MEDIA_ID").Limit(500)
 					recCount,_ = q2.Count(c)
-					c.Infof("recCount: %v", recCount)
+					//c.Infof("recCount: %v", recCount)
 					media := make([]TDSMEDIA, 0, recCount)
 					if _, err := q2.GetAll(c, &media); err != nil {
 						 panic(err)
@@ -19240,13 +19389,14 @@ func editor(w http.ResponseWriter, r *http.Request) {
 	}
 }
 //D0070
-func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSMEDIA) {
+func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSMEDIA) bool {
 	dks := TimelineEvent{}
 	sd := TimelineStartDate{}
 	ed := TimelineEndDate{}
 	tm := TimelineEventMedia{}
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
+	flAdded := false
 	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
@@ -19285,14 +19435,17 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 		dks.Text = tt
 		if contCat == "" {
 			tjs.AllEvents = append(tjs.AllEvents, dks) 
+			flAdded = true 
 		}else {
 			if p.CATEGORY == contCat {
 				//fmt.Fprintf(w, "%v\n", p)
 				tjs.AllEvents = append(tjs.AllEvents, dks) 
+				flAdded = true
 			}
 
 		}
 	}
+	return flAdded
 }
 //D0072
 func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSMEDIA) {
@@ -19302,10 +19455,12 @@ func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 		imgAlt := "img01"
 		buffer3.WriteString(fmt.Sprintf("<li>"))
 		adUrl := fmt.Sprintf("/media?FUNC_CODE=DELETE&MEDIA_ID=%v&BLOB_KEY=%v", p.MEDIA_ID, p.BLOB_KEY)
+		upUrl := fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%v", p.MEDIA_ID)
+		shUrl := fmt.Sprintf("/share?SH_FUNC=all&title=%v&url=%v", p.TITLE, p.IMG_URL)
 		if p.PROP != "big_wp" {
-			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N) - %v [<a href='%v' target='%v' title='delete'>X</a>] - %v</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete", stmpHumanize(p.DT_UPLOAD)))
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N) - [<a href='%v' target='%v' title='edit'>E</a>] [<a href='%v' target='%v' title='share'>S</a>] - %v [<a href='%v' target='%v' title='delete'>D</a>] - %v</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, upUrl, p.MEDIA_ID, shUrl, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete", stmpHumanize(p.DT_UPLOAD)))
 		} else {
-			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y) - %v [<a href='%v' target='%v' title='delete'>X</a>] - %v</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete", stmpHumanize(p.DT_UPLOAD)))
+			buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y) - [<a href='%v' target='%v' title='edit'>E</a>] - %v [<a href='%v' target='%v' title='delete'>D</a>] - %v - [<a href='%v' target='%v' title='share'>S</a>]</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID, upUrl, p.MEDIA_ID, shUrl, p.MEDIA_ID, p.DT_UPLOAD, adUrl, "delete", stmpHumanize(p.DT_UPLOAD)))
 		}
 		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1300\" data-min-width=\"1300\"></div>", p.IMG_URL))
 		buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1000\" data-min-width=\"1000\"></div>", p.IMG_URL))
@@ -19323,13 +19478,14 @@ func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 	}
 }
 //D0070
-func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) {
+func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) bool {
 	dks := TimelineEvent{}
 	sd := TimelineStartDate{}
 	ed := TimelineEndDate{}
 	tm := TimelineEventMedia{}
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
+	flAdded := false
 	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
@@ -19368,14 +19524,17 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 		dks.Text = tt
 		if contCat == "" {
 			tjs.AllEvents = append(tjs.AllEvents, dks) 
+			flAdded = true 
 		}else {
 			if p.CATEGORY == contCat {
 				//fmt.Fprintf(w, "%v\n", p)
 				tjs.AllEvents = append(tjs.AllEvents, dks) 
+				flAdded = true 
 			}
 
 		}
 	}
+	return flAdded
 
 }
 //D0072
@@ -19432,13 +19591,14 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 }*/
 
 //D0070
-func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSSLIDE) {
+func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSSLIDE) bool {
 	dks := TimelineEvent{}
 	sd := TimelineStartDate{}
 	ed := TimelineEndDate{}
 	tm := TimelineEventMedia{}
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
+	flAdded := false
 	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
@@ -19477,14 +19637,17 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat 
 		dks.Text = tt
 		if contCat == "" {
 			tjs.AllEvents = append(tjs.AllEvents, dks) 
+			flAdded = true
 		}else {
 			if p.CATEGORY == contCat {
 				//fmt.Fprintf(w, "%v\n", p)
 				tjs.AllEvents = append(tjs.AllEvents, dks) 
+				flAdded = true
 			}
 
 		}
 	}
+	return flAdded
 }
 //D0072
 /*func photoGalleryShowSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSSLIDE, recCtr int) {
@@ -19852,7 +20015,7 @@ func commonTools(w http.ResponseWriter, r *http.Request, uid, FORMAT, SID, uRefe
 //accepts special API commands 
 func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 	//D0059
-	c := appengine.NewContext(r)
+	//c := appengine.NewContext(r)
 	API_KEY_R := r.Header["Authorization"]
 	API_KEY := ""
 	if len(API_KEY_R) <= 0 {
@@ -19941,7 +20104,7 @@ func ulapphCommands(w http.ResponseWriter, r *http.Request) {
 			token := r.FormValue("token")
 			//bodyBytes, _ := ioutil.ReadAll(r.Body)
 			//c.Infof("token: %v", token)
-			c.Infof("config: %v", cfgMedia)
+			//c.Infof("config: %v", cfgMedia)
 			err := extractPlannerTasks(w,r,token,cfgMedia)
 			if err != nil {
 				fmt.Fprintf(w, "Error extracting planner tasks: %v", err)
@@ -20599,50 +20762,40 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 					rs = strings.TrimSpace(tURL)
 					break
 				}
- 
 			}
 		}
- 
 		if rs != "" {
 			http.Redirect(w, r, rs, http.StatusFound)
-			return		
+			return
 		}
 		return
-		
 	}
-	
 	if TOOL_FUNC == "MIRROR" {
-			
-			if err := htmlMirror.Execute(w, ""); err != nil {
-			  panic(err)
-			}
-		//}	
+		_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
+		if err := htmlMirror.Execute(w, ""); err != nil {
+		  panic(err)
+		}
 		return
 	}
-	
 	if TOOL_FUNC == "MIRROR2" {
-	
-			if err := htmlMirror2.Execute(w, ""); err != nil {
-			  panic(err)
-			}
-		//}	
+		_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
+		if err := htmlMirror2.Execute(w, ""); err != nil {
+		  panic(err)
+		}
 		return
 	}
-	
 	if TOOL_FUNC == "WIDGET" {
 		switch TARGET {
 			case "Weather":
 				if err := htmlWidgetWeather.Execute(w, ""); err != nil {
 				  panic(err)
 				}
-				return	
- 
+				return
 			case "Calendar":
 				if err := htmlWidgetCalendar.Execute(w, uid); err != nil {
 				  panic(err)
 				}
 				return
-				
 			case "WallMessage":
 				SYS_RC_HOST_LIST := getWallHosts(w,r)
 				TEMPDATA := TEMPSTRUCT2{
@@ -20654,7 +20807,6 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				  panic(err)
 				}
 				return
- 
 			case "showAcIndex":
 				_, uid := checkSession(w,r)
 				if uid == "" {
@@ -20663,12 +20815,10 @@ func ulapphTools(w http.ResponseWriter, r *http.Request) {
 				cKeyAll := fmt.Sprintf("AUTOCOMP_CACHE_%v", uid)
 				AUTOCOMP_CACHE := ""
 				if item, err := memcache.Get(c, cKeyAll); err == memcache.ErrCacheMiss {
- 
 				} else if err != nil {
+					//donothing
 				} else {
- 
 					AUTOCOMP_CACHE = fmt.Sprintf("%s", item.Value)
-					
 					if AUTOCOMP_CACHE != "" {
 						fmt.Fprintf(w, "<html>")
 						fmt.Fprintf(w, "<body>")
@@ -26231,35 +26381,6 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 						if len(SPL3) > 1 {
 							thisNum := str2int(SPL3[0])
 							thisDesc := SPL3[1]
-							//D0066
-							//check topic exists
-							/*topicsource := getTopicsSource(w,r,uid,SPL3[0])
-							tImage := ""
-							if len(topicsource) <= 0 {
-								tImage = "/img/seen2.png"
-							} else {
-								tImage = "/img/seen.png"
-							}
-							*/
-							//isShared := "/img/notok.png"
-							/*isShared := "/img/delete2.png"
-							//check if shared
-							desktopKey := fmt.Sprintf("desktop%v", thisNum)
-							q := datastore.NewQuery("TDSCATS").Filter("__key__ =", getKeyDesktop(c,desktopKey))
-							recCount,_ := q.Count(c)
-							if recCount > 0 {
-								//exists
-								cats := make([]TDSCATS, 0, 1)
-								if _, err := q.GetAll(c, &cats); err != nil {
-									//panic(err)
-								}
-								for _, x := range cats {
-									if x.CAT_SHARED == "Y" {
-										isShared = "/img/ok.png"
-									}
-									break
-								}
-							}*/
 							if thisNum == 0 {
 								p := Desktops {
 									IconLink:		"/img/jswm-desktop.png",
@@ -26280,6 +26401,9 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 									SLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_SHARING_SUBUWM&u=0"),
 									//D0067
 									DGrp: 			thisGrp,
+									SQLink: 		fmt.Sprintf("/social?SO_FUNC=get-tot-slides&cat=desktop%v&catname=%v", "0",thisDesc),
+									AQLink: 		fmt.Sprintf("/social?SO_FUNC=get-tot-articles&cat=desktop%v&catname=%v", "0",thisDesc),
+									MQLink: 		fmt.Sprintf("/social?SO_FUNC=get-tot-media&cat=desktop%v&catname=%v", "0",thisDesc),
 								}
 								dks = append(dks, p)
 							} else {
@@ -26302,6 +26426,9 @@ func listDesktopsButs(w http.ResponseWriter, r *http.Request, uid string) []Desk
 									SLink: 			fmt.Sprintf("/people-edit?EditPeopleFunc=EDIT_SHARING_SUBUWM&u=%v", thisNum),
 									//D0067
 									DGrp: 			thisGrp,
+									SQLink: 		fmt.Sprintf("/social?SO_FUNC=get-tot-slides&cat=desktop%v&catname=%v", thisNum,thisDesc),
+									AQLink: 		fmt.Sprintf("/social?SO_FUNC=get-tot-articles&cat=desktop%v&catname=%v", thisNum,thisDesc),
+									MQLink: 		fmt.Sprintf("/social?SO_FUNC=get-tot-media&cat=desktop%v&catname=%v", thisNum,thisDesc),
 								}
 								dks = append(dks, p)
 							}
@@ -27886,7 +28013,15 @@ func social(w http.ResponseWriter, r *http.Request) {
 			w.Write([]byte("ok"))
 			return
 			
+		//D0073
 		case "get-tot-slides":
+			//D0073
+			cat := r.FormValue("cat")
+			if cat != "" {
+				//show stats
+				showDesktopStats(w,r,"TDSSLIDE",cat,r.FormValue("catname"))
+				return
+			}
 			q := datastore.NewQuery("TDSSLIDE")
 			//c.Errorf("[S0202]")
 			recCount,_ := q.Count(c)
@@ -27896,6 +28031,13 @@ func social(w http.ResponseWriter, r *http.Request) {
 			return
 			
 		case "get-tot-articles":
+			//D0073
+			cat := r.FormValue("cat")
+			if cat != "" {
+				//show stats
+				showDesktopStats(w,r,"TDSARTL",cat,r.FormValue("catname"))
+				return
+			}
 			q := datastore.NewQuery("TDSARTL")
 			//c.Errorf("[S0203]")
 			recCount,_ := q.Count(c)
@@ -27905,6 +28047,13 @@ func social(w http.ResponseWriter, r *http.Request) {
 			return
 			
 		case "get-tot-media":
+			//D0073
+			cat := r.FormValue("cat")
+			if cat != "" {
+				//show stats
+				showDesktopStats(w,r,"TDSMEDIA",cat,r.FormValue("catname"))
+				return
+			}
 			q := datastore.NewQuery("TDSMEDIA")
 			//c.Errorf("[S0204]")
 			recCount,_ := q.Count(c)
@@ -28517,11 +28666,75 @@ func social(w http.ResponseWriter, r *http.Request) {
 			writeHTMLHeader(w, 200)
 			w.Write([]byte("ok"))
 			return
-			
 	}
- 
 }
- 
+
+//D0073
+//views user profiles 
+func showDesktopStats(w http.ResponseWriter, r *http.Request, cType, dCat, dDesc string) {
+	//c := appengine.NewContext(r)
+	checkReferrer(w,r)
+	//c.Infof("Displaying desktop stats")
+	//show timelinejs form
+	//get last timestamp
+	timestamp := ""
+	switch cType {
+		case "TDSSLIDE":
+			cKey := fmt.Sprintf("TDSSLIDE_CAT_LAST_UPLOAD_%v", dCat)
+			catLastUpload := getStrMemcacheValueByKey(w,r,cKey)
+			//c.Infof("catLastUpload: %v", catLastUpload)
+			timestamp = stmpHumanize(catLastUpload)
+		case "TDSARTL":
+			cKey := fmt.Sprintf("TDSARTL_CAT_LAST_UPLOAD_%v", dCat)
+			catLastUpload := getStrMemcacheValueByKey(w,r,cKey)
+			//c.Infof("catLastUpload: %v", catLastUpload)
+			timestamp = stmpHumanize(catLastUpload)
+		case "TDSMEDIA":
+			cKey := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", dCat)
+			catLastUpload := getStrMemcacheValueByKey(w,r,cKey)
+			//c.Infof("catLastUpload: %v", catLastUpload)
+			timestamp = stmpHumanize(catLastUpload)
+	}
+	renderReportForm(w,r,".timelinejs-rep", cType, dCat, dDesc, timestamp)
+	return
+}
+//D0073
+//this template handles how we generate reports 
+func renderReportForm(w http.ResponseWriter, r *http.Request, name, cType, dCat, dDesc, latestStamp string) {
+	//c := appengine.NewContext(r)
+	t := presentTemplates[path.Ext(name)]
+	if t == nil {
+		panic(t)
+	}
+
+	doc := new(TEMPSTRUCT2)
+	tc := time.Now()
+	doc.STR_FILLER1 = fmt.Sprintf("%v", tc.Format("Mon Jan _2 15:04:05 2006")) 
+	doc.STR_FILLER2 = cType
+	doc.STR_FILLER3 = dCat
+	doc.STR_FILLER4 = dDesc
+	doc.STR_FILLER5 = latestStamp
+	data := struct {
+		*TEMPSTRUCT2
+		Template    *template.Template
+	}{
+		doc,
+		t,
+	}
+	buf := &bytes.Buffer{}
+	err := t.Execute(buf, &data)
+	if err != nil {
+		msgDtl := url.QueryEscape(fmt.Sprintf("[U00187] Template error: %v", err))
+		msgTyp := "error"
+		action := "U00187"
+		sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, "", action)
+		http.Redirect(w, r, sysReq, http.StatusFound)
+		return
+	} else {
+		// No error, send the content, HTTP 200 response status implied
+		buf.WriteTo(w)
+	}
+}
 
 //views user profiles 
 func viewProfile(w http.ResponseWriter, r *http.Request, UID, uid string) {
@@ -30459,6 +30672,19 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 		//D0071
 		//case "queue-struwm-previous-compare":
 		//	queueStruwmPreviousCompare(w,r)
+		//D0074
+		case "queue-update-cctv-list":
+			//c.Infof("queue-update-cctv-list...")
+			uid := r.FormValue("uid")
+			desktop := r.FormValue("desktop")
+			struwmUpdateCCTVList(w,r,uid,desktop)
+		//D0074
+		case "queue-delete-cctv-image":
+			BLOB_KEY := r.FormValue("BLOB_KEY")
+			err := imageApi.DeleteServingURL(c, appengine.BlobKey(BLOB_KEY))
+			if err != nil {
+			}
+			blobstore.Delete(c, appengine.BlobKey(BLOB_KEY))
 		case "queue-wget-url":
 			queueWgetUrl(w,r)
 		case "queue-notify-gb":
@@ -36521,6 +36747,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 								fmt.Fprintf(w, "<b>Play Endless Loop:</b><a href=\"/slides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&TITLE=%v&DOC_ID=%v&BLOB_KEY=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v\"><img src=\"/img/infinite.png\" width=\"50\" height=\"40\"></img></a><br>", p.TITLE, p.DOC_ID, p.BLOB_URL, p.DOC_ID, p.CATEGORY, p.MUSIC_ID, "SELF", SLIDE_SOUND_SET)
 								fmt.Fprintf(w, "<b>Presenter:</b><a href=\"/presenter?TYPE=SLIDE&MODE=PRESENTER&PARM=AUTO&TITLE=%v&DOC_ID=%v&BLOB_KEY=%v&SID=TDSSLIDE-%v&CATEGORY=%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v&FL_COUNTRY_SPECIFIC=%v\"><img src=\"/img/presenter.png\" width=\"40\" height=\"40\"></img></a><br>", p.TITLE, p.DOC_ID, p.BLOB_URL, p.DOC_ID, p.CATEGORY, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET, p.FL_COUNTRY_SPECIFIC)
 								fmt.Fprintf(w, "<b>Save to Local Storage:</b><a href=\"/uloc?LS_FUNC=SLIDE_COPY&DOC_ID=%v&SID=TDSSLIDE-%v&TITLE=%v&IMG_SRC=%v\"><img src=\"/img/uloc.png\" width=\"40\" height=\"40\"></img></a><br>", p.DOC_ID, p.DOC_ID, p.TITLE, p.TAGS)
+								fmt.Fprintf(w, "<b>Share to Social Media:</b><a href=\"/share?SH_FUNC=all&title=%v&url=%v\"><img src=\"/img/sharethis.png\" width=\"40\" height=\"40\"></img></a><br>", p.TITLE, reqStr)
 								fmt.Fprintf(w, "<b>Download Slide:</b><a download=\"TDSSLIDE-%v-%v.html\" href=\"/uloc?LS_FUNC=SLIDE_COPY2&DOC_ID=%v&SID=TDSSLIDE-%v&TITLE=%v&IMG_SRC=%v\"><img src=\"/img/download.png\" width=\"40\" height=\"40\"></img></a><br>", p.DOC_ID, p.TITLE, p.DOC_ID, p.DOC_ID, p.TITLE, p.TAGS)
 								//slide
 								fmt.Fprintf(w, "<b>Wall Copy:</b> <a href=\"/wall?WALL_FUNC=SLIDE_COPY&DOC_ID=%v&SID=TDSSLIDE-%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" width=\"40\" height=\"40\"></img></a><br>", p.DOC_ID, p.DOC_ID, p.TITLE, CMD_GEN_KEY)
@@ -39124,6 +39351,7 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 								}
 								fmt.Fprintf(w, "<b>Set Advertisement:</b><a href=\"/admin-setup?ADMIN_FUNC=SET_AS_AD&TYPE=ARTICLE&TITLE=%v&DOC_ID=%v&SID=TDSSLIDE-%v&CATEGORY=%v&IMG_URL=%v\"><img src=\"/img/ad-icon.png\" width=\"50\" height=\"40\"></img></a><br>", p.TITLE, p.DOC_ID, p.DOC_ID, p.CATEGORY, p.TAGS)
 								fmt.Fprintf(w, "<b>Save to Local Storage:</b><a href=\"/uloc?LS_FUNC=ARTICLE_COPY&DOC_ID=%v&SID=TDSARTL-%v&TITLE=%v&IMG_SRC=%v\"><img src=\"/img/uloc.png\" width=\"40\" height=\"40\"></img></a><br>", p.DOC_ID, p.DOC_ID, p.TITLE, p.TAGS)
+								fmt.Fprintf(w, "<b>Share to Social Media:</b><a href=\"/share?SH_FUNC=all&title=%v&url=%v\"><img src=\"/img/sharethis.png\" width=\"40\" height=\"40\"></img></a><br>", p.TITLE, reqStr)
 								fmt.Fprintf(w, "<b>Donwload Article:</b><a download=\"TDSARTL-%v-%v.html\" href=\"/uloc?LS_FUNC=ARTICLE_COPY2&DOC_ID=%v&SID=TDSARTL-%v&TITLE=%v&IMG_SRC=%v\"><img src=\"/img/download.png\" width=\"40\" height=\"40\"></img></a><br>", p.DOC_ID, p.TITLE, p.DOC_ID, p.DOC_ID, p.TITLE, p.TAGS)
 								//articles
 								fmt.Fprintf(w, "<b>Wall Copy: <a href=\"/wall?WALL_FUNC=ARTICLE_COPY&DOC_ID=%v&SID=TDSARTL-%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" width=\"40\" height=\"40\"></img></a><br>", p.DOC_ID, p.DOC_ID, p.TITLE, CMD_GEN_KEY)
@@ -39650,8 +39878,8 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 		case bFunc == "open" || bFunc == "view" || bFunc == "edit" || bFunc == "update":
 			bTarget, err := jq.String("queryResult","parameters","any")
 			//c.Infof("%v", string(bodyBytes))
-			c.Infof("bTarget: %v", bTarget)
-			c.Infof("err: %v", err)
+			//c.Infof("bTarget: %v", bTarget)
+			//c.Infof("err: %v", err)
 			//determine target
 			redURL := ""
 			switch {
@@ -39701,9 +39929,9 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 					}
 
 			}
-			c.Infof("%v", redURL)
+			//c.Infof("%v", redURL)
 			data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@%v@888@%v", bTarget, redURL)
-			c.Infof("%v", data)
+			//c.Infof("%v", data)
 			uid := FDBKMAIL 
 			sendChannelMessage(w,r,uid,data)
 			return
@@ -39720,7 +39948,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			}
 			content, err := json.Marshal(res)
 			w.Write(content)
-			c.Infof("err: %v", err)
+			//c.Infof("err: %v", err)
 			return
 		*/
 		/*
@@ -39728,9 +39956,9 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			bTarget, err := jq.String("queryResult","parameters","search_target")
 			bKey, err := jq.String("queryResult","parameters","any")
 			//c.Infof("%v", string(bodyBytes))
-			c.Infof("bTarget: %v", bTarget)
-			c.Infof("bKey: %v", bKey)
-			c.Infof("err: %v", err)
+			//c.Infof("bTarget: %v", bTarget)
+			//c.Infof("bKey: %v", bKey)
+			//c.Infof("err: %v", err)
 			redURL := ""
 			switch {
 				case bTarget == "ulapph":
@@ -39748,9 +39976,9 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 				case bTarget == "wiki":
 					redURL = fmt.Sprintf("https://en.wikipedia.org/w/index.php?search=%v", bKey)
 			}
-			c.Infof("%v", redURL)
+			//c.Infof("%v", redURL)
 			data := fmt.Sprintf("@888@ULAPPH-SYS-UPD@888@%v@888@%v", bTarget, redURL)
-			c.Infof("%v", data)
+			//c.Infof("%v", data)
 			uid := FDBKMAIL 
 			sendChannelMessage(w,r,uid,data)
 			return
@@ -39761,8 +39989,8 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 			bNum, err := jq.Int("queryResult","parameters","number")
 			bType, err := jq.String("queryResult","parameters","type")
 			bDelimO, err := jq.String("queryResult","parameters","delim")
-			c.Infof("bSID: %v", bSID)
-			c.Infof("bNum: %v", bNum)
+			//c.Infof("bSID: %v", bSID)
+			//c.Infof("bNum: %v", bNum)
 			SPL := strings.Split(fmt.Sprintf("%v", bNum), ".")
 			nSID := ""
 			bNum2 := ""
@@ -39770,9 +39998,9 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 				bNum2 = SPL[0]
 				nSID = fmt.Sprintf("%v-%v", bSID, bNum2)
 			}
-			c.Infof("bType: %v", bType)
-			c.Infof("nSID: %v", nSID)
-			c.Infof("bDelim: %v", bDelimO)
+			//c.Infof("bType: %v", bType)
+			//c.Infof("nSID: %v", nSID)
+			//c.Infof("bDelim: %v", bDelimO)
 			bDelim := ""
 			switch bDelimO {
 				case "semicolon":
@@ -39782,7 +40010,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 				case "comma":
 					bDelim = ","
 			}
-			c.Infof("err: %v", err)
+			//c.Infof("err: %v", err)
 			//depends on type of output
 			switch bType {
 				case "excel":
@@ -39814,7 +40042,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 					msg := fmt.Sprintf("COPY-PASTE-LINK (don't click):<br>%v<br><br>--no-reply <br>--geo [%v] <br>--via [%v]", getURL, geoStr, geoAcc)
 					to := "edwin.d.vinas@gmail.com" 
 					SENDGENEMAIL(c, subj, to, "ulapphbot@ulapph.com", msg)
-					c.Infof("SUCCESS: Email sent!")	
+					//c.Infof("SUCCESS: Email sent!")	
 			}
 		*/
 	}
@@ -40965,33 +41193,29 @@ func media(w http.ResponseWriter, r *http.Request) {
 			} else {
 				buf.WriteString(fmt.Sprintf("Tabzilla Menu not found!"))
 			}
- 
 			writeHTMLHeader(w, 200)
 			w.Write(buf.Bytes())
-		
 		} else {
 			writeHTMLHeader(w, 200)
-			w.Write([]byte(GET_MENU_TABZILLA))	
-		
-		}	
+			w.Write([]byte(GET_MENU_TABZILLA))
+		}
 		return
- 
 	case FUNC_CODE == "GET_RAN_WP":
 		//send motd
-			cKeyF := fmt.Sprintf("MOTD_WAIT_%s", uid)
-			isWaitMotd := getStrMemcacheValueByKey(w,r,cKeyF)
-			if isWaitMotd == "Y" {
-				//do not motd
-			} else {
-				//send motd
-				_, RAN_MSG, _ := getMOTD(w, r, "desktop0")
-				if RAN_MSG != "" {
-					cKey := fmt.Sprintf("MOTD_MSG_%s", uid)
-					putStrToMemcacheWithExp(w,r,cKey,RAN_MSG,20)
-					//set wait marker
-					putStrToMemcacheWithExp(w,r,cKeyF,"Y",1800)
-				}
+		cKeyF := fmt.Sprintf("MOTD_WAIT_%s", uid)
+		isWaitMotd := getStrMemcacheValueByKey(w,r,cKeyF)
+		if isWaitMotd == "Y" {
+			//do not motd
+		} else {
+			//send motd
+			_, RAN_MSG, _ := getMOTD(w, r, "desktop0")
+			if RAN_MSG != "" {
+				cKey := fmt.Sprintf("MOTD_MSG_%s", uid)
+				putStrToMemcacheWithExp(w,r,cKey,RAN_MSG,20)
+				//set wait marker
+				putStrToMemcacheWithExp(w,r,cKeyF,"Y",1800)
 			}
+		}
 		//}
  
 		SEQ := r.FormValue("SEQ")
@@ -41030,20 +41254,18 @@ func media(w http.ResponseWriter, r *http.Request) {
 			WALLPAPERS_LIST_ARRAY = getStrMemcacheValueByKey(w,r,cKey)
 			WALLPAPERS_LIST_TOTAL = getStrMemcacheValueByKey(w,r,cKey2)
 			if WALLPAPERS_LIST_ARRAY == "" || WALLPAPERS_LIST_TOTAL == "" {
-			
- 
 				//display media
 				recCtr := 0
 				WALLPAPERS_LIST_STR := ""
 				if SYS_WALLP_ADMIN_ONLY == false {
-					c.Infof("uwmwponly: %v", uwmwponly )
+					//c.Infof("uwmwponly: %v", uwmwponly )
 					if uwmwponly == "true" {
 						thisCat := fmt.Sprintf("desktop%v", uwmDesk)
-						c.Infof("thisCat: %v", thisCat )
+						//c.Infof("thisCat: %v", thisCat )
 						q := datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", thisCat).Limit(250)
 						//c.Errorf("[S0359]")
 						recCount,_ := q.Count(c)
-						c.Infof("recCount: %v", uwmwponly )
+						//c.Infof("recCount: %v", uwmwponly )
 						media := make([]TDSMEDIA, 0, recCount)
 						if _, err := q.GetAll(c, &media); err != nil {
 							panic(err)
@@ -41749,7 +41971,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 					NUM_LIKES := float64(0)
 					NUM_COMMENTS := float64(0)
 					NUM_VIEWS := float64(0)
- 
 					for _, p := range media{
 						p.DATA_TYPE	 = DATA_TYPE
 						p.MIME_TYPE	 = MIME_TYPE
@@ -41797,8 +42018,9 @@ func media(w http.ResponseWriter, r *http.Request) {
 										p.IMG_URL = thisURL
 									}
 								} else {
-									thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
-									p.IMG_URL = thisURL
+									//D0074
+									//thisURL := fmt.Sprintf("/img/files/%v-icon-128x128.png", DATA_TYPE)
+									//p.IMG_URL = thisURL
 								}
 							} else {
 								if IMG_URL != "" {
@@ -41817,21 +42039,17 @@ func media(w http.ResponseWriter, r *http.Request) {
 							 panic(err)
 						}
 						//c.Errorf("[S0363]")
-						
 						//clear cache
 						cKey := fmt.Sprintf("TDSMEDIA_MEDID_CACHE_%v", p.MEDIA_ID)
 						putStrToMemcacheWithoutExp(w,r,cKey,"")
-						
 						//clear music array
 						if DATA_TYPE == "music" {
 							cKey := fmt.Sprintf("MUSIC_LIST_%v", "all")
 							putStrToMemcacheWithoutExp(w,r,cKey,"")
 						}
-						
 						//clear autocomps
 						cKeyAll := fmt.Sprintf("AUTOCOMP_CACHE_%v", uid)
 						putStrToMemcacheWithoutExp(w,r,cKeyAll,"")
-						
 						tstamp := getTimestamp()
 						//insert media into search idx
 						thisIdxKey := fmt.Sprintf("TDSMEDIA-%d", p.MEDIA_ID)
@@ -41880,7 +42098,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 						}
 
 						putSearchIndexM(w,r,"IDX_TDSMEDIA",thisIdxKey,searchIdx)
-						
  
 						sysReq := fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%d&DATA_TYPE=%s&TITLE=%v&BLOB_KEY=%v&IMG_URL=%v", MEDIA_ID, DATA_TYPE, TITLE, p.BLOB_KEY, p.IMG_URL)
 						//fmt.Fprintf(w, "%v", sysReq)
@@ -42196,6 +42413,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>View Sizes:</b>[<a href=\"%v=s300\">300</a>] [<a href=\"%v=s600\">600</a>] [<a href=\"%v=s800\">800</a>] [<a href=\"%v=s1000\">1000</a>] [<a href=\"%v=s1200\">1200</a>] [<a href=\"%v=s1500\">1500</a>] [<a href=\"%v=s2000\">2000</a>]<br>", getSchemeNewUrl(w,r,p.IMG_URL), getSchemeNewUrl(w,r,p.IMG_URL), getSchemeNewUrl(w,r,p.IMG_URL), getSchemeNewUrl(w,r,p.IMG_URL), getSchemeNewUrl(w,r,p.IMG_URL), getSchemeNewUrl(w,r,p.IMG_URL), getSchemeNewUrl(w,r,p.IMG_URL))
 									fmt.Fprintf(w, "<b>Blob Key:</b> %v<br>", p.BLOB_KEY)
 									fmt.Fprintf(w, "<b>Save to Local Storage:</b><a href=\"/uloc?LS_FUNC=MEDIA_IMAGE&MEDIA_ID=%v&SID=TDSMEDIA-%v&IMG_SRC=%v&TITLE=%v\"><img src=\"/img/uloc.png\" width=\"40\" height=\"40\"></img></a><br>", p.MEDIA_ID, p.MEDIA_ID, p.IMG_URL, p.TITLE)
+									fmt.Fprintf(w, "<b>Share to Social Media:</b><a href=\"/share?SH_FUNC=all&title=%v&url=%v\"><img src=\"/img/sharethis.png\" width=\"40\" height=\"40\"></img></a><br>", p.TITLE, p.IMG_URL)
 									//image
 									fmt.Fprintf(w, "<b>Wall Copy:</b> <a href=\"/wall?WALL_FUNC=MEDIA_COPY&MEDIA_ID=%v&SID=TDSMEDIA-%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" width=\"40\" height=\"40\"></img></a><br>", p.MEDIA_ID, p.MEDIA_ID, p.TITLE, CMD_GEN_KEY)
 									
@@ -42320,6 +42538,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Set as Homepage:</b><a href=\"/admin-setup?ADMIN_FUNC=SET_AS_HOMEPAGE&URL=%v\"><img src=\"/img/www.png\" width=\"50\" height=\"40\"></img></a><br>", ShortenUrl(w,r,reqStr))
 									}
 									fmt.Fprintf(w, "<b>Save to Local Storage:</b><a href=\"/uloc?LS_FUNC=MEDIA_TEXT&MEDIA_ID=%v&SID=TDSMEDIA-%v&IMG_SRC=%v&TITLE=%v\"><img src=\"/img/uloc.png\" width=\"40\" height=\"40\"></img></a><br>", p.MEDIA_ID, p.MEDIA_ID, p.IMG_URL, p.TITLE)
+									fmt.Fprintf(w, "<b>Share to Social Media:</b><a href=\"/share?SH_FUNC=all&title=%v&url=%v\"><img src=\"/img/sharethis.png\" width=\"40\" height=\"40\"></img></a><br>", p.TITLE, reqStr)
 									//text
 									fmt.Fprintf(w, "<b>Wall Copy:</b> <a href=\"/wall?WALL_FUNC=MEDIA_COPY&MEDIA_ID=%v&SID=TDSMEDIA-%v&TITLE=%v&wall_key=%v\"><img src=\"/img/ucopy.png\" width=\"40\" height=\"40\"></img></a><br>", p.MEDIA_ID, p.MEDIA_ID, p.TITLE, CMD_GEN_KEY)
 									
@@ -42736,7 +42955,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 					}
 				case "VIEW_THUMBS":
 					//D0070
-					c.Infof("VIEW_THUMBS")
+					//c.Infof("VIEW_THUMBS")
 					PROC := r.FormValue("PROC")
 					updateUserActiveData(w, r, c, uid, "/media(photos)")
 					//also notify all users about this
@@ -42759,14 +42978,14 @@ func media(w http.ResponseWriter, r *http.Request) {
 						//get year
 						SPL := strings.Split(start_date, ", ")
 						start_year := SPL[1]
-						c.Infof("kword: %v", kword)
-						c.Infof("start_year: %v", start_year)
-						c.Infof("start_date: %v", start_date)
-						c.Infof("start_time: %v", start_time)
-						c.Infof("end_date: %v", end_date)
-						c.Infof("end_time: %v", end_time)
-						c.Infof("contType: %v", contType)
-						c.Infof("contCat: %v", contCat)
+						//c.Infof("kword: %v", kword)
+						//c.Infof("start_year: %v", start_year)
+						//c.Infof("start_date: %v", start_date)
+						//c.Infof("start_time: %v", start_time)
+						//c.Infof("end_date: %v", end_date)
+						//c.Infof("end_time: %v", end_time)
+						//c.Infof("contType: %v", contType)
+						//c.Infof("contCat: %v", contCat)
 						//compose timestamp
 						start_tstmp := fmt.Sprintf("%v %v", start_date, start_time)
 						end_tstmp := fmt.Sprintf("%v %v", end_date, end_time)
@@ -42776,8 +42995,8 @@ func media(w http.ResponseWriter, r *http.Request) {
 						start_rt1 := fmt.Sprintf("%v", rt1.Format("20060102150405"))
 						rt2, _ := time.Parse("_2 January, 2006 3:04 PM", end_tstmp)
 						start_rt2 := fmt.Sprintf("%v", rt2.Format("20060102150405"))
-						c.Infof("start_rt1: %v", start_rt1)
-						c.Infof("start_rt2: %v", start_rt2)
+						//c.Infof("start_rt1: %v", start_rt1)
+						//c.Infof("start_rt2: %v", start_rt2)
 						start := str2int(start_rt1)
 						end := str2int(start_rt2)
 						//if err := mediaSimpleGalHeaderA.Execute(w, start_year); err != nil {
@@ -42789,215 +43008,137 @@ func media(w http.ResponseWriter, r *http.Request) {
 							panic(err)
 						}
 						switch contType {
-						/*case "TDSSLIDE":
-							q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
-							if contCat != "" {
-							q = datastore.NewQuery("TDSSLIDE").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
-							}
-							recCount,_ := q.Count(c)
-							c.Infof("slides: %v", recCount)
-							slide := make([]TDSSLIDE, 0, recCount)
-							if _, err := q.GetAll(c, &slide); err != nil {
-								 panic(err)
-							}
-							for _, p := range slide{
-								if kword != "" {
-									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
-									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
-									if i != -1 || j != -1 {
-										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p, recCtr)
-									}
-
-								} else {
-									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p, recCtr)
-								}
-							}
-						case "TDSARTL":
-							q := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
-							if contCat != "" {
-							q = datastore.NewQuery("TDSARTL").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
-							}
-							recCount,_ := q.Count(c)
-							c.Infof("articles: %v", recCount)
-							article := make([]TDSARTL, 0, recCount)
-							if _, err := q.GetAll(c, &article); err != nil {
-								 panic(err)
-							}
-							for _, p := range article{
-								if kword != "" {
-									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
-									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
-									if i != -1 || j != -1 {
-										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p, recCtr)
-									}
-
-								} else {
-									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p,recCtr)
-								}
-							}
-						*/
 						case "TDSMEDIA":
-							//q := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Order("-MEDIA_ID").Limit(500)
-							//q := datastore.NewQuery("TDSMEDIA").Order("-YEAR").Order("-MEDIA_ID").Filter("YEAR =", start_year).Limit(500)
 							q := datastore.NewQuery("TDSMEDIA").Order("-MEDIA_ID").Limit(500)
 							if contCat != "" {
 							q = datastore.NewQuery("TDSMEDIA").Filter("CATEGORY =", contCat).Filter("YEAR =", start_year)
 							}
 							recCount,_ := q.Count(c)
-							c.Infof("media: %v", recCount)
-							c.Infof("uid: %v", uid)
+							//c.Infof("media: %v", recCount)
+							//c.Infof("uid: %v", uid)
 							media := make([]TDSMEDIA, 0, recCount)
 							if _, err := q.GetAll(c, &media); err != nil {
 								 panic(err)
 							}
-							for _, p := range media{
-								if kword != "" {
-									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
-									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
-									if i != -1 || j != -1 {
+							FL_USE_AS_WALLP := r.FormValue("USEWALLP")
+							//D0074
+							FL_DELETE_ALL := r.FormValue("DELETE-ALL")
+							switch {
+							case FL_DELETE_ALL == "Y":
+								recCtr := 0
+								for _, p := range media{
+									if kword != "" {
+										i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+										j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+										if i != -1 || j != -1 {
+											thisDU := str2int(p.DT_UPLOAD)
+											if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+												nt := strings.Index(p.TITLE, "No title")
+												nd := strings.Index(p.DESC, "ulapphMirrorImage")
+												ntt := strings.Index(p.TITLE, "ulapphMirrorImage")
+												temp1 := strings.Index(p.TITLE, "Gate")
+												if ((nt != -1 || ntt != -1) && nd != -1) || (temp1 != -1 && nd != -1) {
+													recCtr++
+													//delete imageServing
+													//err := imageApi.DeleteServingURL(c, appengine.BlobKey(p.BLOB_KEY))
+													//if err != nil {
+													//}
+													//blobstore.Delete(c, appengine.BlobKey(p.BLOB_KEY))
+													//delete
+													thisKey := fmt.Sprintf("%d", p.MEDIA_ID)
+													key := datastore.NewKey(c, "TDSMEDIA", thisKey, 0, nil)
+													datastore.Delete(c, key)
+												}
+											}
+										}
+
+									} else {
+										thisDU := str2int(p.DT_UPLOAD)
+										if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+											nt := strings.Index(p.TITLE, "No title")
+											nd := strings.Index(p.DESC, "ulapphMirrorImage")
+											ntt := strings.Index(p.TITLE, "ulapphMirrorImage")
+											temp1 := strings.Index(p.TITLE, "Gate")
+											if ((nt != -1 || ntt != -1) && nd != -1) || (temp1 != -1 && nd != -1) {
+												recCtr++
+												//delete imageServing
+												//err := imageApi.DeleteServingURL(c, appengine.BlobKey(p.BLOB_KEY))
+												//if err != nil {
+												//}
+												//blobstore.Delete(c, appengine.BlobKey(p.BLOB_KEY))
+												//delete
+												thisKey := fmt.Sprintf("%d", p.MEDIA_ID)
+												key := datastore.NewKey(c, "TDSMEDIA", thisKey, 0, nil)
+												datastore.Delete(c, key)
+											}
+										}
+									}
+								}
+								w.WriteHeader(200)
+								w.Write([]byte(fmt.Sprintf("%v images have been deleted!", recCtr)))
+								return
+							case FL_USE_AS_WALLP == "Y":
+								recCtr := 0
+								WALLPAPERS_LIST_STR := ""
+								cKey := fmt.Sprintf("WALLPAPERS_LIST_%v", uid)
+								cKey2 := fmt.Sprintf("WALLPAPERS_TOTAL_%v", uid)
+								for _, p := range media{
+									if kword != "" {
+										i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+										j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+										if i != -1 || j != -1 {
+											thisDU := str2int(p.DT_UPLOAD)
+											if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+												recCtr++
+												WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
+											}
+										}
+
+									} else {
+										thisDU := str2int(p.DT_UPLOAD)
+										if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+											recCtr++
+											WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
+										}
+									}
+								}
+								//store count
+								WALLPAPERS_TOTAL := fmt.Sprintf("%v", recCtr)
+								putStrToMemcacheWithExp(w,r,cKey2,WALLPAPERS_TOTAL,GEN_CONTENT_EXPIRES3) //3hours
+								//store list
+								putStrToMemcacheWithExp(w,r,cKey,WALLPAPERS_LIST_STR,GEN_CONTENT_EXPIRES3)//3hours
+								w.WriteHeader(200)
+								w.Write([]byte("Wallpapers have been updated!"))
+								pStr := fmt.Sprintf("WALLPAPERS_TOTAL: %v", WALLPAPERS_TOTAL)
+								w.Write([]byte(pStr))
+								return
+
+							default:
+								for _, p := range media{
+									if kword != "" {
+										i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
+										j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
+										if i != -1 || j != -1 {
+											photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+										}
+
+									} else {
 										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
 									}
-
-								} else {
-									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
 								}
 							}
-						/*default:
-							//slides
-							q := datastore.NewQuery("TDSSLIDE").Filter("YEAR =", start_year).Limit(500)
-							recCount,_ := q.Count(c)
-							slide := make([]TDSSLIDE, 0, recCount)
-							if _, err := q.GetAll(c, &slide); err != nil {
-								 panic(err)
-							}
-							for _, p := range slide{
-								if kword != "" {
-									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
-									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
-									if i != -1 || j != -1 {
-										photoGalleryShowSlide(w,r,uid,contCat,start,end,&p,recCtr)
-									}
-
-								} else {
-									photoGalleryShowSlide(w,r,uid,contCat,start,end,&p,recCtr)
-								}
-							}
-							//articles
-							q1 := datastore.NewQuery("TDSARTL").Filter("YEAR =", start_year).Limit(500)
-							recCount,_ = q1.Count(c)
-							article := make([]TDSARTL, 0, recCount)
-							if _, err := q1.GetAll(c, &article); err != nil {
-								 panic(err)
-							}
-							for _, p := range article{
-								if kword != "" {
-									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
-									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
-									if i != -1 || j != -1 {
-										photoGalleryShowArticle(w,r,uid,contCat,start,end,&p,recCtr)
-									}
-
-								} else {
-									photoGalleryShowArticle(w,r,uid,contCat,start,end,&p,recCtr)
-								}
-							}
-							//media
-							q2 := datastore.NewQuery("TDSMEDIA").Filter("YEAR =", start_year).Limit(500)
-							recCount,_ = q2.Count(c)
-							media := make([]TDSMEDIA, 0, recCount)
-							if _, err := q2.GetAll(c, &media); err != nil {
-								 panic(err)
-							}
-							for _, p := range media{
-								if kword != "" {
-									i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
-									j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
-									if i != -1 || j != -1 {
-										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p,recCtr)
-									}
-
-								} else {
-									photoGalleryShowMedia(w,r,uid,contCat,start,end,&p,recCtr)
-								}
-							}
-						*/
 						}
 						if err := mediaSimpleGalFooter.Execute(w, ""); err != nil {
 							panic(err)
 						}
 						return
 					}
-					/*
-					recCount := 0
-					if CATEGORY == "" {
-						c.Infof("No category")
-						if err := mediaSimpleGalHeaderA.Execute(w, YEAR); err != nil {
-							panic(err)
-						}
-						if err := rootTemplateMediaYear.Execute(w, YEAR); err != nil {
-							panic(err)
-						}
-						if err := mediaSimpleGalHeaderB.Execute(w, CATEGORY); err != nil {
-							panic(err)
-						}
-						if YEAR != "" {
-							c.Infof("Year populated")
-							//display media
-							q := datastore.NewQuery("TDSMEDIA").Filter("DATA_TYPE =", "image").Limit(500)
-							//c.Errorf("[S0371]")
-							recCounts,_ := q.Count(c)
-							media := make([]TDSMEDIA, 0, recCounts)
-							if _, err := q.GetAll(c, &media); err != nil {
-								panic(err)
-							}
-							var buffer3 bytes.Buffer
-							//FL_MAIN_OK := false
-							for _, p := range media{
-								if (GROUP_ID == "GRP_ADMIN" || uid == p.AUTHOR) && p.YEAR == YEAR {
-									recCount++
-									imgAlt := "img01"
-									buffer3.WriteString(fmt.Sprintf("<li>"))
-									if p.PROP != "big_wp" {
-										buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (N)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
-									} else {
-										buffer3.WriteString(fmt.Sprintf("	<div data-alt=\"%v\" data-description=\"<h3>%v (ID: %v) (Y)</h3>\" data-max-width=\"1800\" data-max-height=\"2400\">", imgAlt, p.TITLE, p.MEDIA_ID))
-									}
-									buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1300\" data-min-width=\"1300\"></div>", p.IMG_URL))
-									buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s1000\" data-min-width=\"1000\"></div>", p.IMG_URL))
-									buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s700\" data-min-width=\"700\"></div>", p.IMG_URL))
-									buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s300\" data-min-width=\"300\"></div>", p.IMG_URL))
-									buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s200\" data-min-width=\"200\"></div>", p.IMG_URL))
-									buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v=s140\" data-min-width=\"140\"></div>", p.IMG_URL))
-									buffer3.WriteString(fmt.Sprintf("		<div data-src=\"%v\"></div>", p.IMG_URL))
-									buffer3.WriteString(fmt.Sprintf("		<noscript>"))
-									buffer3.WriteString(fmt.Sprintf("			<img src=\"%v\" title=\"%v\"/>", p.IMG_URL, imgAlt))
-									buffer3.WriteString(fmt.Sprintf("		</noscript>"))
-									buffer3.WriteString(fmt.Sprintf("	</div>"))
-									buffer3.WriteString(fmt.Sprintf("</li>"))
-								}
-							}
-							if recCount == 0 {
-								buffer3.WriteString(fmt.Sprintf("No items found!"))
-							}
-							iconsHTML := buffer3.String()
-							w.Write([]byte(iconsHTML))
-							cKey := fmt.Sprintf("PHOTO_ALBUM_%s_%v", uid, YEAR)
-							putBytesToMemcacheWithExp(w,r,cKey,buffer3.Bytes(),GEN_CONTENT_EXPIRES)
-						}
-						if err := mediaSimpleGalFooter.Execute(w, fmt.Sprintf("%v(%v items)", cKey, recCount)); err != nil {
-							panic(err)
-						}
-						return
-					}
-					*/
 				case "ADD_REM_RAN_WP":
 					MEDIA_ID := r.FormValue("MEDIA_ID")
 					PROP := r.FormValue("PROP")
 					mediaID := str2int(MEDIA_ID)
-					
 					cKey := ""
 					cKey2 := ""
- 
 					//display media
 					dsKey := fmt.Sprintf("%d", mediaID)
 					key := datastore.NewKey(c, "TDSMEDIA", dsKey, 0, nil)
@@ -43007,7 +43148,6 @@ func media(w http.ResponseWriter, r *http.Request) {
 					if _, err := q.GetAll(c, &media); err != nil {
 						panic(err)
 					}
-					
 					for _, p := range media{
 							if p.DATA_TYPE == "image" {
 								p.PROP = PROP
@@ -43024,19 +43164,18 @@ func media(w http.ResponseWriter, r *http.Request) {
 									cKey2 = fmt.Sprintf("WALLPAPERS_TOTAL_%v", uid)
 								} else {
 									cKey = fmt.Sprintf("WALLPAPERS_LIST_%v", "admin")
-									cKey2 = fmt.Sprintf("WALLPAPERS_TOTAL_%v", "admin")		
+									cKey2 = fmt.Sprintf("WALLPAPERS_TOTAL_%v", "admin")
 								}
 								//clear wallpaper count
 								putStrToMemcacheWithoutExp(w,r,cKey2,"")
 								//clear wallpaper list
 								putStrToMemcacheWithoutExp(w,r,cKey,"")
-								
 								msgDtl := fmt.Sprintf("[U00162] SUCCESS: Image has been added in the random wallpapers.")
 								msgTyp := "success"
 								msgURL := fmt.Sprintf("/%v#page", "desktop0")
 								action := "U00162"
 								sysReq := fmt.Sprintf("/sysmsg?msgTyp=%v&message=%v&msgURL=%v&action=%v", msgTyp, msgDtl, msgURL, action)
-								http.Redirect(w, r, sysReq, http.StatusFound)	
+								http.Redirect(w, r, sysReq, http.StatusFound)
 								return
 							}
 					}
@@ -43622,7 +43761,7 @@ const mediaDispTemplateHTMLUMP = `
 {{range .}}
 <li
 	  data-mp3="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}"
-		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ] [ <a href="https://www.google.com/search?q={{.TITLE}} lyrics" target="ump-lyrics">Lyrics</a> ]</li>
+		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ] [ <a href="https://www.google.com/search?q={{.TITLE}}-{{.DESC}} lyrics" target="ump-lyrics">Lyrics</a> ]</li>
 {{end}}
 `
  
@@ -43642,7 +43781,7 @@ var mediaDispTemplateUMPFiltered = template.Must(template.New("mediaDispTemplate
 const mediaDispTemplateHTMLUMPF = `
 <li
 	  data-mp3="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}"
-		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ] [ <a href="https://www.google.com/search?q={{.TITLE}} lyrics" target="ump-lyrics">Lyrics</a> ]</li>
+		data-ogg="/media?FUNC_CODE=PLAY&MEDIA_ID={{.MEDIA_ID}}&SID=TDSMEDIA-{{.MEDIA_ID}}">{{.TITLE}}#{{.DESC}}<br>[ <a href="/media?FUNC_CODE=VIEW&MEDIA_ID={{.MEDIA_ID}}&IMG_URL={{.IMG_URL}}">Update</a> ] [ <a href="/search?f=RC_PLAY_MUSIC&q={{.MEDIA_ID}}">PlaySlide</a> ] [ <a href="https://www.google.com/search?q={{.TITLE}}-{{.DESC}} lyrics" target="ump-lyrics">Lyrics</a> ]</li>
 `
  
 var mediaDispTemplateMDPFiltered = template.Must(template.New("mediaDispTemplateMDPFiltered").Parse(mediaDispTemplateHTMLMDPF))
@@ -43779,7 +43918,7 @@ const htmlWidgetPlayerSearchA = `
 var htmlWidgetPlayerSearch2 = template.Must(template.New("htmlWidgetPlayerSearch2").Parse(htmlWidgetPlayerSearchA2))
  
 const htmlWidgetPlayerSearchA2 = `	
-[<a href="https://www.youtube.com/embed/{{.}}?autoplay=1">Responsive Player</a>] [<a href="https://www.youtube.com/watch?v={{.}}">Play on Youtube</a>]
+[<a href="https://www.youtube.com/embed/{{.}}?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1">Responsive Player</a>] [<a href="https://www.youtube.com/watch?v={{.}}">Play on Youtube</a>]
 <form action="/media?FUNC_CODE=YVP" method="POST" enctype="multipart/form-data">
 <select name="order" id="order" value="viewCount" onchange="saveOrder();return false;">
   <option value="date">Sort by Date</option>
@@ -44490,15 +44629,18 @@ const htmlDesktopsJSONtoTableA = `
 		  {"header":"ID", "key":"id"},
 		  {"header":"Group", "key":"cGrp"},
 		  {"header":"Name", "key":"name", "template":'<a href=\'#\' onClick=\"openDesktop(\'{{"{{"}}uLink{{"}}"}}\', \'UWM-{{"{{"}}name{{"}}"}}\', \'{{"{{"}}id{{"}}"}}\'); return false;\" target=\'UWM-{{"{{"}}name{{"}}"}}\' title=\'Open UWM in new tab\'>{{"{{"}}name{{"}}"}}</a>'},
-		  {"header":"Run Topics", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
-		  {"header":"Run Bot", "key":"bLink", "template":'<a href=\'{{"{{"}}bLink{{"}}"}}\' target=\'B-{{"{{"}}name{{"}}"}}\' title=\'Click to bot for this desktop\'><img src=\'/img/robot.png\' width=32 height=32></a>'},
+		  {"header":"Search", "key":"rLink", "template":'<a href=\'{{"{{"}}rLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to run topics search\'><img src=\'/img/run.png\' width=32 height=32></a>'},
+		  {"header":"ChatBot", "key":"bLink", "template":'<a href=\'{{"{{"}}bLink{{"}}"}}\' target=\'B-{{"{{"}}name{{"}}"}}\' title=\'Click to bot for this desktop\'><img src=\'/img/robot.png\' width=32 height=32></a>'},
 		  {"header":"Desktop", "key":"dLink", "template":'<a href=\'{{"{{"}}dLink{{"}}"}}\' target=\'D-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
 		  {"header":"UWM", "key":"uLink", "template":'<a href=\'{{"{{"}}uLink{{"}}"}}\' target=\'UWM-{{"{{"}}name{{"}}"}}\'><img src=\'/img/ext-con.png\' width=32 height=32></a> <a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}uLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/uwm-mini.png\' width=32 height=32></a>'},
-		  {"header":"Desktop Settings", "key":"dsLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dsLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
-		  {"header":"UWM Settings", "key":"usLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}usLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
-		  {"header":"Topics Settings", "key":"tLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}tLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
-		  {"header":"Bot Settings", "key":"cLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}cLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
-		  {"header":"Share Settings", "key":"sLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}sLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'}
+		  {"header":"Desktop", "key":"dsLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}dsLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"UWM", "key":"usLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}usLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"Topics", "key":"tLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}tLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"ChatBot", "key":"cLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}cLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"Share", "key":"sLink", "template":'<a href=\'#\' onClick=\"parent.postMessage(\'ULAPPH-SYS-UPD@888@{{"{{"}}name{{"}}"}}@888@{{"{{"}}sLink{{"}}"}}\', \'https://ulapph-public-1.appspot.com\'); return false;\"><img src=\'/img/settings.png\' width=32 height=32></a>'},
+		  {"header":"Slides", "key":"sqLink", "template":'<a href=\'{{"{{"}}sqLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to view counts\'><img src=\'/img/info.png\' width=32 height=32></a>'},
+		  {"header":"Articles", "key":"aqLink", "template":'<a href=\'{{"{{"}}aqLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to view counts\'><img src=\'/img/info.png\' width=32 height=32></a>'},
+		  {"header":"Media", "key":"mqLink", "template":'<a href=\'{{"{{"}}mqLink{{"}}"}}\' target=\'T-{{"{{"}}name{{"}}"}}\' title=\'Click to view counts\'><img src=\'/img/info.png\' width=32 height=32></a>'}
 	  ]
     });
   });
@@ -54362,12 +54504,56 @@ func queueWgetUrl(w http.ResponseWriter, r *http.Request) {
 	}
 	return
 }
+//D0074
+func struwmUpdateCCTVList(w http.ResponseWriter, r *http.Request, uid, CATEGORY string) {
+	c := appengine.NewContext(r)
+	//c.Infof("struwmUpdateCCTVList...")
+	//D0074
+	cKeyLA := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+	//c.Infof("cKeyLA: %v", cKeyLA)
+	//cctvla := getStrMemcacheValueByKey(w,r,cKeyLA)
+	//c.Infof("cctvla: %v", cctvla)
+	cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+	cctvla, _ := getTDSCNFG(w,r,0,cfgName)
+	cctvla2 := ""
+	SPL := strings.Split(cctvla, "@888@")
+	FL_CAT_FOUND := false
+	for i:=0;i<len(SPL);i++ {
+		if SPL[i]==CATEGORY {
+			FL_CAT_FOUND = true
+			continue
+		} else {
+			//donothing
+		}
+	}
+	if FL_CAT_FOUND == false {
+		//append
+		cctvla2 = fmt.Sprintf("%v@888@%v", cctvla, CATEGORY)
+		//c.Infof("cctvla2: %v", cctvla2)
+		putStrToMemcacheWithExp(w,r,cKeyLA,cctvla2,GEN_CONTENT_EXPIRES4)
+		thisKey := cfgName
+		g := TDSCNFG{
+				SYS_VER: 1,
+				USER: uid,
+				CFG_ID: thisKey,
+				DAT_TYP: "TXT",
+				NUM_VAL: 0,
+				TXT_VAL: cctvla2,
+				CFG_DESC: "Set via CCTV app",
+		}
+		key := datastore.NewKey(c, "TDSCNFG", thisKey, 0, nil)
+		if _, err := datastore.Put(c, key, &g); err != nil {
+				panic(err)
+				//return
+		}
+	}
+}
 //D0066
 //process taskqueue to stream mirror to UWM 
 //func queueStreamMirrorToUwm(w http.ResponseWriter, r *http.Request) {
 func struwmStreamMirrorToUwm(w http.ResponseWriter, r *http.Request, uid, STRUWM, CATEGORY, SRC, CAPTION string) {
-	c := appengine.NewContext(r)
-	c.Infof("struwmStreamMirrorToUwm: %v", CATEGORY)
+	//c := appengine.NewContext(r)
+	//c.Infof("struwmStreamMirrorToUwm: %v", CATEGORY)
 	/*MSU_FUNC := r.FormValue("MSU_FUNC")
 	uid := r.FormValue("UID")
 	STRUWM := r.FormValue("STRUWM")
@@ -60763,52 +60949,52 @@ var mobileControl = template.Must(template.New("mobileControl").Parse(`
 </select>
 <br>
 <br>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="PRESENTER"/>
 	<input type="text" name="q" value="" placeholder="Slide" />
 	<input type="submit" name="submit" value="GO SLIDE"/>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="ARTICLE"/>
 	<input type="text" name="q" value="" placeholder="Article" />
 	<input type="submit" name="submit" value="GO ARTICLE"/>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_IN_ULAPPH"/>
 	<input type="text" name="q" value="" placeholder="In ULAPPH" />
 	<input type="submit" name="submit" value="In ULAPPH"/><b>(List)</b>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_ALL_ULAPPH"/>
 	<input type="text" name="q" value="" placeholder="All ULAPPH" />
 	<input type="submit" name="submit" value="All ULAPPH"/><b>(Browse only)</b>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_YT_SEARCH"/>
 	<input type="text" name="q" value="" placeholder="Search" />
 	<input type="submit" name="submit" value="Youtube"/><b>(List)</b>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_YT_SEARCH_ID"/>
 	<input type="text" name="q" value="" placeholder="YT ID" />
 	<input type="submit" name="submit" value="YID"/>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_WEB_SEARCH"/>
 	<input type="text" name="q" value="" placeholder="Search" />
 	<input type="submit" name="submit" value="Web"/><b>(List)</b>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_NWS_SEARCH"/>
 	<input type="text" name="q" value="" placeholder="Search" />
 	<input type="submit" name="submit" value="News"/>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_WIKI_SEARCH"/>
 	<input type="text" name="q" value="" placeholder="Search" />
 	<input type="submit" name="submit" value="WikiPedia"/>
 </form>
-<form action="/search" method="GET">
+<form target="_blank" action="/search" method="GET">
 	<input type="hidden" name="f" value="RC_DIC_SEARCH"/>
 	<input type="text" name="q" value="" placeholder="Search" />
 	<input type="submit" name="submit" value="Wiktionary"/>
@@ -63491,7 +63677,7 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
 		</span>
-		<a href="/tools?FUNC=MIRROR">Big Mirror</a>
+		<!--a href="/tools?FUNC=MIRROR2">Small Mirror</a-->
 	</form>
  
 	<div id="target">
@@ -63499,11 +63685,16 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		<br>Description: <input type="text" name="desc" id="desc" value="" maxlength=500>
 		<br>Stream as wallpapers in UWM:<input type="text" name="uwm" id="uwm" value="" maxlength=50>
 		<br>Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
+		<br>Fixed Capture Interval Only: <input type="checkbox" id="fixedcap" checked>
 	</div>
 	<script type="text/javascript" src="/js/html-mirror.js"></script>
 	<div id="results">Your captured image will appear here...</div>
 	<div id="imgdata"></div>
 	<script src="/js/mobitouch2.js"></script>
+	<script src="/js/channel-cctv.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+	<script src="/js/firebase-account.js"></script>
+	<script src="/js/channel-firebase-cctv.js"></script>
 </body>
 </html>
  
@@ -63585,7 +63776,7 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
 		</span>
-		<a href="/tools?FUNC=MIRROR">Big Mirror</a>
+		<!--a href="/tools?FUNC=MIRROR">Big Mirror</a-->
 	</form>
 	
 	
@@ -63594,6 +63785,7 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		<br>Description: <input type="text" name="desc" id="desc" value="" maxlength=500>
 		<br>Stream as wallpapers in UWM:<input type="text" name="uwm" id="uwm" value="" maxlength=50>
 		<br>Add image to TDSSLIDE-<input type="text" name="sid" id="sid" value="" maxlength=10>
+		<br>Fixed Capture Interval Only: <input type="checkbox" id="fixedcap" checked>
 	</div>
 	<!--script type="text/javascript" src="/js/html-mirror2.js"></script-->
 	<script type="text/javascript" src="/js/html-mirror.js"></script>
@@ -63601,6 +63793,10 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 	<div id="imgdata"></div>
 	<input type="hidden" value="true" id="proc_flag">
 	<script src="/js/mobitouch2.js"></script>
+	<script src="/js/channel-cctv.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+	<script src="/js/firebase-account.js"></script>
+	<script src="/js/channel-firebase-cctv.js"></script>
 	
 </body>
 </html>
@@ -66415,7 +66611,7 @@ var desktopBodyTabzillaTemplate = template.Must(template.New("desktopBodyTabzill
 <script src="/js/tab9d.js?alignment=left&amp;color=00BCBA" type="text/javascript"></script>	
 <script src="/js/alertify.min.js"></script>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 <script src="/js/channel-desktop.js"></script>
 <script src="/js/channel-firebase.js"></script>
@@ -66432,7 +66628,7 @@ var desktopBodyTabzillaTemplate = template.Must(template.New("desktopBodyTabzill
 var desktopBodyTabzillaTemplatejswm = template.Must(template.New("desktopBodyTabzillaTemplatejswm").Parse(`
 <script src="/js/alertify.min.js"></script>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 <script src="/js/channel-uwm.js"></script>
 <script src="/js/geostat.js"></script>
@@ -66472,7 +66668,7 @@ var desktopBodyTabzillaTemplateGuest = template.Must(template.New("desktopBodyTa
 <script src="/js/tab9d.js?alignment=left&amp;color=00BCBA" type="text/javascript"></script>	
 <script src="/js/alertify.min.js"></script>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 <script src="/js/channel-desktop.js"></script>
 <script src="/js/channel-firebase.js"></script>
@@ -66497,7 +66693,7 @@ var desktopBodyTabzillaTemplateNotes = template.Must(template.New("desktopBodyTa
 <script src="/js/tab9d.js?alignment=left&amp;color=00BCBA" type="text/javascript"></script>	
 <script src="/js/alertify.min.js"></script>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 <script src="/js/channel-desktop.js"></script>
 <script src="/js/channel-firebase.js"></script>
@@ -66527,7 +66723,7 @@ var desktopBodyTabzillaTemplateNotesGuest = template.Must(template.New("desktopB
 <script src="/js/tab9d.js?alignment=left&amp;color=00BCBA" type="text/javascript"></script>	
 <script src="/js/alertify.min.js"></script>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 <script src="/js/channel-desktop.js"></script>
 <script src="/js/channel-firebase.js"></script>
@@ -66548,7 +66744,7 @@ var desktopBodyTabzillaTemplateMobile = template.Must(template.New("desktopBodyT
 <script src="/js/pulldown-tabzilla-dynamic.js"></script>
 	<script src="/js/alertify.min.js"></script>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 <script src="/js/channel-mobile.js" type="text/javascript"></script>
 <script src="/js/channel-firebase.js"></script>
@@ -66718,7 +66914,7 @@ var outputFooterTemplateChannel = template.Must(template.New("outputFooterTempla
  
 var outputFooterTemplateToken = template.Must(template.New("outputFooterTemplateToken").Parse(`
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script src="/js/firebase-account.js"></script>
 	<script src="/js/channel-token.js" type="text/javascript"></script>
 	<script src="/js/channel-firebase.js"></script>
@@ -67403,7 +67599,7 @@ func checkQuotaArticles(w http.ResponseWriter, r *http.Request, uid string) {
 
 //checks media quota 
 func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
-	c := appengine.NewContext(r)
+	//c := appengine.NewContext(r)
 	if FL_CHECK_SAM_QUOTA == false {
 		return
 	}		
@@ -67429,12 +67625,12 @@ func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
 		
 		//get current count
 		CURR_COUNT := countData(w, r, "MEDIA", uid)
-		c.Infof("NUM_QUOTA: %v", NUM_QUOTA)
-		c.Infof("CURR_COUNT: %v", CURR_COUNT)
+		//c.Infof("NUM_QUOTA: %v", NUM_QUOTA)
+		//c.Infof("CURR_COUNT: %v", CURR_COUNT)
 		
 		//validate
 		if CURR_COUNT > NUM_QUOTA {
-			c.Infof("CURR_COUNT > NUM_QUOTA")
+			//c.Infof("CURR_COUNT > NUM_QUOTA")
 			//prevent operation
 			msgDtl := fmt.Sprintf("[U00116] ERROR: Quota for media has been reached. Please upgrade your account. USER_ACC_TYP: %v, NUM_QUOTA: %v, CURR_COUNT: %v", USER_ACC_TYP, NUM_QUOTA, CURR_COUNT)
 			//send message
@@ -67455,8 +67651,8 @@ func checkQuotaMedia(w http.ResponseWriter, r *http.Request, uid string) {
 func countData(w http.ResponseWriter, r *http.Request, TARGET, UID string) (CURR_COUNT int) {
  
 	c := appengine.NewContext(r)
-	c.Infof("countData...")
-	c.Infof("UID: %v", UID)
+	//c.Infof("countData...")
+	//c.Infof("UID: %v", UID)
  
 	switch TARGET {
 		case "SLIDES":
@@ -67478,7 +67674,7 @@ func countData(w http.ResponseWriter, r *http.Request, TARGET, UID string) (CURR
 			//OPTIMIZE THIS
 			CURR_COUNT = 999999
 	}
-	c.Infof("CURR_COUNT: %v", CURR_COUNT)
+	//c.Infof("CURR_COUNT: %v", CURR_COUNT)
 	return CURR_COUNT
 }
 
@@ -67889,7 +68085,7 @@ func taskUpdateSearchIndex(w http.ResponseWriter, r *http.Request) {
 				}
 
 				putSearchIndexA(w,r,"IDX_TDSARTL",thisIdxKey,articleIdx)
-				c.Infof("Cron indexed TDSARTL-%v", p.DOC_ID)
+				//c.Infof("Cron indexed TDSARTL-%v", p.DOC_ID)
 			}
 
 		}
@@ -69048,6 +69244,10 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 		STRUWM_R := r.FormValue("STRUWM")
 		STRUWM_R2 := strings.Replace(STRUWM_R, "[", "", -1)
 		STRUWM := strings.Replace(STRUWM_R2, "]", "", -1)
+		//D0074
+		STRUWMI_R := r.FormValue("STRUWMI")
+		STRUWMI_R2 := strings.Replace(STRUWMI_R, "[", "", -1)
+		STRUWMI := strings.Replace(STRUWMI_R2, "]", "", -1)
 		OPT_R := r.FormValue("OPT")
 		OPT_R2 := strings.Replace(OPT_R, "[", "", -1)
 		OPT := strings.Replace(OPT_R2, "]", "", -1)		
@@ -69077,32 +69277,35 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 				if err != nil {
 				}
 				blobstore.Delete(c, appengine.BlobKey(blobkey))
-				c.Infof("Image did not change. Deleted image. %v-%v", CATEGORY, TITLE)
+				//c.Infof("Image did not change. Deleted image. %v-%v", CATEGORY, TITLE)
+				//D0074
+				tstamp := getTimestamp()
+				cKeyClu := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", CATEGORY)
+				//c.Infof("cKeyClu: %v", cKeyClu)
+				//c.Infof("tstamp: %v", tstamp)
+				putStrToMemcacheWithoutExp(w,r,cKeyClu,tstamp)
+				if STRUWMI == "Y" {
+					//c.Infof("STRUWMI...")
+					laterUpdateCctvList.Call(c, uid, CATEGORY)
+				}
 				w.WriteHeader(200)
 				w.Write([]byte("false"))
 				return
 			}
 		}
-
-		
 		thisURL := ""
 		switch {
 			case DATA_TYPE == "auto":
-				
 				if strings.Index(MIME_TYPE, "image/") != -1 {
 					sURL, _ := imageApi.ServingURL(c, appengine.BlobKey(blobkey), nil)
 					thisURL = sURL.String()
 					thisURL = getSchemeNewUrl(w,r,thisURL)
 					//DATA_TYPE = MIME_TYPE
-					DATA_TYPE = "image"	
+					DATA_TYPE = "image"
 				} else {
-				
 					switch {
-				
 					case MIME_TYPE != "":
-					
 							_, MIME_EXT = getMimeType(w,r,path.Ext(FILE_NAME))
-							
 							switch {
 								case strings.Index(MIME_TYPE, "text/") != -1:
 									//DATA_TYPE = MIME_TYPE
@@ -69367,18 +69570,15 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 			DATE_UPDATED: 		tstamp,
 		}
 		putSearchIndexM(w,r,"IDX_TDSMEDIA",thisIdxKey,searchIdx)
-							
 		nStat := ""
 		nMediaID := 0
 		if strings.TrimSpace(EMBED) == "" {
 			cKeyAll := fmt.Sprintf("DEFAULT_SLIDE_CACHE_%v", uid)
 			DEFAULT_SLIDE_CACHE := ""
 			if item, err := memcache.Get(c, cKeyAll); err == memcache.ErrCacheMiss {
- 
 			} else if err != nil {
 				//c.Errorf("error getting item: %v", err)
 			} else {
- 
 				DEFAULT_SLIDE_CACHE = fmt.Sprintf("%s", item.Value)
 				nMediaID = str2int(DEFAULT_SLIDE_CACHE)
 				if nMediaID > 0 {
@@ -69386,25 +69586,20 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 				} else {
 					DEFAULT_SLIDE_CACHE = ""
 				}
-				
 			}
 			if strings.TrimSpace(DEFAULT_SLIDE_CACHE) == "" {
 				//query TDSCNFG			
 				cfgName := fmt.Sprintf("PERSONAL_Default_Slide_Media_ID_%v", uid)
 				_, nMediaID = getTDSCNFG(w,r,1,cfgName)
-				
 				if nMediaID <= 0 {
 					nStat = "NOT FOUND"
-					
 					cKey := fmt.Sprintf("DEFAULT_SLIDE_CACHE_%v", uid)
 					putStrToMemcacheWithoutExp(w,r,cKey,"")
-		
 				} else {
 					nStat = "OK"
 				}
 			}
 		}
-		
 		//if EMBED is populated; add image to target slide
 		if strings.TrimSpace(EMBED) != "" && DATA_TYPE == "image" {
 			laterAddToDefaultSid.Call(c, "ATS-IMAGE", uid, EMBED, DATA_TYPE, thisURL, TITLE)
@@ -69425,20 +69620,27 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 			//check this image against the previous image (cctv feature usage)
 			//MEDIA_ID := fmt.Sprintf("%v", thisID)
 			//laterMirrorStreamPreviousCompare.Call(c, "STRUWM-COMPARE", uid, STRUWM, thisURL, TITLE, CATEGORY, blobkey, MEDIA_ID)
-			
+			tstamp := getTimestamp()
+			cKeyClu := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", CATEGORY)
+			//c.Infof("cKeyClu: %v", cKeyClu)
+			//c.Infof("tstamp: %v", tstamp)
+			putStrToMemcacheWithoutExp(w,r,cKeyClu,tstamp)
+			//D0074
+			if STRUWMI == "Y" {
+				//c.Infof("STRUWMI...")
+				laterUpdateCctvList.Call(c, uid, CATEGORY)
+			}
 		}
 		//abort if target is encrypted
 		if isEncrypted(w,r,EMBED) == true {
 			panic(fmt.Errorf("cannot append to encrypted file..."))
 			return
 		}
-		
 		//send a link to desktop
 		contentMsg := fmt.Sprintf("TDSMEDIA-%d <br><img src=\"%v\" width=200 height=200> <br><a href=\"%v\">%v</a>", thisID, thisURL, thisURL, thisURL)
 		//sendEvent(w,r,uid,contentMsg)
 		//when a media uploaded
 		sendChannelMessage(w,r,uid,contentMsg)
-		
 		if DATA_TYPE == "image" {
 			cKey := fmt.Sprintf("PHOTO_ALBUM_%s",  uid)
 			putStrToMemcacheWithoutExp(w,r,cKey,"")
@@ -69454,11 +69656,10 @@ func handleServeMedia(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(200)
 			w.Write([]byte("recapture"))
 		} else {
-			sysReq := fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", thisID, thisURL)	
-			http.Redirect(w, r, sysReq, http.StatusFound)	
+			sysReq := fmt.Sprintf("/media?FUNC_CODE=VIEW&MEDIA_ID=%d&IMG_URL=%v", thisID, thisURL)
+			http.Redirect(w, r, sysReq, http.StatusFound)
 		}
 		return
- 
 }
 
 //gets the mimetype given a file extension 
@@ -69667,6 +69868,10 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 					//tstamp := t.Format("20060102150405")
 					tstamp := getTimestamp()
 					p.DT_UPLOAD = tstamp
+					cKeyClu := fmt.Sprintf("TDSSLIDE_CAT_LAST_UPLOAD_%v", p.CATEGORY)
+					//c.Infof("cKeyClu: %v", cKeyClu)
+					//c.Infof("tstamp: %v", tstamp)
+					putStrToMemcacheWithoutExp(w,r,cKeyClu,tstamp)
 					FL_COUNTRY_SPECIFIC := p.FL_COUNTRY_SPECIFIC
 					thisID = p.DOC_ID
 					thisKey := fmt.Sprintf("%d", p.DOC_ID)
@@ -69771,27 +69976,22 @@ func handleUploadSlides(w http.ResponseWriter, r *http.Request) {
 				if TITLE == "" {
 					TITLE = "No title"
 				}
-				
 				DESC_R := fmt.Sprintf("%v", pVals["DESC"])
 				DESC_R2 := strings.Replace(DESC_R, "[", "", -1)
 				DESC := strings.Replace(DESC_R2, "]", "", -1)
-				
 				CATEGORY_R := fmt.Sprintf("%v", pVals["CATEGORY"])
 				CATEGORY_R2 := strings.Replace(CATEGORY_R, "[", "", -1)
 				CATEGORY := strings.Replace(CATEGORY_R2, "]", "", -1)
-				
 				if CATEGORY == "" {
 					CATEGORY = "desktop0"
 				}
- 
 				q := datastore.NewQuery("TDSSLIDE").Order("-DOC_ID").Limit(1)
 				//c.Errorf("[S0597]")
 				slide := make([]TDSSLIDE, 0, 1)
 				if _, err := q.GetAll(c, &slide); err != nil {
 					 panic(err)
 					//return
-				  }
-				
+				}
 				thisID := 0
 				for _, p := range slide{
 					thisID = p.DOC_ID + 1
@@ -70243,7 +70443,11 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 					//t := time.Now().Local()
 					//tstamp := t.Format("20060102150405")
 					tstamp := getTimestamp()
-					p.DT_UPLOAD = tstamp					
+					p.DT_UPLOAD = tstamp
+					cKeyClu := fmt.Sprintf("TDSARTL_CAT_LAST_UPLOAD_%v", p.CATEGORY)
+					//c.Infof("cKeyClu: %v", cKeyClu)
+					//c.Infof("tstamp: %v", tstamp)
+					putStrToMemcacheWithoutExp(w,r,cKeyClu,tstamp)
 					thisID = p.DOC_ID
 					thisKey := fmt.Sprintf("%d", p.DOC_ID)
 					key := datastore.NewKey(c, "TDSARTL", thisKey, 0, nil)
@@ -70659,7 +70863,6 @@ func handleUploadArticles(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 }
-
 //handles uploads of media 
 func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 	
@@ -70742,7 +70945,6 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			if SR_BLOB != "" {
 				blobstore.Delete(c, appengine.BlobKey(SR_BLOB))
 			}
-			//edwixxx
 			blobkey := string(file[0].BlobKey)
 			//c.Infof("blobkey: %v", blobkey)
 			//c.Infof("uid: %v", uid)
@@ -70769,7 +70971,7 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			//c.Infof("ACB")
 			//D0068
 			if API_KEY != CMD_GEN_KEY {
-				c.Infof("Invalid api key")
+				//c.Infof("Invalid api key")
 				return
 			}
 			uid = UID
@@ -70790,7 +70992,6 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			if ACB_BLOB != "" {
 				blobstore.Delete(c, appengine.BlobKey(ACB_BLOB))
 			}
-			//edwixxx
 			blobkey := string(file[0].BlobKey)	
 			//c.Infof("blobkey: %v", blobkey)
 			//c.Infof("uid: %v", uid)
@@ -70902,6 +71103,10 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					//tstamp := t.Format("20060102150405")
 					tstamp := getTimestamp()
 					p.DT_UPLOAD = tstamp
+					cKeyClu := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", p.CATEGORY)
+					//c.Infof("cKeyClu: %v", cKeyClu)
+					//c.Infof("tstamp: %v", tstamp)
+					putStrToMemcacheWithoutExp(w,r,cKeyClu,tstamp)
 					//D0068
 					thisCont := ""
 					TITLE := strings.Replace(p.TITLE, "_", " ", -1)
@@ -71118,6 +71323,11 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					//tstamp := t.Format("20060102150405")
 					tstamp := getTimestamp()
 					p.DT_UPLOAD = tstamp
+					//D0073
+					cKeyClu := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", CATEGORY)
+					//c.Infof("cKeyClu: %v", cKeyClu)
+					//c.Infof("tstamp: %v", tstamp)
+					putStrToMemcacheWithoutExp(w,r,cKeyClu,tstamp)
 					p.NUM_LIKES = 0
 					p.NUM_COMMENTS = 0
 					p.LIKED_BY = ""
@@ -71510,11 +71720,12 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 			EMBED := pVals["EMBED"]
 			//D0066
 			STRUWM := pVals["STRUWM"]
+			STRUWMI := pVals["STRUWMI"]
 
 			OPT := pVals["OPT"]
 			//DESKTOP := pVals["DESKTOP"]
 			bKey := string(file[0].BlobKey)
-			reqStr := fmt.Sprintf("/serve-media/?DATA_TYPE=%s&TITLE=%s&DESC=%s&CATEGORY=%s&blobKey5=%v&FL_SHARED=%v&FILE_NAME=%v&MIME_TYPE=%v&FL_ADD_WP=%v&UID=%v&DOC_STAT=%v&EMBED=%v&OPT=%v&STRUWM=%v", TYPE, TITLE, DESC, CATEGORY, bKey, FL_SHARED, FILE_NAME, MIME_TYPE, FL_ADD_WP, UID, DOC_STAT, EMBED, OPT, STRUWM)
+			reqStr := fmt.Sprintf("/serve-media/?DATA_TYPE=%s&TITLE=%s&DESC=%s&CATEGORY=%s&blobKey5=%v&FL_SHARED=%v&FILE_NAME=%v&MIME_TYPE=%v&FL_ADD_WP=%v&UID=%v&DOC_STAT=%v&EMBED=%v&OPT=%v&STRUWM=%v&STRUWMI=%v", TYPE, TITLE, DESC, CATEGORY, bKey, FL_SHARED, FILE_NAME, MIME_TYPE, FL_ADD_WP, UID, DOC_STAT, EMBED, OPT, STRUWM, STRUWMI)
 			http.Redirect(w, r, reqStr, http.StatusFound)
 	
 	}
@@ -71856,7 +72067,7 @@ func renderPresentation(w http.ResponseWriter, r *http.Request, y io.Writer, fna
 	//c.Infof("renderPresentation")
 	//c.Infof("sl_tmp: %v", sl_tmp)
 	if sl_tmp != "" && SYS_ENABLE_TEMPLATES == true {
-		c.Infof("SYS_ENABLE_TEMPLATES")
+		//c.Infof("SYS_ENABLE_TEMPLATES")
 		tempt := ""
 		switch sl_tmp {
 			case "S":
@@ -74490,7 +74701,7 @@ func createProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid strin
 	req.Header.Set("Authorization", "Bearer "+tok)
 	client := urlfetch.Client(c)
 
-	c.Infof("req: %v", req)
+	//c.Infof("req: %v", req)
 	res, err := client.Do(req)
 	if err != nil {
 		c.Errorf("client.Do err: %v", err)
@@ -74560,7 +74771,7 @@ func initializeProjectID(w http.ResponseWriter, r *http.Request, pid, tok, uid s
 	req.Header.Set("Authorization", "Bearer "+tok)
 	client := urlfetch.Client(c)
 
-	c.Infof("req: %v", req)
+	//c.Infof("req: %v", req)
 	res, err := client.Do(req)
 	if err != nil {
 		c.Errorf("client.Do err: %v", err)
@@ -77014,9 +77225,9 @@ func API_utube(w http.ResponseWriter, r *http.Request) {
 				lines = append(lines, fmt.Sprintf(""))
 				
 				if TYP == "pl" {
-					lines = append(lines, fmt.Sprintf(".iframe https://www.youtube.com/embed?list=%v&autoplay=1&loop=1&color=white 600 900", YID))
+					lines = append(lines, fmt.Sprintf(".iframe https://www.youtube.com/embed?list=%v&rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1&loop=1&color=white 600 900", YID))
 				} else {
-					lines = append(lines, fmt.Sprintf(".iframe https://www.youtube.com/embed/%v?autoplay=1&loop=1&color=white 600 900", YID))	
+					lines = append(lines, fmt.Sprintf(".iframe https://www.youtube.com/embed/%v?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1&loop=1&color=white 600 900", YID))	
 				}
 				lines = append(lines, fmt.Sprintf(""))
 									
@@ -77368,11 +77579,11 @@ func API_utube(w http.ResponseWriter, r *http.Request) {
 			//fmt.Fprintf(w, "<ul class=\"able-playlist\" data-player=\"video1\" data-embedded>")
 			for id, title := range videos {
 					//fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/watch?v=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"/media?FUNC_CODE=YVP&YID=%v&SEARCH_KEY=\">%v (VID)</a></li>", id, id, title)
-					fmt.Fprintf(w, "<iframe src=\"https://www.youtube.com/embed/%v\"></iframe><br><a href=\"https://www.youtube.com/embed/%v?autoplay=1\" title=\"%v\">VID</a><br>", id, id, title)
+					fmt.Fprintf(w, "<iframe src=\"https://www.youtube.com/embed/%v\"></iframe><br><a href=\"https://www.youtube.com/embed/%v?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1\" title=\"%v\" allow=\"autoplay\" allowFullScreen='allowFullScreen'>VID</a><br>", id, id, title)
 			}
 			for id, title := range playlists {
 					//fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/embed/videoseries?list=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"https://www.youtube.com/embed/videoseries?list=%v\">%v (PL)</a></li>", id, id, title)
-					fmt.Fprintf(w, "<iframe src=\"https://www.youtube.com/embed/videoseries?list=%v\"></iframe><br><a href=\"https://www.youtube.com/embed/videoseries?list=%v&autoplay=1\" title=\"%v\">PL</a><br>", id, id, title)
+					fmt.Fprintf(w, "<iframe src=\"https://www.youtube.com/embed/videoseries?list=%v\"></iframe><br><a href=\"https://www.youtube.com/embed/videoseries?list=%v&rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1\" title=\"%v\" allow=\"autoplay\" allowFullScreen='allowFullScreen'>PL</a><br>", id, id, title)
 			}
 			
 		case "3":
@@ -77440,11 +77651,11 @@ func API_utube(w http.ResponseWriter, r *http.Request) {
 			}
 			fmt.Fprintf(w, "<ul class=\"able-playlist\" data-player=\"video1\" data-embedded>")
 			for id, title := range videos {
-					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/watch?v=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/%v?autoplay=1', 'https://ulapph-public-1.appspot.com'); return false;\"><br>%v (VID)</a></li>", id, "Video", id, title)
+					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/watch?v=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/%v?rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1', 'https://ulapph-public-1.appspot.com'); return false;\"><br>%v (VID)</a></li>", id, "Video", id, title)
 					
 			}
 			for id, title := range playlists {
-					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/embed/videoseries?list=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/videoseries?list=%v&autoplay=1', 'https://ulapph-public-1.appspot.com'); return false;\"><br>%v (PL)</a></li>", id, "Playlist", id, title)
+					fmt.Fprintf(w, "<li><a href=\"https://www.youtube.com/embed/videoseries?list=%v\" target=\"yt\"><img src=\"/img/Youtube.png\" width=20 height=20 title=\"Play on Youtube\"></a><a href=\"#\" onClick=\"parent.postMessage('ULAPPH-SYS-UPD@888@%v@888@https://www.youtube.com/embed/videoseries?list=%v&rel=0&modestbranding=1&autohide=1&mute=1&showinfo=0&controls=1&autoplay=1', 'https://ulapph-public-1.appspot.com'); return false;\"><br>%v (PL)</a></li>", id, "Playlist", id, title)
 			}
  
 	}
@@ -80016,21 +80227,21 @@ func oauth2GithubCall(w http.ResponseWriter, r *http.Request, uid, target string
 //D0058
 //oauth2 microsoft callback
 func handlerOuath2MicrosoftCall(w http.ResponseWriter, r *http.Request) {
-	c := appengine.NewContext(r)
+	//c := appengine.NewContext(r)
 	client_id := r.FormValue("client_id")
 	redirect_uri := r.FormValue("redirect_uri")
 	response_type := r.FormValue("response_type")
 	response_mode := r.FormValue("response_mode")
 	scope := r.FormValue("scope")
-	access_type := r.FormValue("access_type")
+	//access_type := r.FormValue("access_type")
 	state := r.FormValue("state")
-	c.Infof("client_id: %v", client_id)
-	c.Infof("redirect_uri: %v", redirect_uri)
-	c.Infof("response_type: %v", response_type)
-	c.Infof("response_mode: %v", response_mode)
-	c.Infof("scope: %v", scope)
-	c.Infof("access_type: %v", access_type)
-	c.Infof("state: %v", state)
+	//c.Infof("client_id: %v", client_id)
+	//c.Infof("redirect_uri: %v", redirect_uri)
+	//c.Infof("response_type: %v", response_type)
+	//c.Infof("response_mode: %v", response_mode)
+	//c.Infof("scope: %v", scope)
+	//c.Infof("access_type: %v", access_type)
+	//c.Infof("state: %v", state)
 	
 	redURL := ""	
 	switch {
@@ -80040,7 +80251,7 @@ func handlerOuath2MicrosoftCall(w http.ResponseWriter, r *http.Request) {
 			redURL = fmt.Sprintf("%v?client_id=%v&response_type=%v&response_mode=%v&redirect_uri=https://ulapph-public-1.appspot.com/oauth2/microsoft/callback&scope=%v&state=%v", MICROSOFT_AUTH_URL, client_id, response_type, response_mode, scope, state)	
 			
 	}
-	c.Infof("redURL: %v", redURL)
+	//c.Infof("redURL: %v", redURL)
 	http.Redirect(w, r, redURL, http.StatusFound)
 }
 
@@ -80565,9 +80776,9 @@ func extractPlannerTasks(w http.ResponseWriter, r *http.Request, token, cfgMedia
 //get score from comments
 func getScoreFromComments(w http.ResponseWriter, r *http.Request, SID, UID string) (sValue float64, err error) {
 	c := appengine.NewContext(r)
-	c.Infof("getScoreFromComments()")
-	c.Infof("SID: %v",SID)
-	c.Infof("UID: %v",UID)
+	////c.Infof("getScoreFromComments()")
+	////c.Infof("SID: %v",SID)
+	////c.Infof("UID: %v",UID)
 
 	q := datastore.NewQuery("TDSCOMMENT").Filter("SID =", SID)
 	recCount,_ := q.Count(c)
@@ -80593,7 +80804,7 @@ func getScoreFromComments(w http.ResponseWriter, r *http.Request, SID, UID strin
 func extractComments(w http.ResponseWriter, r *http.Request, SID, TITLE string) (err error) {
 	c := appengine.NewContext(r)
 
-	c.Infof("SID: %v",SID)
+	////c.Infof("SID: %v",SID)
 	var file *xlsx.File
 	var sheet *xlsx.Sheet
 	var row *xlsx.Row

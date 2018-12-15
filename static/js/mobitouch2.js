@@ -3,6 +3,7 @@ var node = document.getElementById("page");
 var longpress = false;
 var presstimer = null;
 var longtarget = null;
+var struwmInitiate = false;
 
 var cancel = function(e) {
     if (presstimer !== null) {
@@ -129,6 +130,10 @@ function upload_ulapph() {
 			var uwm = document.getElementById("uwm").value;
 			if (uwm != "") {
 				streamUwm = uwm;
+				if (struwmInitiate == false) {
+					fd.append("STRUWMI", "Y");
+					struwmInitiate = true;
+				}
 				//document.getElementById("note").innerHTML = document.getElementById("note").innerHTML + "<h3>Streaming to UWM: " + streamUwm + "</h3>";
 			} else {
 				streamUwm = '0';
@@ -186,10 +191,15 @@ function upload_ulapph() {
 					//upok.autoplay = false;
 					//upok.src = navigator.userAgent.match(/Firefox/) ? '/audio/kewl.ogg' : '/audio/kewl.ogg';
 					//upok.play();
-					if (respVal == "recapture") {
-						//take another image now
-						console.log("new image captured!");
-						take_snapshot();
+					var skipRecap = document.getElementById('fixedcap').checked;
+					if (skipRecap) {
+						//skip recapture
+					} else {
+						if (respVal == "recapture") {
+							//take another image now
+							console.log("new image captured!");
+							take_snapshot();
+						}
 					}
 					return;
 				}

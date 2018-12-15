@@ -630,17 +630,18 @@
 	{{end}}
   </body>
 		<!--firebase js-->
-		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 		<script>
 		  // Initialize Firebase
-		  var config = {
-			apiKey: "AIzaSyAkt_bI5EMlwO_9iMUK2vCRgtc1T3o5vAY",
-			authDomain: "ulapph-firebase.firebaseapp.com",
-			databaseURL: "https://ulapph-firebase.firebaseio.com",
-			storageBucket: "ulapph-firebase.appspot.com",
-			messagingSenderId: "827309600643"
-		  };
-		  firebase.initializeApp(config);
+  var config = {
+    apiKey: "AIzaSyCDJ7J54Nbt-LNCcA8q7avvuorZXMPQ7i4",
+    authDomain: "ulapph-firebase-78f65.firebaseapp.com",
+    databaseURL: "https://ulapph-firebase-78f65.firebaseio.com",
+    projectId: "ulapph-firebase-78f65",
+    storageBucket: "ulapph-firebase-78f65.appspot.com",
+    messagingSenderId: "114785673070"
+  };
+  firebase.initializeApp(config);
 		</script>
     <script src="/js/tab8s.js?alignment=left&amp;color=00BCBA" type="text/javascript"></script>
     <script src="/js/tab9a.js?alignment=left&amp;color=00BCBA" type="text/javascript"></script>
