@@ -17663,11 +17663,13 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				//initiating cctv captures
 				//c.Infof("initiating cctv captures")
 				//send channel message to initiate capture
-				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				//cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
 				//c.Infof("cKey: %v", cKey)
 				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
 				if strings.TrimSpace(cctv_list) == "" {
-					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
 					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
 					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
 				}
@@ -17715,11 +17717,13 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 			} else {
 				var buf bytes.Buffer
 				//get list of cctvs
-				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				//cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
 				//c.Infof("cKey: %v", cKey)
 				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
 				if strings.TrimSpace(cctv_list) == "" {
-					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
 					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
 					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
 				}
@@ -54513,11 +54517,13 @@ func struwmUpdateCCTVList(w http.ResponseWriter, r *http.Request, uid, CATEGORY 
 	c := appengine.NewContext(r)
 	//c.Infof("struwmUpdateCCTVList...")
 	//D0074
-	cKeyLA := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+	//cKeyLA := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+	cKeyLA := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
 	//c.Infof("cKeyLA: %v", cKeyLA)
 	//cctvla := getStrMemcacheValueByKey(w,r,cKeyLA)
 	//c.Infof("cctvla: %v", cctvla)
-	cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+	//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+	cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
 	cctvla, _ := getTDSCNFG(w,r,0,cfgName)
 	cctvla2 := ""
 	SPL := strings.Split(cctvla, "@888@")
