@@ -1,5 +1,5 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#05/11/2018 02:48:59 AM PST
+//LAST_UPGRADE#12/19/2018 01:48:59 AM PST
 //TOTAL_LINES#80740
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18096,6 +18096,8 @@ func editor(w http.ResponseWriter, r *http.Request) {
 				return
 			case SID == "GEN2":
 				_, uid := checkSession(w,r)
+				FUNC_CODE := "GET_GRP_ID"
+				_, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
 				repMode := r.FormValue("report")
 				start_date := r.FormValue("start_date")
 				start_time := r.FormValue("start_time")
@@ -18163,14 +18165,14 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								flAdded := timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+								flAdded := timelineAddEventSlide(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 								if flAdded == true {
 									ctr++
 								}
 							}
 
 						} else {
-							flAdded := timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+							flAdded := timelineAddEventSlide(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 							if flAdded == true {
 								ctr++
 							}
@@ -18199,14 +18201,14 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								flAdded := timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+								flAdded := timelineAddEventArticle(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 								if flAdded == true {
 									ctr++
 								}
 							}
 
 						} else {
-							flAdded := timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+							flAdded := timelineAddEventArticle(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 							if flAdded == true {
 								ctr++
 							}
@@ -18235,14 +18237,14 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								flAdded := timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+								flAdded := timelineAddEventMedia(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 								if flAdded == true {
 									ctr++
 								}
 							}
 
 						} else {
-							flAdded := timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+							flAdded := timelineAddEventMedia(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 							if flAdded == true {
 								ctr++
 							}
@@ -18268,11 +18270,11 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+								timelineAddEventSlide(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 							}
 
 						} else {
-							timelineAddEventSlide(w,r,uid,contCat,start,end,&tjs,&p)
+							timelineAddEventSlide(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 						}
 					}
 					//articles
@@ -18289,11 +18291,11 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+								timelineAddEventArticle(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 							}
 
 						} else {
-							timelineAddEventArticle(w,r,uid,contCat,start,end,&tjs,&p)
+							timelineAddEventArticle(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 						}
 					}
 					//media
@@ -18310,11 +18312,11 @@ func editor(w http.ResponseWriter, r *http.Request) {
 							i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 							j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 							if i != -1 || j != -1 {
-								timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+								timelineAddEventMedia(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 							}
 
 						} else {
-							timelineAddEventMedia(w,r,uid,contCat,start,end,&tjs,&p)
+							timelineAddEventMedia(w,r,uid,GROUP_ID,contCat,start,end,&tjs,&p)
 						}
 					}
 
@@ -19389,7 +19391,7 @@ func editor(w http.ResponseWriter, r *http.Request) {
 	}
 }
 //D0070
-func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSMEDIA) bool {
+func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, GROUP_ID, contCat string, start, end int, tjs *Timelinejs, p *TDSMEDIA) bool {
 	dks := TimelineEvent{}
 	sd := TimelineStartDate{}
 	ed := TimelineEndDate{}
@@ -19397,7 +19399,7 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
 	flAdded := false
-	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
@@ -19448,9 +19450,9 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 	return flAdded
 }
 //D0072
-func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSMEDIA) {
+func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, GROUP_ID, contCat string, start, end int, p *TDSMEDIA) {
 	thisDU := str2int(p.DT_UPLOAD)
-	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 		var buffer3 bytes.Buffer
 		imgAlt := "img01"
 		buffer3.WriteString(fmt.Sprintf("<li>"))
@@ -19478,7 +19480,7 @@ func photoGalleryShowMedia(w http.ResponseWriter, r *http.Request, uid, contCat 
 	}
 }
 //D0070
-func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) bool {
+func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, GROUP_ID, contCat string, start, end int, tjs *Timelinejs, p *TDSARTL) bool {
 	dks := TimelineEvent{}
 	sd := TimelineStartDate{}
 	ed := TimelineEndDate{}
@@ -19486,7 +19488,7 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
 	flAdded := false
-	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
@@ -19538,9 +19540,9 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 
 }
 //D0072
-/*func photoGalleryShowArticle(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSARTL, recCtr int) {
+/*func photoGalleryShowArticle(w http.ResponseWriter, r *http.Request, uid, GROUP_ID, contCat string, start, end int, p *TDSARTL, recCtr int) {
 	thisDU := str2int(p.DT_UPLOAD)
-	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 		recCtr++*/
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
@@ -19591,7 +19593,7 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, contCa
 }*/
 
 //D0070
-func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, tjs *Timelinejs, p *TDSSLIDE) bool {
+func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, GROUP_ID, contCat string, start, end int, tjs *Timelinejs, p *TDSSLIDE) bool {
 	dks := TimelineEvent{}
 	sd := TimelineStartDate{}
 	ed := TimelineEndDate{}
@@ -19599,7 +19601,7 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat 
 	tt := TimelineText{}
 	thisDU := str2int(p.DT_UPLOAD)
 	flAdded := false
-	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
 		//20180824124749
@@ -19650,9 +19652,9 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, contCat 
 	return flAdded
 }
 //D0072
-/*func photoGalleryShowSlide(w http.ResponseWriter, r *http.Request, uid, contCat string, start, end int, p *TDSSLIDE, recCtr int) {
+/*func photoGalleryShowSlide(w http.ResponseWriter, r *http.Request, uid, GROUP_ID, contCat string, start, end int, p *TDSSLIDE, recCtr int) {
 	thisDU := str2int(p.DT_UPLOAD)
-	if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+	if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 		recCtr++*/
 		//fmt.Fprintf(w, "%v\n", p)
 		//split DT_UPLOAD
@@ -42968,6 +42970,8 @@ func media(w http.ResponseWriter, r *http.Request) {
 						return
 					case PROC == "Y":
 						_, uid := checkSession(w,r)
+						FUNC_CODE := "GET_GRP_ID"
+						_, GROUP_ID, _  , _ := usersProcessor(w, r, "au", uid, FUNC_CODE)
 						start_date := r.FormValue("start_date")
 						start_time := r.FormValue("start_time")
 						end_date := r.FormValue("end_date")
@@ -43032,7 +43036,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 										if i != -1 || j != -1 {
 											thisDU := str2int(p.DT_UPLOAD)
-											if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+											if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 												nt := strings.Index(p.TITLE, "No title")
 												nd := strings.Index(p.DESC, "ulapphMirrorImage")
 												ntt := strings.Index(p.TITLE, "ulapphMirrorImage")
@@ -43054,7 +43058,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 
 									} else {
 										thisDU := str2int(p.DT_UPLOAD)
-										if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+										if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 											nt := strings.Index(p.TITLE, "No title")
 											nd := strings.Index(p.DESC, "ulapphMirrorImage")
 											ntt := strings.Index(p.TITLE, "ulapphMirrorImage")
@@ -43088,7 +43092,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 										j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 										if i != -1 || j != -1 {
 											thisDU := str2int(p.DT_UPLOAD)
-											if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+											if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 												recCtr++
 												WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
 											}
@@ -43096,7 +43100,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 
 									} else {
 										thisDU := str2int(p.DT_UPLOAD)
-										if thisDU >= start && thisDU <= end && p.AUTHOR == uid {
+										if thisDU >= start && thisDU <= end && (p.AUTHOR == uid || GROUP_ID == "GRP_ADMIN" || GROUP_ID == "GRP_USER") {
 											recCtr++
 											WALLPAPERS_LIST_STR = fmt.Sprintf("%v@888@%v|%v|%v", WALLPAPERS_LIST_STR, p.IMG_URL, p.TITLE, p.DESC)
 										}
@@ -43119,11 +43123,11 @@ func media(w http.ResponseWriter, r *http.Request) {
 										i := strings.Index(strings.ToUpper(p.TITLE), strings.ToUpper(kword))
 										j := strings.Index(strings.ToUpper(p.DESC), strings.ToUpper(kword))
 										if i != -1 || j != -1 {
-											photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+											photoGalleryShowMedia(w,r,uid,GROUP_ID,contCat,start,end,&p)
 										}
 
 									} else {
-										photoGalleryShowMedia(w,r,uid,contCat,start,end,&p)
+										photoGalleryShowMedia(w,r,uid,GROUP_ID,contCat,start,end,&p)
 									}
 								}
 							}
@@ -54162,7 +54166,7 @@ func queueLogMapCoors(w http.ResponseWriter, r *http.Request, xLatLong, USER_TYP
 					ACCESS_LOG_TEXT: g.ACCESS_LOG_TEXT,
 					ACCESS_LOG_CTR: ctr,
 			}
-			if len(fmt.Sprintf("%v", buffer5.Bytes())) >= 1048576 || len(fmt.Sprintf("%v", g.ACCESS_LOG_TEXT)) >= 1048576 {
+			if len(fmt.Sprintf("%v", buffer5.Bytes())) >= 1048487 || len(fmt.Sprintf("%v", g.ACCESS_LOG_TEXT)) >= 1048487 {
 				g.ACCESS_MAP_TEXT = []byte("")
 				g.ACCESS_LOG_TEXT = []byte("")
 			}
