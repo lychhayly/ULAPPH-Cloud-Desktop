@@ -40762,7 +40762,13 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte("0 payload found!"))
 			}
 			return
- 
+		case "NOTIFY-SEND-SMS":
+			c.Infof("NOTIFY-SEND-SMS")
+			SMS_NUMBER := r.FormValue("SMS_NUM")
+			MESSAGE := r.FormValue("SMS_MSG")
+			laterSendSMS.Call(c, SMS_NUMBER, MESSAGE)
+			return
+		//edwinxxx 
 		case "POST_PAYLOAD":
 			SID := r.FormValue("SID")
 			if SID != "" {
@@ -40775,12 +40781,11 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 			} else {
 				if len(payload) > 1500 {
 					thingsError(w,r,fmt.Sprintf("ERROR: payload exceeded length"))
-					return					
+					return
 				}
 			}
 			recID := fmt.Sprintf("%v-dtc", thingName)
 			timestamp := getTimestamp()
- 
 			g := TDSTHINGS{
 					REC_ID:	recID,
 					THING_NAME: thingName,
@@ -40789,22 +40794,18 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 					FL_SHARED: "Y",
 					TIMESTAMP: timestamp,
 			}
- 
 			key := datastore.NewKey(c, "TDSTHINGS", recID, 0, nil)
 			if _, err := datastore.Put(c, key, &g); err != nil {
 				thingsError(w,r,fmt.Sprintf("ERROR: %v", err))
 				return
 			}
 			//c.Errorf("[S0354]")
-			
 			data,_ := json.MarshalIndent(g, "", "  ")
 			w.Write(data)
 			return
- 
 		case "SEND-CONTROL":
 			recID := fmt.Sprintf("%v-ctd", thingName)
 			timestamp := getTimestamp()
-		
 			g := TDSTHINGS{
 					REC_ID:	recID,
 					THING_NAME: thingName,
