@@ -28,36 +28,44 @@ function saveSettings() {
 
 function take_snapshot() {
 	document.body.style.background = "blue";
-	// play sound effect
-	shutter.play();
-	// take snapshot and get image data
-	Webcam.snap( function(data_uri) {
-		// display results in page
-		document.getElementById('results').innerHTML =
-			'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=5"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
-			'<img src="'+data_uri+'"/>';
-		//ulapph
-		document.getElementById('imgdata').value = data_uri;
-		upload_ulapph();
-	} );
+	document.getElementById("page").style.backgroundColor = "yellow";
+	setTimeout(function (){
+		// play sound effect
+		shutter.play();
+		// take snapshot and get image data
+		Webcam.snap( function(data_uri) {
+			// display results in page
+			document.getElementById('results').innerHTML =
+				'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=5"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
+				'<img src="'+data_uri+'"/>';
+			//ulapph
+			document.getElementById('imgdata').value = data_uri;
+			upload_ulapph();
+			document.getElementById("page").style.backgroundColor = "red";
+		} );
+	}, 1000); //delay 1 second
 };
 
 
 //ulapph
 function take_snapshot10s() {
-	// play sound effect
 	document.body.style.background = "blue";
-	shutter.play();
-	// take snapshot and get image data
-	Webcam.snap( function(data_uri) {
-		// display results in page
-		document.getElementById('results').innerHTML =
-			'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=5"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
-			'<img src="'+data_uri+'"/>';
-		//ulapph
-		document.getElementById('imgdata').value = data_uri;
-		upload_ulapph();
-	} );
+	document.getElementById("page").style.backgroundColor = "yellow";
+	setTimeout(function (){
+		// play sound effect
+		shutter.play();
+		// take snapshot and get image data
+		Webcam.snap( function(data_uri) {
+			// display results in page
+			document.getElementById('results').innerHTML =
+				'<h2>Here is your large image: <a href="/infodb?DB_FUNC=MEDIA&CATEGORY=ALL_RECENT&LAST=5"><img src="https://edwin-daen-vinas.appspot.com/img/recent.png" width="40" height="40"/></a></h2>' +
+				'<img src="'+data_uri+'"/>';
+			//ulapph
+			document.getElementById('imgdata').value = data_uri;
+			upload_ulapph();
+			document.getElementById("page").style.backgroundColor = "red";
+		} );
+	}, 9000); //delay 9 second
 };
 
 function take_snapshot10s1m() {
@@ -214,6 +222,24 @@ function take_snapshot1m1y() {
 		take_snapshot();
 		if( seconds > 0 ) {
 			setTimeout(tick, 60000);
+		} else {
+			//alert("Done taking pics!");
+			document.body.style.background = "white";
+		}
+	}
+	tick();
+};
+
+function take_snapshot15s1y() {
+	var seconds = 2102400;
+	function tick() {
+		var counter = document.getElementById("counter");
+		seconds--;
+		//counter.innerHTML = '<h1>' + "0:" + (seconds < 10 ? "0" : "") + String(seconds) + '</h1>';
+		//alert("hi edwin!");
+		take_snapshot();
+		if( seconds > 0 ) {
+			setTimeout(tick, 15000);
 		} else {
 			//alert("Done taking pics!");
 			document.body.style.background = "white";

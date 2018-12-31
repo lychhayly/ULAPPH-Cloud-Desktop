@@ -63656,10 +63656,10 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button-->
 		<form>
 		<span class="button-wrap">
-		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-highlight">1-Take Snapshot</a>
+		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-caution">1-Take Snapshot</a>
 		</span>
 		<span class="button-wrap">
-		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-highlight">2-Take Snapshot after 10s</a>
+		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-royal">2-Take Snapshot after 10s</a>
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot10s1m();" class="button button-pill button-raised button-highlight">3-Take Snapshot every 10s for 1m</a>
@@ -63687,6 +63687,9 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot15s1y();" class="button button-pill button-raised button-highlight">7.3-Take Snapshot every 15s for 1year</a>
 		</span>
 		<!--a href="/tools?FUNC=MIRROR2">Small Mirror</a-->
 	</form>
@@ -63755,10 +63758,10 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button-->
 		<form>
 		<span class="button-wrap">
-		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-highlight">1-Take Snapshot</a>
+		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-caution">1-Take Snapshot</a>
 		</span>
 		<span class="button-wrap">
-		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-highlight">2-Take Snapshot after 10s</a>
+		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-royal">2-Take Snapshot after 10s</a>
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot10s1m();" class="button button-pill button-raised button-highlight">3-Take Snapshot every 10s for 1m</a>
@@ -63786,6 +63789,9 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot15s1y();" class="button button-pill button-raised button-highlight">7.3-Take Snapshot every 15s for 1year</a>
 		</span>
 		<!--a href="/tools?FUNC=MIRROR">Big Mirror</a-->
 	</form>
