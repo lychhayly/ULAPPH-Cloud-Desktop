@@ -63642,6 +63642,8 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		Webcam.set({
 			width: 1280,
 			height: 720,
+			dest_width: 640,
+			dest_height: 480,
 			image_format: 'jpeg',
 			jpeg_quality: 90
 		});
