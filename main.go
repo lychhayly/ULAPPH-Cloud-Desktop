@@ -17651,6 +17651,66 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 	FL_IS_BOT := isBot(w,r)
 	switch DIR_FUNC {
 		//D0074
+		case "cctv-review":
+			_, uid := checkSession(w,r)
+			if uid == "" {
+				//do nothing
+				w.WriteHeader(200)
+				w.Write([]byte("invalid operation"))
+				return
+			} else {
+				//D0074
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
+				//c.Infof("cKey: %v", cKey)
+				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
+				if strings.TrimSpace(cctv_list) == "" {
+					//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
+					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
+					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
+				}
+				//c.Infof("cctv_list: %v", cctv_list)
+				SPL := strings.Split(cctv_list, "@888@")
+				ctr := 0
+				wstr := ""
+				wLinks := "<ul>"
+				wLinkso := "<ul>"
+				for i:=0;i<len(SPL);i++ {
+					if SPL[i] != "" {
+						cKeyTS := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", SPL[i])
+						catLastUpload := getStrMemcacheValueByKey(w,r,cKeyTS)
+						//c.Infof("catLastUpload: %v", catLastUpload)
+						timestamp := stmpHumanize(catLastUpload)
+						m := strings.Index(timestamp, "hour")
+						if m != -1 {
+							//cctv may be outdated
+							wstr = fmt.Sprintf("%v<br>%v", wstr, SPL[i])
+							catDesc := deskNum2Name(w,r,SPL[i])
+							thisLink := fmt.Sprintf("/social?SO_FUNC=get-tot-media&cat=%v&catname=%v", SPL[i], catDesc)
+							wLinkso = fmt.Sprintf("%v<li><a href=\"%v\" target=\"%v\">%v</a></li>", wLinkso, thisLink, SPL[i], catDesc)
+						} else {
+							ctr++
+							catDesc := deskNum2Name(w,r,SPL[i])
+							thisLink := fmt.Sprintf("/social?SO_FUNC=get-tot-media&cat=%v&catname=%v", SPL[i], catDesc)
+							wLinks = fmt.Sprintf("%v<li><a href=\"%v\" target=\"%v\">%v</a></li>", wLinks, thisLink, SPL[i], catDesc)
+						}
+					}
+				}
+				wLinks = fmt.Sprintf("%v</ul>", wLinks)
+				wLinkso = fmt.Sprintf("%v</ul>", wLinkso)
+				w.WriteHeader(200)
+				if ctr > 0 {
+					w.Write([]byte(fmt.Sprintf("You may review the following %v cameras!<br>", ctr)))
+					w.Write([]byte(wLinks))
+					if wstr != "" {
+						w.Write([]byte(fmt.Sprintf("<br>Warning: These are not updated: %v<br>", wstr)))
+						w.Write([]byte(wLinkso))
+					}
+				} else {
+					w.Write([]byte(fmt.Sprintf("No cameras available!")))
+				}
+			}
+		//D0074
 		case "cctv-capture":
 			_, uid := checkSession(w,r)
 			if uid == "" {
@@ -19429,7 +19489,7 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, GROUP_ID
 		tm.URL = p.IMG_URL
 		reqStr := fmt.Sprintf("/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", p.MEDIA_ID, p.MEDIA_ID)
 		tm.Link = reqStr 
-		tm.Caption = fmt.Sprintf("TDSMEDIA-%v/%v/%v", p.MEDIA_ID, p.DATA_TYPE, p.MIME_TYPE)
+		tm.Caption = fmt.Sprintf("%v/TDSMEDIA-%v/%v/%v", p.CATEGORY, p.MEDIA_ID, p.DATA_TYPE, p.MIME_TYPE)
 		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
 		//tm.URL = p.TAGS
 		tt.Headline = p.TITLE
@@ -19521,7 +19581,7 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, GROUP_
 		///search?f=TDSMEDIA-UPD&q=50
 		reqStr2 := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.FL_COUNTRY_SPECIFIC)
 		tm.Link = reqStr2
-		tm.Caption = fmt.Sprintf("TDSARTL-%v/%v/%v", p.DOC_ID, "article", "format")
+		tm.Caption = fmt.Sprintf("%v/TDSARTL-%v/%v/%v", p.CATEGORY, p.DOC_ID, "article", "format")
 		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
 		tt.Text = fmt.Sprintf("%v<br>[ TDSARTL-%v ][ <a href=\"/search?f=TDSARTL-UPD&q=%v\" target=\"tjs\">Open</a>][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr2)
 		dks.StartDate = sd
@@ -19634,7 +19694,7 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, GROUP_ID
 		///search?f=TDSMEDIA-UPD&q=50
 		reqStr := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET, p.FL_COUNTRY_SPECIFIC)
 		tm.Link = reqStr
-		tm.Caption = fmt.Sprintf("TDSSLIDE-%v/%v/%v", p.DOC_ID, "slide", "format")
+		tm.Caption = fmt.Sprintf("%v/TDSSLIDE-%v/%v/%v", p.CATEGORY, p.DOC_ID, "slide", "format")
 		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
 		tt.Text = fmt.Sprintf("%v<br>[ TDSSLIDE-%v ][ <a href=\"/search?f=TDSSLIDE-UPD&q=%v\" target=\"tjs\">Update</a> ][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr)
 		dks.StartDate = sd
@@ -40768,7 +40828,6 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 			MESSAGE := r.FormValue("SMS_MSG")
 			laterSendSMS.Call(c, SMS_NUMBER, MESSAGE)
 			return
-		//edwinxxx 
 		case "POST_PAYLOAD":
 			SID := r.FormValue("SID")
 			if SID != "" {

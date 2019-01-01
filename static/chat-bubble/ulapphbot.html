@@ -183,28 +183,16 @@ var convo = {
 	      answer: "showWebapp"
 	    },
 		{
-	      question: "Content Shortcuts",
+	      question: "Contents",
 	      answer: "content-functions"
-	    },
-		{
-	      question: "Chat",
-	      answer: "join-chats"
 	    },
 		{
 	      question: "Tools",
 	      answer: "funcShowTools"
 	    },
-		{
-	      question: "Lotto",
-	      answer: "funcGamesLotto"
-	    },
-		{
-	      question: "TimelineJS",
-	      answer: "funcTimelineJS"
-	    },	
-		{
-	      question: "Remote Control",
-	      answer: "funcRemoteControl"
+	       {
+	      question: "CCTV",
+	      answer: "funcCCTVtools"
 	    }
 	  ]
 	},
@@ -296,12 +284,24 @@ var convo = {
 	      answer: "toolsAdmin"
 	    },
 		{
-	      question: "CCTV",
-	      answer: "funcCCTVtools"
-	    },
-		{
 	      question: "Camera",
 	      answer: "funcToolsCamera"
+	    },
+		{
+	      question: "Chat",
+	      answer: "join-chats"
+	    },
+		{
+	      question: "Lotto",
+	      answer: "funcGamesLotto"
+	    },
+		{
+	      question: "TimelineJS",
+	      answer: "funcTimelineJS"
+	    },	
+		{
+	      question: "Remote Control",
+	      answer: "funcRemoteControl"
 	    }
 		]
   },
@@ -320,7 +320,11 @@ var convo = {
 		{
 	      question: "Capture CCTVs",
 	      answer: "funcCaptureCCTV"
-	    }
+	    },
+                {
+              question: "Review CCTVs",
+              answer: "funcReviewCCTV"
+            }
 		]
   },
   "funcGamesLotto": {
@@ -384,6 +388,10 @@ var convo = {
 		{
 	      question: "recent in comments",
 	      answer: "funcCallNlpBackend8"
+	    },
+		{
+	      question: "recent all",
+	      answer: "toolsRecentAll"
 	    }			
 		]
   },
@@ -1013,7 +1021,10 @@ funcShowCCTV = function () {
 						    },{
 							  question: "Capture CCTVs",
 							  answer: "funcCaptureCCTV"
-							}]
+						    },{
+                                                          question: "Review CCTVs",
+                                                          answer: "funcReviewCCTV"
+                                                    }]
 					  }
 					},
 					"cctv-cameras"
@@ -1055,7 +1066,10 @@ funcCaptureCCTV = function () {
 						    },{
 							  question: "Capture CCTVs",
 							  answer: "funcCaptureCCTV"
-							}]
+						    },{
+                                                          question: "Review CCTVs",
+                                                          answer: "funcReviewCCTV"
+                                                    }]
 					  }
 					},
 					"cctv-cameras"
@@ -1066,6 +1080,50 @@ funcCaptureCCTV = function () {
 	  }
 }
 
+funcReviewCCTV = function () {
+	//reviewing cctv function
+    if (window.XMLHttpRequest)
+	  {// code for IE7+, Firefox, Chrome, Opera, Safari
+	  xhr5=new XMLHttpRequest();
+	  }
+	else
+	  {// code for IE6, IE5
+	  xhr5=new ActiveXObject('MSXML2.XMLHTTP.3.0');
+	  } 
+	console.log("Capturing cctv cameras...");
+	xhr5.open("GET","/directory?DIR_FUNC=cctv-review"); 
+	xhr5.send();
+	
+	 xhr5.onreadystatechange=function(convo)
+	  {
+	  if (xhr5.readyState==4 && xhr5.status==200)
+		{
+		var currVal = xhr5.responseText;
+			console.log(currVal);
+			  if (currVal != "") {
+				  chatWindow.talk(
+					{
+					  "cctv-cameras": {
+					  says: [currVal],
+						reply: [{
+						      question: "Show CCTVs",
+						      answer: "funcShowCCTV"
+						    },{
+							  question: "Capture CCTVs",
+							  answer: "funcCaptureCCTV"
+						    },{
+                                                          question: "Review CCTVs",
+                                                          answer: "funcReviewCCTV"
+                                                    }]
+					  }
+					},
+					"cctv-cameras"
+				)
+			}
+			return;
+		}
+	  }
+}
 
 funcRandomYoutube = function () {
 	//call nlp
@@ -1275,6 +1333,10 @@ function toolsCalendar() {
 }
 function toolsAdmin() {
 	location.href="/admin-setup";
+}
+
+function toolsRecentAll() {
+	window.open("/tools?FUNC=ALL_RECENT");
 }
 
 funcNewCCTV = function () {
