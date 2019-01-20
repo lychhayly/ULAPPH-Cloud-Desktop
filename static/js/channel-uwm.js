@@ -233,6 +233,11 @@ function procMessage(obj) {
 	if (sysUpd > 0) {
 		var cmdata = str.split("@888@");
 		switch (cmdata[2]) {
+			case "SYS_RC_PLAY_MUSIC":
+                                alertifyThis("Playing music...");
+                                var mid = cmdata[3];
+                                playMusic(mid);
+                                break;
 			
 			case "SYS_OPEN_WINDOW":
 				if (cmdata[3] == "" || cmdata[3] == undefined) {
@@ -647,6 +652,41 @@ function onClose() {
 	innerHTML = "<a href='/infodb?DB_FUNC=ULAPPH-NOTIFICATIONS-LOG&SID=ULAPPH-NOTIFICATIONS-LOG' target='notifications'><img src='/img/channel-disconnected.png' width=60 height=60></img></a>CHANNEL DISCONNECTED.";
 	alertifyThis(innerHTML);
 };
+
+function playMusic(mid) {
+        if (parseInt(mid) > 0) {
+                        customMusic = true;
+                        alertify.success("Playing music...");
+                        var url = "/media?FUNC_CODE=PLAY&MEDIA_ID=" + mid;
+                        console.log("url: " + url);
+			var SID = "TDSMEDIA-"+mid;
+                        playSoundLoop(10, SID, url)
+                        return;
+        }
+        return;
+}
+
+function playSoundLoop(sln, sID, sURL) {
+
+        if (isActive == false) {
+                return;
+        }
+	soundManager.stopAll();
+        sURL = sURL.replace("http:", "https:");
+
+        var aSound = document.createElement('audio');
+        var s = soundManager.createSound({
+          id: sID,
+          volume: 90,
+          url: sURL
+        });
+
+        s.play({
+          loops: sln
+        });
+
+        return;
+}
 
 function alertifyThis(message) {
 	var ss = document.getElementById("soundStat");

@@ -1,12 +1,12 @@
 //GAE_APP_DOM_ID#ulapph-public-1.appspot.com
-//LAST_UPGRADE#05/11/2018 02:48:59 AM PST
+//LAST_UPGRADE#01/05/2019 09:55:59 AM PST
 //TOTAL_LINES#80740
 //DO NOT REMOVE ABOVE LINE///////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // ULAPPH CLOUD DESKTOP SYSTEM
 // ULAPPH Cloud Desktop is a web-based desktop that runs on Google cloud platform and accessible via browsers on different PC and mobile devices.
-// COPYRIGHT (c) 2014-2018 Edwin D. Vinas, Ulapph Cloud Desktop System
-// COPYRIGHT (c) 2017-2018 Accenture, ULAPPH Cloud Desktop, Opensource Version
+// COPYRIGHT (c) 2014-2017 Edwin D. Vinas, Ulapph Cloud Desktop System
+// COPYRIGHT (c) 2017-2019 Accenture, ULAPPH Cloud Desktop, Opensource Version
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //REV ID: 		D0001
 //REV DATE: 	2014-Sep-02
@@ -384,6 +384,11 @@
 //REV DESC:	  	Update cctv real-time captures 
 //REV AUTH:		Edwin D. Vinas
 /////////////////////////////////////////////////////////////////////////////////////////////////
+//REV ID: 		D0075
+//REV DATE: 		2019-Jan-05
+//REV DESC:	  	Update NLP using Prose 
+//REV AUTH:		Edwin D. Vinas
+/////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////////////
 //---------------------------------------------------------------------------------------------
 //List of firebase channels
@@ -516,14 +521,17 @@ import (
 	"github.com/umahmood/perceptive"
 	"image"
 	//"image/png"
+	//D0075
+	"gopkg.in/jdkato/prose.v2"
+
 )
 //contants configs
 const (
 	///////////////////////////////////////////////////////////////
 	// BUILD PARAMETERS
 	///////////////////////////////////////////////////////////////
-    UCD_BUILD_STR = "BUILD_2017-04-21-08-51-00"
-    ///////////////////////////////////////////////////////////////
+	UCD_BUILD_STR = "BUILD_2017-04-21-08-51-00"
+	///////////////////////////////////////////////////////////////
 	// ON SITE TOTAL DOWN, REDIRECT TO A DEFAULT PAGE/DOC
 	// !!!CONFIG-STARTS-HERE!!!
 	///////////////////////////////////////////////////////////////
@@ -1430,6 +1438,19 @@ type field struct {
 	kind  interface{}
 }
 var nl = nlp.New() 
+
+//D0075
+type ProseDataNLP struct {
+    Text   string
+    Help   string
+    Answer string
+    IsRegexp string
+    IsAnsOtto string
+}
+//D0075
+type OttoDataNLP struct {
+	Input string `json:"input"`
+}
 
 //D0069
 //education modules
@@ -14837,6 +14858,7 @@ func ulapphTree(w http.ResponseWriter, r *http.Request) {
 
 //execute Javascript via otto interpreter
 func ulapphOtto(w http.ResponseWriter, r *http.Request) {
+	//c := appengine.NewContext(r)
 
 	_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
 	SID := r.FormValue("SID")
@@ -14872,9 +14894,6 @@ func ulapphOtto(w http.ResponseWriter, r *http.Request) {
 		panic(e)
 	}
 
-	// a string slice to hold the keys
-	//k := make([]string, len(c))
-
 	// copy c's keys into k
 	for key, val := range c {
 		vm.Set(key, val)
@@ -14882,16 +14901,6 @@ func ulapphOtto(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w,"%v = %v\n", key, val)
 		}
 	}
-
-	// load the environment
-	//u, _ := url.Parse(r.URL.String())
-	//queryParams := u.Query()
-	//for key, val := range queryParams {
-	//	vm.Set(key, val)
-	//	if DEBUG == "Y" {
-	//	fmt.Fprintf(w,"%v = %v\n", key, val)
-	//	}
-	//}
 
 	_, err = vm.Run(thisCont)
 	if err != nil {
@@ -14913,6 +14922,54 @@ func ulapphOtto(w http.ResponseWriter, r *http.Request) {
 
 
 }
+//D0075
+func execOtto(w http.ResponseWriter, r *http.Request, SID, DEBUG, key, val string) (resp string) {
+	c := appengine.NewContext(r)
+
+	cKey := fmt.Sprintf("ULAPPH_NLP_%v", SID)
+	thisCont := getStrMemcacheValueByKey(w,r,cKey)
+	if thisCont == "" {
+		//get the TDSMEDIA javascript
+		BLOB_KEY := contentCheckSid(w,r,SID)
+		blobChan := make(chan string)
+		go getBlobTextChan(w, r,blobChan, BLOB_KEY)
+		thisCont = <- blobChan
+	}
+	if DEBUG == "Y" {
+	c.Infof("thisCont: %v", thisCont)
+	fmt.Fprintf(w,"%v\n", thisCont)
+	}
+
+	//start otto vm
+	vm := otto.New()
+
+	vm.Set(key, val)
+	if DEBUG == "Y" {
+	fmt.Fprintf(w,"%v = %v\n", key, val)
+	}
+
+	_, err := vm.Run(thisCont)
+	if err != nil {
+		if DEBUG == "Y" {
+		fmt.Fprintf(w,"ERROR: %v\n", err)
+		}
+		return
+	}
+
+	if value, err := vm.Get("output"); err == nil {
+	    if value_str, err := value.ToString(); err == nil {
+		if DEBUG == "Y" {
+		fmt.Fprintf(w, "output = %v\n", value_str)
+		}
+		resp = value_str
+	    }
+	}
+	if DEBUG == "Y" {
+	c.Infof("resp: %v", resp)
+	}
+	return resp
+}
+
 
 //handles the /chat url which makes the firebase chat possible
 func ulapphChat(w http.ResponseWriter, r *http.Request) {
@@ -17651,6 +17708,66 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 	FL_IS_BOT := isBot(w,r)
 	switch DIR_FUNC {
 		//D0074
+		case "cctv-review":
+			_, uid := checkSession(w,r)
+			if uid == "" {
+				//do nothing
+				w.WriteHeader(200)
+				w.Write([]byte("invalid operation"))
+				return
+			} else {
+				//D0074
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
+				//c.Infof("cKey: %v", cKey)
+				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
+				if strings.TrimSpace(cctv_list) == "" {
+					//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
+					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
+					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
+				}
+				//c.Infof("cctv_list: %v", cctv_list)
+				SPL := strings.Split(cctv_list, "@888@")
+				ctr := 0
+				wstr := ""
+				wLinks := "<ul>"
+				wLinkso := "<ul>"
+				for i:=0;i<len(SPL);i++ {
+					if SPL[i] != "" {
+						cKeyTS := fmt.Sprintf("TDSMEDIA_CAT_LAST_UPLOAD_%v", SPL[i])
+						catLastUpload := getStrMemcacheValueByKey(w,r,cKeyTS)
+						//c.Infof("catLastUpload: %v", catLastUpload)
+						timestamp := stmpHumanize(catLastUpload)
+						m := strings.Index(timestamp, "hour")
+						if m != -1 {
+							//cctv may be outdated
+							wstr = fmt.Sprintf("%v<br>%v", wstr, SPL[i])
+							catDesc := deskNum2Name(w,r,SPL[i])
+							thisLink := fmt.Sprintf("/social?SO_FUNC=get-tot-media&cat=%v&catname=%v", SPL[i], catDesc)
+							wLinkso = fmt.Sprintf("%v<li><a href=\"%v\" target=\"%v\">%v</a></li>", wLinkso, thisLink, SPL[i], catDesc)
+						} else {
+							ctr++
+							catDesc := deskNum2Name(w,r,SPL[i])
+							thisLink := fmt.Sprintf("/social?SO_FUNC=get-tot-media&cat=%v&catname=%v", SPL[i], catDesc)
+							wLinks = fmt.Sprintf("%v<li><a href=\"%v\" target=\"%v\">%v</a></li>", wLinks, thisLink, SPL[i], catDesc)
+						}
+					}
+				}
+				wLinks = fmt.Sprintf("%v</ul>", wLinks)
+				wLinkso = fmt.Sprintf("%v</ul>", wLinkso)
+				w.WriteHeader(200)
+				if ctr > 0 {
+					w.Write([]byte(fmt.Sprintf("You may review the following %v cameras!<br>", ctr)))
+					w.Write([]byte(wLinks))
+					if wstr != "" {
+						w.Write([]byte(fmt.Sprintf("<br>Warning: These are not updated: %v<br>", wstr)))
+						w.Write([]byte(wLinkso))
+					}
+				} else {
+					w.Write([]byte(fmt.Sprintf("No cameras available!")))
+				}
+			}
+		//D0074
 		case "cctv-capture":
 			_, uid := checkSession(w,r)
 			if uid == "" {
@@ -17663,11 +17780,13 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 				//initiating cctv captures
 				//c.Infof("initiating cctv captures")
 				//send channel message to initiate capture
-				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				//cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
 				//c.Infof("cKey: %v", cKey)
 				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
 				if strings.TrimSpace(cctv_list) == "" {
-					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
 					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
 					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
 				}
@@ -17715,11 +17834,13 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 			} else {
 				var buf bytes.Buffer
 				//get list of cctvs
-				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				//cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+				cKey := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
 				//c.Infof("cKey: %v", cKey)
 				cctv_list := getStrMemcacheValueByKey(w,r,cKey)
 				if strings.TrimSpace(cctv_list) == "" {
-					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+					cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
 					cctv_list, _ = getTDSCNFG(w,r,0,cfgName)
 					putStrToMemcacheWithoutExp(w,r,cKey,cctv_list)
 				}
@@ -19425,7 +19546,7 @@ func timelineAddEventMedia(w http.ResponseWriter, r *http.Request, uid, GROUP_ID
 		tm.URL = p.IMG_URL
 		reqStr := fmt.Sprintf("/media?FUNC_CODE=PLAY&MEDIA_ID=%v&SID=TDSMEDIA-%v", p.MEDIA_ID, p.MEDIA_ID)
 		tm.Link = reqStr 
-		tm.Caption = fmt.Sprintf("TDSMEDIA-%v/%v/%v", p.MEDIA_ID, p.DATA_TYPE, p.MIME_TYPE)
+		tm.Caption = fmt.Sprintf("%v/TDSMEDIA-%v/%v/%v", p.CATEGORY, p.MEDIA_ID, p.DATA_TYPE, p.MIME_TYPE)
 		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
 		//tm.URL = p.TAGS
 		tt.Headline = p.TITLE
@@ -19517,7 +19638,7 @@ func timelineAddEventArticle(w http.ResponseWriter, r *http.Request, uid, GROUP_
 		///search?f=TDSMEDIA-UPD&q=50
 		reqStr2 := fmt.Sprintf("%varticles?TYPE=ARTICLE&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.FL_COUNTRY_SPECIFIC)
 		tm.Link = reqStr2
-		tm.Caption = fmt.Sprintf("TDSARTL-%v/%v/%v", p.DOC_ID, "article", "format")
+		tm.Caption = fmt.Sprintf("%v/TDSARTL-%v/%v/%v", p.CATEGORY, p.DOC_ID, "article", "format")
 		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
 		tt.Text = fmt.Sprintf("%v<br>[ TDSARTL-%v ][ <a href=\"/search?f=TDSARTL-UPD&q=%v\" target=\"tjs\">Open</a>][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr2)
 		dks.StartDate = sd
@@ -19630,7 +19751,7 @@ func timelineAddEventSlide(w http.ResponseWriter, r *http.Request, uid, GROUP_ID
 		///search?f=TDSMEDIA-UPD&q=50
 		reqStr := fmt.Sprintf("%vslides?TYPE=SLIDE&MODE=NORMAL&PARM=LOOP&SECS=8&DOC_ID=%v&SID=TDSSLIDE-%v&MUSIC_ID=%v&GET_NEXT=%v&SOUND=%v&FL_COUNTRY_SPECIFIC=%v", getSchemeUrl(w,r), p.DOC_ID, p.DOC_ID, p.MUSIC_ID, p.GET_NEXT, SLIDE_SOUND_SET, p.FL_COUNTRY_SPECIFIC)
 		tm.Link = reqStr
-		tm.Caption = fmt.Sprintf("TDSSLIDE-%v/%v/%v", p.DOC_ID, "slide", "format")
+		tm.Caption = fmt.Sprintf("%v/TDSSLIDE-%v/%v/%v", p.CATEGORY, p.DOC_ID, "slide", "format")
 		tm.Credit = "Copyright (c) ULAPPH Cloud Desktop" 
 		tt.Text = fmt.Sprintf("%v<br>[ TDSSLIDE-%v ][ <a href=\"/search?f=TDSSLIDE-UPD&q=%v\" target=\"tjs\">Update</a> ][ <a href=\"%v\" target=\"tjs\">View</a> ]", p.DESC, p.DOC_ID, p.DOC_ID, reqStr)
 		dks.StartDate = sd
@@ -36730,6 +36851,7 @@ func adminSlides(w http.ResponseWriter, r *http.Request) {
 								fmt.Fprintf(w, "<b>Doc ID:</b> %v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>SID:</b> TDSSLIDE-%v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+								fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 								URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSSLIDE-%v&TITLE=%v", p.DOC_ID, p.TITLE)
 								fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 								fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
@@ -39338,6 +39460,7 @@ func adminArticles(w http.ResponseWriter, r *http.Request) {
 								fmt.Fprintf(w, "<b>Doc ID:</b> %v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>SID:</b> TDSARTL-%v<br>", p.DOC_ID)
 								fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+								fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 								URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSARTL-%v&TITLE=%v", p.DOC_ID, p.TITLE)
 								fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 								fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
@@ -39561,57 +39684,249 @@ func getPushContents(w http.ResponseWriter, r *http.Request, target string) stri
 	}
 	return CACHE_DATA
 }
- 
 
 //D0065
+//D0075
 func ulapphNlp(w http.ResponseWriter, r *http.Request) {
 	//s := nl.P("hello sir can you pleeeeeease play King by Lauren Aquilina") 
-	//c := appengine.NewContext(r)
+	c := appengine.NewContext(r)
+	c.Infof("ulapphNlp...")
+	//D0075
+	nlpFunc := r.FormValue("nlpFunc")
+	c.Infof("nlpFunc: %v", nlpFunc)
 	inpStr := r.FormValue("p")
+	c.Infof("inpStr: %v", inpStr)
 	uid := r.FormValue("UID")
-	//c.Infof("inpStr: %v", inpStr)
-	s := nl.P(inpStr)
-	//c.Infof("s: %v", s)
-	resp := ""
-	if nr, ok := s.(*ulapphBotNlpRes); ok {
-		//c.Infof("Success")
-		//c.Infof("%#v\n", nr)
-		//D0068
-		SPL := strings.Split(inpStr, " ")
-		switch {
-			case strings.ToLower(nr.FuncType) == "motd":
-				resp = nlpQuote(w,r,nr)
-			case strings.ToLower(nr.FuncType) == "view" && len(SPL) > 4:
-				resp = nlpView(w,r,nr)
-			case (strings.ToLower(nr.FuncType) == "update" || strings.ToLower(nr.FuncType) == "edit") && len(SPL) > 4:
-				resp = nlpUpdate(w,r,nr)
-			case strings.ToLower(nr.FuncType) == "open":
-				resp = nlpOpen(w,r,nr.ContentType)
-			case strings.ToLower(nr.FuncType) == "recent":
-				resp = nlpRecent(w,r,nr.ContentType)
-			case strings.ToLower(nr.FuncType) == "search":
-				i := strings.Index(inpStr, "internal")
-				if i != -1 {
-					resp = nlpSearch(w,r,"i",nr.SearchKey)
-				} else {
-					resp = nlpSearch(w,r,"e",nr.SearchKey)
-				}
-			default:
-				//D0068
-				//search ACB blob
-				resp = nlpAcbSearch(w,r,uid,inpStr) 
-				if resp == "" {
-					resp = "nlp-success-invalid-function"
-				}
+	c.Infof("uid: %v", uid)
+	FL_DEBUG := r.FormValue("DEBUG")
+	c.Infof("FL_DEBUG: %v", FL_DEBUG)
+	switch nlpFunc {
+	case "nlpProse":
+		//D0075
+		SID := r.FormValue("SID")
+		c.Infof("SID: %v", SID)
+		//get from cache if available
+		cKey := fmt.Sprintf("ULAPPH_NLP_%v", SID)
+		thisCont := getStrMemcacheValueByKey(w,r,cKey)
+		if thisCont == "" {
+			BLOB_KEY := contentCheckSid(w,r,SID)
+			c.Infof("BLOB_KEY: %v", BLOB_KEY)
+			//blobChan := make(chan []byte)
+			//go getBlobByteChan(w, r,blobChan, BLOB_KEY)
+			//thisCont = <- blobChan
+			thisCont := getBlobTextNoComms(w, r, BLOB_KEY)
+			//thisCont := getBlobText(w, r, BLOB_KEY)
+			//c.Infof("thisCont: %v", thisCont)
+			putStrToMemcacheWithoutExp(w,r,cKey,thisCont)
 		}
-	} else {
-		//c.Infof("Failed")
-		//resp = fmt.Sprintf("<i>%v</i> is an invalid talk...", inpStr)
-		resp = "nlp-failed"
+
+		dec := json.NewDecoder(strings.NewReader(thisCont))
+		entries := []ProseDataNLP{}
+		for {
+		ent := ProseDataNLP{}
+		err := dec.Decode(&ent)
+		if err != nil {
+		    if err == io.EOF {
+			break
+		    }
+		    panic(err)
+		}
+		entries = append(entries, ent)
+		}
+		//c.Infof("entries: %v", entries)
+
+		// Create a new document with the default configuration:
+		doc, err := prose.NewDocument(inpStr)
+		if err != nil {
+		log.Fatal(err)
+		}
+
+		// Iterate over the doc's tokens:
+		for _, tok := range doc.Tokens() {
+			if FL_DEBUG == "Y" {
+			fmt.Fprintf(w, "****TOKENS****<br>")
+			fmt.Fprintf(w, "TEXT: %v TAG: %v LABEL: %v<br>", tok.Text, tok.Tag, tok.Label)
+			// Go NNP B-GPE
+			// is VBZ O
+			// an DT O
+			// ...
+
+			}
+			//check the ProseData
+			for _, entry := range entries {
+				switch entry.IsRegexp {
+				case "true":
+					//unescStr := strings.Replace(entry.Text, "\\", "", -1)
+					//regExpStr := fmt.Sprintf(`%v`, entry.Text)
+					//c.Infof("regExpStr: %v", regExpStr)
+					//var regIn = regexp.MustCompile(entry.Text)
+					//var regIn = regexp.MustCompile(entry.Text)
+					//if regIn.MatchString(tok.Text) == true {
+					matched, err := regexp.MatchString(entry.Text, tok.Text)
+					if FL_DEBUG == "Y" {
+					c.Infof("entry.IsRegexp: true")
+					c.Infof("matched: %v [%v] [%v]", matched, entry.Text, tok.Text)
+					}
+					if err != nil {
+						panic(err)
+					}
+					if matched == true {
+						//w.Write([]byte(entry.Answer))
+						if entry.IsAnsOtto == "true" {
+							//call Otto API
+							resp := execOtto(w,r, entry.Answer, FL_DEBUG, "input", tok.Text)
+							w.Write([]byte(resp))
+							return
+							break
+						} else {
+							w.Write([]byte(entry.Answer))
+							return
+							break
+						}
+					}
+				default:
+					if FL_DEBUG == "Y" {
+					c.Infof("default")
+					}
+					if entry.Text == tok.Text {
+						w.Write([]byte(entry.Answer))
+						return
+					}
+				}
+			}
+		}
+
+		// Iterate over the doc's named-entities:
+		for _, ent := range doc.Entities() {
+			if FL_DEBUG == "Y" {
+			fmt.Fprintf(w, "****ENTITIES*****<br>")
+			fmt.Fprintf(w, "TEXT: %v LABEL: %v<br>", ent.Text, ent.Label)
+			// Go GPE
+			// Google GPE
+			}
+		}
+
+		// Iterate over the doc's sentences:
+		for _, sent := range doc.Sentences() {
+			if FL_DEBUG == "Y" {
+			fmt.Fprintf(w, "****SENTENCES****<br>")
+			fmt.Fprintf(w, "SENTENCE: %v<br>", sent.Text)
+			// Go is an open-source programming language created at Google.
+			}
+			//check the ProseData
+			for _, entry := range entries {
+				switch entry.IsRegexp {
+				case "true":
+					//unescStr := strings.Replace(entry.Text, "\\\\", "\\", -1)
+					//regExpStr := fmt.Sprintf("`%v`", unescStr)
+					//var regIn = regexp.MustCompile(regExpStr)
+					//regExpStr := fmt.Sprintf(`%v`, entry.Text)
+					//c.Infof("regExpStr: %v", regExpStr)
+					//var regIn = regexp.MustCompile(regExpStr)
+					//var regIn = regexp.MustCompile(entry.Text)
+					matched, err := regexp.MatchString(entry.Text, sent.Text)
+					if FL_DEBUG == "Y" {
+					c.Infof("entry.IsRegexp: true")
+					c.Infof("matched: %v [%v] [%v]", matched, entry.Text, sent.Text)
+					}
+					if err != nil {
+						panic(err)
+					}
+					if matched == true {
+					//if regIn.MatchString(sent.Text) == true {
+						//w.Write([]byte(entry.Answer))
+						if entry.IsAnsOtto == "true" {
+							//call Otto API
+							resp := execOtto(w,r, entry.Answer, FL_DEBUG, "input", sent.Text)
+							w.Write([]byte(resp))
+							return
+							break
+						} else {
+							w.Write([]byte(entry.Answer))
+							return
+							break
+						}
+					}
+				default:
+					if FL_DEBUG == "Y" {
+					c.Infof("default")
+					}
+					if entry.Text == sent.Text {
+						w.Write([]byte(entry.Answer))
+						return
+						break
+					}
+				}
+			}
+		}
+		w.Write([]byte("Sorry, I didn't get that."))
+		//edwinxxx
+		//w.Write([]byte("<ul>"))
+		//check the ProseData
+		var buf bytes.Buffer
+		tctr := 0
+		for _, entry := range entries {
+			i := strings.Index(entry.Text, inpStr)
+			j := strings.Index(entry.Help, inpStr)
+			if i != -1 || j != -1 {
+				tctr++
+				thisStr := fmt.Sprintf("<br>- %v", entry.Help)
+				buf.WriteString(thisStr)
+				//w.Write([]byte(thisStr))
+			}
+		}
+		//w.Write([]byte("</ul>"))
+		if tctr > 0 {
+			w.Write([]byte("You can try the following related examples:"))
+			w.Write(buf.Bytes())
+		}
+		return
+
+	default:
+		//c.Infof("inpStr: %v", inpStr)
+		s := nl.P(inpStr)
+		//c.Infof("s: %v", s)
+		resp := ""
+		if nr, ok := s.(*ulapphBotNlpRes); ok {
+			//c.Infof("Success")
+			//c.Infof("%#v\n", nr)
+			//D0068
+			SPL := strings.Split(inpStr, " ")
+			switch {
+				case strings.ToLower(nr.FuncType) == "motd":
+					resp = nlpQuote(w,r,nr)
+				case strings.ToLower(nr.FuncType) == "view" && len(SPL) > 4:
+					resp = nlpView(w,r,nr)
+				case (strings.ToLower(nr.FuncType) == "update" || strings.ToLower(nr.FuncType) == "edit") && len(SPL) > 4:
+					resp = nlpUpdate(w,r,nr)
+				case strings.ToLower(nr.FuncType) == "open":
+					resp = nlpOpen(w,r,nr.ContentType)
+				case strings.ToLower(nr.FuncType) == "recent":
+					resp = nlpRecent(w,r,nr.ContentType)
+				case strings.ToLower(nr.FuncType) == "search":
+					i := strings.Index(inpStr, "internal")
+					if i != -1 {
+						resp = nlpSearch(w,r,"i",nr.SearchKey)
+					} else {
+						resp = nlpSearch(w,r,"e",nr.SearchKey)
+					}
+				default:
+					//D0068
+					//search ACB blob
+					resp = nlpAcbSearch(w,r,uid,inpStr) 
+					if resp == "" {
+						resp = "nlp-success-invalid-function"
+					}
+			}
+		} else {
+			//c.Infof("Failed")
+			//resp = fmt.Sprintf("<i>%v</i> is an invalid talk...", inpStr)
+			resp = "nlp-failed"
+		}
+		w.WriteHeader(200)
+		w.Write([]byte(resp))
+		return
 	}
-	w.WriteHeader(200)
-	w.Write([]byte(resp))
-	return
 }
 //D0068
 func nlpAcbSearch(w http.ResponseWriter, r *http.Request, uid, target string) (string) {
@@ -39773,6 +40088,7 @@ func nlpUpdate(w http.ResponseWriter, r *http.Request, nr *ulapphBotNlpRes) (str
 	}
 	return "Sorry, we can't update the content!"
 }
+
 //D0066
 //D0062
 //Handles bot messaging via dialogflow
@@ -39780,7 +40096,7 @@ func ulapphBot(w http.ResponseWriter, r *http.Request) {
 	//c := appengine.NewContext(r)
 
 	if FL_PROC_OK := countryChecker(w,r); FL_PROC_OK != true {return}
-	checkReferrer(w,r)
+	//checkReferrer(w,r)
 	_ = validateAccess(w, r, "IS_VALID_USER",r.URL.String())
 	_, uid := checkSession(w,r)
 	//c.Infof("%v", r)
@@ -40758,7 +41074,12 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte("0 payload found!"))
 			}
 			return
- 
+		case "NOTIFY-SEND-SMS":
+			c.Infof("NOTIFY-SEND-SMS")
+			SMS_NUMBER := r.FormValue("SMS_NUM")
+			MESSAGE := r.FormValue("SMS_MSG")
+			laterSendSMS.Call(c, SMS_NUMBER, MESSAGE)
+			return
 		case "POST_PAYLOAD":
 			SID := r.FormValue("SID")
 			if SID != "" {
@@ -40771,12 +41092,11 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 			} else {
 				if len(payload) > 1500 {
 					thingsError(w,r,fmt.Sprintf("ERROR: payload exceeded length"))
-					return					
+					return
 				}
 			}
 			recID := fmt.Sprintf("%v-dtc", thingName)
 			timestamp := getTimestamp()
- 
 			g := TDSTHINGS{
 					REC_ID:	recID,
 					THING_NAME: thingName,
@@ -40785,22 +41105,18 @@ func ulapphThings(w http.ResponseWriter, r *http.Request) {
 					FL_SHARED: "Y",
 					TIMESTAMP: timestamp,
 			}
- 
 			key := datastore.NewKey(c, "TDSTHINGS", recID, 0, nil)
 			if _, err := datastore.Put(c, key, &g); err != nil {
 				thingsError(w,r,fmt.Sprintf("ERROR: %v", err))
 				return
 			}
 			//c.Errorf("[S0354]")
-			
 			data,_ := json.MarshalIndent(g, "", "  ")
 			w.Write(data)
 			return
- 
 		case "SEND-CONTROL":
 			recID := fmt.Sprintf("%v-ctd", thingName)
 			timestamp := getTimestamp()
-		
 			g := TDSTHINGS{
 					REC_ID:	recID,
 					THING_NAME: thingName,
@@ -42399,6 +42715,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+									fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
@@ -42522,6 +42839,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+									fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									prevLink := fmt.Sprintf("https://ulapph-public-1.appspot.com/editor?EDIT_FUNC=READER_PREVIOUS&SID=TDSMEDIA-%v&CATEGORY=%v", p.MEDIA_ID, p.CATEGORY)
@@ -42616,6 +42934,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+									fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
@@ -42681,6 +43000,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+									fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
@@ -42746,6 +43066,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+									fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", p.DATA_TYPE)
@@ -42804,6 +43125,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									fmt.Fprintf(w, "<b>Shared Status:</b> %v<br>", p.FL_SHARED)
 									fmt.Fprintf(w, "<b>Author: </b> %v<br>", p.AUTHOR)
 									fmt.Fprintf(w, "<b>Publish Status:</b> %v<br>", p.DOC_STAT)
+									fmt.Fprintf(w, "<b>Category:</b> %v<br>", p.CATEGORY)
 									URL_DIS := fmt.Sprintf("https://ulapph-public-1.appspot.com/captcha?CC_FUNC=DISP&R=COMMENT&SID=TDSMEDIA-%v&TITLE=%v", p.MEDIA_ID, TITLE)
 									fmt.Fprintf(w, "<b>Discussion:</b> <a href=\"%v\">View Comments</a><br>", URL_DIS)
 									fmt.Fprintf(w, "<b>Media Type:</b> %v<br>", DATA_TYPE)
@@ -43698,8 +44020,14 @@ const mediaMusicPlayerUMP12 = `
 <body>
  
 <form action="/media?FUNC_CODE=UMP" method="POST" enctype="multipart/form-data">
-<input type="search" name="FILTER" value="" placeholder="Enter keyword..." /> [<a href="#music_tags">See Tags</a>]
+<input type="search" name="FILTER" value="" placeholder="Enter keyword..." /> [<a href="#" onclick="gotoTags();return false;">See Tags</a>]
 </form>
+<script>
+function gotoTags() {
+    var top = document.getElementById("music_tags").offsetTop;
+    window.scrollTo(0, top);
+}
+</script>
  
 <audio id="audio1" preload="auto" data-able-player>
 </audio>
@@ -44662,7 +44990,7 @@ const htmlDesktopsJSONtoTableA = `
 		document.getElementById("desktops").innerHTML = chtm + localStorage['uwm-'+i];
 	}
 	if (utot > 0) {
-		  thisDesk = '<span class=\"button-wrap\"><a href=\"#\" onclick=\"clearDesktops();\" class=\"button button-pill button-raised button-primary\">Clear</a></span>';
+		  thisDesk = '<span class=\"button-wrap\"><a href=\"#\" onclick=\"clearDesktops(); return false;\" class=\"button button-pill button-raised button-primary\">Clear</a></span>';
 		  chtm = document.getElementById("desktops").innerHTML;
 		  document.getElementById("desktops").innerHTML = chtm + thisDesk;
 	}
@@ -54513,11 +54841,13 @@ func struwmUpdateCCTVList(w http.ResponseWriter, r *http.Request, uid, CATEGORY 
 	c := appengine.NewContext(r)
 	//c.Infof("struwmUpdateCCTVList...")
 	//D0074
-	cKeyLA := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+	//cKeyLA := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", uid)
+	cKeyLA := fmt.Sprintf("LIST_ALL_CCTV_ACTIVE_%v", SYS_SERVER_NAME)
 	//c.Infof("cKeyLA: %v", cKeyLA)
 	//cctvla := getStrMemcacheValueByKey(w,r,cKeyLA)
 	//c.Infof("cctvla: %v", cctvla)
-	cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+	//cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", uid)
+	cfgName := fmt.Sprintf("PERSONAL_CCTV_LIST_%v", SYS_SERVER_NAME)
 	cctvla, _ := getTDSCNFG(w,r,0,cfgName)
 	cctvla2 := ""
 	SPL := strings.Split(cctvla, "@888@")
@@ -61165,22 +61495,22 @@ var htmlEditorBody = template.Must(template.New("htmlEditorBody").Parse(`
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Update Cloud" onclick="env.saveData(0)">
+        <input type="button" value="Update Cloud" onclick="env.saveData(0); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="View Image" onclick="env.viewImage()">
+        <input type="button" value="View Image" onclick="env.viewImage(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="View Link" onclick="env.viewLink()">
+        <input type="button" value="View Link" onclick="env.viewLink(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Text2Speech" onclick="env.playTTS()">
+        <input type="button" value="Text2Speech" onclick="env.playTTS(); return false;">
       </td>
     </tr>
     <tr>
@@ -61429,47 +61759,47 @@ var htmlEditorBody = template.Must(template.New("htmlEditorBody").Parse(`
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Update Cloud" onclick="env.saveData(0)">
+        <input type="button" value="Update Cloud" onclick="env.saveData(0); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="View Image" onclick="env.viewImage()">
+        <input type="button" value="View Image" onclick="env.viewImage(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Run Go Program" onclick="env.playCode()">
+        <input type="button" value="Run Go Program" onclick="env.playCode(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Draw Sequence Diagram" onclick="env.playMermaid()">
+        <input type="button" value="Draw Sequence Diagram" onclick="env.playMermaid(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Generate Drawing" onclick="env.genDraw()">
+        <input type="button" value="Generate Drawing" onclick="env.genDraw(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Hide Left Menu" onclick="env.hideLeft()">
+        <input type="button" value="Hide Left Menu" onclick="env.hideLeft(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Edit Snippets" onclick="env.editSnippets()">
+        <input type="button" value="Edit Snippets" onclick="env.editSnippets(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Formatting Guide" onclick="env.showGuide()">
+        <input type="button" value="Formatting Guide" onclick="env.showGuide(); return false;">
       </td>
     </tr>
     <tr>
       <td colspan="2">
-        <input type="button" value="Help Docs" onclick="env.showHelp()">
+        <input type="button" value="Help Docs" onclick="env.showHelp(); return false;">
       </td>
     </tr>
   </table>
@@ -61614,25 +61944,25 @@ var htmlEditorHeaderReader = template.Must(template.New("htmlEditorHeaderReader"
 var htmlEditorBodyReader = template.Must(template.New("htmlEditorBodyReader").Parse(`
 <a href="#0" class="cd-btn"><img src="/img/ace-slider.png" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.saveData(0)"><img id="saveicon" src="/img/cloud-save.png" width="35" height="35" title="Update Cloud"></a>
+<a href="#" onclick="env.saveData(0); return false;"><img id="saveicon" src="/img/cloud-save.png" width="35" height="35" title="Update Cloud"></a>
 <br>
-<a href="#" onclick="env.viewLink()"><img src="/img/viewlink.png" width="35" height="35" title="View Link"></a>
+<a href="#" onclick="env.viewLink(); return false;"><img src="/img/viewlink.png" width="35" height="35" title="View Link"></a>
 <br>
-<a href="#" onclick="env.searchText()"><img src="/img/search.png" width="35" height="35" title="InDoc Search"></a>
+<a href="#" onclick="env.searchText(); return false;"><img src="/img/search.png" width="35" height="35" title="InDoc Search"></a>
 <br>
-<a href="#" onclick="env.playCode()"><img src="/img/gorun.png" width="35" height="35" title="Run Go Program"></a>
+<a href="#" onclick="env.playCode(); return false;"><img src="/img/gorun.png" width="35" height="35" title="Run Go Program"></a>
 <br>
-<a href="#" onclick="env.playJsOtto()"><img src="/img/js.png" width="35" height="35" title="Run Otto JS"></a>
+<a href="#" onclick="env.playJsOtto(); return false;"><img src="/img/js.png" width="35" height="35" title="Run Otto JS"></a>
 <br>
-<a href="#" onclick="env.playMermaid()"><img src="/img/mermaid.png" width="35" height="35" title="Draw Sequence Diagram"></a>
+<a href="#" onclick="env.playMermaid(); return false;"><img src="/img/mermaid.png" width="35" height="35" title="Draw Sequence Diagram"></a>
 <br>
-<a href="#" onclick="env.genDraw()"><img src="/img/draw.png" width="35" height="35" title="Generate Drawing"></a>
+<a href="#" onclick="env.genDraw(); return false;"><img src="/img/draw.png" width="35" height="35" title="Generate Drawing"></a>
 <br>
-<a href="#" onclick="env.genTimeline()"><img src="/img/timeline.png" width="35" height="35" title="Generate Timeline"></a>
+<a href="#" onclick="env.genTimeline(); return false;"><img src="/img/timeline.png" width="35" height="35" title="Generate Timeline"></a>
 <br>
-<a href="#" onclick="env.genMindmap()"><img src="/img/mindmap.png" width="35" height="35" title="Generate Mindmap"></a>
+<a href="#" onclick="env.genMindmap(); return false;"><img src="/img/mindmap.png" width="35" height="35" title="Generate Mindmap"></a>
 <br>
-<a href="#" onclick="env.genTree()"><img src="/img/tree.png" width="35" height="35" title="Generate UI-Tree"></a>
+<a href="#" onclick="env.genTree(); return false;"><img src="/img/tree.png" width="35" height="35" title="Generate UI-Tree"></a>
 <br>
 <a href="/editor?EDIT_FUNC=READER&MEDIA_ID=0&SID=NEWTEXT&CATEGORY=desktop0"><img src="https://lh3.googleusercontent.com/dp0me5EMk4V5HENykVZtT0CT2SULxt7IIcVuHmKH6n-Eb-vX7tBj2Y_SEgLSCOT92GmfoO5wX3EJc_yQUbduq5pEJTHC" title="newTextFile" width="35" height="35"></a>
 <br>
@@ -61640,25 +61970,25 @@ var htmlEditorBodyReader = template.Must(template.New("htmlEditorBodyReader").Pa
 <br>
 <a href="/editor?EDIT_FUNC=READER&DOC_ID=0&SID=NEWARTICLE&CATEGORY=desktop0"><img src="https://lh3.googleusercontent.com/bWbqX-0gpLlDLDzlyf1ZoudamXIcx0XOh23pfH04xnriWGSMH4K2eQJ7z9Iv0g695sYUcgxrnMxn2W84dZQD0mLR7ca07g" title="newArticle" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.textFormat()"><img src="/img/text-formatter.png" title="Text Formatter" width="35" height="35"></a>
+<a href="#" onclick="env.textFormat(); return false;"><img src="/img/text-formatter.png" title="Text Formatter" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.encrypt()"><img src="/img/encrypted.png" title="Encrypt" width="35" height="35"></a>
+<a href="#" onclick="env.encrypt(); return false;"><img src="/img/encrypted.png" title="Encrypt" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.decrypt()"><img src="/img/decrypted.png" title="Decrypt" width="35" height="35"></a>
+<a href="#" onclick="env.decrypt(); return false;"><img src="/img/decrypted.png" title="Decrypt" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.familyTree()"><img src="/img/fam_tree.png" title="Family Tree" width="35" height="35"></a>
+<a href="#" onclick="env.familyTree(); return false;"><img src="/img/fam_tree.png" title="Family Tree" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.previousContent()"><img src="/img/arrow_left.png" title="Previous Content" width="35" height="35"></a>
+<a href="#" onclick="env.previousContent(); return false;"><img src="/img/arrow_left.png" title="Previous Content" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.randomContent()"><img src="/img/random.png" title="Random Content" width="35" height="35"></a>
+<a href="#" onclick="env.randomContent(); return false;"><img src="/img/random.png" title="Random Content" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.nextContent()"><img src="/img/arrow_right.png" title="Next Content" width="35" height="35"></a>
+<a href="#" onclick="env.nextContent(); return false;"><img src="/img/arrow_right.png" title="Next Content" width="35" height="35"></a>
 <br>
-<a href="#" onclick="env.updCode()"><img src="/img/update.png" width="35" height="35" title="Update Data"></a>
+<a href="#" onclick="env.updCode(); return false;"><img src="/img/update.png" width="35" height="35" title="Update Data"></a>
 <br>
-<a href="#" onclick="env.viewTiny()"><img src="/img/tinymce.png" width="35" height="35" title="View TinyMCE"></a>
+<a href="#" onclick="env.viewTiny(); return false;"><img src="/img/tinymce.png" width="35" height="35" title="View TinyMCE"></a>
 <br>
-<a href="#" onclick="env.playTTS()"><img src="/img/tts.png" width="35" height="35" title="Text to Speech"></a>
+<a href="#" onclick="env.playTTS(); return false;"><img src="/img/tts.png" width="35" height="35" title="Text to Speech"></a>
 <br>
 <a href="https://goo.gl/8PJbT8" target="Help"><img src="/img/help.png" title="Help" width="35" height="35"></a>
 			
@@ -63635,6 +63965,8 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		Webcam.set({
 			width: 1280,
 			height: 720,
+			dest_width: 640,
+			dest_height: 480,
 			image_format: 'jpeg',
 			jpeg_quality: 90
 		});
@@ -63649,10 +63981,10 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button-->
 		<form>
 		<span class="button-wrap">
-		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-highlight">1-Take Snapshot</a>
+		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-caution">1-Take Snapshot</a>
 		</span>
 		<span class="button-wrap">
-		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-highlight">2-Take Snapshot after 10s</a>
+		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-royal">2-Take Snapshot after 10s</a>
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot10s1m();" class="button button-pill button-raised button-highlight">3-Take Snapshot every 10s for 1m</a>
@@ -63680,6 +64012,9 @@ var htmlMirror = template.Must(template.New("htmlMirror").Parse(`
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot15s1y();" class="button button-pill button-raised button-highlight">7.3-Take Snapshot every 15s for 1year</a>
 		</span>
 		<!--a href="/tools?FUNC=MIRROR2">Small Mirror</a-->
 	</form>
@@ -63748,10 +64083,10 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		<button onClick="take_snapshot30m12h();"><img src="/img/num5.png" width=60 height=60 title="Take Snapshot every 30m for 12h"/></button-->
 		<form>
 		<span class="button-wrap">
-		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-highlight">1-Take Snapshot</a>
+		<a href="#" onClick="take_snapshot()" class="button button-pill button-raised button-caution">1-Take Snapshot</a>
 		</span>
 		<span class="button-wrap">
-		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-highlight">2-Take Snapshot after 10s</a>
+		<a href="#" onClick="setTimeout(function() { take_snapshot10s(); }, 10000);" class="button button-pill button-raised button-royal">2-Take Snapshot after 10s</a>
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot10s1m();" class="button button-pill button-raised button-highlight">3-Take Snapshot every 10s for 1m</a>
@@ -63779,6 +64114,9 @@ var htmlMirror2 = template.Must(template.New("htmlMirror2").Parse(`
 		</span>
 		<span class="button-wrap">
 		<a href="#" onClick="take_snapshot30m1y();" class="button button-pill button-raised button-highlight">7.2-Take Snapshot every 30m for 1year</a>
+		</span>
+		<span class="button-wrap">
+		<a href="#" onClick="take_snapshot15s1y();" class="button button-pill button-raised button-highlight">7.3-Take Snapshot every 15s for 1year</a>
 		</span>
 		<!--a href="/tools?FUNC=MIRROR">Big Mirror</a-->
 	</form>
@@ -71169,6 +71507,10 @@ func handleUploadMedia(w http.ResponseWriter, r *http.Request) {
 					//clear template cache if any
 					cKey = fmt.Sprintf("GO_TEMPLATE_TDSMEDIA-%v", MEDIA_ID)
 					_ = memcache.Delete(c,cKey)
+					//D0075
+					//clear nlp cache if any
+					cKey = fmt.Sprintf("ULAPPH_NLP_TDSMEDIA-%v", MEDIA_ID)
+					_ = memcache.Delete(c,cKey)
 					//t := time.Now().Local()
 					//tstamp := t.Format("20060102150405")
 					//insert media into search idx
@@ -75270,7 +75612,6 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 	s := bufio.NewScanner(reader)
 	sbuf := make([]byte, 0, 64*1024)
 	s.Buffer(sbuf, 1024*1024)
-	
 	STR_GET_REMOTE_DATA := ""
 	myloop: for s.Scan() {
 		//---------------------
@@ -75287,7 +75628,6 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 			if STR_GET_REMOTE_DATA == "" {
 				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
 			}
-		
 		case strings.HasPrefix(s.Text(), "#APPEND_URL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_URL_DATA: "):
 			STR_APPEND_REMOTE_DATA := ""
 			SPL := strings.Split(s.Text()," ")
@@ -75302,7 +75642,6 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 			if STR_APPEND_REMOTE_DATA == "" {
 				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
 			}
-			
 		//D0037
 		//---------------------
 		//Check if we need to include data from local content
@@ -75348,17 +75687,15 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 //no checks of special keywords
 func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) (blobText string) {
 	c := appengine.NewContext(r)
-	
 	//var lines []string
 	var bSrc bytes.Buffer
 	reader := blobstore.NewReader(c, appengine.BlobKey(blobkey))
 	s := bufio.NewScanner(reader)
 	sbuf := make([]byte, 0, 64*1024)
 	s.Buffer(sbuf, 1024*1024)
-	
 	//STR_GET_REMOTE_DATA := ""
 	//myloop: for s.Scan() {
-	for s.Scan() {
+	/*for s.Scan() {
 		thisStr := fmt.Sprintf("%v", s.Text())
 		if len(thisStr) > 0 {
 			if string(thisStr[0]) != "#" {
@@ -75367,11 +75704,73 @@ func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) 
 		} else {
 			bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
 		}
+	}*/
+	STR_GET_REMOTE_DATA := ""
+	myloop: for s.Scan() {
+		//---------------------
+		//Check if we need to include data from remote URL
+		//if contains "#GET_REMOTE_DATA: https://ulapph-sites.appspot.com/media?FUNC_CODE=PLAY&MEDIA_ID=7&SID=TDSMEDIA-7" && host is not self
+		switch {
+		case strings.HasPrefix(s.Text(), "#GET_REMOTE_DATA ") || strings.HasPrefix(s.Text(), "#GET_REMOTE_DATA: "):
+			SPL := strings.Split(s.Text()," ")
+			thisStr := fmt.Sprintf("%v", s.Text())
+			if len(SPL) > 1 && string(thisStr[0]) == "#" {
+				STR_GET_REMOTE_DATA = SPL[1]
+				break myloop
+			}
+			if STR_GET_REMOTE_DATA == "" {
+				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
+			}
+		case strings.HasPrefix(s.Text(), "#APPEND_URL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_URL_DATA: "):
+			STR_APPEND_REMOTE_DATA := ""
+			SPL := strings.Split(s.Text()," ")
+			thisStr := fmt.Sprintf("%v", s.Text())
+			if len(SPL) > 1 && string(thisStr[0]) == "#" {
+				STR_APPEND_REMOTE_DATA = SPL[1]
+				//append it now
+				BLOB_KEY := contentCheckSid(w,r,STR_APPEND_REMOTE_DATA)
+				appText := getBlobTextNoComms(w, r, BLOB_KEY)
+				bSrc.WriteString(fmt.Sprintf("%v\n", appText))
+			}
+			if STR_APPEND_REMOTE_DATA == "" {
+				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
+			}
+		//D0037
+		//---------------------
+		//Check if we need to include data from local content
+		//if contains "#APPEND_LOCAL_DATA: TDSMEDIA-22"
+		case strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA: "):
+			STR_APPEND_LOCAL_DATA := ""
+			SPL := strings.Split(s.Text()," ")
+			thisStr := fmt.Sprintf("%v", s.Text())
+			if len(SPL) > 1 && string(thisStr[0]) == "#" {
+				STR_APPEND_LOCAL_DATA = SPL[1]
+				//append it now
+				BLOB_KEY := contentCheckSid(w,r,STR_APPEND_LOCAL_DATA)
+				appText := getBlobTextNoComms(w, r, BLOB_KEY)
+				bSrc.WriteString(fmt.Sprintf("%v\n", appText))
+			}
+			if STR_APPEND_LOCAL_DATA == "" {
+				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
+			}
+		default:
+			//bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
+			thisStr := fmt.Sprintf("%v", s.Text())
+			if len(thisStr) > 0 {
+				if string(thisStr[0]) != "#" {
+					bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
+				}
+			}
+		}
 	}
-	
+	//---------
+	//If there is a remote data url found; include that data
+	if STR_GET_REMOTE_DATA != "" {
+		REM_DATA := fetchURL(w,r,STR_GET_REMOTE_DATA)
+		bSrc.WriteString(fmt.Sprintf("%v\n", REM_DATA))
+	}
 	blobText = bSrc.String()
 	//c.Infof("blobText: %v", blobText)
-	
 	if err := s.Err(); err != nil {
 		//!!! panic is required here
 		panic(err)
@@ -79518,11 +79917,10 @@ func count_words (words []string) map[string]int{
 
 //sort and display music tages given a list of keywords
 func display_music_tags (w http.ResponseWriter, r *http.Request, uid string, word_counts map[string]int){
-	var buf bytes.Buffer	
+	var buf bytes.Buffer
 	cKey := fmt.Sprintf("UMP_CACHE_MUSIC_%s", uid)
 	buf.WriteString(fmt.Sprintf("<h3>---------------</h3>"))
-	buf.WriteString(fmt.Sprintf("<a name=\"music_tags\"><b>Music Tags</a>"))
-	
+	buf.WriteString(fmt.Sprintf("<div id=\"music_tags\"><b>Music Tags</b></div>"))
 	n := map[int][]string{}
 	var a []int
 	for k, v := range word_counts {
