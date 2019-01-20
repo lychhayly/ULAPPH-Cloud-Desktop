@@ -70,7 +70,13 @@ var chatWindow = new Bubbles(document.getElementById("chat"), "chatWindow", {
 	  xhr=new ActiveXObject('MSXML2.XMLHTTP.3.0');
 	  } 
 	console.log(o);
-	xhr.open("POST","/nlp?p=" + o.input + "&UID=" +urlParams["UID"], true); 
+	//xhr.open("POST","/nlp?p=" + o.input + "&UID=" +urlParams["UID"], true); 
+	var KNOWLEDGE_BASE = "TDSMEDIA-76413";
+	var FL_DEBUG = "N";
+    if (urlParams["DEBUG"] != "") {
+        FL_DEBUG = urlParams["DEBUG"];
+    }
+	xhr.open("POST","/nlp?nlpFunc=nlpProse&p=" + o.input + "&SID=" + KNOWLEDGE_BASE + "&DEBUG=" + FL_DEBUG, true); 
 	xhr.send();
 	
 	 xhr.onreadystatechange=function()

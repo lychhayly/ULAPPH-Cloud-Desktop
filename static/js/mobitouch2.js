@@ -142,7 +142,6 @@ function upload_ulapph() {
 			if (caption == "") {
 				caption = "ulapphMirrorImage "+"desktop"+streamUwm;
 			}
-			//edwinxxx
 			var urlParams;
 			var match,
 					pl     = /\+/g,  // Regex for replacing addition symbol with a space

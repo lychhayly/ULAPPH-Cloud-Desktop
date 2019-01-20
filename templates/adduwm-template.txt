@@ -83,7 +83,7 @@
   {{if ne .STR_FILLER2 ""}}
   Show UWM Random Wallpapers Only: <input type="checkbox" id="uwmranw"><br>
   {{end}}
-  <input type="button" onclick="copyToUWM()" value="Generate HTML Codes"> Or [<a href="/admin-icons">Choose from Icons</a>]
+  <input type="button" onclick="copyToUWM();return false;" value="Generate HTML Codes"> Or [<a href="/admin-icons">Choose from Icons</a>]
   <br>
   <br>
   <p>After adding target URLs and titles, copy the code and goto <a href="#" onclick="editUWMSettings(); return false;" >UWM Settings</a> and append the new settings. You may also <a href="/admin-setup?ADMIN_FUNC=EDIT_CATEGORY_LIST">Edit Desktop List</a> in order to add or edit desktop categories. If the list above is not complete, try to <a href="#" onclick="clearLocalIndex();return false;" title="Click to reset menu">reset</a> the list.
@@ -142,7 +142,7 @@ function copyToUWM() {
 		e.innerHTML = currHTML + "&lt;!--" + title + "--&gt;" + "<br>" + "&lt;input type=\"hidden\" value=\"'" + link2 + "', 500, 300, 'left', 'top', {title: '" + title + "', icon: '/img/jswm-web.png'}\" size=\"60\" id=\"" + "ulapph-" + mid + "\" /&gt;&lt;script type=\"text/javascript\"&gt;eval('windowManager.openURI(' + $('" + "ulapph-" + mid + "').value + ');');&lt;/script&gt;" + "<br>" + "<br>";
 	}
 
-	document.getElementById("stat-area").innerHTML = "<a href=\"#\" onclick=\"appendUWMSettings({{.STR_FILLER2}});\"><img id=\"saveicon\" src=\"/img/cloud-save.png\" width=\"48\" height=\"48\" title=\"Append to UWM Settings\"></a>";
+	document.getElementById("stat-area").innerHTML = "<a href=\"#\" onclick=\"appendUWMSettings({{.STR_FILLER2}});return false;\"><img id=\"saveicon\" src=\"/img/cloud-save.png\" width=\"48\" height=\"48\" title=\"Append to UWM Settings\"></a>";
 	return;
 }
 
