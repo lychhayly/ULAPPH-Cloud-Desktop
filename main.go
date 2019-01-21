@@ -590,6 +590,8 @@ const (
 	googleRefMatchS   = ".google.com/"
 	//playground enabled
 	PlayEnabled = true
+	//Common Chatbot Knowledge Base
+	SYS_COMMON_CHAT_KB = "https://ulapph-sites.appspot.com/media?FUNC_CODE=GET_MEDIA_NC&MEDIA_ID=71&SID=TDSMEDIA-71"
     ///////////////////////////////////////////////////////////////
 	// CUSTOM PARAMETERS (FLAGS)
 	// Change them via Ulapph Cloud Desktop Manager VBA tool
@@ -17773,7 +17775,7 @@ func ulapphDirectory(w http.ResponseWriter, r *http.Request) {
 			if uid == "" {
 				//do nothing
 				w.WriteHeader(200)
-				w.Write([]byte("invalid operation"))
+				w.Write([]byte("Invalid operation. You are not logged in."))
 				return
 			} else {
 				//D0074
@@ -30704,7 +30706,7 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 			u := user.Current(c)
 			_, uid := checkSession(w,r)
 			if uid != ADMMAIL {
-				fmt.Fprintf(w, "Unauthorized operation!")
+				fmt.Fprintf(w, "Unauthorized operation! uid (%v) not equal to admin mail (%v)", uid, ADMMAIL)
 				return
 			}
 
@@ -39709,15 +39711,24 @@ func ulapphNlp(w http.ResponseWriter, r *http.Request) {
 		cKey := fmt.Sprintf("ULAPPH_NLP_%v", SID)
 		thisCont := getStrMemcacheValueByKey(w,r,cKey)
 		if thisCont == "" {
-			BLOB_KEY := contentCheckSid(w,r,SID)
-			c.Infof("BLOB_KEY: %v", BLOB_KEY)
-			//blobChan := make(chan []byte)
-			//go getBlobByteChan(w, r,blobChan, BLOB_KEY)
-			//thisCont = <- blobChan
-			thisCont := getBlobTextNoComms(w, r, BLOB_KEY)
-			//thisCont := getBlobText(w, r, BLOB_KEY)
-			//c.Infof("thisCont: %v", thisCont)
+			if SID == "ULAPPH-COMMON-KB" {
+				//SYS_COMMON_CHAT_KB
+				thisCont = fetchURL(w,r,SYS_COMMON_CHAT_KB)
+			} else {
+				BLOB_KEY := contentCheckSid(w,r,SID)
+				c.Infof("BLOB_KEY: %v", BLOB_KEY)
+				//blobChan := make(chan []byte)
+				//go getBlobByteChan(w, r,blobChan, BLOB_KEY)
+				//thisCont = <- blobChan
+				thisCont = getBlobTextNoComms(w, r, BLOB_KEY)
+				//thisCont := getBlobText(w, r, BLOB_KEY)
+				//c.Infof("thisCont: %v", thisCont)
+			}
 			putStrToMemcacheWithoutExp(w,r,cKey,thisCont)
+		}
+		if thisCont == "" {
+			w.Write([]byte("System error. KB data not found!"))
+			return
 		}
 
 		dec := json.NewDecoder(strings.NewReader(thisCont))
@@ -41373,43 +41384,32 @@ func media(w http.ResponseWriter, r *http.Request) {
 		writeHTMLHeader(w, 200)
 		w.Write([]byte(thisMediaID))
 		return
- 
 	case FUNC_CODE == "GET_MEDIA":
-	
 		MEDIA_ID := r.FormValue("MEDIA_ID")
 		putStrToMemcacheWithoutExp(w,r,"LAST_TDSMEDIA",MEDIA_ID)
 		mediaID := str2int(MEDIA_ID)
- 
 		BLOB_KEY, _, _, AUTHOR, DOC_STAT, FL_SHARED, IMG_URL, DATA_TYPE, _, _, SHARED_TO := getTDSMEDIABlobKey(w, r, mediaID)
-		
 		FL_PROC_OK := false
-		
 		switch {
- 
 			case DOC_STAT == "Premium" && uid != AUTHOR:
 				sysReq := fmt.Sprintf("/store?STO_FUNC=Premium&SID=TDSMEDIA-%v", mediaID)
 				http.Redirect(w, r, sysReq, http.StatusFound)
 				return
-		
 			case (FL_SHARED == "N" || DOC_STAT == "Personal") && SHARED_TO == "":
 				isOk := checkPersonalAuthor(w,r,AUTHOR,fmt.Sprintf("TDSMEDIA-%v", mediaID), mediaID)
 				if isOk == true {
 					FL_PROC_OK = true
 				}
-				
 			case DOC_STAT == "Personal" && SHARED_TO != "":
 				isAllowed := checkPersonalAccess(w,r, AUTHOR, SHARED_TO, fmt.Sprintf("TDSMEDIA-%v", mediaID), mediaID)
 				if isAllowed == true {
 					FL_PROC_OK = true
 				}
-			
 			case DOC_STAT == "ULAPPH Only":
 				_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
- 
 			case DOC_STAT == "Worldwide":
 				//media; GET_MEDIA; Worldwide
 				FL_PROC_OK = true
-		
 		}
 		if FL_PROC_OK == true {
 			switch  {
@@ -41417,11 +41417,9 @@ func media(w http.ResponseWriter, r *http.Request) {
 				case DATA_TYPE == "text":
 					//log num views
 					laterIncNumViewsSocial.Call(c, "", fmt.Sprintf("TDSMEDIA-%v", MEDIA_ID), "SO_INC_NUM_VIEWS")
- 
 					var buf bytes.Buffer
 					reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
 					s := bufio.NewScanner(reader)
-					
 					for s.Scan() {
 						switch {
 							case strings.HasPrefix(s.Text(), "#APPEND_URL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_URL_DATA: "):
@@ -41429,9 +41427,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 								thisStr := fmt.Sprintf("%v", s.Text())
 								if len(SPL) > 1 && string(thisStr[0]) == "#" {
 									TARGET := SPL[1]
-					
 									validateURL(w,r,TARGET)
-									
 									//fetch contents of url and append
 									urlData := fetchURL(w,r,TARGET)
 									if urlData != "" {
@@ -41441,11 +41437,9 @@ func media(w http.ResponseWriter, r *http.Request) {
 											buf.WriteString(fmt.Sprintf("%v\n", msg))
 										}
 									}
-									
 								} else {
 									buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 								}
-							
 							case strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA: "):
 								SPL := strings.Split(s.Text()," ")
 								thisStr := fmt.Sprintf("%v", s.Text())
@@ -41457,27 +41451,108 @@ func media(w http.ResponseWriter, r *http.Request) {
 								} else {
 									buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
 								}
-							
 							default:
 								buf.WriteString(fmt.Sprintf("%v", s.Text()))
 						}
-			
 					}
 					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 					writeHTMLHeader(w, 200)
 					w.Write(buf.Bytes())
-				
 				//case DATA_TYPE == "image" || strings.Index(DATA_TYPE, "image/") != -1:
 				case DATA_TYPE == "image":
- 
 					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 					writeHTMLHeader(w, 200)
 					w.Write([]byte(IMG_URL))
-			
 			}
-			return			
+			return
 		}
-	
+	case FUNC_CODE == "GET_MEDIA_NC":
+		MEDIA_ID := r.FormValue("MEDIA_ID")
+		putStrToMemcacheWithoutExp(w,r,"LAST_TDSMEDIA",MEDIA_ID)
+		mediaID := str2int(MEDIA_ID)
+		BLOB_KEY, _, _, AUTHOR, DOC_STAT, FL_SHARED, IMG_URL, DATA_TYPE, _, _, SHARED_TO := getTDSMEDIABlobKey(w, r, mediaID)
+		FL_PROC_OK := false
+		switch {
+			case DOC_STAT == "Premium" && uid != AUTHOR:
+				sysReq := fmt.Sprintf("/store?STO_FUNC=Premium&SID=TDSMEDIA-%v", mediaID)
+				http.Redirect(w, r, sysReq, http.StatusFound)
+				return
+			case (FL_SHARED == "N" || DOC_STAT == "Personal") && SHARED_TO == "":
+				isOk := checkPersonalAuthor(w,r,AUTHOR,fmt.Sprintf("TDSMEDIA-%v", mediaID), mediaID)
+				if isOk == true {
+					FL_PROC_OK = true
+				}
+			case DOC_STAT == "Personal" && SHARED_TO != "":
+				isAllowed := checkPersonalAccess(w,r, AUTHOR, SHARED_TO, fmt.Sprintf("TDSMEDIA-%v", mediaID), mediaID)
+				if isAllowed == true {
+					FL_PROC_OK = true
+				}
+			case DOC_STAT == "ULAPPH Only":
+				_ = validateAccess(w, r, "IS_VALID_USER",uReferer)
+			case DOC_STAT == "Worldwide":
+				//media; GET_MEDIA; Worldwide
+				FL_PROC_OK = true
+		}
+		if FL_PROC_OK == true {
+			switch  {
+				//case DATA_TYPE == "text" || strings.Index(DATA_TYPE, "text/") != -1:
+				case DATA_TYPE == "text":
+					//log num views
+					laterIncNumViewsSocial.Call(c, "", fmt.Sprintf("TDSMEDIA-%v", MEDIA_ID), "SO_INC_NUM_VIEWS")
+					var buf bytes.Buffer
+					reader := blobstore.NewReader(c, appengine.BlobKey(BLOB_KEY))
+					s := bufio.NewScanner(reader)
+					for s.Scan() {
+						switch {
+							case strings.HasPrefix(s.Text(), "#APPEND_URL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_URL_DATA: "):
+								SPL := strings.Split(s.Text()," ")
+								thisStr := fmt.Sprintf("%v", s.Text())
+								if len(SPL) > 1 && string(thisStr[0]) == "#" {
+									TARGET := SPL[1]
+									validateURL(w,r,TARGET)
+									//fetch contents of url and append
+									urlData := fetchURL(w,r,TARGET)
+									if urlData != "" {
+										scanner := bufio.NewScanner(strings.NewReader(urlData))	
+										for scanner.Scan() {
+											msg := scanner.Text()
+											buf.WriteString(fmt.Sprintf("%v\n", msg))
+										}
+									}
+								} else {
+									buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
+								}
+							case strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA: "):
+								SPL := strings.Split(s.Text()," ")
+								thisStr := fmt.Sprintf("%v", s.Text())
+								if len(SPL) > 1 && string(thisStr[0]) == "#" {
+									//append it now
+									BLOB_KEY := contentCheckSid(w,r,SPL[1])
+									appText := getBlobTextNoComms(w, r, BLOB_KEY)
+									buf.WriteString(fmt.Sprintf("%v\n", appText))
+								} else {
+									buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
+								}
+							default:
+								//buf.WriteString(fmt.Sprintf("%v", s.Text()))
+								thisStr := fmt.Sprintf("%v", s.Text())
+								if len(thisStr) > 0 {
+									if string(thisStr[0]) != "#" {
+										buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
+									}
+								}
+						}
+					}
+					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+					writeHTMLHeader(w, 200)
+					w.Write(buf.Bytes())
+				//case DATA_TYPE == "image" || strings.Index(DATA_TYPE, "image/") != -1:
+				case DATA_TYPE == "image":
+					w.Header().Set("Content-Type", "text/plain; charset=utf-8")
+					writeHTMLHeader(w, 200)
+					w.Write([]byte(IMG_URL))
+			}
+		}
 	case FUNC_CODE == "GET_MENU_TABZILLA":
 		
 		cKey := "TABZILLA_MENU_CACHE"
@@ -75634,9 +75709,16 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 			if len(SPL) > 1 && string(thisStr[0]) == "#" {
 				STR_APPEND_REMOTE_DATA = SPL[1]
 				//append it now
-				BLOB_KEY := contentCheckSid(w,r,STR_APPEND_REMOTE_DATA)
-				appText := getBlobText(w, r, BLOB_KEY)
-				bSrc.WriteString(fmt.Sprintf("%v\n", appText))
+				validateURL(w,r,STR_APPEND_REMOTE_DATA)
+				//fetch contents of url and append
+				urlData := fetchURL(w,r,STR_APPEND_REMOTE_DATA)
+				if urlData != "" {
+					scanner := bufio.NewScanner(strings.NewReader(urlData))	
+					for scanner.Scan() {
+						msg := scanner.Text()
+						bSrc.WriteString(fmt.Sprintf("%v\n", msg))
+					}
+				}
 			}
 			if STR_APPEND_REMOTE_DATA == "" {
 				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
@@ -75693,17 +75775,6 @@ func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) 
 	sbuf := make([]byte, 0, 64*1024)
 	s.Buffer(sbuf, 1024*1024)
 	//STR_GET_REMOTE_DATA := ""
-	//myloop: for s.Scan() {
-	/*for s.Scan() {
-		thisStr := fmt.Sprintf("%v", s.Text())
-		if len(thisStr) > 0 {
-			if string(thisStr[0]) != "#" {
-				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
-			}
-		} else {
-			bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
-		}
-	}*/
 	STR_GET_REMOTE_DATA := ""
 	myloop: for s.Scan() {
 		//---------------------
@@ -75727,9 +75798,16 @@ func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) 
 			if len(SPL) > 1 && string(thisStr[0]) == "#" {
 				STR_APPEND_REMOTE_DATA = SPL[1]
 				//append it now
-				BLOB_KEY := contentCheckSid(w,r,STR_APPEND_REMOTE_DATA)
-				appText := getBlobTextNoComms(w, r, BLOB_KEY)
-				bSrc.WriteString(fmt.Sprintf("%v\n", appText))
+				validateURL(w,r,STR_APPEND_REMOTE_DATA)
+				//fetch contents of url and append
+				urlData := fetchURL(w,r,STR_APPEND_REMOTE_DATA)
+				if urlData != "" {
+					scanner := bufio.NewScanner(strings.NewReader(urlData))	
+					for scanner.Scan() {
+						msg := scanner.Text()
+						bSrc.WriteString(fmt.Sprintf("%v\n", msg))
+					}
+				}
 			}
 			if STR_APPEND_REMOTE_DATA == "" {
 				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
