@@ -30702,11 +30702,12 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 	RTR_FUNC := r.FormValue("RTR_FUNC")
 	switch RTR_FUNC {
 		case "NEW_INSTALL":
+			//edwinxxx
 			//newconfigtemplate
 			u := user.Current(c)
 			_, uid := checkSession(w,r)
 			if uid != ADMMAIL {
-				fmt.Fprintf(w, "Unauthorized operation!")
+				fmt.Fprintf(w, "Unauthorized operation! uid (%v) not equal to admin mail (%v)", uid, ADMMAIL)
 				return
 			}
 
@@ -41504,7 +41505,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 					s := bufio.NewScanner(reader)
 					for s.Scan() {
 						switch {
-							/*case strings.HasPrefix(s.Text(), "#APPEND_URL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_URL_DATA: "):
+							case strings.HasPrefix(s.Text(), "#APPEND_URL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_URL_DATA: "):
 								SPL := strings.Split(s.Text()," ")
 								thisStr := fmt.Sprintf("%v", s.Text())
 								if len(SPL) > 1 && string(thisStr[0]) == "#" {
@@ -41521,7 +41522,7 @@ func media(w http.ResponseWriter, r *http.Request) {
 									}
 								} else {
 									buf.WriteString(fmt.Sprintf("%v\n", s.Text()))
-								}*/
+								}
 							case strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA ") || strings.HasPrefix(s.Text(), "#APPEND_LOCAL_DATA: "):
 								SPL := strings.Split(s.Text()," ")
 								thisStr := fmt.Sprintf("%v", s.Text())
