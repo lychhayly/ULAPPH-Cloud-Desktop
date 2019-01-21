@@ -30702,11 +30702,12 @@ func ulapphRouter (w http.ResponseWriter, r *http.Request) {
 	RTR_FUNC := r.FormValue("RTR_FUNC")
 	switch RTR_FUNC {
 		case "NEW_INSTALL":
+			//edwinxxx
 			//newconfigtemplate
 			u := user.Current(c)
 			_, uid := checkSession(w,r)
 			if uid != ADMMAIL {
-				fmt.Fprintf(w, "Unauthorized operation!")
+				fmt.Fprintf(w, "Unauthorized operation! uid (%v) not equal to (%v)", uid, ADMMAIL)
 				return
 			}
 
