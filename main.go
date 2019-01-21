@@ -75709,9 +75709,16 @@ func getBlobText(w http.ResponseWriter, r *http.Request, blobkey string) (blobTe
 			if len(SPL) > 1 && string(thisStr[0]) == "#" {
 				STR_APPEND_REMOTE_DATA = SPL[1]
 				//append it now
-				BLOB_KEY := contentCheckSid(w,r,STR_APPEND_REMOTE_DATA)
-				appText := getBlobText(w, r, BLOB_KEY)
-				bSrc.WriteString(fmt.Sprintf("%v\n", appText))
+				validateURL(w,r,STR_APPEND_REMOTE_DATA)
+				//fetch contents of url and append
+				urlData := fetchURL(w,r,STR_APPEND_REMOTE_DATA)
+				if urlData != "" {
+					scanner := bufio.NewScanner(strings.NewReader(urlData))	
+					for scanner.Scan() {
+						msg := scanner.Text()
+						bSrc.WriteString(fmt.Sprintf("%v\n", msg))
+					}
+				}
 			}
 			if STR_APPEND_REMOTE_DATA == "" {
 				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
@@ -75791,9 +75798,16 @@ func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) 
 			if len(SPL) > 1 && string(thisStr[0]) == "#" {
 				STR_APPEND_REMOTE_DATA = SPL[1]
 				//append it now
-				BLOB_KEY := contentCheckSid(w,r,STR_APPEND_REMOTE_DATA)
-				appText := getBlobTextNoComms(w, r, BLOB_KEY)
-				bSrc.WriteString(fmt.Sprintf("%v\n", appText))
+				validateURL(w,r,STR_APPEND_REMOTE_DATA)
+				//fetch contents of url and append
+				urlData := fetchURL(w,r,STR_APPEND_REMOTE_DATA)
+				if urlData != "" {
+					scanner := bufio.NewScanner(strings.NewReader(urlData))	
+					for scanner.Scan() {
+						msg := scanner.Text()
+						bSrc.WriteString(fmt.Sprintf("%v\n", msg))
+					}
+				}
 			}
 			if STR_APPEND_REMOTE_DATA == "" {
 				bSrc.WriteString(fmt.Sprintf("%v\n", s.Text()))
