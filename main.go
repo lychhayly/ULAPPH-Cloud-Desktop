@@ -75795,16 +75795,12 @@ func getBlobTextNoComms(w http.ResponseWriter, r *http.Request, blobkey string) 
 			STR_APPEND_REMOTE_DATA := ""
 			SPL := strings.Split(s.Text()," ")
 			thisStr := fmt.Sprintf("%v", s.Text())
-			//edwinxxx
-			c.Infof("thisStr: %v", thisStr)
 			if len(SPL) > 1 && string(thisStr[0]) == "#" {
 				STR_APPEND_REMOTE_DATA = SPL[1]
-				c.Infof("STR_APPEND_REMOTE_DATA: %v", STR_APPEND_REMOTE_DATA)
 				//append it now
 				validateURL(w,r,STR_APPEND_REMOTE_DATA)
 				//fetch contents of url and append
 				urlData := fetchURL(w,r,STR_APPEND_REMOTE_DATA)
-				c.Infof("urlData: %v", urlData)
 				if urlData != "" {
 					scanner := bufio.NewScanner(strings.NewReader(urlData))	
 					for scanner.Scan() {
