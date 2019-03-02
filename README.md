@@ -1,4 +1,4 @@
-ULAPPH Cloud Desktop - Your web-based cloud desktop!
+ULAPPH Cloud Desktop is a webtop & website with built-in applications for personal & business use!
 ====================
 ![ULAPPH Architecture](https://lh3.googleusercontent.com/dWqjcJyy9l8ZFXG06M864jbPu-iK_4g6DZSMxaEEHJvUWsDk0IGXCkf55P6HHrvr7DQYs2GwEplX6NK203HqvV0tZpDE=s1200 "ULAPPH Architecture")
 
