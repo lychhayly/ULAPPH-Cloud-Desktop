@@ -1,5 +1,7 @@
 ULAPPH Cloud Desktop - Your web-based cloud desktop!
 ====================
+![ULAPPH Architecture](https://lh3.googleusercontent.com/dWqjcJyy9l8ZFXG06M864jbPu-iK_4g6DZSMxaEEHJvUWsDk0IGXCkf55P6HHrvr7DQYs2GwEplX6NK203HqvV0tZpDE=s1200 "ULAPPH Architecture")
+
 ULAPPH Window Manager gives you a feel of a desktop...
 ----------------
 ![ULAPPH Desktop Demo](https://lh3.googleusercontent.com/AJBWaOVmclUEqZA9TJIAvR1X6j0VuUrmpzj6RwqWcSS5WbnyDfv1fxyybpQ1yqaaA6iimhZgLNNp5aiWjjyD_y5MbF1Zjw=s1200 "ULAPPH Desktop Demo")
